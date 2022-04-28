@@ -1,0 +1,122 @@
+@import-normalize;
+
+
+@import url('https://fonts.googleapis.com/css2?family=Cutive+Mono&display=swap');
+
+
+:root {
+  color-scheme: light dark;
+}
+
+/* THEMES */
+.dark {
+  --primary-color: #1a1818;
+  --primary-l-color: #222020;
+  --primary-ls-color: #464242;
+  --secondary-color: #f7e0e0;
+}
+
+.light {
+  --primary-color: #f7e0e0;
+  --primary-l-color: #cfbcbc;
+  --primary-ls-color: #a89999;
+  --secondary-color: #1a1818;
+}
+
+
+/* CSS */
+body {
+  padding: 0;
+  margin: 0;
+
+  width: 100%;
+  height: 100%;
+
+  font-family: 'Cutive Mono', monospace;
+  font-weight: normal;
+  font-size: 10px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+    
+  -webkit-tap-highlight-color: transparent;
+
+  box-sizing: border-box;
+
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+}
+
+
+/* SCROLLBAR FIREFOX */
+* {
+  scrollbar-width: thin;          /* "auto" or "thin" */
+  scrollbar-color: var(--primary-ls-color) var(--primary-color);   /* scroll thumb and track */ 
+}
+
+/* SCROLLBAR FIREFOX */
+*::-webkit-scrollbar {
+  width: 3px;               /* width of the entire scrollbar */
+}
+*::-webkit-scrollbar-track {
+  background: var(--primary-color);        /* color of the tracking area */
+}
+*::-webkit-scrollbar-thumb {
+  background-color: var(--primary-ls-color);    /* color of the scroll thumb */
+  border-radius: 20px;       /* roundness of the scroll thumb */
+}
+
+/* Refresh */
+body *,
+*,
+*::after, 
+*::before {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Cutive Mono', monospace;
+  user-select: none;
+}
+
+a {
+  text-decoration: none;
+}
+a:link,
+a:hover, 
+a:active, 
+a:visited, 
+a:checked,
+a:focus{
+  outline: none;
+  text-decoration: none;
+  color: unset;
+  background-color: transparent;
+}
+
+li {
+  list-style-type: none;
+}
+
+button {
+  padding: 0;
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover, 
+button:active, 
+button:focus {
+  box-shadow: transparent;
+  user-select: none;
+}
+input[type=range] {
+  height: 4px;
+}
+
+/* ROOT */
+#root{
+  width: 100%;
+  height: 100%;
+}
+
+@import "./style/utiles.css";

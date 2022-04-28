@@ -1,0 +1,38 @@
+{
+  "timeInterval":{
+    "min": 1000, 
+    "max": 5000 
+  },
+
+  "panner": {
+    "disableAll": false,
+    "xMin": -30, 
+    "xMax": 30,
+    "yMin": -30, 
+    "yMax": 30,
+    "zMin": -30, 
+    "zMax": 30
+  },
+
+  "filter": {
+    "disableAll": false,
+    "frequencyMin": 100, 
+    "frequencyMax": 15000,
+    "qMin": 0.1,
+    "qMax": 2,
+    "types": ["lowpass", "highpass", "bandpass", "peaking", "notch"] 
+  },
+
+  "delay": {
+    "disableAll": false,
+    "timeMin": 1.0,
+    "timeMax": 2,
+    "feedbackMin": 0.1, 
+    "feedbackMax": 0.85
+  },
+  "playBackRate": {
+    "disableAll": false,
+    "min": 0.8, 
+    "max": 2
+  }
+}

@@ -1,0 +1,176 @@
+
+/* FLEX */
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.align-c {
+  align-items: center;
+}
+.justify-c {
+  justify-content: center;
+}
+.justify-sb {
+  justify-content: space-between;
+}
+.justify-sa {
+  justify-content: space-around;
+}
+.flex-r-change{
+  display: flex;
+  flex-direction: row;
+}
+.flex-c-change{
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-grow-1 {
+  flex-grow: 1;
+}
+
+
+/* VISIBILITY */
+.hidden {
+  display: none;
+  
+}
+.disable,
+.disable *{
+  background-color: var(--primary-l-color) !important;
+  opacity: 50%;
+  cursor:not-allowed !important;
+}
+
+/* SECTION PADDING */
+.section-padding {
+  padding: 8rem 0;
+}
+.section-padding-half {
+  padding: 4rem 0;
+}
+
+/* TEXTS */
+.c-primary {
+  color: var(--primary-color) !important;
+}
+.c-secondary {
+  color: var(--secondary-color) !important;
+}
+
+.ellipsis {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.text-center {
+  text-align: center;
+}
+.text-bold {
+  font-weight: 800;
+}
+.fs-title {
+  font-weight: 800;
+  font-size: 1.6rem;
+  letter-spacing: 1.5px;
+  margin: 5px 0;
+}
+.fs-text-l {
+  font-size: 2rem;
+}
+.fs-text {
+  font-size: 1.2rem;
+}
+.fs-text-s  {
+  font-size: 1.2rem;
+}
+
+
+
+/* POP UP */
+.pop .up {
+  position: absolute;
+  background-color: var(--primary-color) !important;
+  color: var(--secodary-color) !important;
+
+  padding: 3px 5px;
+  white-space: nowrap;
+  transform: translate(0, 95%);
+
+  opacity: 0;
+  visibility: hidden;
+  z-index: 99999;
+}
+
+.pop:hover .up ,
+.pop:focus .up {
+  opacity: 2 !important;
+  visibility: visible;
+  transform: translate(0, 105%);
+  transition: all 0.1s ease-out 0.1s;
+}
+
+
+/* TOOL BUTTONS */
+.tool-button {
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+  border-radius: 2px;
+
+  max-width: 300px;
+  
+  padding: 3px;
+  margin: 5px 2%;
+}
+
+.tool-button *{
+  cursor: pointer;    
+  padding: 0 5px;
+}
+
+.tool-button .tool-button_icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media screen and (max-width: 1200px) {
+  .fs-text-l {
+    font-size: 1.8rem;
+  }
+  .fs-text {
+    font-size: 1rem;
+  }
+  .fs-text-s  {
+    font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 940px) {
+
+  .flex-r-change{
+    flex-direction: column;
+  }
+  .flex-c-change{
+    flex-direction: row;
+  }
+}
+
+@media screen and (max-width: 640px) { 
+  .fs-text-l {
+    font-size: 1.4rem;
+  }
+  .fs-text {
+    font-size: 0.9rem;
+  }
+}

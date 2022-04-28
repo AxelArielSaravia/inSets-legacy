@@ -1,0 +1,23 @@
+.audioCard {
+    width: 49%;
+    height: min-content;
+    background-color: var(--primary-color);
+    margin: 6px 0;
+    padding: 8px 5px;
+    border-radius: 5px;
+
+    .audioCard-name {
+        padding-left: 5px;
+        padding-bottom: 10px;
+    }
+
+    .audioCard-pluggins {
+        width: 100%
+    }
+}
+
+@media screen and (max-width: 940px) {
+    .audioCard {
+        width: 100%;
+    }
+}

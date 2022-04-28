@@ -1,0 +1,54 @@
+/* SWITCHER */
+.switcher {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 2px;
+    cursor: pointer;
+
+    .switcher_thumb {
+        color: var(--secondary-color);
+        background-color: var(--primary-l-color);
+        width: min-content;
+        height: 100%;
+        padding: 2px 4px;
+        border-radius: 5px;
+        border: 1px solid var(--secondary-color);
+        position: relative;
+        transition: all 0.2s ease-out;
+    }
+    .switcher_thumb:after {
+        content: "";
+        display: block;
+        position: absolute;
+        width: 87%;
+        height: 1px;
+        background-color: var(--secondary-color);
+        top: 50%;
+        opacity: 0;
+        transform: rotate(0.04turn);
+        transition: all 0.2s ease-out;
+    }
+    .switcher_thumb:before {
+        content: "";
+        display: block;
+        position: absolute;
+        width: 87%;
+        height: 1px;
+        background-color: var(--secondary-color);
+        top: 50%;
+        opacity: 0;
+        transform: rotate(-0.04turn);
+        transition: all 0.2s ease-out;
+    }
+
+    input:checked + .switcher_thumb {
+        opacity: 50%;
+    }
+
+    input:checked + .switcher_thumb:after,
+    input:checked + .switcher_thumb:before {
+        opacity: 70%;
+    }
+}
+

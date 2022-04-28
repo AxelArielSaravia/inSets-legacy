@@ -1,0 +1,9 @@
+.title {
+  padding-left: 20px;
+}
+
+.buttons {
+  & > div {
+    margin: 0  10px;
+  } 
+}
