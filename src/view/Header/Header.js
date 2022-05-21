@@ -7,7 +7,9 @@ export default memo(function Header() {
   return (
     <header className="header flex-row align-c justify-sb">
       <div className="title">
+      <Link href="https://insets-music.web.app/" self>
         <h1 className="fs-title">inSets</h1>
+      </Link>
       </div>
       <div className="buttons flex-row align-c">
         <div className="fs-text c-secondary">
@@ -16,7 +18,7 @@ export default memo(function Header() {
           </Link>
         </div>
         <div className="fs-text c-secondary">
-          <Link href="https://github.com/AxelArielSaravia/Estudio-II">
+          <Link href="https://github.com/AxelArielSaravia/inSets">
             <i className="bi bi-github"></i>
           </Link>
         </div>

@@ -23,7 +23,7 @@ export default memo(function Main(props) {
           audiosPlayingObj[i] = {
             isPlaying: el.isPlaying,
             randomCurrentTime: el.randomCurrentTime.value,
-            color: "transparent"
+            color: ""
           };
         }
       });
@@ -37,7 +37,7 @@ export default memo(function Main(props) {
       [id]: {
         isPlaying: isPlaying, 
         randomCurrentTime: randomCurrentTime, 
-        color: isPlaying && color? color : "transaprent"
+        color: isPlaying && color? color : ""
       }
     }));
   };

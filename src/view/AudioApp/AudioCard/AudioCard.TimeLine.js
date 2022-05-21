@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback} from "react";
+import { useState, useEffect, useRef} from "react";
 import "./AudioCard.TimeLine.scss";
 
 const calcPercent = (a,b) => {
@@ -36,8 +36,8 @@ export default function AudioCardTimeLine(props) {
                 interval.current = null;
             }
             interval.current = setInterval(() => {
-                setCurrentTime(state => state + 0.5);
-            }, 500);
+                setCurrentTime(state => state + 0.4);
+            }, 400);
         } else {
             if (interval.current) {
                 clearTimeout(interval.current);

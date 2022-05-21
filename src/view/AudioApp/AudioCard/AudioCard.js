@@ -33,7 +33,7 @@ export default function AudioCard(props) {
         setStates(() => ({
             isPlaying: isPlaying,
             randomCurrentTime: randomCurrentTime,
-            color: "transparent"
+            color: ""
         }));
     }
 
@@ -51,7 +51,7 @@ export default function AudioCard(props) {
     }
 
     return (
-        <div className="audioCard" style={props.appIsPlaying && states?.isPlaying ? {boxShadow:"0 0 2px 2px " +  states?.color} : {}}>
+        <div className="audioCard" style={props.appIsPlaying && states?.isPlaying && states?.color ? {boxShadow:"0 0 2px 2px " +  states?.color} : {}}>
             <button 
                 type="button" 
                 className="delete-button"

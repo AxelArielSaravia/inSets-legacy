@@ -253,10 +253,8 @@ const play = (id, cb) => {
     let audioState = AUDIO_MAP.get(id);
 
     if (audioState) {
-
         //FADE IN (to a random value)
         audioState.outputGain.gain.exponentialRampToValueAtTime(audioState.volume.get(), AUDIO_CONTEXT().currentTime + GSFadeIn().time / 1000);
-  
 
         //CHANGE THE CURRENT TIME
         let startPoint = audioState.startTimePoint.get();
