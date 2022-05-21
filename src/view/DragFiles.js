@@ -1,5 +1,4 @@
 import { memo, useEffect, useState } from "react";
-import { isValidAudioType } from "../../core/handleFiles.js";
 /**
  * @param {{ children: Function, render: Function, className?: string, style?: object}} props 
  * @returns 
@@ -32,11 +31,11 @@ function DragFiles( props) {
       document.addEventListener('dragleave', handleDragLeave);
       document.addEventListener('drop', handleDrop);
     }
-    return (
-      document.removeEventListener('dragenter', handleDragEnter),
-      document.removeEventListener('dragleave', handleDragLeave),
-      document.removeEventListener('drop', handleDrop)
-    );
+    return () => {
+      document.removeEventListener('dragenter', handleDragEnter);
+      document.removeEventListener('dragleave', handleDragLeave);
+      document.removeEventListener('drop', handleDrop);
+    };
   }, [isDragActive]);
   
 

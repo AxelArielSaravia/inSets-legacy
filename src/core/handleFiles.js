@@ -1,4 +1,9 @@
-import { setGSAudioFiles } from "./initGlobalState.js"
+import { AUDIO_MAP } from "./initGlobalState.js"
+import { createAudioStatefromFile, stop } from "./audioEffects.js";
+
+/**
+ * @typedef {import("./states.js").AudioState} AudioState
+ */
 
 /**
  * See if the type of the file have a valid audio type
@@ -22,39 +27,44 @@ const filesHaveValidAudioType = (files) => {
 };
 
 /**
+ * @param {Map<string, AudioState>} map 
+ * @returns {string}
+ */
+const createId = (map) => {
+  let n = Math.floor(Math.random() * 100);
+  while (map.has("audio-"+n)) {
+    n = Math.floor(Math.random() * 100);
+  }
+  return "audio-"+n;
+}
+
+/**
  * @param {FileList} files 
  * @param {function} setUIState change the UI states
  */
- const addFiles = (files, setUIState)  => {
-  console.log(files)
-  const isValid = filesHaveValidAudioType(files)
+const addFiles = (files, cb)  => {
+  console.log(files);
+  const isValid = filesHaveValidAudioType(files);
   if (isValid) {
-    const [, hasAudioFiles]  = setGSAudioFiles(files.length);
-    setUIState(() => hasAudioFiles);
+    for (let file of files) {
+      let id = createId(AUDIO_MAP);
+      createAudioStatefromFile(file, id, () => cb(AUDIO_MAP));
+    }
   }
 }
 
 /**
  * @param {function} setUIState change the UI states
  */
-const clearFiles = (setUIState) => {
-  const [, hasAudioFiles]  = setGSAudioFiles("clear");
-  setUIState(() => hasAudioFiles);
+const clearFiles = (cb) => {
+  AUDIO_MAP.forEach(data => {
+    if (data.isPlaying) {
+      stop(data.id);
+    }
+  })
+  AUDIO_MAP.clear();
+  if (typeof cb === "function") cb();
 }
-
-
-
-/**
- * @param {HTMLAudioElement} HTMLAudio 
- * @param {string} mediaType 
- * @returns {"probably" | "maybe" | ""}
- */
-const canPlayType = (HTMLAudio, mediaType) => {
-  if ("canPlayType" in HTMLAudio) throw new Error("canPlayType does not find");
-  return HTMLAudio.canPlayType(mediaType); 
-}
-
-
 
 export {
   addFiles,

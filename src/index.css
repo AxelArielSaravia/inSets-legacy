@@ -10,7 +10,7 @@
 
 /* THEMES */
 .dark {
-  --primary-color: #1a1818;
+  --primary-color: #131212;
   --primary-l-color: #222020;
   --primary-ls-color: #464242;
   --secondary-color: #f7e0e0;
@@ -20,7 +20,7 @@
   --primary-color: #f7e0e0;
   --primary-l-color: #cfbcbc;
   --primary-ls-color: #a89999;
-  --secondary-color: #1a1818;
+  --secondary-color: #131212;
 }
 
 
@@ -53,12 +53,10 @@ body {
   scrollbar-color: var(--primary-ls-color) var(--primary-color);   /* scroll thumb and track */ 
 }
 
-/* SCROLLBAR FIREFOX */
+/* SCROLLBAR webkit */
 *::-webkit-scrollbar {
-  width: 3px;               /* width of the entire scrollbar */
-}
-*::-webkit-scrollbar-track {
-  background: var(--primary-color);        /* color of the tracking area */
+  width: 5px;               /* width of the entire scrollbar */
+  
 }
 *::-webkit-scrollbar-thumb {
   background-color: var(--primary-ls-color);    /* color of the scroll thumb */
@@ -75,6 +73,11 @@ body *,
   box-sizing: border-box;
   font-family: 'Cutive Mono', monospace;
   user-select: none;
+}
+*:focus-visible {
+  border-radius: 5px;
+  outline: 2px solid var(--secondary-color)!important;
+  outline-offset: 3px;
 }
 
 a {
@@ -95,20 +98,26 @@ a:focus{
 li {
   list-style-type: none;
 }
+i {
+  color: var(--secondary-color);
+}
 
 button {
   padding: 0;
+  margin: 0;
   outline: none;
   border: none;
   cursor: pointer;
+  background-color: transparent;
 }
 
 button:hover, 
-button:active, 
+button:active,
 button:focus {
   box-shadow: transparent;
   user-select: none;
 }
+
 input[type=range] {
   height: 4px;
 }

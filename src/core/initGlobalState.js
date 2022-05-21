@@ -1,8 +1,8 @@
-import { createGlobalState } from "./globalStates.js"
-import initState from "./initState.json"
+import { createGlobalState } from "./states.js"
+import initState from "./initState.json";
 
 /**
- * @typedef {import("./globalStates.js").GlobalState} GlobalState
+ * @typedef {import("./states.js").GlobalState} GlobalState
  */
 
 /**
@@ -10,87 +10,119 @@ import initState from "./initState.json"
  * @returns {ElementsState}
  */
  const handleInitState = (elementsState) => {
-  if (localStorage.getItem("state") == null) 
+  if (localStorage.getItem("state") == null) {
+    localStorage.removeItem('state');
     localStorage.setItem('state', JSON.stringify(elementsState));
+  }
   return JSON.parse(localStorage.getItem("state"));
 }
 
 
 /** @type {GlobalState} */
-const GLOBAL_STATE = createGlobalState(handleInitState(initState));
+const GLOBAL_STATE = createGlobalState( handleInitState( initState ) );
+console.log(GLOBAL_STATE);
 
+export default GLOBAL_STATE;
+export const GSPanner = GLOBAL_STATE.panner;
+export const GSFilter = GLOBAL_STATE.filter;
+export const GSDelay = GLOBAL_STATE.delay;
+export const GSPlayBackRate = GLOBAL_STATE.playBackRate;
+export const GSTimeInterval = GLOBAL_STATE.timeInterval;
+export const AUDIO_MAP = GLOBAL_STATE.AUDIO_MAP;
+
+
+export const AUDIO_CONTEXT = (val) => {
+  if (typeof val !== "undefined") {
+    GLOBAL_STATE.AUDIO_CONTEXT = val;
+  }
+  return GLOBAL_STATE.AUDIO_CONTEXT;
+}
 
 /**
- * @param {boolean} val
+ * @param {"audioBuffer"|"audioNode"|undefined} val 
+ * @returns {"audioBuffer"|"audioNode"}
+ */
+export const GSEngine = (val) => {
+  if (typeof val !== "undefined") GLOBAL_STATE.engine = val;
+  return GLOBAL_STATE.engine;
+};
+
+/**
  * @return {boolean}
  */
-const setGSIsLoading = (val) => {
-  if (typeof val === 'boolean') 
-    GLOBAL_STATE.isLoading = val;
-  else 
-    GLOBAL_STATE.isLoading = !GLOBAL_STATE.isLoading;
-  return GLOBAL_STATE.isLoading;
-}
-const getGSIsLoading = () => GLOBAL_STATE.isLoading;
+export const GSHasAudios = () => GLOBAL_STATE.hasAudios;
 
 /**
- * @param {boolean} val
- * @return {boolean}
- */
-const setGSIsPlaying = (val) => {
-  if (typeof val === 'boolean') 
-    GLOBAL_STATE.isPlaying = val;
-  else 
-    GLOBAL_STATE.isPlaying = !GLOBAL_STATE.isPlaying;
-  return GLOBAL_STATE.isPlaying;
-}
-const getGSIsPlaying = () => GLOBAL_STATE.isPlaying;
-
-/**
- * @param {"clear"|number} val
- * @return {[number, boolean]}
- */
-const setGSAudioFiles = (val) => {
-  if (val === "clear") {
-    GLOBAL_STATE.audioFiles = 0;
-  } else if (typeof val === 'number') {
-    GLOBAL_STATE.audioFiles += val;
-  }
-
-  if (GLOBAL_STATE.audioFiles > 0) {
-    GLOBAL_STATE.hasAudioFiles = true
-  } else {
-    GLOBAL_STATE.hasAudioFiles = false
-  }
-
-  return [GLOBAL_STATE.audioFiles, GLOBAL_STATE.hasAudioFiles];
-}
-
-/**
+ * @param {number|undefined} val 
  * @return {number}
  */
-const getGSAudioFiles = () => GLOBAL_STATE.audioFiles;
+export const GSFadeIn = (val) => {
+  if (typeof val === "number") GLOBAL_STATE.fadeIn = val;
+  return GLOBAL_STATE.fadeIn;
+}
 
 /**
- * @return {boolean}
+ * @param {number|undefined} val 
+ * @return {number}
  */
-const getGSHasAudioFiles = () => GLOBAL_STATE.hasAudioFiles;
-
-
-export {
-  GLOBAL_STATE, //USE ONLY FOR CONTEXTS
-
-  setGSIsLoading,
-  getGSIsLoading,
-
-  setGSIsPlaying,
-  getGSIsPlaying,
-
-  setGSAudioFiles,
-  getGSAudioFiles,
-  getGSHasAudioFiles
+ export const GSFadeOut = (val) => {
+  if (typeof val === "number") GLOBAL_STATE.fadeOut = val;
+  return GLOBAL_STATE.fadeOut;
 }
-export const panner = GLOBAL_STATE.panner;
-export const filter = GLOBAL_STATE.filter;
-export const delay = GLOBAL_STATE.delay;
-export const playBackRate = GLOBAL_STATE.playBackRate;
+
+/**
+ * @param {number|undefined} val 
+ * @return {number}
+ */
+ export const GSIsStarted = (val) => {
+  if (typeof val === "boolean") GLOBAL_STATE.isStarted = val;
+  return GLOBAL_STATE.isStarted;
+}
+
+
+/**
+ * @param {boolean} val
+ * @returns {boolean}
+ */
+export const setGSRandomCurrentTime = (val) => {
+  if (typeof val === 'boolean') 
+    GLOBAL_STATE.randomCurrentTime = val;
+  else 
+    GLOBAL_STATE.randomCurrentTime = !GLOBAL_STATE.randomCurrentTime;
+  return GLOBAL_STATE.randomCurrentTime;
+}
+
+/**
+ * @returns {boolean} 
+ */
+export const getGSRandomCurrentTimeDisable = () => GLOBAL_STATE.randomCurrentTimeDisable;
+
+/* 
+console.log("GSHasAudioFiles: ", GSHasAudioFiles());
+console.log("getGSStarted: ", getGSStarted());
+setGSStarted();
+console.log("GSAudioFilesNum: ", GSAudioFilesNum(2));
+console.log("GSHasAudioFiles: ", GSHasAudioFiles());
+setGSStarted();
+console.log("getGSStarted: ", getGSStarted());
+console.log("GSAudioFilesNum: ", GSAudioFilesNum(0));
+console.log("GSHasAudioFiles: ", GSHasAudioFiles());
+console.log("getGSStarted: ", getGSStarted());
+console.log("GSAudioFilesNum: ", GSAudioFilesNum("clear"));
+console.log("GSHasAudioFiles: ", GSHasAudioFiles());
+console.log("getGSStarted: ", getGSStarted());
+ */
+
+/*
+console.log("GSPanner: ", GSPanner);
+*/
+
+/* 
+console.log("GSFilter: ", GSFilter);
+*/
+/*
+console.log("GSDelay: ", GSDelay);
+*/
+/*
+console.log("GSPlayBackRate: ", GSPlayBackRate); 
+*/

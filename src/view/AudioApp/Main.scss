@@ -1,0 +1,87 @@
+
+.main {
+  width: 100%;
+  height: 100%;
+  background-color: var(--primary-l-color);
+  border-radius: 10px;
+
+  .file-button {
+    width: 100%;
+    
+    
+    .fileInput-contain {
+      margin: 10px 1%;
+      position: relative;
+      padding: 0;
+
+      .tool-button {
+        margin: 0;
+        box-shadow: 0 0 0 1px var(--secondary-color);
+        background-color: var(--primary-color);
+        position: relative;
+        z-index: 10;
+        cursor: pointer;
+      }
+      .fileInput {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: min-content;
+        border-radius: 2px;
+        padding: 2px;
+        margin: 0;
+        z-index: 1;
+      }
+    }
+    .tool-button {
+      margin: 10px 1%;
+      box-shadow: 0 0 0 1px var(--secondary-color);
+      background-color: var(--primary-color);
+    }
+    
+  }
+  
+  .files-container {
+    
+    width: 100%;
+    height: 100%;
+  
+    padding: 5px;
+    flex-grow: 1;
+    
+    background-image: radial-gradient(circle, var(--primary-color) 1.5px, transparent 1.5px);
+    background-size: 1rem 1rem;
+    background-position: center;
+
+    .files {
+      overflow-x: hidden;
+      flex-grow: 1;
+      width: 100%;
+
+      height: 1px;
+      & > div {
+        width: 100%;
+      }
+    }
+  }
+}
+
+@media (pointer: fine) and (hover: hover){
+  .main {
+    .files::-webkit-scrollbar-thumb {
+      background-color: transparent; 
+    }
+    .files:hover::-webkit-scrollbar-thumb {
+      background-color: var(--primary-ls-color);
+    }
+  }
+}
+
+@media screen and (max-width: 340px) {
+  .main {
+    .file-button {
+      flex-direction: column !important;  
+    }
+  }
+}

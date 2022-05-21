@@ -1,22 +1,9 @@
-import { 
-  getGSHasAudioFiles, 
-  getGSIsLoading, 
-  setGSIsLoading, 
-  getGSIsPlaying,
-  setGSIsPlaying
-} from "./core/initGlobalState.js";
-import { addFiles, clearFiles } from "./core/handleFiles.js";
-
 import { useState } from "react";
-import Contexts from "./Contexts.js";
+import { createAudioContext, changeAudioEngine } from "./core/audioEffects.js" 
 
-import Header from "./view/header-section/Header.js";
-import Aside from "./view/tools-section/aside.js";
-import Main from "./view/main-section/main.js";
-
-import DragFiles from "./view/utils/dragFiles.js";
-import DropFiles from "./view/utils/dropFiles.js";
-import DropArea from "./view/utils/DropArea.js";
+import AudioApp from "./view/AudioApp/AudioApp.js";
+import Header from "./view/Header/Header.js";
+import DragFiles from "./view/DragFiles.js";
 
 import './App.scss';
 
@@ -24,39 +11,23 @@ import './App.scss';
 //COMPONENTS
 //App Component
 function App() {
-  const [hasAudioFiles, setHasAudioFiles] = useState(getGSHasAudioFiles);
-  const [isPlaying, setIsPlaying] = useState(getGSIsPlaying);
-  const [isLoading, setIsLoading] = useState(getGSIsLoading);
+  const hasAudioContext = window.AudioContext || window.webkitAudioContext;
+  const [startApp, setStartApp] = useState(false);
+  const [engine, setEngine] = useState("audioBuffer");
 
-  const handleFileDrop = (e) => {
-    if (!isPlaying) {
-      const files = e.dataTransfer.files;
-      addFiles(files, setHasAudioFiles);
-    }
+  const handleAcceptOnClick = () => {
+    createAudioContext();
+    setStartApp(() => true)
   };
 
-  const handleAddOnClick = (e) => {
-    if (!isPlaying) {
-      const files = e.currentTarget.files;
-      addFiles(files, setHasAudioFiles);
-      /* const bool = setGSIsLoading();
-      setIsLoading(() => bool); */
-    }
-
-  };
-
-  const handleClearOnClick = () => {
-    if (!isPlaying)
-      clearFiles(setHasAudioFiles);
-  };
-  
-  const handlePlayOnClick = () => {
-    if (hasAudioFiles) {
-      const bool  = setGSIsPlaying()
-      setIsPlaying(() => bool)
-    }
-  };
-
+  const handleRadioOnChange = (e) => {
+    changeAudioEngine(e.target.value);
+    setEngine(() => e.target.value);
+  }
+  const handleRadioOnClick = (val) => {
+    changeAudioEngine(val);
+    setEngine(() => val);
+  }
   return (
     <DragFiles
       className="flex-column"
@@ -64,42 +35,94 @@ function App() {
         width: '100%',
         height: '100%',
         minWidth: '100vw',
-        minHeight: '100vh'
+        minHeight: '100vh',
       }}
-      >
+    >
       {isDragActive => (
         <>
-          {window.AudioContext || window.webkitAudioContext ? "" : "DONT EXIST window.AudioContext"}
           <section className="header-section flex-column align-c justify-c">
             <Header />
           </section>
-          <section className="creator-section flex-column align-c justify-c">
-            <span className="fs-text">create by Axel Ariel Saravia</span>
-          </section>
-          <Contexts.IsPlaying.Provider value={isPlaying}>
-            <Contexts.IsLoading.Provider value={isLoading}>
-              <section className="tool-section flex-column align-c justify-c">
-                <Aside/>
+          { hasAudioContext
+            ? (
+              <>
+              { startApp 
+                ? <AudioApp isDragActive={isDragActive}/>
+                : (
+                  <section className="init-section flex-column align-c justify-c">
+                    <div className="flex-column align-c justify-c">
+                      <div className="init-message flex-column align-c justify-c">
+                        <h2 className="fs-text-l text-center">InSets Composition App</h2>
+                      </div>
+                      <div className="init-message flex-column align-c justify-c">
+                        <p className="fs-text text-center">This project was created by</p>
+                        <p className="fs-text-l text-center">Axel Ariel Saravia</p>
+                      </div>
+                      <div className="init-message flex-column justify-c"> 
+                        <p className="fs-text-l text-center">Audio Engine:</p>
+                        <label className="audioEngine-button">
+                          <input 
+                            type="radio" 
+                            name="audioEngine" 
+                            value="audioBuffer" 
+                            onChange={handleRadioOnChange} 
+                            checked={engine === "audioBuffer"}
+                          />
+                          <div className="flex-row align-c ">
+                            <button 
+                              className="checkmark" 
+                              role="switch" 
+                              aria-checked={engine === "audioBuffer"}
+                              onClick={() => handleRadioOnClick("audioBuffer")}
+                            />
+                            <span className="fs-text text-bold">AudioBuffers:</span>
+                            <span className="fs-text">(preferred)</span>
+                          </div>
+                            <p className="fs-text">It uses AudioBuffer to handle audio files. Have a better audio quality but need more computer resources.</p>
+                        </label>
+                        <label className="audioEngine-button">
+                          <input 
+                            type="radio"
+                            name="audioEngine"
+                            value="audioNode"
+                            onChange={handleRadioOnChange} 
+                            checked={engine === "audioNode"}
+                          />
+                          <div className="flex-row align-c ">
+                            <button
+                              className="checkmark" 
+                              role="switch" 
+                              aria-checked={engine === "audioNode"} 
+                              onClick={() => handleRadioOnClick("audioNode")}
+                            />
+                            <span className="fs-text text-bold">AudioNodes:</span>
+                          </div>
+                          <p className="fs-text">It uses HTMLAudioElement to handle audio files. Have optimized computer resources, but less audio quality.</p>
+                        </label>
+                      </div>
+                      <div className="init-message">
+                        <button className="startApp-button fs-text-l" type="button" onClick={handleAcceptOnClick}>Start App</button>
+                      </div>
+                    </div>
+                  </section>
+                )
+              }
+              </>
+            )
+            : (
+              <section className="init-section flex-column align-c justify-c">
+                <div className="flex-column align-c justify-c">
+                  <div style={{padding: "20px 0"}}>
+                    <p className="fs-text-l text-center">Your browser does NOT have AudioContext🎵❗❗</p>
+                  </div>
+                  <div style={{padding: "20px 0"}}>
+                    <p className="fs-text-l text-center">We CAN NOT run the app 😭</p>
+                  </div>
+                  <div style={{padding: "20px 0"}}>
+                    <p className="fs-text-l text-center">Please, use any other actualized browser.</p>
+                  </div>
+                </div>
               </section>
-              <section className="main-section flex-column align-c justify-c">
-                <Contexts.HasAudioFiles.Provider value={hasAudioFiles}>
-                  <Main 
-                    handleClearOnClick={handleClearOnClick} 
-                    handleAddOnClick={handleAddOnClick}
-                    handlePlayOnClick={handlePlayOnClick}
-                  />
-                </Contexts.HasAudioFiles.Provider>
-              </section>
-            </Contexts.IsLoading.Provider>
-          </Contexts.IsPlaying.Provider>
-          {
-            isDragActive && (
-              <DropFiles
-                className="dropFile flex-column align-c justify-c"
-                onFileDrop={handleFileDrop}
-              >
-                <DropArea disable={isPlaying}/>
-              </DropFiles>
             )
           }
         </>

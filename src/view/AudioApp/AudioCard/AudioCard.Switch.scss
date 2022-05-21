@@ -1,22 +1,20 @@
 /* SWITCHER */
 .switcher {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 2px;
     cursor: pointer;
+    padding: 2px;
 
     .switcher_thumb {
         color: var(--secondary-color);
         background-color: var(--primary-l-color);
-        width: min-content;
+        width: 100%;
         height: 100%;
         padding: 2px 4px;
-        border-radius: 5px;
-        border: 1px solid var(--secondary-color);
+        border-radius: 2px;
         position: relative;
-        transition: all 0.2s ease-out;
+        transition: opacity 0.2s ease-out;
+        overflow: hidden;
     }
+
     .switcher_thumb:after {
         content: "";
         display: block;
@@ -27,8 +25,9 @@
         top: 50%;
         opacity: 0;
         transform: rotate(0.04turn);
-        transition: all 0.2s ease-out;
+        transition: opacity 0.2s ease-out;
     }
+    
     .switcher_thumb:before {
         content: "";
         display: block;
@@ -39,7 +38,7 @@
         top: 50%;
         opacity: 0;
         transform: rotate(-0.04turn);
-        transition: all 0.2s ease-out;
+        transition: opacity 0.2s ease-out;
     }
 
     input:checked + .switcher_thumb {
