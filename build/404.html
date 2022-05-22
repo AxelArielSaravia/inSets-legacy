@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="icon" href="./favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#1a1818"/>
+    <meta
+      name="description"
+      content=""
+    />
+    <link rel="apple-touch-icon" href="./logo192.png" />
+    <link rel="manifest" href="./manifest.json" />
+    <title>inSets</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css" integrity="sha384-eoTu3+HydHRBIjnCVwsFyCpUDZHZSFKEJD0mc3ZqSBSb6YhZzRHeiomAUWCstIWo" crossorigin="anonymous">
+    <style media="screen">
+      @import url('https://fonts.googleapis.com/css2?family=Cutive+Mono&display=swap');
+      :root { color-scheme: light dark; }
+      .dark { --primary-color: #131212; --primary-l-color: #222020; --primary-ls-color: #464242; --secondary-color: #f7e0e0; }
+      .light { --primary-color: #f7e0e0; --primary-l-color: #cfbcbc; --primary-ls-color: #a89999; --secondary-color: #131212; }
+      body { padding: 0;margin: 0; width: 100%;height: 100%; font-family: 'Cutive Mono', monospace; font-weight: normal; font-size: 10px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; -webkit-tap-highlight-color: transparent; background-color: var(--primary-color); color: var(--secondary-color); box-sizing: border-box; }
+      body *, *, *::after, *::before { padding: 0; margin: 0; box-sizing: border-box; }
+      a { text-decoration: none;}
+      a:link, a:hover, a:active, a:visited, a:checked, a:focus { outline: none; text-decoration: none; color: unset; background-color: transparent; }
+      li { list-style-type: none; }
+      i { color: var(--secondary-color); }
+      button { padding: 0; margin: 0; outline: none; border: none; cursor: pointer; background-color: transparent; }
+      button:hover, button:active, button:focus { box-shadow: transparent; user-select: none; }
+      .change-theme-button { background-color: transparent; color: var(--secondary-color); margin: 0  10px; padding: 2px; }
+      .hidden { display: none; } 
+      .header { width: 100%; height: 100%; padding: 10px; background-color: var(--primary-l-color); }
+      .title { padding-left: 20px; } 
+      .fs-title { font-weight: 800; font-size: 1.6rem; letter-spacing: 1.5px; margin: 5px 0; } 
+      .fs-text { font-size: 1.2rem; } .fs-text-l { font-size: 1.8rem; }
+      .buttons div { margin: 0 10px; }
+      .flex-row { display: flex; flex-direction: row; }
+      .align-c { align-items: center; } .justify-sb { justify-content: space-between; } 
+      #message { background: var(--secondary-color); color: var(--primary-color);  max-width: 360px; margin: 100px auto 16px; padding: 32px 24px 16px; border-radius: 3px; }
+      #message h3 { font-weight: normal; font-size: 16px; margin: 16px 0 12px; }
+      #message h2 { font-weight: bold; font-size: 16px; margin: 0 0 8px; }
+      #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
+
+      @media (max-width: 370px) {
+        #message { margin:100px 5px 0 ; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header flex-row align-c justify-sb">
+      <div class="title">
+        <a href="https://insets-music.web.app/" target="_blank" rel="noreferrer noopener">
+          <h1 class="fs-title">inSets</h1>
+        </a>
+      </div>
+      <div class="buttons flex-row align-c">
+        <div class="fs-text">
+          <a href="https://www.instagram.com/axarisar" target="_blank" rel="noreferrer noopener">
+            <i class="bi bi-instagram"></i>
+          </a>
+          <Link href="https://www.instagram.com/axarisar/">
+        </div>
+        <div class="fs-text">
+          <a href="https://github.com/AxelArielSaravia/inSets" target="_blank" rel="noreferrer noopener">
+            <i class="bi bi-github"></i>
+          </a>
+        </div>
+        <div>
+          <button id="change-theme-button" class="change-theme-button fs-text-l" type="button" onclick="useThemeChanger()">
+            <i class="hidden bi bi-brightness-high-fill"></i>
+            <i class="hidden bi bi-moon-fill"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+    <main id="message">
+      <h3>404</h3>
+      <h2>Page Not Found</h1>
+      <p>The specified file was not found on this website. Please check the URL for mistakes and try again.</p>
+    </main>
+    <script>
+      let theme = localStorage.getItem("theme") !== null  ? localStorage.getItem("theme") : window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light";
+      function changeThemes(bool) {
+        const btn = document.getElementById("change-theme-button");
+        if (bool) {
+          theme = "dark";
+          document.body.className = "dark";
+          btn.firstElementChild.classList.remove("hidden");
+          btn.lastElementChild.classList.add("hidden"); 
+        } else {
+          theme = "ligth";
+          document.body.className = "light";
+          btn.firstElementChild.classList.add("hidden");
+          btn.lastElementChild.classList.remove("hidden"); 
+        }
+        localStorage.setItem('theme', theme);
+      }
+      function useThemeChanger() { changeThemes(theme !== "dark"); }
+      changeThemes(theme === "dark");
+    </script>
+  </body>
+</html>
