@@ -19,10 +19,10 @@ const handleInitState = (elementsState) => {
   return elementsState
 }
 
-
 /** @type {GlobalState} */
 const GLOBAL_STATE = createGlobalState( handleInitState( initState ) );
-console.log(GLOBAL_STATE);
+
+//console.log(GLOBAL_STATE); DEBUG
 
 export default GLOBAL_STATE;
 export const GSPanner = GLOBAL_STATE.panner;
@@ -31,7 +31,6 @@ export const GSDelay = GLOBAL_STATE.delay;
 export const GSPlayBackRate = GLOBAL_STATE.playBackRate;
 export const GSTimeInterval = GLOBAL_STATE.timeInterval;
 export const AUDIO_MAP = GLOBAL_STATE.AUDIO_MAP;
-
 
 export const AUDIO_CONTEXT = (val) => {
   if (typeof val !== "undefined") {
@@ -72,7 +71,6 @@ export const GSFadeTime = (val) => {
   return GLOBAL_STATE.isStarted;
 }
 
-
 /**
  * @param {boolean} val
  * @returns {boolean}
@@ -89,33 +87,3 @@ export const setGSRandomCurrentTime = (val) => {
  * @returns {boolean} 
  */
 export const getGSRandomCurrentTimeDisable = () => GLOBAL_STATE.randomCurrentTimeDisable;
-
-/* 
-console.log("GSHasAudioFiles: ", GSHasAudioFiles());
-console.log("getGSStarted: ", getGSStarted());
-setGSStarted();
-console.log("GSAudioFilesNum: ", GSAudioFilesNum(2));
-console.log("GSHasAudioFiles: ", GSHasAudioFiles());
-setGSStarted();
-console.log("getGSStarted: ", getGSStarted());
-console.log("GSAudioFilesNum: ", GSAudioFilesNum(0));
-console.log("GSHasAudioFiles: ", GSHasAudioFiles());
-console.log("getGSStarted: ", getGSStarted());
-console.log("GSAudioFilesNum: ", GSAudioFilesNum("clear"));
-console.log("GSHasAudioFiles: ", GSHasAudioFiles());
-console.log("getGSStarted: ", getGSStarted());
- */
-
-/*
-console.log("GSPanner: ", GSPanner);
-*/
-
-/* 
-console.log("GSFilter: ", GSFilter);
-*/
-/*
-console.log("GSDelay: ", GSDelay);
-*/
-/*
-console.log("GSPlayBackRate: ", GSPlayBackRate); 
-*/

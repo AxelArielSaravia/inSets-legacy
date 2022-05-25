@@ -331,9 +331,11 @@ const disconnect = (id, cb) => {
  * @param {function} cb example (AUDIO_MAP) => { changeState(() => new Map([...AUDIO_MAP]))} 
  */
 const deleteAudio = (id, cb) => {
-    stop(id); 
-    AUDIO_MAP.delete(id);
-    cb(AUDIO_MAP);
+    stop(id)
+    .then(() => {
+        AUDIO_MAP.delete(id);
+        cb(AUDIO_MAP);
+    });
 }
 
 const changeVolume = (id, val) => {
