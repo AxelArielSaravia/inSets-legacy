@@ -298,14 +298,12 @@ const stop = (id, cb) => {
     if (audioState && audioState.isPlaying) {
         audioState.outputGain.gain.exponentialRampToValueAtTime(0.01, AUDIO_CONTEXT().currentTime + GSFadeTime().time / 1000);
         return wait(GSFadeTime().time)
-        .then(() => disconnect(id, cb));
+        .then(() => disconnect(audioState, cb));
     }
 }
 
-const disconnect = (id, cb) => {
-    let audioState = AUDIO_MAP.get(id);
+const disconnect = (audioState, cb) => {
     if (audioState && audioState.isPlaying) {
-
         if (GSEngine() === "audioNode") {
             if (audioState.audioEngine && !audioState.audioEngine.paused) audioState.audioEngine.pause();
             audioState.audioEngine.ontimeupdate = null;
