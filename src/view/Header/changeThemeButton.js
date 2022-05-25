@@ -8,8 +8,8 @@ export default function ChangeThemeButton() {
   return (
     <button className="change-theme-button fs-text-l" type="button" onClick={handleThemeChangerClick}>
       { theme === "dark" 
-        ? <i className="bi bi-brightness-high-fill"></i>
-        : <i className="bi bi-moon-fill"></i> 
+        ? <i className="bi bi-brightness-high-fill" title="ligth theme"></i>
+        : <i className="bi bi-moon-fill" title="dark theme"></i> 
       }
     </button>
   );

@@ -78,7 +78,7 @@ function App() {
                             <span className="fs-text text-bold">AudioBuffers:</span>
                             <span className="fs-text">(preferred)</span>
                           </div>
-                            <p className="fs-text">It uses AudioBuffer to handle audio files. Have a better audio quality but need more computer resources.</p>
+                            <p className="fs-text">It uses AudioBuffer to handle audio files. It has better audio quality but need more computer resources.</p>
                         </label>
                         <label className="audioEngine-button">
                           <input 
@@ -97,7 +97,7 @@ function App() {
                             />
                             <span className="fs-text text-bold">AudioNodes:</span>
                           </div>
-                          <p className="fs-text">It uses HTMLAudioElement to handle audio files. Have optimized computer resources, but less audio quality.</p>
+                          <p className="fs-text">It uses HTMLAudioElement to handle audio files. It has optimized computer resources, but less audio quality.</p>
                         </label>
                       </div>
                       <div className="init-message">

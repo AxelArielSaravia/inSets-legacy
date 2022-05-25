@@ -40,8 +40,7 @@
  * 
  * @typedef {{
  *  delay?: GlobalDelay,
- *  fadeIn?: number,
- *  fadeOut: number,
+ *  fadeTime?: number,
  *  filter?: GlobalFilter, 
  *  panner?: GlobalPanner, 
  *  playBackRate?: GlobalPlayBackRate,
@@ -54,8 +53,7 @@
  *  AUDIO_CONTEXT: AudioContext | object,
  *  AUDIO_MAP: Map<string, AudioState>
  *  engine: "audioBuffer"|"audioNode",
- *  fadeIn: FadeTime,
- *  fadeOut: FadeTime,
+ *  fadeTime: FadeTime,
  *  isStarted: boolean,
  *  sets: Sets
  *  } & ElementsState} GlobalState
@@ -559,12 +557,8 @@ const createGlobalState = (elementsState) => {
                     engine = "audioBuffer";
             }
         },
-        "fadeIn": {
+        "fadeTime": {
             value: new FadeTime(elementsState?.fadeIn),
-            enumerable: true
-        },
-        "fadeOut": {
-            value: new FadeTime(elementsState?.fadeOut),
             enumerable: true
         },
         "filter": {
@@ -642,6 +636,10 @@ const getGlobalStatesLimit = () => ({
         min: TimeIntervalState.MIN, 
         max: TimeIntervalState.MAX 
     },
+    fadeTime: {
+        min: FadeTime.MIN,
+        max: FadeTime.MAX
+    }
 });
 
 /* -------------------------------------------------------------------------- */

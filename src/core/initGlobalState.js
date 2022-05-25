@@ -9,12 +9,14 @@ import initState from "./initState.json";
  * @param {ElementsState} elementsState
  * @returns {ElementsState}
  */
- const handleInitState = (elementsState) => {
-  if (localStorage.getItem("state") == null) {
+const handleInitState = (elementsState) => {
+ /*  if (localStorage.getItem("state") == null) {
     localStorage.removeItem('state');
     localStorage.setItem('state', JSON.stringify(elementsState));
   }
-  return JSON.parse(localStorage.getItem("state"));
+  return JSON.parse(localStorage.getItem("state")); */
+  localStorage.clear();
+  return elementsState
 }
 
 
@@ -56,18 +58,9 @@ export const GSHasAudios = () => GLOBAL_STATE.hasAudios;
  * @param {number|undefined} val 
  * @return {number}
  */
-export const GSFadeIn = (val) => {
-  if (typeof val === "number") GLOBAL_STATE.fadeIn = val;
-  return GLOBAL_STATE.fadeIn;
-}
-
-/**
- * @param {number|undefined} val 
- * @return {number}
- */
- export const GSFadeOut = (val) => {
-  if (typeof val === "number") GLOBAL_STATE.fadeOut = val;
-  return GLOBAL_STATE.fadeOut;
+export const GSFadeTime = (val) => {
+  if (typeof val === "number") GLOBAL_STATE.fadeTime = val;
+  return GLOBAL_STATE.fadeTime;
 }
 
 /**

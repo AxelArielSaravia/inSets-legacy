@@ -6,8 +6,7 @@ import {
     GSDelay, 
     GSFilter, 
     GSPanner,
-    GSFadeOut,
-    GSFadeIn,
+    GSFadeTime,
     GSPlayBackRate, 
     getGSRandomCurrentTimeDisable,
     GSTimeInterval,
@@ -254,7 +253,7 @@ const play = (id, cb) => {
 
     if (audioState) {
         //FADE IN (to a random value)
-        audioState.outputGain.gain.exponentialRampToValueAtTime(audioState.volume.get(), AUDIO_CONTEXT().currentTime + GSFadeIn().time / 1000);
+        audioState.outputGain.gain.exponentialRampToValueAtTime(audioState.volume.get(), AUDIO_CONTEXT().currentTime + GSFadeTime().time / 1000);
 
         //CHANGE THE CURRENT TIME
         let startPoint = audioState.startTimePoint.get();
@@ -272,10 +271,7 @@ const play = (id, cb) => {
             
             audioState.audioEngine.ontimeupdate = function(e) {
                 if (e.target.currentTime >= audioState.endTimePoint.get()) {
-                    //FADE OUT
-                    audioState.outputGain.gain.exponentialRampToValueAtTime(0.01, AUDIO_CONTEXT().currentTime + GSFadeOut().time / 1000);
-                    wait(GSFadeOut().time)
-                    .then(() => stop(id, cb))
+                    stop(id, cb);
                 }
             }
         } else {
@@ -287,19 +283,7 @@ const play = (id, cb) => {
             wait(Math.floor(a * 1000))
             .then(() => {
                 if (audioState.startNum.get() === startNum && audioState.isPlaying) {
-                    stop(id, cb);
-
-                    //FADE OUT; IMPORTANT check!!!
-                   /*  
-                    const n = Number((AUDIO_CONTEXT().currentTime + GSFadeOut().time / 1000).toFixed(3));
-                    audioState.outputGain.gain.exponentialRampToValueAtTime(0.01, n);
-                    wait(GSFadeOut().time + 50)
-                    .then(() => {
-                        if (audioState.startNum.get() === startNum) {
-                            console.log("context currentTime: ", AUDIO_CONTEXT().currentTime);
-                        }
-                    });  
-                    */
+                    return stop(id, cb);
                 }
             });  
         }
@@ -309,7 +293,16 @@ const play = (id, cb) => {
 }
 
 const stop = (id, cb) => {
-    //stop playing
+    //FADE OUT
+    let audioState = AUDIO_MAP.get(id);
+    if (audioState && audioState.isPlaying) {
+        audioState.outputGain.gain.exponentialRampToValueAtTime(0.01, AUDIO_CONTEXT().currentTime + GSFadeTime().time / 1000);
+        return wait(GSFadeTime().time)
+        .then(() => disconnect(id, cb));
+    }
+}
+
+const disconnect = (id, cb) => {
     let audioState = AUDIO_MAP.get(id);
     if (audioState && audioState.isPlaying) {
 
@@ -393,16 +386,13 @@ const randomSetsExecution = (cb) => {
 
     executeSet.forEach((data) => {
         if (data.isPlaying) {
-            //FADE OUT
-            data.outputGain.gain.exponentialRampToValueAtTime(0.01, AUDIO_CONTEXT().currentTime + GSFadeOut().time / 1000);
-            wait(GSFadeOut().time)
-            .then(() => stop(data.id, (isPlaying, rct) => cb(data.id, isPlaying, rct)))
+            stop(data.id, (isPlaying, rct) => cb(data.id, isPlaying, rct))
             .then(() => {
                 setAudioConfiguration(data.id);
                 play(data.id, (isPlaying, rct) => cb(data.id, isPlaying, rct, newColorSet));
             })
         } else {
-            wait(GSFadeOut().time)
+            wait(GSFadeTime().time)
             .then(() => {
                 setAudioConfiguration(data.id);
                 play(data.id, (isPlaying, rct) => cb(data.id, isPlaying, rct, newColorSet));
