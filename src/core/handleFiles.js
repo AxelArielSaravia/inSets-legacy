@@ -1,4 +1,4 @@
-import { AUDIO_MAP } from "./initGlobalState.js"
+import { AUDIO_MAP, CLEAR_Audio } from "./initGlobalState.js"
 import { createAudioStatefromFile, stop } from "./audioEffects.js";
 
 /**
@@ -62,7 +62,7 @@ const clearFiles = (cb) => {
       stop(data.id);
     }
   })
-  AUDIO_MAP.clear();
+  CLEAR_Audio();
   if (typeof cb === "function") cb();
 }
 

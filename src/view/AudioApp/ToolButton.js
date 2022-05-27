@@ -1,3 +1,5 @@
+import "./ToolButton.scss";
+
 export default function ToolButton(props) {
     return (
         <button

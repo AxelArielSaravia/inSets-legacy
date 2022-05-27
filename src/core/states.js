@@ -465,43 +465,11 @@ Object.defineProperties(TimeIntervalState, {
 });
 
 /**
- * An array that each number is a represent of a set length
- * and the value in each index is a rate of the set posibility
- * @class Sets
- */
-function Sets() {
-    /** @type {number[]} */
-    let sets = [1];
-
-    Object.defineProperties(this, {
-        "length": {
-            get: function() { return sets.length },
-            enumerable: true
-        },
-        "get": {
-            value: function(i) {
-                if (typeof i !== "number") return;
-                return sets[i];
-            },
-            enumerable: true
-        },
-        "set": {
-            value: function(i, value) {
-                if (typeof i === "number" && typeof value === "number" && value > -1) {
-                    sets[i] = value;
-                } 
-            },
-            enumerable: true
-        }
-    }); 
-}
-
-/**
  * The Time values representation are in miliseconds 
  * @class FadeTime
  * @param {number} n
  */
-function FadeTime(n) {
+ function FadeTime(n) {
     /**@type {number}*/
     let fadeTime = typeof n === "number" && isInsideInterval(FadeTime.MIN, FadeTime.MAX, n) 
         ? n
@@ -519,6 +487,76 @@ Object.defineProperties(FadeTime, {
     MIN: { value: 15 },
     MAX: { value: 500 }
 });
+
+/**
+ * An array that each number is a represent of a set length
+ * and the value in each index is a rate of the set posibility
+ * @class ProbabilityOfExecutionSets
+ */
+function ProbabilityOfExecutionSets() {
+    /** @type {number[]} */
+    let arrOfValues = [1];
+
+    Object.defineProperties(this, {
+        "length": {
+            get: function() { return arrOfValues.length },
+            enumerable: true
+        },
+        "values": {
+            get: function() { return [...arrOfValues] },
+            enumerable: true 
+        },
+        "get": {
+            value: function(i) {
+                if (typeof i === "number") return arrOfValues[i];
+            },
+            enumerable: true
+        },
+        "push": {
+            value: function() { arrOfValues.push(1); },
+            enumerable: true
+        },
+        "pop": {
+            value: function() { if (this.length > 1) arrOfValues.pop(); },
+            enumerable: true
+        },
+        "reset": {
+            value: function() { arrOfValues = [1]; },
+            enumerable: true
+        },
+        "limits": {
+            get: function() { return this.length * 2 },
+            enumerable: true
+        },
+        "set": {
+            value: function(i, value) {
+                if (typeof i === "number"
+                 && i < this.length 
+                 && typeof value === "number" 
+                 && value > -1
+                 && value <= this.limits
+                ) {
+                    arrOfValues[i] = value;
+                } 
+            },
+            enumerable: true
+        },
+        "lengthOfExecutionSet": {
+            value: function() {
+                let arrOfSetsLength = [];
+                arrOfValues.forEach((v,i) => {
+                    if (v > 0) {
+                        let arr = (new Array(v)).fill(i);
+                        arrOfSetsLength = arrOfSetsLength.concat(arr);
+                    }
+                });
+                let n = random(0, arrOfSetsLength.length - 1);
+                return arrOfSetsLength[n];
+            },
+            enumerable: true
+        }
+    }); 
+}
 
 /**
  * @param {ElementsState} obj
@@ -542,6 +580,27 @@ const createGlobalState = (elementsState) => {
         },
         "AUDIO_MAP": {
             value: new Map(),
+            enumerable: true
+        },
+        "ADD_Audio": {
+            value: function (id, value) {
+                globalState.AUDIO_MAP.set(id, value);
+                globalState.probabilityOfExecutionSets.push();
+            },
+            enumerable: true
+        },
+        "DELETE_Audio": {
+            value: function (id) {
+                globalState.AUDIO_MAP.delete(id);
+                globalState.probabilityOfExecutionSets.pop();
+            },
+            enumerable: true
+        },
+        "CLEAR_Audio": {
+            value: function (id) {
+                globalState.AUDIO_MAP.clear();
+                globalState.probabilityOfExecutionSets.reset();
+            },
             enumerable: true
         },
         "delay": {
@@ -591,12 +650,12 @@ const createGlobalState = (elementsState) => {
             set: function(val) { if (typeof val === "boolean") randomCurrentTimeDisable = val },
             enumerable: true
         },
-        "timeInterval": {
-            value: new TimeIntervalState(elementsState?.timeInterval),
+        "probabilityOfExecutionSets": {
+            value: new ProbabilityOfExecutionSets(),
             enumerable: true
         },
-        "sets": {
-            value: new Sets(),
+        "timeInterval": {
+            value: new TimeIntervalState(elementsState?.timeInterval),
             enumerable: true
         }
     });

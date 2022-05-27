@@ -14,10 +14,10 @@ function DropFiles(props) {
   useEffect(() => {
     window.addEventListener('dragover', preventDefault, false);
     window.addEventListener('drop', preventDefault, false);
-    return (
-      window.removeEventListener('dragover', preventDefault, false),
-      window.removeEventListener('drop', preventDefault, false)
-    );
+    return () => {
+      window.removeEventListener('dragover', preventDefault, false);
+      window.removeEventListener('drop', preventDefault, false);
+    };
   });
 
   /**

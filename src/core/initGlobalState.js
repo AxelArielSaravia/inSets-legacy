@@ -30,7 +30,11 @@ export const GSFilter = GLOBAL_STATE.filter;
 export const GSDelay = GLOBAL_STATE.delay;
 export const GSPlayBackRate = GLOBAL_STATE.playBackRate;
 export const GSTimeInterval = GLOBAL_STATE.timeInterval;
+export const GSProbabilityOfExecutionSets = GLOBAL_STATE.probabilityOfExecutionSets;
 export const AUDIO_MAP = GLOBAL_STATE.AUDIO_MAP;
+export const ADD_Audio = GLOBAL_STATE.ADD_Audio;
+export const DELETE_Audio = GLOBAL_STATE.DELETE_Audio;
+export const CLEAR_Audio = GLOBAL_STATE.CLEAR_Audio;
 
 export const AUDIO_CONTEXT = (val) => {
   if (typeof val !== "undefined") {

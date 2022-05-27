@@ -10,7 +10,10 @@ import {
     GSPlayBackRate, 
     getGSRandomCurrentTimeDisable,
     GSTimeInterval,
-    GSIsStarted
+    GSIsStarted,
+    ADD_Audio,
+    DELETE_Audio,
+    GSProbabilityOfExecutionSets
 } from "./initGlobalState.js";
 
 /**
@@ -61,12 +64,13 @@ const createAudioStatefromFile = (file, id, callback) => {
                 audioState.audioEngine = htmlAudio;
                 audioState.source = source;
     
-                AUDIO_MAP.set(id, audioState);
+                ADD_Audio(id, audioState);
     
                 if (typeof callback === "function") callback();
     
                 audioState = source = null;
                 console.log(AUDIO_MAP);
+                console.log(GSProbabilityOfExecutionSets);
             },{once: true});
         })
         .catch(err => console.error(err));
@@ -75,15 +79,16 @@ const createAudioStatefromFile = (file, id, callback) => {
         .then(() => file.arrayBuffer())
         .then(data => AUDIO_CONTEXT().decodeAudioData(data))
         .then(audioBuffer => {
-          let audioState = createAudioState(id, file.name, file.type, audioBuffer.duration, elementsState);
-          audioState.audioEngine = audioBuffer;
+            let audioState = createAudioState(id, file.name, file.type, audioBuffer.duration, elementsState);
+            audioState.audioEngine = audioBuffer;
 
-          AUDIO_MAP.set(id, audioState);
+            ADD_Audio(id, audioState);
 
-          if (typeof callback !== "undefined") callback();
-          
-          audioState = null;
-          console.log(AUDIO_MAP);
+            if (typeof callback !== "undefined") callback();
+            
+            audioState = null;
+            console.log(AUDIO_MAP);
+            console.log(GSProbabilityOfExecutionSets);
         })
         .catch(err => console.error(err));
     }
@@ -293,13 +298,14 @@ const play = (id, cb) => {
 }
 
 const stop = (id, cb) => {
-    //FADE OUT
     let audioState = AUDIO_MAP.get(id);
     if (audioState && audioState.isPlaying) {
+        //FADE OUT 
         audioState.outputGain.gain.exponentialRampToValueAtTime(0.01, AUDIO_CONTEXT().currentTime + GSFadeTime().time / 1000);
         return wait(GSFadeTime().time)
         .then(() => disconnect(audioState, cb));
     }
+    return Promise.resolve(false);
 }
 
 const disconnect = (audioState, cb) => {
@@ -321,7 +327,9 @@ const disconnect = (audioState, cb) => {
         audioState.isPlaying = false;
 
         if (typeof cb === "function") cb(audioState.isPlaying, audioState.randomCurrentTime.value);
+        return true;
     }
+    return false;
 }
 
 /**
@@ -330,8 +338,8 @@ const disconnect = (audioState, cb) => {
  */
 const deleteAudio = (id, cb) => {
     stop(id)
-    .then(() => {
-        AUDIO_MAP.delete(id);
+    .finally(() => {
+        DELETE_Audio(id);
         cb(AUDIO_MAP);
     });
 }
@@ -343,7 +351,6 @@ const changeVolume = (id, val) => {
         if (audioState.isPlaying) audioState.outputGain.gain.value = audioState.volume.get()
     }
 }
-
 
 /**
  * @param {number} ms 
@@ -363,7 +370,8 @@ const randomTimeExecution = (cb) => {
 
 const createNewSetExecution = () => {
     //select set size
-    const n = random(0, AUDIO_MAP.size);
+    const n = GSProbabilityOfExecutionSets.lengthOfExecutionSet();
+    //const n = random(0, AUDIO_MAP.size);
     console.log("set execution: ",n);//DEBUGGER
 
     const executeSet = new Set();

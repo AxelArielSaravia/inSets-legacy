@@ -137,28 +137,6 @@
   transition: all 0.1s ease-out 0.1s;
 }
 
-
-/* TOOL BUTTONS */
-.tool-button {
-  background-color: var(--primary-color);
-  color: var(--secondary-color);
-  border-radius: 2px;
-  max-width: 300px;
-  padding: 3px;
-  margin: 5px 2%;
-}
-
-.tool-button *{
-  cursor: pointer;    
-  padding: 0 5px;
-}
-
-.tool-button .tool-button_icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 @media screen and (max-width: 1200px) {
   .fs-text-l {
     font-size: 1.8rem;
@@ -179,13 +157,13 @@
   .flex-c-change{
     flex-direction: row;
   }
-}
-
-@media screen and (max-width: 640px) { 
   .fs-text-l {
     font-size: 1.4rem;
   }
   .fs-text {
     font-size: 0.9rem;
   }
+}
+
+@media screen and (max-width: 640px) { 
 }

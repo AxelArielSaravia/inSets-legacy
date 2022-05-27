@@ -56,7 +56,7 @@ function AudioApp(props) {
   return (
     <div className="audio-app flex-row">
       <section className="tool-section">
-        <Aside/>
+        <Aside audioList_size={audioList.size}/>
       </section>
       <section className="main-section flex-column align-c justify-c">
         <Main

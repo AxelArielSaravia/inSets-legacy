@@ -19,7 +19,7 @@
         box-shadow: 0 0 0 1px var(--secondary-color);
         background-color: var(--primary-color);
         position: relative;
-        z-index: 10;
+        z-index: 2;
         cursor: pointer;
       }
       .fileInput {
@@ -50,11 +50,11 @@
     padding: 5px;
     flex-grow: 1;
     
-    background-image: radial-gradient(circle, var(--primary-color) 1.5px, transparent 1.5px);
-    background-size: 1rem 1rem;
-    background-position: center;
-
+    
     .files {
+      background-image: radial-gradient(circle, var(--primary-color) 1.5px, transparent 1.5px);
+      background-size: 1rem 1rem;
+      background-position: center;
       overflow-x: hidden;
       flex-grow: 1;
       width: 100%;
