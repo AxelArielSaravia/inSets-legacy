@@ -490,7 +490,7 @@ Object.defineProperties(FadeTime, {
 
 /**
  * An array that each number is a represent of a set length
- * and the value in each index is a rate of the set posibility
+ * and the value in each index is a rate of the set posibility9
  * @class ProbabilityOfExecutionSets
  */
 function ProbabilityOfExecutionSets() {
@@ -541,7 +541,14 @@ function ProbabilityOfExecutionSets() {
             },
             enumerable: true
         },
+        /**
+         * 
+         * @returns {number}
+         */
         "lengthOfExecutionSet": {
+            /**
+             * @returns {number}
+             */
             value: function() {
                 let arrOfSetsLength = [];
                 arrOfValues.forEach((v,i) => {
