@@ -1,22 +1,31 @@
 import { memo, useState, useEffect } from "react";
 
 import ToolButton from "./ToolButton.js";
-import AsideButton from "./Aside/AsideButton.js";
+import AsideConfig from "./Aside/AsideConfig.js";
 import "./Aside.scss"
 
 
 export default memo(function Aside(props) {
   //console.log("Update Aside"); //DEBUGGER
   const [toolsSwitch, setToolsSwitch] = useState(false);
+  const [toolConfig, setToolConfig] = useState(false);
+  const [configButton, setConfigButton] = useState();
+
 
   const handleToolsSwitchOnClick = () => {
     setToolsSwitch((state) => !state);
+  }
+  const handleButtonsOnClick = (val) => {
+    setToolConfig(() => true);
+    setConfigButton(() => val); 
   }
 
   useEffect(() => {
     const el = (e) => { 
       if (e.target.matches(".tools-switch") 
        || e.target.matches(".tools-switch *")
+       || e.target.matches(".panel")
+       || e.target.matches(".panel *")
        || e.target.matches(".configs")
        || e.target.matches(".configs *")
       ) {
@@ -25,12 +34,15 @@ export default memo(function Aside(props) {
       handleToolsSwitchOnClick();
     }
     if (toolsSwitch) {
-        document.addEventListener('click', el);
-        return () => {
-            document.removeEventListener('click', el);
-        } 
+      document.addEventListener('click', el);
+      return () => {
+        document.removeEventListener('click', el);
+      } 
     }
   }, [toolsSwitch]);
+
+  
+
   return (
     <aside className="aside flex-column">
       <div className="tools-switch hidden align-c justify-c"> 
@@ -41,50 +53,55 @@ export default memo(function Aside(props) {
           }
         </ToolButton>
       </div>
-      <div className={!toolsSwitch ? "configs config-hidden flex-column" : "configs flex-column"}>
+      <div className={!toolsSwitch ? "panel panel-hidden flex-column" : "panel flex-column"}>
         <div className="flex-column">
-          <AsideButton name="Sets" match="sets">
-            <div>
-              Sets
-            </div>
-          </AsideButton>
-          <AsideButton name="Time" match="time">
-            <div>
-              Time
-            </div>
-          </AsideButton>
-          <AsideButton name="Panner" match="panner">
-            <div>
-              Panner
-            </div>
-          </AsideButton>
-          <AsideButton name="Filter" match="filter">
-            <div>
-              Filter
-            </div>
-          </AsideButton>
-          <AsideButton name="Delay" match="delay">
-            <div>
-              Delay
-            </div>
-          </AsideButton>
-          <AsideButton name="Rate" match="rate">
-            <div>
-              Rate
-            </div>
-          </AsideButton>
-          <AsideButton name="RTC" match="rtc">
-            <div>
-              RTC
-            </div>
-          </AsideButton>
-          <AsideButton name="Fade Time" match="fade-time" className="text-left">
-            <div>
-              Fade Time
-            </div>
-          </AsideButton>
+          <div className="aside-button flex-row">
+            <ToolButton className="flex-row" onClick={() => { handleButtonsOnClick("SETS") }}>
+              <h4 className="fs-text">Sets</h4>
+            </ToolButton>
+          </div>
+          <div className="aside-button flex-row">
+            <ToolButton className="flex-row" onClick={() => { handleButtonsOnClick("TIME") }}>
+              <h4 className="fs-text">Time</h4>
+            </ToolButton>
+          </div>
+          <div className="aside-button flex-row">
+            <ToolButton className="flex-row" onClick={() => { handleButtonsOnClick("PANNER") }}>
+              <h4 className="fs-text">Panner</h4>
+            </ToolButton>
+          </div>
+          <div className="aside-button flex-row">
+            <ToolButton className="flex-row" onClick={() => { handleButtonsOnClick("FILTER") }}>
+              <h4 className="fs-text">Filter</h4>
+            </ToolButton>
+          </div>
+          <div className="aside-button flex-row">
+            <ToolButton className="flex-row" onClick={() => { handleButtonsOnClick("DELAY") }}>
+              <h4 className="fs-text">Delay</h4>
+            </ToolButton>
+          </div>
+          <div className="aside-button flex-row">
+            <ToolButton className="flex-row" onClick={() => { handleButtonsOnClick("RATE") }}>
+              <h4 className="fs-text">Rate</h4>
+            </ToolButton>
+          </div>
+          <div className="aside-button flex-row">
+            <ToolButton className="flex-row" onClick={() => { handleButtonsOnClick("RCT") }}>
+              <h4 className="fs-text">RCT</h4>
+            </ToolButton>
+          </div>
+          <div className="aside-button flex-row">
+            <ToolButton className="flex-row text-left" onClick={() => { handleButtonsOnClick("FADETIME") }}>
+              <h4 className="fs-text">Fade Time</h4>
+            </ToolButton>
+          </div>
         </div>
       </div>
+      <AsideConfig 
+        active={toolConfig} 
+        onClick={() => setToolConfig(() => false)}
+        configButton={configButton}
+      />
     </aside>
   );
 })

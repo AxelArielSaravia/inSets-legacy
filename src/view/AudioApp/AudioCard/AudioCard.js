@@ -29,6 +29,7 @@ export default function AudioCard(props) {
             setTime(() => timePoint.get());
         }
     }
+    
     const changeState = (isPlaying, randomCurrentTime) => {
         setStates(() => ({
             isPlaying: isPlaying,

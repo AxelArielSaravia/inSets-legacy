@@ -1,0 +1,48 @@
+.configs {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+
+    left: 100%;
+    top: 0;
+    background-color: var(--primary-ls-color);
+    padding: 10px;
+    border-radius: 10px;
+
+    transition: left 100ms ease-out;
+    z-index: 4;
+
+    .delete-button {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+}
+
+.inactive {
+    left: 0;
+    z-index: 0;
+}
+
+@media screen and (max-width: 600px) {
+    .configs {
+        top: 2rem;
+        transform: translateY(10px);
+        z-index: 4;
+        height: 388px;
+
+        transition: top .2s ease-in-out;
+        opacity: 98%;
+        
+        left: 0;
+        
+        transition: opacity 200ms ease-out;
+    }
+    .inactive {
+        top: 0;
+        z-index: 0;
+        padding: 0;
+        height: 0;
+        opacity: 0;
+    }
+}
