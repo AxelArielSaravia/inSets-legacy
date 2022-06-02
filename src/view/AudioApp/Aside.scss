@@ -73,11 +73,13 @@
       z-index: 4;
       transition: top .2s ease-in-out;
       opacity: 98%;
-      
+
       padding: 0;
       
       .tool-button {
         max-width: unset;
+        align-items: center;
+        justify-content: center;
       }
       
       & > div {

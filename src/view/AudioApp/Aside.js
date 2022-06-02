@@ -16,15 +16,18 @@ export default memo(function Aside(props) {
     setToolsSwitch((state) => !state);
   }
   const handleButtonsOnClick = (val) => {
-    setToolConfig(() => true);
+    setToolConfig(state => {
+      if (state && val === configButton) {
+        return false;
+      }
+      return true;
+    });
     setConfigButton(() => val); 
   }
 
   useEffect(() => {
     const el = (e) => { 
-      if (e.target.matches(".tools-switch") 
-       || e.target.matches(".tools-switch *")
-       || e.target.matches(".panel")
+      if ( e.target.matches(".tools-switch *")
        || e.target.matches(".panel *")
        || e.target.matches(".configs")
        || e.target.matches(".configs *")
@@ -101,6 +104,7 @@ export default memo(function Aside(props) {
         active={toolConfig} 
         onClick={() => setToolConfig(() => false)}
         configButton={configButton}
+        audioList_size={props.audioList_size}
       />
     </aside>
   );

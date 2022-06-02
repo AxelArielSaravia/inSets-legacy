@@ -1,4 +1,8 @@
 import { useEffect } from "react";
+
+import SetsButton from "./SetsButton.js";
+import AsideButton from "./AsideButton.js";
+
 import "./AsideConfig.scss";
 
 const classText = "configs flex-column align-c";
@@ -37,14 +41,16 @@ export default function AsideConfig(props) {
             >
                 <i className="flex-row align-c fs-text-l bi bi-x"></i>
             </button>
-            {   configButton === "SETS"? (<h3>Sets</h3>) :
-                configButton === "TIME" ? (<h3>Time</h3>) :
-                configButton === "PANNER" ? (<h3>Panner</h3>) :
-                configButton === "FILTER" ? (<h3>Filter</h3>) :
-                configButton === "DELAY" ? (<h3>Delay</h3>) :
-                configButton === "RATE" ? (<h3>Rate</h3>) :
-                configButton === "RCT" ? (<h3>RCT</h3>) :
-                configButton === "FADETIME" ? (<h3>Fade Time</h3>) :
+            {   configButton === "SETS"? (
+                    <SetsButton audioList_size={props.audioList_size}/>
+                ) :
+                configButton === "TIME" ? (<AsideButton title="Time"/>) :
+                configButton === "PANNER" ? (<AsideButton title="Panner"/>) :
+                configButton === "FILTER" ? (<AsideButton title="Filter"/>) :
+                configButton === "DELAY" ? (<AsideButton title="Delay"/>) :
+                configButton === "RATE" ? (<AsideButton title="Rate"/>) :
+                configButton === "RCT" ? (<AsideButton title="RCT"/>) :
+                configButton === "FADETIME" ? (<AsideButton title="Fade Time"/>) :
                 <></>
             }
         </div>
