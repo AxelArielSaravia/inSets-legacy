@@ -521,7 +521,9 @@ function ProbabilityOfExecutionSets() {
             enumerable: true
         },
         "reset": {
-            value: function() { arrOfValues = [1]; },
+            value: function() { 
+                arrOfValues = (new Array(this.length)).fill(1);
+            },
             enumerable: true
         },
         "limits": {

@@ -76,6 +76,7 @@
 
       padding: 0;
       
+      
       .tool-button {
         max-width: unset;
         align-items: center;
@@ -83,6 +84,10 @@
       }
       
       & > div {
+        flex-direction: row !important;
+        flex-wrap: wrap;
+        justify-content: center;
+
         position: relative;
         z-index: 2;
         opacity: 98%;
@@ -93,6 +98,10 @@
         padding: 10px 0;
 
         transition: opacity .2s ease-out;
+      }
+      .aside-button {
+        width: 120px;
+        margin: 0 5px;
       }
     }
   }

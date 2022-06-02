@@ -16,10 +16,16 @@ export default function TouchButton(props) {
 
     const mouseEnter = () => {
         document.getElementById("files").onwheel = disableWheel;
+        if (props.disable) {
+            document.getElementById(props.disable).onwheel = disableWheel;
+        }
     }
 
     const mouseOut = () => {
         document.getElementById("files").onwheel = null;
+        if (props.disable) {
+            document.getElementById(props.disable).onwheel = null;
+        }
     }
     
     const handleTouchMove = (e) => {
@@ -29,10 +35,12 @@ export default function TouchButton(props) {
         else if (x < point)
         props.subtract(props.data);
     }
-    const handleTouchStart = (e) => { setPoint(() => e.touches[0].clientX)}
+    const handleTouchStart = (e) => { setPoint(() => e.touches[0].clientX) }
+
+
     return (
         <div 
-            className="touchButton flex-column justify-c" 
+            className="touchButton flex-column justify-c align-c" 
             onWheel={handleOnWheel} 
             onMouseEnter={mouseEnter} 
             onMouseLeave={mouseOut} 

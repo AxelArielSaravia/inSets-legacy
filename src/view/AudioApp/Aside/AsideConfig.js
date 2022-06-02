@@ -33,7 +33,7 @@ export default function AsideConfig(props) {
       }, [active]);
     
     return (
-        <div className={active ? classText : classText + " inactive"}>
+        <div id="configs" className={active ? classText : classText + " inactive"}>
             <button 
                 type="button" 
                 className="delete-button"

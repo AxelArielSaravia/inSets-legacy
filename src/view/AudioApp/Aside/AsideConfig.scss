@@ -11,10 +11,18 @@
     transition: left 100ms ease-out;
     z-index: 4;
 
+    overflow: auto;
+
     .delete-button {
         position: absolute;
         top: 0;
         right: 0;
+    }
+    .tool-button {
+        width: auto !important;
+        background-color: transparent;
+        border: 1px solid var(--secondary-color);
+        padding: 5px !important;
     }
 }
 
@@ -37,7 +45,7 @@
         background-color: var(--primary-l-color);
         border-radius: 10px;
 
-        opacity: 98%;
+        opacity:1;
 
         transition: unset;
     }
