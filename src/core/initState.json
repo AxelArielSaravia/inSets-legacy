@@ -31,7 +31,7 @@
   },
   "randomCurrentTimeDisable": false,
   "timeInterval":{
-    "min": 1000, 
+    "min": 800, 
     "max": 5000 
   }
 }

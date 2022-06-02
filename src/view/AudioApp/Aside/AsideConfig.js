@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 
-import SetsButton from "./SetsButton.js";
 import AsideButton from "./AsideButton.js";
+import SetsButton from "./SetsButton.js";
+import TimeButton from "./TimeButton.js";
 
 import "./AsideConfig.scss";
 
@@ -44,7 +45,9 @@ export default function AsideConfig(props) {
             {   configButton === "SETS"? (
                     <SetsButton audioList_size={props.audioList_size}/>
                 ) :
-                configButton === "TIME" ? (<AsideButton title="Time"/>) :
+                configButton === "TIME" ? (
+                    <TimeButton/>
+                ) :
                 configButton === "PANNER" ? (<AsideButton title="Panner"/>) :
                 configButton === "FILTER" ? (<AsideButton title="Filter"/>) :
                 configButton === "DELAY" ? (<AsideButton title="Delay"/>) :
