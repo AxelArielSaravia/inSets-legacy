@@ -20,6 +20,7 @@ import {
  * @typedef {import("./states.js").AudioState} AudioState
  */
 
+
 const createAudioContext = () => {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     AUDIO_CONTEXT(new AudioContext());
@@ -29,17 +30,20 @@ const createAudioContext = () => {
 
 const changeAudioEngine = (val) => GSEngine(val);
 
-const setAudioContextPannerPosition = () => {
-    let listener = AUDIO_CONTEXT().listener;
-    if (listener.positionX) {
-        listener.positionX.value = 6;
-        listener.positionY.value = 6;
-        listener.positionZ.value = 6;
+/**
+ * @param {AudioContext} audioCtx 
+ * @param {AaudioPannerState} audioPannerState 
+ */
+ const setAudioContextPannerPosition = () => {
+    let audioCtx = AUDIO_CONTEXT();
+    if (audioCtx.listener.positionX) {
+        audioCtx.listener.positionX.value = 6;
+        audioCtx.listener.positionY.value = 6;
+        audioCtx.listener.positionZ.value = 6;
     } else {
-        listener.setPosition(6, 6, 6);
+        audioCtx.listener.setPosition(6, 6, 6);
     }
 }
-
 
 const elementsState = {
     panner: GSPanner,
@@ -59,53 +63,72 @@ const elementsState = {
     return HTMLAudio.canPlayType(mediaType); 
 }
 
-const createAudioStatefromFile = (file, id, callback) => {
-    if (GSEngine() === "audioNode") {
-        return Promise.resolve()
-        .then(() => URL.createObjectURL(file))
-        .then(url => new Audio(url))
-        .then(htmlAudio => {
-            if (!canPlayType(htmlAudio, file.type)) {
-                console.warn(`Can not play this audio type ${file.type}`);
-                return;
-            }
-            htmlAudio.addEventListener("canplaythrough", () => {
-                /* the audio is now playable; play it if permissions allow */
-                let source = AUDIO_CONTEXT().createMediaElementSource(htmlAudio); 
-                let audioState = createAudioState(id, file.name, file.type, htmlAudio.duration, elementsState);
-                audioState.audioEngine = htmlAudio;
-                audioState.source = source;
-    
-                ADD_Audio(id, audioState);
-    
-                if (typeof callback === "function") callback();
-    
-                audioState = source = null;
-                //console.log(AUDIO_MAP);
-                //console.log(GSProbabilityOfExecutionSets);
-            },{once: true});
-        })
-        .catch(err => console.error(err));
-    } else {
-        return Promise.resolve()
-        .then(() => file.arrayBuffer())
-        .then(data => AUDIO_CONTEXT().decodeAudioData(data))
-        .then(audioBuffer => {
-            let audioState = createAudioState(id, file.name, file.type, audioBuffer.duration, elementsState);
-            audioState.audioEngine = audioBuffer;
+/**
+ * @param {Map<string, AudioState>} map 
+ * @returns {string}
+ */
+ const createId = () => {
+    let n = Math.floor(Math.random() * 100);
+    while (AUDIO_MAP.has("audio-"+n)) {
+      n = Math.floor(Math.random() * 100);
+    }
+    return "audio-"+n;
+}
+
+const audioStateFromFile_AudioNode = (file, callback) => {
+    return Promise.resolve()
+    .then(() => URL.createObjectURL(file))
+    .then(url => new Audio(url))
+    .then(htmlAudio => {
+        if (!canPlayType(htmlAudio, file.type)) {
+            console.warn(`Can not play this audio type ${file.type}`);
+            return;
+        }
+        htmlAudio.addEventListener("canplaythrough", () => {
+            /* the audio is now playable; play it if permissions allow */
+            const id = createId();
+            let source = AUDIO_CONTEXT().createMediaElementSource(htmlAudio); 
+            let audioState = createAudioState(id, file.name, file.type, htmlAudio.duration, elementsState);
+            audioState.audioEngine = htmlAudio;
+            audioState.source = source;
 
             ADD_Audio(id, audioState);
 
-            if (typeof callback !== "undefined") callback();
-            
-            audioState = null;
+            if (typeof callback === "function") callback();
+
+            audioState = source = null;
             //console.log(AUDIO_MAP);
-            //console.log(GSProbabilityOfExecutionSets);
-        })
-        .catch(err => console.error(err));
-    }
+        },{once: true});
+    })
+    .catch(err => console.error(err));
 }
 
+const audioStateFromFile_AudioBuffer = (file, callback) => {
+    return Promise.resolve()
+    .then(() => file.arrayBuffer())
+    .then(data => AUDIO_CONTEXT().decodeAudioData(data))
+    .then(audioBuffer => {
+        const id = createId();
+        let audioState = createAudioState(id, file.name, file.type, audioBuffer.duration, elementsState);
+        audioState.audioEngine = audioBuffer;
+
+        ADD_Audio(id, audioState);
+
+        if (typeof callback !== "undefined") callback();
+        
+        audioState = null;
+        //console.log(AUDIO_MAP);
+    })
+    .catch(err => console.error(err));
+}
+
+const createAudioStateFromFile = (file, id, callback) => {
+    if (GSEngine() === "audioNode") {
+        return audioStateFromFile_AudioNode(file, id, callback)
+    } else {
+        return audioStateFromFile_AudioBuffer(file, id, callback);
+    }
+}
 
 /**
  * @param {AudioContext} audioCtx 
@@ -271,16 +294,11 @@ const play = (id, cb) => {
         
         if (GSEngine() === "audioNode") {
             audioState.audioEngine.currentTime = startPoint;
-            let a  = audioState.audioEngine.play();
+            audioState.audioEngine.play();
             
             audioState.audioEngine.ontimeupdate = function(e) {
                 if (e.target.currentTime >= audioState.endTimePoint.get()) {
-                    if (a !== undefined) {
-                        a.then(() => stop(id, cb));
-                    } else {
-                        stop(id, cb)
-                    }
-
+                    stop(id, cb);
                 }
             }
         } else {
@@ -315,9 +333,7 @@ const stop = (id, cb) => {
 const disconnect = (audioState, cb) => {
     if (audioState && audioState.isPlaying) {
         if (GSEngine() === "audioNode") {
-            if (audioState.audioEngine && !audioState.audioEngine.paused) {
-                audioState.audioEngine.pause();
-            }
+            if (audioState.audioEngine && !audioState.audioEngine.paused) audioState.audioEngine.pause();
             audioState.audioEngine.ontimeupdate = null;
         } else {
             if (audioState.source) audioState.source.stop();
@@ -332,9 +348,7 @@ const disconnect = (audioState, cb) => {
         audioState.outputGain = null;
         audioState.isPlaying = false;
 
-        if (typeof cb === "function") {
-            cb(audioState.isPlaying, audioState.randomCurrentTime.value);
-        }
+        if (typeof cb === "function") cb(audioState.isPlaying, audioState.randomCurrentTime.value);
         return true;
     }
     return false;
@@ -357,7 +371,7 @@ const changeVolume = (id, val) => {
     if (audioState) {
         audioState.volume.set(val);
         if (audioState.isPlaying) {
-            audioState.outputGain.gain.value = audioState.volume.get();
+            audioState.outputGain.gain.value = audioState.volume.get()
         }
     }
 }
@@ -366,10 +380,10 @@ const changeVolume = (id, val) => {
  * @param {number} ms 
  * @returns {Promise<number>}
  */
-const wait = (ms) => new Promise(resolve => setInterval(resolve, ms));
-
+const wait = ms => new Promise(resolve => setInterval(resolve, ms));
 
 const randomTimeExecution = (cb) => {
+    console.log("AUDIO_MAP:", AUDIO_MAP); //DEBUGGER
     if (GSIsStarted()) {
         randomSetsExecution(cb);
         const n = random(GSTimeInterval.min, GSTimeInterval.max);
@@ -380,39 +394,26 @@ const randomTimeExecution = (cb) => {
 }
 
 const createNewSetExecution = () => {
-    try {
-        //select set size
-        const n = GSProbabilityOfExecutionSets.lengthOfExecutionSet();
-        //const n = random(0, AUDIO_MAP.size);
-        console.log("set execution: ",n);//DEBUGGER
-    
-        const executeSet = new Set();
-    
-        
-        if (n < 40) {
-            //selects elements for the set
-            let posiblesAudios = [...AUDIO_MAP.keys()];
-            console.log("start while");//DEBUGGER
-            while (executeSet.size < n) {
-                let k = random(0, posiblesAudios.length - 1);
-                executeSet.add(AUDIO_MAP.get(posiblesAudios[k]));
-                posiblesAudios.splice(k, 1);
-            }
-            console.log("finish while");//DEBUGGER
-            posiblesAudios = null;
-        }
-    
-        const newColorSet = `rgb(${random(32, 141)},${random(32, 141)},${random(32, 141)})`;
-    
-        return [executeSet, newColorSet];
-    } catch (err) {
-        console.error(err);
-    }
-}
+    //select set size
+    const n = GSProbabilityOfExecutionSets.lengthOfExecutionSet();
+    console.log("set execution: ",n);//DEBUGGER
 
-const configAndPlay = (data, cb, newColorSet) => {
-    setAudioConfiguration(data.id);
-    play(data.id, (isPlaying, rct) => cb(data.id, isPlaying, rct, newColorSet));
+    const executeSet = new Set();
+
+    //selects elements for the set
+    let posiblesAudios = [...AUDIO_MAP.keys()];
+    console.log("while start");//DEBUGGER
+    while (executeSet.size < n) {
+        let n = random(0, posiblesAudios.length-1);
+        executeSet.add(AUDIO_MAP.get(posiblesAudios[n]));
+        posiblesAudios.slice(n, 1);
+    }
+    console.log("while end");
+    posiblesAudios = null;
+
+    const newColorSet = `rgb(${random(32, 141)},${random(32, 141)},${random(32, 141)})`;
+
+    return [executeSet, newColorSet];
 }
 
 const randomSetsExecution = (cb) => {
@@ -421,10 +422,16 @@ const randomSetsExecution = (cb) => {
     executeSet.forEach((data) => {
         if (data.isPlaying) {
             stop(data.id, (isPlaying, rct) => cb(data.id, isPlaying, rct))
-            .then(configAndPlay(data, cb, newColorSet))
+            .then(() => {
+                setAudioConfiguration(data.id);
+                play(data.id, (isPlaying, rct) => cb(data.id, isPlaying, rct, newColorSet));
+            })
         } else {
             wait(GSFadeTime().time)
-            .then(configAndPlay(data, cb, newColorSet));
+            .then(() => {
+                setAudioConfiguration(data.id);
+                play(data.id, (isPlaying, rct) => cb(data.id, isPlaying, rct, newColorSet));
+            });
         }
     });
 }
@@ -442,7 +449,8 @@ const stopAll = (cb) => {
 export {
     createAudioContext,
     changeAudioEngine,
-    createAudioStatefromFile,
+    setAudioContextPannerPosition,
+    createAudioStateFromFile,
     setAudioConfiguration,
     play,
     stop,

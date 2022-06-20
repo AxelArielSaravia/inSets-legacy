@@ -46,7 +46,9 @@ function AudioApp(props) {
 
   const handleClearOnClick = () => {
     if (hasAudios) {
-      if (filesLoading === 0) setHasAudios(() => false);
+      if (filesLoading === 0) {
+        setHasAudios(() => false);
+      }
       clearFiles(() => {
         setAudioList(() => new Map());
       });

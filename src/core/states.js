@@ -543,8 +543,11 @@ function ProbabilityOfExecutionSets() {
             },
             enumerable: true
         },
+        "clear": {
+            value: function() { arrOfValues = [1]; },
+            enumerable: true
+        },
         /**
-         * 
          * @returns {number}
          */
         "lengthOfExecutionSet": {
@@ -608,7 +611,7 @@ const createGlobalState = (elementsState) => {
         "CLEAR_Audio": {
             value: function (id) {
                 globalState.AUDIO_MAP.clear();
-                globalState.probabilityOfExecutionSets.reset();
+                globalState.probabilityOfExecutionSets.clear();
             },
             enumerable: true
         },
@@ -861,11 +864,11 @@ function AudioFilterState(globalFilterState) {
     /**@type {boolena}*/
     let isDisable = globalPannerState.disableAll;
     /**@type {number}*/
-    let x = listenerPositionX;
+    let x = random(globalPannerState.xMin / 10, globalPannerState.xMax /10) + listenerPositionX;
     /**@type {number}*/
-    let y = listenerPositionY;
+    let y = random(globalPannerState.yMin / 10, globalPannerState.yMax /10) + listenerPositionY;
     /**@type {number}*/
-    let z = listenerPositionZ;
+    let z = random(globalPannerState.zMin / 10, globalPannerState.zMax /10) + listenerPositionZ;
 
     Object.defineProperties(this, {
         "panningModel": {

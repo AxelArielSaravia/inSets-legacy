@@ -1,5 +1,5 @@
 import { AUDIO_MAP, CLEAR_Audio } from "./initGlobalState.js"
-import { createAudioStatefromFile, stop } from "./audioEffects.js";
+import { createAudioStateFromFile, stop } from "./audioEffects.js";
 
 /**
  * @typedef {import("./states.js").AudioState} AudioState
@@ -27,18 +27,6 @@ const filesHaveValidAudioType = (files) => {
 };
 
 /**
- * @param {Map<string, AudioState>} map 
- * @returns {string}
- */
-const createId = (map) => {
-  let n = Math.floor(Math.random() * 100);
-  while (map.has("audio-"+n)) {
-    n = Math.floor(Math.random() * 100);
-  }
-  return "audio-"+n;
-}
-
-/**
  * @param {FileList} files 
  * @param {function} setUIState change the UI states
  */
@@ -47,8 +35,7 @@ const addFiles = (files, cb)  => {
   const isValid = filesHaveValidAudioType(files);
   if (isValid) {
     for (let file of files) {
-      let id = createId(AUDIO_MAP);
-      createAudioStatefromFile(file, id, () => cb(AUDIO_MAP));
+      createAudioStateFromFile(file, () => cb(AUDIO_MAP));
     }
   }
 }

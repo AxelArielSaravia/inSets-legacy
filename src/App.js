@@ -11,7 +11,7 @@ import './App.scss';
 //COMPONENTS
 //App Component
 function App() {
-  const hasAudioContext = !!(window.AudioContext || window.webkitAudioContext);
+  const hasAudioContext = window.AudioContext || window.webkitAudioContext;
   const [startApp, setStartApp] = useState(false);
   const [engine, setEngine] = useState("audioBuffer");
 
