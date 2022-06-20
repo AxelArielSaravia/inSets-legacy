@@ -38,7 +38,8 @@
 .audioEngine-button {
     position: relative;
     cursor: pointer;
-    
+    max-width: 720px;
+
     input { display: none; }
     input:checked ~ div .checkmark {
         background-color: var(--secondary-color);

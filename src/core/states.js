@@ -861,11 +861,11 @@ function AudioFilterState(globalFilterState) {
     /**@type {boolena}*/
     let isDisable = globalPannerState.disableAll;
     /**@type {number}*/
-    let x = random(globalPannerState.xMin / 10, globalPannerState.xMax /10) + listenerPositionX;
+    let x = listenerPositionX;
     /**@type {number}*/
-    let y = random(globalPannerState.yMin / 10, globalPannerState.yMax /10) + listenerPositionY;
+    let y = listenerPositionY;
     /**@type {number}*/
-    let z = random(globalPannerState.zMin / 10, globalPannerState.zMax /10) + listenerPositionZ;
+    let z = listenerPositionZ;
 
     Object.defineProperties(this, {
         "panningModel": {

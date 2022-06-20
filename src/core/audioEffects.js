@@ -20,14 +20,26 @@ import {
  * @typedef {import("./states.js").AudioState} AudioState
  */
 
-
 const createAudioContext = () => {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     AUDIO_CONTEXT(new AudioContext());
     AUDIO_CONTEXT().resume();
+    setAudioContextPannerPosition();
 }
 
 const changeAudioEngine = (val) => GSEngine(val);
+
+const setAudioContextPannerPosition = () => {
+    let listener = AUDIO_CONTEXT().listener;
+    if (listener.positionX) {
+        listener.positionX.value = 6;
+        listener.positionY.value = 6;
+        listener.positionZ.value = 6;
+    } else {
+        listener.setPosition(6, 6, 6);
+    }
+}
+
 
 const elementsState = {
     panner: GSPanner,
@@ -69,8 +81,8 @@ const createAudioStatefromFile = (file, id, callback) => {
                 if (typeof callback === "function") callback();
     
                 audioState = source = null;
-                console.log(AUDIO_MAP);
-                console.log(GSProbabilityOfExecutionSets);
+                //console.log(AUDIO_MAP);
+                //console.log(GSProbabilityOfExecutionSets);
             },{once: true});
         })
         .catch(err => console.error(err));
@@ -87,26 +99,13 @@ const createAudioStatefromFile = (file, id, callback) => {
             if (typeof callback !== "undefined") callback();
             
             audioState = null;
-            console.log(AUDIO_MAP);
-            console.log(GSProbabilityOfExecutionSets);
+            //console.log(AUDIO_MAP);
+            //console.log(GSProbabilityOfExecutionSets);
         })
         .catch(err => console.error(err));
     }
 }
 
-/**
- * @param {AudioContext} audioCtx 
- * @param {AaudioPannerState} audioPannerState 
- */
- const setAudioContextPannerPosition = (audioCtx) => {
-    if (audioCtx.listener.positionX) {
-        audioCtx.listener.positionX.value = 6;
-        audioCtx.listener.positionY.value = 6;
-        audioCtx.listener.positionZ.value = 6;
-    } else {
-        audioCtx.listener.setPosition(6, 6, 6);
-    }
-}
 
 /**
  * @param {AudioContext} audioCtx 
@@ -272,11 +271,16 @@ const play = (id, cb) => {
         
         if (GSEngine() === "audioNode") {
             audioState.audioEngine.currentTime = startPoint;
-            audioState.audioEngine.play();
+            let a  = audioState.audioEngine.play();
             
             audioState.audioEngine.ontimeupdate = function(e) {
                 if (e.target.currentTime >= audioState.endTimePoint.get()) {
-                    stop(id, cb);
+                    if (a !== undefined) {
+                        a.then(() => stop(id, cb));
+                    } else {
+                        stop(id, cb)
+                    }
+
                 }
             }
         } else {
@@ -311,7 +315,9 @@ const stop = (id, cb) => {
 const disconnect = (audioState, cb) => {
     if (audioState && audioState.isPlaying) {
         if (GSEngine() === "audioNode") {
-            if (audioState.audioEngine && !audioState.audioEngine.paused) audioState.audioEngine.pause();
+            if (audioState.audioEngine && !audioState.audioEngine.paused) {
+                audioState.audioEngine.pause();
+            }
             audioState.audioEngine.ontimeupdate = null;
         } else {
             if (audioState.source) audioState.source.stop();
@@ -326,7 +332,9 @@ const disconnect = (audioState, cb) => {
         audioState.outputGain = null;
         audioState.isPlaying = false;
 
-        if (typeof cb === "function") cb(audioState.isPlaying, audioState.randomCurrentTime.value);
+        if (typeof cb === "function") {
+            cb(audioState.isPlaying, audioState.randomCurrentTime.value);
+        }
         return true;
     }
     return false;
@@ -348,7 +356,9 @@ const changeVolume = (id, val) => {
     let audioState = AUDIO_MAP.get(id);
     if (audioState) {
         audioState.volume.set(val);
-        if (audioState.isPlaying) audioState.outputGain.gain.value = audioState.volume.get()
+        if (audioState.isPlaying) {
+            audioState.outputGain.gain.value = audioState.volume.get();
+        }
     }
 }
 
@@ -356,7 +366,8 @@ const changeVolume = (id, val) => {
  * @param {number} ms 
  * @returns {Promise<number>}
  */
-const wait = ms => new Promise(resolve => setInterval(resolve, ms));
+const wait = (ms) => new Promise(resolve => setInterval(resolve, ms));
+
 
 const randomTimeExecution = (cb) => {
     if (GSIsStarted()) {
@@ -369,24 +380,39 @@ const randomTimeExecution = (cb) => {
 }
 
 const createNewSetExecution = () => {
-    //select set size
-    const n = GSProbabilityOfExecutionSets.lengthOfExecutionSet();
-    //const n = random(0, AUDIO_MAP.size);
-    console.log("set execution: ",n);//DEBUGGER
-
-    const executeSet = new Set();
-
-    //selects elements for the set
-    let posiblesAudios = [...AUDIO_MAP.values()];
-    while (executeSet.size < n) {
-        let n = random(0, posiblesAudios.length-1);
-        executeSet.add(posiblesAudios[n]);
+    try {
+        //select set size
+        const n = GSProbabilityOfExecutionSets.lengthOfExecutionSet();
+        //const n = random(0, AUDIO_MAP.size);
+        console.log("set execution: ",n);//DEBUGGER
+    
+        const executeSet = new Set();
+    
+        
+        if (n < 40) {
+            //selects elements for the set
+            let posiblesAudios = [...AUDIO_MAP.keys()];
+            console.log("start while");//DEBUGGER
+            while (executeSet.size < n) {
+                let k = random(0, posiblesAudios.length - 1);
+                executeSet.add(AUDIO_MAP.get(posiblesAudios[k]));
+                posiblesAudios.splice(k, 1);
+            }
+            console.log("finish while");//DEBUGGER
+            posiblesAudios = null;
+        }
+    
+        const newColorSet = `rgb(${random(32, 141)},${random(32, 141)},${random(32, 141)})`;
+    
+        return [executeSet, newColorSet];
+    } catch (err) {
+        console.error(err);
     }
-    posiblesAudios = null;
+}
 
-    const newColorSet = `rgb(${random(32, 141)},${random(32, 141)},${random(32, 141)})`;
-
-    return [executeSet, newColorSet];
+const configAndPlay = (data, cb, newColorSet) => {
+    setAudioConfiguration(data.id);
+    play(data.id, (isPlaying, rct) => cb(data.id, isPlaying, rct, newColorSet));
 }
 
 const randomSetsExecution = (cb) => {
@@ -395,16 +421,10 @@ const randomSetsExecution = (cb) => {
     executeSet.forEach((data) => {
         if (data.isPlaying) {
             stop(data.id, (isPlaying, rct) => cb(data.id, isPlaying, rct))
-            .then(() => {
-                setAudioConfiguration(data.id);
-                play(data.id, (isPlaying, rct) => cb(data.id, isPlaying, rct, newColorSet));
-            })
+            .then(configAndPlay(data, cb, newColorSet))
         } else {
             wait(GSFadeTime().time)
-            .then(() => {
-                setAudioConfiguration(data.id);
-                play(data.id, (isPlaying, rct) => cb(data.id, isPlaying, rct, newColorSet));
-            });
+            .then(configAndPlay(data, cb, newColorSet));
         }
     });
 }
@@ -422,7 +442,6 @@ const stopAll = (cb) => {
 export {
     createAudioContext,
     changeAudioEngine,
-    setAudioContextPannerPosition,
     createAudioStatefromFile,
     setAudioConfiguration,
     play,
