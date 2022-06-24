@@ -4,6 +4,7 @@ import AsideButton from "./AsideButton.js";
 import SetsButton from "./SetsButton.js";
 import TimeButton from "./TimeButton.js";
 import PannerButton from "./PannerButton.js";
+import FilterButton from "./FilterButton.js";
 
 import "./AsideConfig.scss";
 
@@ -46,9 +47,9 @@ export default function AsideConfig(props) {
             {   configButton === "SETS"? (
                     <SetsButton audioList_size={props.audioList_size}/>
                 ) :
-                configButton === "TIME" ? ( <TimeButton/> ) :
+                configButton === "TIME" ?   ( <TimeButton/> ) :
                 configButton === "PANNER" ? ( <PannerButton/> ) :
-                configButton === "FILTER" ? (<AsideButton title="Filter"/>) :
+                configButton === "FILTER" ? ( <FilterButton/> ) :
                 configButton === "DELAY" ? (<AsideButton title="Delay"/>) :
                 configButton === "RATE" ? (<AsideButton title="Rate"/>) :
                 configButton === "RCT" ? (<AsideButton title="RCT"/>) :

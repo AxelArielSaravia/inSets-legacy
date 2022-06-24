@@ -105,7 +105,6 @@ function GrupSetsButtonsGen(props) {
         if (generalArrOfProbability[j] > 0) {
             let arr = [...generalArrOfProbability];
             let v = --arr[j];
-            console.log("v:",v);
             a.forEach((_,i) => props.subtract(i+k, v));
             setGeneralArrOfProbability(_ => arr);
         }
@@ -190,8 +189,8 @@ export default function SetsButton(props) {
                         <ToolButton onClick={reset}>Reset</ToolButton>
                     </div> 
                     {arrOfProbability.map((val, i) => (
-                        <div key={"set-" + i} className="flex-row align-c justify-c">
-                            <h4 className="fs-text" style={{marginRight: "10px"}}>{"Sets of size " + i + ":"}</h4>
+                        <div key={"set-" + i} className="flex-row align-c justify-c p-2">
+                            <h4 className="fs-text">{"Sets of size " + i + ":"}</h4>
                             <ScrollButton
                                 orientation="row"
                                 disable="configs"

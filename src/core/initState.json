@@ -12,7 +12,7 @@
     "frequencyMin": 100, 
     "frequencyMax": 15000,
     "qMin": 0.1,
-    "qMax": 2,
+    "qMax": 1.4,
     "types": ["lowpass", "highpass", "bandpass", "notch"] 
   },
   "panner": {

@@ -283,7 +283,7 @@ Object.defineProperties(GlobalPannerState, {
 }
 //STATIC PROPERTIES of GlobalFilterState
 Object.defineProperties(GlobalFilterState, {
-    FREQ_MIN: { value: 80 },
+    FREQ_MIN: { value: 40 },
     FREQ_MAX: { value: 18000 },
     Q_MIN: { value: 0.05 },
     Q_MAX: { value: 5 },

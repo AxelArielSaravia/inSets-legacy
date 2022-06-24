@@ -66,7 +66,7 @@ export default function TimeButton(props) {
                 <ToolButton onClick={reset}>Reset</ToolButton>
             </div>
             <div className="flex-row align-c justify-c p-2">
-                <span className="fs-text" style={{marginRight: "10px"}}>Add or remove:</span>
+                <span className="fs-text">Add or remove:</span>
                 <ScrollButton
                     orientation="row"
                     disable="configs"
@@ -77,7 +77,7 @@ export default function TimeButton(props) {
                 />
             </div>
             <div className="flex-row align-c justify-c p-3">
-                <h4 className="fs-text" style={{marginRight: "10px"}}>Min:</h4>
+                <h4 className="fs-text">Min:</h4>
                 <TouchButton
                     orientation="row"
                     disable="configs"
@@ -89,7 +89,7 @@ export default function TimeButton(props) {
                 <span className="fs-text">ms</span>
             </div>
             <div className="flex-row align-c justify-c p-3">
-                <h4 className="fs-text" style={{marginRight: "10px"}}>Max:</h4>
+                <h4 className="fs-text">Max:</h4>
                 <TouchButton
                     orientation="row"
                     disable="configs"

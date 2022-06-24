@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import { GSPanner } from "../../../core/initGlobalState.js"
 import initState from "../../../core/initState.json";
@@ -15,7 +15,7 @@ function changeLocalStorage(name, value) {
 
 export default function PannerButton(props) {
     let localStoragePanner = JSON.parse(localStorage.getItem('panner'));
-    const [disableAll, setDisableAll] = useState(localStoragePanner.disableAll);
+    //const [disableAll, setDisableAll] = useState(localStoragePanner.disableAll);
     const [xMax, setXMax] = useState(localStoragePanner.xMax);
     const [xMin, setXMin] = useState(localStoragePanner.xMin);
     const [yMax, setYMax] = useState(localStoragePanner.yMax);
@@ -23,19 +23,17 @@ export default function PannerButton(props) {
     const [zMax, setZMax] = useState(localStoragePanner.zMax);
     const [zMin, setZMin] = useState(localStoragePanner.zMin);
 
-    console.log("localStoragePanner:", localStoragePanner)
-
-    const add = (setTime, time) => {
+    const add = (setTime) => {
         return function(data) {
             GSPanner[data] += 1;
-            changeLocalStorage(time, GSPanner[data]);
+            changeLocalStorage(data, GSPanner[data]);
             setTime(() => GSPanner[data]);
         }
     }
-    const subtract = (setTime, time) => {
+    const subtract = (setTime) => {
         return function(data) {
             GSPanner[data] -= 1;
-            changeLocalStorage(time, GSPanner[data]);
+            changeLocalStorage(data, GSPanner[data]);
             setTime(() => GSPanner[data]);
         }
     }
@@ -64,85 +62,106 @@ export default function PannerButton(props) {
                 <ToolButton onClick={reset}>Reset</ToolButton>
             </div>
             <div className="flex-column align-c">
-                <div className="p-2" style={{width: "130px"}}>
-                    <h4 className="fs-text">X:</h4>
-                    <div className="flex-row align-c justify-sb p-2">
-                        <span className="fs-text">min:</span>
-                        <TouchButton
-                            orientation="row"
-                            disable="configs"
-                            output={xMin}
-                            add={add(setXMin, "xMin")}
-                            subtract={subtract(setXMin, "xMin")}
-                            data={"xMin"}
-                        />
-                        <span className="fs-text">%</span>
+                <div style={{width:"220px"}}>
+                    <div className="p-2">
+                        <div className="p-2 border rounded">
+                            <h4 className="fs-text">Position X:</h4>
+                            <div className="flex-column align-c justify-sb">
+                                <div style={{width:"120px"}}>
+                                    <div className="flex-row align-c justify-sb p-2">
+                                        <span className="fs-text">min:</span>
+                                        <TouchButton
+                                            orientation="row"
+                                            disable="configs"
+                                            output={xMin}
+                                            add={add(setXMin)}
+                                            subtract={subtract(setXMin)}
+                                            data={"xMin"}
+                                        />
+                                        <span className="fs-text">%</span>
+                                    </div>
+                                    <div className="flex-row align-c justify-sb p-2">
+                                        <span className="fs-text">max:</span>
+                                        <TouchButton
+                                            orientation="row"
+                                            disable="configs"
+                                            output={xMax}
+                                            add={add(setXMax)}
+                                            subtract={subtract(setXMax)}
+                                            data={"xMax"}
+                                        />
+                                        <span className="fs-text">%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div className="flex-row align-c justify-sb p-2">
-                        <span className="fs-text">max:</span>
-                        <TouchButton
-                            orientation="row"
-                            disable="configs"
-                            output={xMax}
-                            add={add(setXMax, "xMax")}
-                            subtract={subtract(setXMax, "xMax")}
-                            data={"xMax"}
-                        />
-                        <span className="fs-text">%</span>
+                    <div className="p-2">
+                        <div className="p-2 border rounded">
+                            <h4 className="fs-text">Position Y:</h4>
+                            <div className="flex-column align-c justify-sb">
+                                <div style={{width:"120px"}}>
+
+                                    <div className="flex-row align-c justify-sb p-2">
+                                        <span className="fs-text">min:</span>
+                                        <TouchButton
+                                            orientation="row"
+                                            disable="configs"
+                                            output={yMin}
+                                            add={add(setYMin)}
+                                            subtract={subtract(setYMin)}
+                                            data={"yMin"}
+                                        />
+                                        <span className="fs-text">%</span>
+                                    </div>
+                                    <div className="flex-row align-c justify-sb p-2">
+                                        <span className="fs-text">max:</span>
+                                        <TouchButton
+                                            orientation="row"
+                                            disable="configs"
+                                            output={yMax}
+                                            add={add(setYMax)}
+                                            subtract={subtract(setYMax)}
+                                            data={"yMax"}
+                                        />
+                                        <span className="fs-text">%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div className="p-2" style={{width: "130px"}}>
-                    <h4 className="fs-text">Y:</h4>
-                    <div className="flex-row align-c justify-sb p-2">
-                        <span className="fs-text">min:</span>
-                        <TouchButton
-                            orientation="row"
-                            disable="configs"
-                            output={yMin}
-                            add={add(setYMin, "yMin")}
-                            subtract={subtract(setYMin, "yMin")}
-                            data={"yMin"}
-                        />
-                        <span className="fs-text">%</span>
-                    </div>
-                    <div className="flex-row align-c justify-sb p-2">
-                        <span className="fs-text">max:</span>
-                        <TouchButton
-                            orientation="row"
-                            disable="configs"
-                            output={yMax}
-                            add={add(setYMax, "yMax")}
-                            subtract={subtract(setYMax, "yMax")}
-                            data={"yMax"}
-                        />
-                        <span className="fs-text">%</span>
-                    </div>
-                </div>
-                <div className="p-2" style={{width: "130px"}}>
-                    <h4 className="fs-text">Z:</h4>
-                    <div className="flex-row align-c justify-sb p-2">
-                        <span className="fs-text">min:</span>
-                        <TouchButton
-                            orientation="row"
-                            disable="configs"
-                            output={zMin}
-                            add={add(setZMin, "zMin")}
-                            subtract={subtract(setZMin, "zMin")}
-                            data={"zMin"}
-                        />
-                        <span className="fs-text">%</span>
-                    </div>
-                    <div className="flex-row align-c justify-sb p-2">
-                        <span className="fs-text">max:</span>
-                        <TouchButton
-                            orientation="row"
-                            disable="configs"
-                            output={zMax}
-                            add={add(setZMax, "zMax")}
-                            subtract={subtract(setZMax, "zMax")}
-                            data={"zMax"}
-                        />
-                        <span className="fs-text">%</span>
+                    <div className="p-2">
+                        <div className="p-2 border rounded">
+                            <h4 className="fs-text">Position Z:</h4>
+                            <div className="flex-column align-c justify-sb">
+                                <div style={{width:"120px"}}>
+                                    <div className="flex-row align-c justify-sb p-2">
+                                        <span className="fs-text">min:</span>
+                                        <TouchButton
+                                            orientation="row"
+                                            disable="configs"
+                                            output={zMin}
+                                            add={add(setZMin)}
+                                            subtract={subtract(setZMin)}
+                                            data={"zMin"}
+                                        />
+                                        <span className="fs-text">%</span>
+                                    </div>
+                                    <div className="flex-row align-c justify-sb p-2">
+                                        <span className="fs-text">max:</span>
+                                        <TouchButton
+                                            orientation="row"
+                                            disable="configs"
+                                            output={zMax}
+                                            add={add(setZMax)}
+                                            subtract={subtract(setZMax)}
+                                            data={"zMax"}
+                                        />
+                                        <span className="fs-text">%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
