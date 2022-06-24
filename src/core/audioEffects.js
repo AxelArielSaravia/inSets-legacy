@@ -397,19 +397,31 @@ const createNewSetExecution = () => {
     //select set size
     const n = GSProbabilityOfExecutionSets.lengthOfExecutionSet();
     console.log("set execution: ",n);//DEBUGGER
-
-    const executeSet = new Set();
-
+    
+    /**@type {Set}*/
+    let executeSet;
+    
     //selects elements for the set
-    let posiblesAudios = [...AUDIO_MAP.keys()];
-    console.log("while start");//DEBUGGER
-    while (executeSet.size < n) {
-        let n = random(0, posiblesAudios.length-1);
-        executeSet.add(AUDIO_MAP.get(posiblesAudios[n]));
-        posiblesAudios.slice(n, 1);
+    if (AUDIO_MAP.size / 2 >= n) {
+        executeSet = new Set();
+        let posiblesAudios = [...AUDIO_MAP.keys()];
+        console.log("while start");//DEBUGGER
+        while (executeSet.size < n) {
+            let n = random(0, posiblesAudios.length-1);
+            executeSet.add(AUDIO_MAP.get(posiblesAudios[n]));
+            posiblesAudios.slice(n, 1);
+        }
+        console.log("while end");//DEBUGGER
+    } else {
+        console.log("while start");//DEBUGGER
+        let posiblesAudios = [...AUDIO_MAP.values()];
+        for (let total = AUDIO_MAP.size - n; total > 0; total--) {
+            let n = random(0, posiblesAudios.length-1);
+            posiblesAudios.slice(n, 1);
+        }
+        executeSet = new Set(posiblesAudios);
+        console.log("while end");//DEBUGGER
     }
-    console.log("while end");
-    posiblesAudios = null;
 
     const newColorSet = `rgb(${random(32, 141)},${random(32, 141)},${random(32, 141)})`;
 

@@ -10,13 +10,27 @@ import initState from "./initState.json";
  * @returns {ElementsState}
  */
 const handleInitState = (elementsState) => {
- /*  if (localStorage.getItem("state") == null) {
-    localStorage.removeItem('state');
-    localStorage.setItem('state', JSON.stringify(elementsState));
-  }
-  return JSON.parse(localStorage.getItem("state")); */
-  localStorage.clear();
-  return elementsState
+  const keysOfElementsState = Object.keys(elementsState);
+/*   if (localStorage.getItem('state') != null) {
+
+  } */
+  localStorage.setItem('state', true);
+
+  keysOfElementsState.forEach(name => {
+    const el = elementsState[name];
+    if (typeof el === "object" && el !== null) {
+      localStorage.setItem(name, JSON.stringify(elementsState[name]));
+    } else {
+      localStorage.setItem(name, elementsState[name]);
+    }
+  });
+
+  const  returnObj = {};
+
+  keysOfElementsState.forEach(name => {
+    returnObj[name] = JSON.parse(localStorage.getItem(name));
+  });
+  return returnObj;
 }
 
 /** @type {GlobalState} */

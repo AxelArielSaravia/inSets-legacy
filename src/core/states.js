@@ -526,17 +526,12 @@ function ProbabilityOfExecutionSets() {
             },
             enumerable: true
         },
-        "limits": {
-            get: function() { return this.length * 2 },
-            enumerable: true
-        },
         "set": {
             value: function(i, value) {
                 if (typeof i === "number"
                  && i < this.length 
                  && typeof value === "number" 
                  && value > -1
-                 && value <= this.limits
                 ) {
                     arrOfValues[i] = value;
                 } 

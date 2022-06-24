@@ -20,12 +20,8 @@
 }
 .init-message {
     padding: 20px 10px;
-    * {
-        padding: 2px;
-    }
-    label {
-        margin: 10px 0;
-    }
+    * { padding: 2px; }
+    label { margin: 10px 0; }
 }
 
 .startApp-button {
@@ -36,6 +32,8 @@
 }
 
 .audioEngine-button {
+    max-width: 700px;
+    
     position: relative;
     cursor: pointer;
     

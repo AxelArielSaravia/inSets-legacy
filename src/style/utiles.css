@@ -4,6 +4,10 @@
   display: flex;
   flex-direction: row;
 }
+.flex-row-reverse {
+  display: flex;
+  flex-direction: row-reverse;
+}
 .flex-column {
   display: flex;
   flex-direction: column;
@@ -40,11 +44,12 @@
   justify-content:flex-start;
 }
 
-.flex-r-change{
+.flex-r-change { /* no usef */
   display: flex;
   flex-direction: row;
 }
-.flex-c-change{
+
+.flex-c-change { /* no used */
   display: flex;
   flex-direction: column;
 }
@@ -53,6 +58,12 @@
   flex-grow: 1;
 }
 
+.p-2 {
+  padding: 5px;
+}
+.p-3 {
+  padding: 10px;
+}
 
 /* VISIBILITY */
 .hidden {
@@ -65,16 +76,8 @@
   cursor:not-allowed !important;
 }
 
-/* SECTION PADDING */
-.section-padding {
-  padding: 8rem 0;
-}
-.section-padding-half {
-  padding: 4rem 0;
-}
-
 /* TEXTS */
-.c-primary {
+.c-primary { /* no used */
   color: var(--primary-color) !important;
 }
 .c-secondary {
@@ -86,31 +89,20 @@
   white-space: nowrap;
   overflow: hidden;
 }
-.text-left {
-  text-align:left;
+.text-left { text-align:left; }
+.text-center { text-align: center; }
 
-}
-.text-center {
-  text-align: center;
-}
-.text-bold {
-  font-weight: 800;
-}
+.text-bold { font-weight: 800; }
+
 .fs-title {
   font-weight: 800;
   font-size: 1.6rem;
   letter-spacing: 1.5px;
   margin: 5px 0;
 }
-.fs-text-l {
-  font-size: 2rem;
-}
-.fs-text {
-  font-size: 1.2rem;
-}
-.fs-text-s  {
-  font-size: 1.2rem;
-}
+.fs-text-l { font-size: 2rem; }
+.fs-text { font-size: 1.2rem; }
+.fs-text-s { font-size: 1rem; } /* no used */
 
 
 
@@ -137,6 +129,7 @@
   transition: all 0.1s ease-out 0.1s;
 }
 
+/* 
 @media screen and (max-width: 1200px) {
   .fs-text-l {
     font-size: 1.8rem;
@@ -148,22 +141,20 @@
     font-size: 1rem;
   }
 }
+*/
 
 @media screen and (max-width: 940px) {
 
-  .flex-r-change{
-    flex-direction: column;
-  }
-  .flex-c-change{
-    flex-direction: row;
-  }
-  .fs-text-l {
-    font-size: 1.4rem;
-  }
-  .fs-text {
-    font-size: 0.9rem;
-  }
+  .flex-r-change { flex-direction: column; }
+  .flex-c-change { flex-direction: row; }
+  
+  .fs-text-l { font-size: 1.4rem; }
+  .fs-text { font-size: 0.9rem; }
+  .fs-text-s  { font-size: 0.7rem; }
 }
 
+/* 
 @media screen and (max-width: 640px) { 
-}
+  
+} 
+*/

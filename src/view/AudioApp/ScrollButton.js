@@ -1,4 +1,3 @@
-import { useState } from "react";
 import "./TouchButton.scss";
 
 const disableWheel = (e) => {
@@ -7,7 +6,6 @@ const disableWheel = (e) => {
 }
 
 export default function TouchButton(props) {
-    const [point, setPoint] = useState(0);
 
     const handleOnWheel = (e) => {
         if (e.deltaY < 0) props.add(props.data)
@@ -27,15 +25,6 @@ export default function TouchButton(props) {
             document.getElementById(props.disable).onwheel = null;
         }
     }
-    
-    const handleTouchMove = (e) => {
-        let x = e.touches[0].clientX;
-        if (x > point) 
-            props.add(props.data);
-        else if (x < point)
-        props.subtract(props.data);
-    }
-    const handleTouchStart = (e) => { setPoint(() => e.touches[0].clientX) }
     const className = "touchButton justify-c align-c";
 
     return (
@@ -44,8 +33,6 @@ export default function TouchButton(props) {
             onWheel={handleOnWheel} 
             onMouseEnter={mouseEnter} 
             onMouseLeave={mouseOut} 
-            onTouchStart={handleTouchStart} 
-            onTouchMove={handleTouchMove}
         >
             <button
                 className="touchButton-action flex-column justify-c align-c" 

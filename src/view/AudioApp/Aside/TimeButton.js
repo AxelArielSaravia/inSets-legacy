@@ -1,61 +1,104 @@
 import { useState } from "react";
 
-import { GSTimeInterval } from "../../../core/initGlobalState.js"
+import { GSTimeInterval } from "../../../core/initGlobalState.js";
+import initState from "../../../core/initState.json";
 
 import AsideButton from "./AsideButton.js";
 import TouchButton from "../TouchButton.js";
+import ScrollButton from "../ScrollButton.js";
 import ToolButton from "../ToolButton.js";
 
+
+function changeLocalStorage(time, value) {
+    let localStorageTime = JSON.parse(localStorage.getItem('timeInterval'));
+    localStorageTime[time] = value;
+    localStorage.setItem('timeInterval', JSON.stringify(localStorageTime)); 
+}
+
 export default function TimeButton(props) {
-    const [min, setMin] = useState(GSTimeInterval.min);
-    const [max, setMax] = useState(GSTimeInterval.max);
+    const localStorageTime = JSON.parse(localStorage.getItem('timeInterval'));
 
+    const [min, setMin] = useState(localStorageTime.min);
+    const [max, setMax] = useState(localStorageTime.max);
+    const [value, setValue] = useState(10);
 
-    const add = (setTime) => {
+    const addValue = () => {
+        if (value < 1001) {
+            setValue(state =>  state * 10);
+        }
+    }
+    const subtractValue = () => {
+        if (value > 1) {
+            setValue(state =>  state / 10);
+        }
+    }
+
+    const add = (setTime, time) => {
         return function(data) {
-            GSTimeInterval[data] += 10;
+            GSTimeInterval[data] += value;
+            changeLocalStorage(time, GSTimeInterval[data]);
             setTime(() => GSTimeInterval[data]);
         }
     }
-    const subtract = (setTime) => {
+    const subtract = (setTime, time) => {
         return function(data) {
-            GSTimeInterval[data] -= 10;
+            GSTimeInterval[data] -= value;
+            changeLocalStorage(time, GSTimeInterval[data]);
             setTime(() => GSTimeInterval[data]);
         }
     }
 
     const reset = () => {
+        let timeInterval = initState.timeInterval;
+        GSTimeInterval.min = timeInterval.min;
+        GSTimeInterval.max = timeInterval.max;
+        localStorage.setItem('timeInterval', JSON.stringify(timeInterval));
+        setMin(() => timeInterval.min);
+        setMax(() => timeInterval.max);
     }
 
     return (
-        <AsideButton title="Time">
-            <div>
-                <p className="fs-text">Change the interval of time execution.</p>
-            </div>
-            <div className="flex-column align-c justify-c">
+        <AsideButton 
+            title="Time" 
+            description="Change the interval of time execution."
+        >
+            <div className="flex-column align-c justify-c p-3">
                 <ToolButton onClick={reset}>Reset</ToolButton>
             </div>
-            <div className="flex-row align-c justify-c">
+            <div className="flex-row align-c justify-c p-2">
+                <span className="fs-text" style={{marginRight: "10px"}}>Add or remove:</span>
+                <ScrollButton
+                    orientation="row"
+                    disable="configs"
+                    add={addValue}
+                    subtract={subtractValue}
+                    output={value}
+                   
+                />
+            </div>
+            <div className="flex-row align-c justify-c p-3">
                 <h4 className="fs-text" style={{marginRight: "10px"}}>Min:</h4>
                 <TouchButton
+                    orientation="row"
                     disable="configs"
                     output={min}
-                    add={add(setMin)}
-                    subtract={subtract(setMin)}
+                    add={add(setMin, "min")}
+                    subtract={subtract(setMin, "min")}
                     data={"min"}
                 />
-                <span>ms</span>
+                <span className="fs-text">ms</span>
             </div>
-            <div className="flex-row align-c justify-c">
+            <div className="flex-row align-c justify-c p-3">
                 <h4 className="fs-text" style={{marginRight: "10px"}}>Max:</h4>
                 <TouchButton
+                    orientation="row"
                     disable="configs"
                     output={max}
-                    add={add(setMax)}
-                    subtract={subtract(setMax)}
+                    add={add(setMax, "max")}
+                    subtract={subtract(setMax, "max")}
                     data={"max"}
                 />
-                <span>ms</span>
+                <span className="fs-text">ms</span>
             </div>
         </AsideButton>
     );
