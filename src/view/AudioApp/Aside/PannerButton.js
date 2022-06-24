@@ -62,12 +62,12 @@ export default function PannerButton(props) {
                 <ToolButton onClick={reset}>Reset</ToolButton>
             </div>
             <div className="flex-column align-c">
-                <div style={{width:"220px"}}>
+                <div style={{width:"240px"}}>
                     <div className="p-2">
                         <div className="p-2 border rounded">
                             <h4 className="fs-text">Position X:</h4>
                             <div className="flex-column align-c justify-sb">
-                                <div style={{width:"120px"}}>
+                                <div style={{width:"140px"}}>
                                     <div className="flex-row align-c justify-sb p-2">
                                         <span className="fs-text">min:</span>
                                         <TouchButton
@@ -100,7 +100,7 @@ export default function PannerButton(props) {
                         <div className="p-2 border rounded">
                             <h4 className="fs-text">Position Y:</h4>
                             <div className="flex-column align-c justify-sb">
-                                <div style={{width:"120px"}}>
+                                <div style={{width:"140px"}}>
 
                                     <div className="flex-row align-c justify-sb p-2">
                                         <span className="fs-text">min:</span>
@@ -134,7 +134,7 @@ export default function PannerButton(props) {
                         <div className="p-2 border rounded">
                             <h4 className="fs-text">Position Z:</h4>
                             <div className="flex-column align-c justify-sb">
-                                <div style={{width:"120px"}}>
+                                <div style={{width:"140px"}}>
                                     <div className="flex-row align-c justify-sb p-2">
                                         <span className="fs-text">min:</span>
                                         <TouchButton

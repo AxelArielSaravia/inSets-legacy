@@ -110,7 +110,7 @@
   letter-spacing: 1.5px;
   margin: 5px 0;
 }
-.fs-text-l { font-size: 2rem; }
+.fs-text-l { font-size: 1.8rem; }
 .fs-text { font-size: 1.2rem; }
 .fs-text-s { font-size: 1rem; } /* no used */
 
@@ -153,14 +153,14 @@
 }
 */
 
-@media screen and (max-width: 940px) {
+@media screen and (max-width: 1400px) {
 
   .flex-r-change { flex-direction: column; }
   .flex-c-change { flex-direction: row; }
   
   .fs-text-l { font-size: 1.4rem; }
-  .fs-text { font-size: 0.9rem; }
-  .fs-text-s  { font-size: 0.7rem; }
+  .fs-text { font-size: 1rem; }
+  .fs-text-s  { font-size: 0.8rem; }
 }
 
 /* 

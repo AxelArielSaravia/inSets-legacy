@@ -29,7 +29,6 @@ function FilterTypeButton(props) {
             arr.splice(index, 1);
             setIsDisable(_ => true);
         }
-        console.log(arr);
         changeLocalStorage("types", arr);
         props.setTypes(_ => arr)
     }
@@ -129,12 +128,12 @@ export default function FilterButton() {
                 <ToolButton onClick={reset}>Reset</ToolButton>
             </div>
             <div className="flex-column align-c">
-                <div style={{width:"220px"}}>
+                <div style={{width:"240px"}}>
                     <div className="p-2">
                         <div className="p-2 border rounded">
                             <h4 className="fs-text">Frequency:</h4>
                             <div className="flex-column align-c justify-sb">
-                                <div style={{width:"150px"}}>
+                                <div style={{width:"190px"}}>
                                     <div className="flex-row align-c justify-sb p-2">
                                         <span className="fs-text">min:</span>
                                         <TouchButton
@@ -198,7 +197,7 @@ export default function FilterButton() {
                         <div className="p-2 border rounded">
                             <h4 className="fs-text">Types:</h4>
                             <div className="flex-column align-c justify-sb p-2">
-                                <div style={{width:"190px"}}>
+                                <div style={{width:"200px"}}>
                                     <div className="flex-row flex-wrap justify-c">
                                         {getGlobalStatesLimit().filter.types.map((el) => (
                                             <div key={"filter_type-" + el} className="p-2">
