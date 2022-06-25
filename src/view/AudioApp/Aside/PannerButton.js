@@ -71,6 +71,7 @@ export default function PannerButton(props) {
                                     <div className="flex-row align-c justify-sb p-2">
                                         <span className="fs-text">min:</span>
                                         <TouchButton
+                                            textStyle={{width:"35px"}}
                                             orientation="row"
                                             disable="configs"
                                             output={xMin}
@@ -83,6 +84,7 @@ export default function PannerButton(props) {
                                     <div className="flex-row align-c justify-sb p-2">
                                         <span className="fs-text">max:</span>
                                         <TouchButton
+                                            textStyle={{width:"35px"}}
                                             orientation="row"
                                             disable="configs"
                                             output={xMax}
@@ -105,6 +107,7 @@ export default function PannerButton(props) {
                                     <div className="flex-row align-c justify-sb p-2">
                                         <span className="fs-text">min:</span>
                                         <TouchButton
+                                            textStyle={{width:"35px"}}
                                             orientation="row"
                                             disable="configs"
                                             output={yMin}
@@ -117,6 +120,7 @@ export default function PannerButton(props) {
                                     <div className="flex-row align-c justify-sb p-2">
                                         <span className="fs-text">max:</span>
                                         <TouchButton
+                                            textStyle={{width:"35px"}}
                                             orientation="row"
                                             disable="configs"
                                             output={yMax}
@@ -138,6 +142,7 @@ export default function PannerButton(props) {
                                     <div className="flex-row align-c justify-sb p-2">
                                         <span className="fs-text">min:</span>
                                         <TouchButton
+                                            textStyle={{width:"35px"}}
                                             orientation="row"
                                             disable="configs"
                                             output={zMin}
@@ -150,6 +155,7 @@ export default function PannerButton(props) {
                                     <div className="flex-row align-c justify-sb p-2">
                                         <span className="fs-text">max:</span>
                                         <TouchButton
+                                            textStyle={{width:"35px"}}
                                             orientation="row"
                                             disable="configs"
                                             output={zMax}

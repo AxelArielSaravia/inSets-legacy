@@ -6,9 +6,7 @@ export default function AsideButton(props) {
             </div>
             <div className="asideButton-content">
                 {props.description != null && (
-                    <div>
-                        <p className="fs-text">{props.description}</p>
-                    </div>
+                    <p className="fs-text text-center">{props.description}</p>
                 )}
                 {props.children}
             </div>

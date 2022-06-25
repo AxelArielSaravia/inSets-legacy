@@ -9,7 +9,7 @@
   "fadeTime": 150,
   "filter": {
     "disableAll": false,
-    "frequencyMin": 100, 
+    "frequencyMin": 80, 
     "frequencyMax": 15000,
     "qMin": 0.1,
     "qMax": 1.4,

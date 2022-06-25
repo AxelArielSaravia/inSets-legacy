@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { GSFilter } from "../../../core/initGlobalState.js"
 import { getGlobalStatesLimit } from "../../../core/states.js"
@@ -16,8 +16,16 @@ function changeLocalStorage(name, value) {
 }
 
 function FilterTypeButton(props) {
-    let index = props.types.indexOf(props.value);
+    const types = props.types
+    let index = types.indexOf(props.value);
     const [isDisable, setIsDisable] = useState(index === -1);
+
+    useEffect(() => {
+        let index = types.indexOf(props.value);
+        setIsDisable(() => index === -1);
+    }, [types]);
+
+
     const handleOnClick = () => {
         let arr = [...props.types];
         let index = props.types.indexOf(props.value);
@@ -119,6 +127,7 @@ export default function FilterButton() {
         changeLocalStorage("types", arr);
         setTypes(_ => arr)
     }
+
     return (
         <AsideButton
             title="Filter"
@@ -133,10 +142,11 @@ export default function FilterButton() {
                         <div className="p-2 border rounded">
                             <h4 className="fs-text">Frequency:</h4>
                             <div className="flex-column align-c justify-sb">
-                                <div style={{width:"190px"}}>
+                                <div style={{width:"175px"}}>
                                     <div className="flex-row align-c justify-sb p-2">
                                         <span className="fs-text">min:</span>
                                         <TouchButton
+                                            textStyle={{width: "59px"}}
                                             orientation="row"
                                             disable="configs"
                                             output={frequencyMin}
@@ -149,6 +159,7 @@ export default function FilterButton() {
                                     <div className="flex-row align-c justify-sb p-2">
                                         <span className="fs-text">max:</span>
                                         <TouchButton
+                                            textStyle={{width: "59px"}}
                                             orientation="row"
                                             disable="configs"
                                             output={frequencyMax}

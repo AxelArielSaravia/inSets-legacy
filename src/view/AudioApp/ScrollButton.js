@@ -44,7 +44,9 @@ export default function TouchButton(props) {
                  : <i className="bi bi-caret-up-fill flex-column justify-c align-c"/>
                 }
             </button>
-            <span className="fs-text">{props.output}</span>
+            <p className="fs-text text-center" style={props.textStyle? props.textStyle : {}}>
+                {props.output}
+            </p>
             <button
                 className="touchButton-action flex-column justify-c align-c" 
                 type="button"
