@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import { GSProbabilityOfExecutionSets } from "../../../core/initGlobalState.js"
+import { GSProbabilityOfExecutionSets } from "../../../core/initGlobalState.js";
 
 import AsideButton from "./AsideButton.js";
 import ScrollButton from "../ScrollButton.js";

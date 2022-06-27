@@ -1,7 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo} from "react";
 
-import { GSFilter } from "../../../core/initGlobalState.js"
-import { getGlobalStatesLimit } from "../../../core/states.js"
+import { GSFilter } from "../../../core/initGlobalState.js";
 import initState from "../../../core/initState.json";
 
 import AsideButton from "./AsideButton.js";
@@ -15,7 +14,7 @@ function changeLocalStorage(name, value) {
     localStorage.setItem('filter', JSON.stringify(localStorageFilter)); 
 }
 
-function FilterTypeButton(props) {
+const FilterTypeButton = memo(function (props) {
     const types = props.types
     let index = types.indexOf(props.value);
     const [isDisable, setIsDisable] = useState(index === -1);
@@ -48,9 +47,9 @@ function FilterTypeButton(props) {
             isDisable={isDisable}
         />
     );
-}
+});
 
-export default function FilterButton() {
+export default memo(function FilterButton() {
     let localStorageFilter = JSON.parse(localStorage.getItem('filter'));
     //const [disableAll, setDisableAll] = useState(localStorageFilter.disableAll);
     const [frequencyMax, setFrequencyMax] = useState(localStorageFilter.frequencyMax);
@@ -108,24 +107,14 @@ export default function FilterButton() {
         GSFilter.qMax = filter.qMax;
         GSFilter.qMin = filter.qMin;
         GSFilter.types = filter.types;
+        GSFilter.disableAll = filter.disableAll;
         localStorage.setItem('filter', JSON.stringify(filter));
+        //setDisableAll(_ => filter.disableAll);
         setFrequencyMax(_ => filter.frequencyMax);
         setFrequencyMin(_ => filter.frequencyMin);
         setQMax(_ => Number.parseFloat(filter.qMax).toFixed(2));
         setQMin(_ => Number.parseFloat(filter.qMin).toFixed(2));
         setTypes(_ => filter.types);
-    }
-    
-    const handleOnClick = (val) => {
-        let arr = [...types];
-        let index = types.indexOf(val);
-        if (false) {
-            if (index === -1) arr.push(val);
-        } else {
-            arr.splice(index, 1);
-        }
-        changeLocalStorage("types", arr);
-        setTypes(_ => arr)
     }
 
     return (
@@ -210,7 +199,7 @@ export default function FilterButton() {
                             <div className="flex-column align-c justify-sb p-2">
                                 <div style={{width:"200px"}}>
                                     <div className="flex-row flex-wrap justify-c">
-                                        {getGlobalStatesLimit().filter.types.map((el) => (
+                                        {GSFilter.ALL_TYPES.map((el) => (
                                             <div key={"filter_type-" + el} className="p-2">
                                                 <FilterTypeButton 
                                                     value={el}
@@ -228,4 +217,4 @@ export default function FilterButton() {
             </div>
         </AsideButton>
     );
-}
+});

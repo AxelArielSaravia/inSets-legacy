@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 
-import { GSPanner } from "../../../core/initGlobalState.js"
+import { GSPanner } from "../../../core/initGlobalState.js";
 import initState from "../../../core/initState.json";
 
 import AsideButton from "./AsideButton.js";
@@ -13,7 +13,7 @@ function changeLocalStorage(name, value) {
     localStorage.setItem('panner', JSON.stringify(localStoragePanner)); 
 }
 
-export default function PannerButton(props) {
+export default memo(function PannerButton() {
     let localStoragePanner = JSON.parse(localStorage.getItem('panner'));
     //const [disableAll, setDisableAll] = useState(localStoragePanner.disableAll);
     const [xMax, setXMax] = useState(localStoragePanner.xMax);
@@ -26,15 +26,17 @@ export default function PannerButton(props) {
     const add = (setTime) => {
         return function(data) {
             GSPanner[data] += 1;
-            changeLocalStorage(data, GSPanner[data]);
-            setTime(() => GSPanner[data]);
+            const val =  GSPanner[data];
+            changeLocalStorage(data, val);
+            setTime(_ => val);
         }
     }
     const subtract = (setTime) => {
         return function(data) {
             GSPanner[data] -= 1;
-            changeLocalStorage(data, GSPanner[data]);
-            setTime(() => GSPanner[data]);
+            const val =  GSPanner[data];
+            changeLocalStorage(data, val);
+            setTime(_ => val);
         }
     }
     const reset = () => {
@@ -45,7 +47,9 @@ export default function PannerButton(props) {
         GSPanner.yMin = panner.yMin;
         GSPanner.zMax = panner.zMax;
         GSPanner.zMin = panner.zMin;
+        GSPanner.disableAll = panner.disableAll;
         localStorage.setItem('panner', JSON.stringify(panner));
+        //setDisableAll(_ => panner.disableAll);
         setXMax(() => panner.xMax);
         setXMin(() => panner.xMin);
         setYMax(() => panner.yMax);
@@ -173,4 +177,4 @@ export default function PannerButton(props) {
             </div>
         </AsideButton>
     );
-} 
+});

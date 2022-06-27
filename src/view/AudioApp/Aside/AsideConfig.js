@@ -5,6 +5,7 @@ import SetsButton from "./SetsButton.js";
 import TimeButton from "./TimeButton.js";
 import PannerButton from "./PannerButton.js";
 import FilterButton from "./FilterButton.js";
+import DelayButton from "./DelayButton.js";
 
 import "./AsideConfig.scss";
 
@@ -50,7 +51,7 @@ export default function AsideConfig(props) {
                 configButton === "TIME" ?   ( <TimeButton/> ) :
                 configButton === "PANNER" ? ( <PannerButton/> ) :
                 configButton === "FILTER" ? ( <FilterButton/> ) :
-                configButton === "DELAY" ? (<AsideButton title="Delay"/>) :
+                configButton === "DELAY" ?  ( <DelayButton/> ) :
                 configButton === "RATE" ? (<AsideButton title="Rate"/>) :
                 configButton === "RCT" ? (<AsideButton title="RCT"/>) :
                 configButton === "FADETIME" ? (<AsideButton title="Fade Time"/>) :

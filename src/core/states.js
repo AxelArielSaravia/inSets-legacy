@@ -152,32 +152,56 @@ function GlobalPannerState(obj) {
         },
         "xMin": {
             get: function() { return xMin },
-            set: function(val) { if (typeof val === "number" && isInsideInterval(GlobalPannerState.MIN, this.xMax, val)) xMin = val; },
+            set: function(val) { 
+                if (typeof val === "number" 
+                    && isInsideInterval(GlobalPannerState.MIN, this.xMax, val)
+                ) xMin = val; 
+            },
             enumerable: true
         },
         "xMax": {
             get: function() { return xMax },
-            set: function(val) { if (typeof val === "number" && isInsideInterval(this.xMin, GlobalPannerState.MAX, val)) xMax = val; },
+            set: function(val) { 
+                if (typeof val === "number" 
+                    && isInsideInterval(this.xMin, GlobalPannerState.MAX, val)
+                ) xMax = val; 
+            },
             enumerable: true
         },
         "yMin": {
             get: function() { return yMin },
-            set: function(val) { if (typeof val === "number" && isInsideInterval(GlobalPannerState.MIN, this.yMax, val)) yMin = val; },
+            set: function(val) { 
+                if (typeof val === "number" 
+                    && isInsideInterval(GlobalPannerState.MIN, this.yMax, val)
+                ) yMin = val; 
+            },
             enumerable: true
         },
         "yMax": {
             get: function() { return yMax },
-            set: function(val) { if (typeof val === "number" && isInsideInterval(this.yMin, GlobalPannerState.MAX, val)) yMax = val; },
+            set: function(val) { 
+                if (typeof val === "number" 
+                    && isInsideInterval(this.yMin, GlobalPannerState.MAX, val)
+                ) yMax = val; 
+            },
             enumerable: true
         },
         "zMin": {
             get: function() { return zMin },
-            set: function(val) { if (typeof val === "number" && isInsideInterval(GlobalPannerState.MIN, this.zMax, val)) zMin = val; },
+            set: function(val) { 
+                if (typeof val === "number" 
+                    && isInsideInterval(GlobalPannerState.MIN, this.zMax, val)
+                ) zMin = val; 
+            },
             enumerable: true
         },
         "zMax": {
             get: function() { return zMax },
-            set: function(val) { if (typeof val === "number" && isInsideInterval(this.xMin, GlobalPannerState.MAX, val)) zMax = val; },
+            set: function(val) { 
+                if (typeof val === "number" 
+                    && isInsideInterval(this.xMin, GlobalPannerState.MAX, val)
+                ) zMax = val; 
+            },
             enumerable: true
         }
     });
@@ -206,8 +230,12 @@ Object.defineProperties(GlobalPannerState, {
     let qMin; 
     /**@type {number}*/
     let qMax; 
-    /**@type {[lowpass?, highpass?, bandpass?, peaking?, notch?]}*/
+    /**@type {[lowpass?, highpass?, bandpass?,  notch?]}*/
     let types;
+
+    /**@type {[lowpass, highpass, bandpass,  notch]}*/
+    const ALL_TYPES = GlobalFilterState.TYPES;
+
     if (typeof obj === "object" && obj !== null) {
         disableAll = obj.hasOwnProperty("disableAll")
             ? !!obj.disableAll 
@@ -244,6 +272,9 @@ Object.defineProperties(GlobalPannerState, {
         types = GlobalFilterState.TYPES;
     }
     Object.defineProperties(this, {
+        "ALL_TYPES": {
+            get: function() {return ALL_TYPES}
+        },
         "disableAll": {
             get: function() { return disableAll },
             set: function(val) { if (typeof val === "boolean") disableAll = val; },
@@ -251,22 +282,38 @@ Object.defineProperties(GlobalPannerState, {
         },
         "frequencyMin": {
             get: function() { return frequencyMin },
-            set: function(val) { if (typeof val === "number" && isInsideInterval(GlobalFilterState.FREQ_MIN, this.frequencyMax, val)) frequencyMin = val; },
+            set: function(val) { 
+                if (typeof val === "number" 
+                    && isInsideInterval(GlobalFilterState.FREQ_MIN, this.frequencyMax, val)
+                ) frequencyMin = val; 
+            },
             enumerable: true
         },
         "frequencyMax": {
             get: function() { return frequencyMax },
-            set: function(val) { if (typeof val === "number" && isInsideInterval(this.frequencyMin, GlobalFilterState.FREQ_MAX, val)) frequencyMax = val; },
+            set: function(val) { 
+                if (typeof val === "number" 
+                    && isInsideInterval(this.frequencyMin, GlobalFilterState.FREQ_MAX, val)
+                ) frequencyMax = val; 
+            },
             enumerable: true
         },
         "qMin": {
             get: function() { return qMin },
-            set: function(val) { if (typeof val === "number" && isInsideInterval(GlobalFilterState.Q_MIN, this.qMax, val)) qMin = val; },
+            set: function(val) { 
+                if (typeof val === "number" 
+                    && isInsideInterval(GlobalFilterState.Q_MIN, this.qMax, val)
+                 ) qMin = val; 
+            },
             enumerable: true
         },
         "qMax": {
             get: function() { return qMax },
-            set: function(val) { if (typeof val === "number" && isInsideInterval(this.qMin, GlobalFilterState.Q_MAX, val)) qMax = val; },
+            set: function(val) { 
+                if (typeof val === "number" 
+                    && isInsideInterval(this.qMin, GlobalFilterState.Q_MAX, val)
+                ) qMax = val; 
+            },
             enumerable: true
         },
         "types": {
@@ -344,22 +391,38 @@ function GlobalDelayState(obj) {
         },
         "timeMin": {
             get: function() { return timeMin },
-            set: function(val) { if (typeof val === "number" && isInsideInterval(GlobalDelayState.TIME_MIN, this.timeMax, val)) timeMin = val; },
+            set: function(val) { 
+                if (typeof val === "number" 
+                    && isInsideInterval(GlobalDelayState.TIME_MIN, this.timeMax, val)
+                ) timeMin = val; 
+            },
             enumerable: true
         },
         "timeMax": {
             get: function() { return timeMax },
-            set: function(val) { if (typeof val === "number" && isInsideInterval(this.timeMax, GlobalDelayState.TIME_MAX, val)) timeMax = val; },
+            set: function(val) { 
+                if (typeof val === "number" 
+                    && isInsideInterval(this.timeMin, GlobalDelayState.TIME_MAX, val)
+                ) timeMax = val;
+            },
             enumerable: true
         },
         "feedbackMin": {
             get: function() { return feedbackMin },
-            set: function(val) { if (typeof val === "number" && isInsideInterval(GlobalDelayState.FBACK_MIN, this.feedbackMax, val)) feedbackMin = val; },
+            set: function(val) { 
+                if (typeof val === "number" 
+                    && isInsideInterval(GlobalDelayState.FBACK_MIN, this.feedbackMax, val)
+                ) feedbackMin = val; 
+            },
             enumerable: true
         },
         "feedbackMax": {
             get: function() { return feedbackMax },
-            set: function(val) { if (typeof val === "number" && isInsideInterval(this.feedbackMin, GlobalDelayState.FBACK_MAX, val)) feedbackMax = val; },
+            set: function(val) { 
+                if (typeof val === "number" 
+                    && isInsideInterval(this.feedbackMin, GlobalDelayState.FBACK_MAX, val)
+                ) feedbackMax = val; 
+            },
             enumerable: true
         }
     });

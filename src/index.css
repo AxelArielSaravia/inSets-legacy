@@ -1,8 +1,13 @@
 @import-normalize;
 
-
+/*
 @import url('https://fonts.googleapis.com/css2?family=Cutive+Mono&display=swap');
+*/
 
+@font-face {
+  font-family: "Cutive Mono";
+  src: url('./fonts/CutiveMono-Regular.ttf') format('truetype');
+}
 
 :root {
   color-scheme: light dark;
@@ -32,7 +37,8 @@ body {
   width: 100%;
   height: 100%;
 
-  font-family: 'Cutive Mono', monospace;
+  font-family: 'Cutive Mono', monospace; 
+
   font-weight: normal;
   font-size: 10px;
   -webkit-font-smoothing: antialiased;

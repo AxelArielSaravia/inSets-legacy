@@ -20,7 +20,7 @@ export default function TimeButton(props) {
 
     const [min, setMin] = useState(localStorageTime.min);
     const [max, setMax] = useState(localStorageTime.max);
-    const [value, setValue] = useState(10);
+    const [value, setValue] = useState(100);
 
     const addValue = () => {
         if (value < 1001) { setValue(state =>  state * 10); }
