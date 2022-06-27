@@ -69,6 +69,11 @@ export default memo(function Aside(props) {
             </ToolButton>
           </div>
           <div className="aside-button flex-row">
+            <ToolButton className="flex-row text-left" onClick={() => { handleButtonsOnClick("FADETIME") }}>
+              <h4 className="fs-text">Fade Time</h4>
+            </ToolButton>
+          </div>
+          <div className="aside-button flex-row">
             <ToolButton className="flex-row" onClick={() => { handleButtonsOnClick("PANNER") }}>
               <h4 className="fs-text">Panner</h4>
             </ToolButton>
@@ -91,11 +96,6 @@ export default memo(function Aside(props) {
           <div className="aside-button flex-row">
             <ToolButton className="flex-row" onClick={() => { handleButtonsOnClick("RCT") }}>
               <h4 className="fs-text">RCT</h4>
-            </ToolButton>
-          </div>
-          <div className="aside-button flex-row">
-            <ToolButton className="flex-row text-left" onClick={() => { handleButtonsOnClick("FADETIME") }}>
-              <h4 className="fs-text">Fade Time</h4>
             </ToolButton>
           </div>
         </div>

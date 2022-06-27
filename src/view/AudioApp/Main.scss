@@ -5,7 +5,7 @@
   background-color: var(--primary-l-color);
   border-radius: 10px;
 
-  .file-button {
+  .file-buttons {
     width: 100%;
     
     
@@ -16,8 +16,6 @@
 
       .tool-button {
         margin: 0;
-        box-shadow: 0 0 0 1px var(--secondary-color);
-        background-color: var(--primary-color);
         position: relative;
         z-index: 2;
         cursor: pointer;
@@ -40,6 +38,12 @@
       background-color: var(--primary-color);
     }
     
+    .start-button {
+      width: 142px;
+      h4 {
+        width: 97px;
+      }
+    }
   }
   
   .files-container {
@@ -78,9 +82,22 @@
   }
 }
 
+@media screen and (max-width: 900px) {
+  .main {
+    .file-buttons {
+      .start-button {
+        width: 116px;
+        h4 {
+          width: 77px;
+      }
+      }
+    }
+  }
+}
+
 @media screen and (max-width: 340px) {
   .main {
-    .file-button {
+    .file-buttons {
       flex-direction: column !important;  
     }
   }

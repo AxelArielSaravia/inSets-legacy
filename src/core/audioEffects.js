@@ -280,7 +280,7 @@ const play = (id, cb) => {
 
     if (audioState) {
         //FADE IN (to a random value)
-        audioState.outputGain.gain.exponentialRampToValueAtTime(audioState.volume.get(), AUDIO_CONTEXT().currentTime + GSFadeTime().time / 1000);
+        audioState.outputGain.gain.exponentialRampToValueAtTime(audioState.volume.get(), AUDIO_CONTEXT().currentTime + GSFadeTime.time / 1000);
 
         //CHANGE THE CURRENT TIME
         let startPoint = audioState.startTimePoint.get();
@@ -323,8 +323,8 @@ const stop = (id, cb) => {
     let audioState = AUDIO_MAP.get(id);
     if (audioState && audioState.isPlaying) {
         //FADE OUT 
-        audioState.outputGain.gain.exponentialRampToValueAtTime(0.01, AUDIO_CONTEXT().currentTime + GSFadeTime().time / 1000);
-        return wait(GSFadeTime().time)
+        audioState.outputGain.gain.exponentialRampToValueAtTime(0.01, AUDIO_CONTEXT().currentTime + GSFadeTime.time / 1000);
+        return wait(GSFadeTime.time)
         .then(() => disconnect(audioState, cb));
     }
     return Promise.resolve(false);
@@ -383,7 +383,6 @@ const changeVolume = (id, val) => {
 const wait = ms => new Promise(resolve => setInterval(resolve, ms));
 
 const randomTimeExecution = (cb) => {
-    console.log("AUDIO_MAP:", AUDIO_MAP); //DEBUGGER
     if (GSIsStarted()) {
         randomSetsExecution(cb);
         const n = random(GSTimeInterval.min, GSTimeInterval.max);
@@ -439,7 +438,7 @@ const randomSetsExecution = (cb) => {
                 play(data.id, (isPlaying, rct) => cb(data.id, isPlaying, rct, newColorSet));
             })
         } else {
-            wait(GSFadeTime().time)
+            wait(GSFadeTime.time)
             .then(() => {
                 setAudioConfiguration(data.id);
                 play(data.id, (isPlaying, rct) => cb(data.id, isPlaying, rct, newColorSet));

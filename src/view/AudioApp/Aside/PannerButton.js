@@ -23,17 +23,13 @@ export default memo(function PannerButton() {
     const [zMax, setZMax] = useState(localStoragePanner.zMax);
     const [zMin, setZMin] = useState(localStoragePanner.zMin);
 
-    const add = (setTime) => {
+    const operations = (setTime, operation) => {
         return function(data) {
-            GSPanner[data] += 1;
-            const val =  GSPanner[data];
-            changeLocalStorage(data, val);
-            setTime(_ => val);
-        }
-    }
-    const subtract = (setTime) => {
-        return function(data) {
-            GSPanner[data] -= 1;
+            if (operation === 'add') {
+                GSPanner[data] += 1;
+            } else {
+                GSPanner[data] -= 1;
+            }
             const val =  GSPanner[data];
             changeLocalStorage(data, val);
             setTime(_ => val);
@@ -79,8 +75,8 @@ export default memo(function PannerButton() {
                                             orientation="row"
                                             disable="configs"
                                             output={xMin}
-                                            add={add(setXMin)}
-                                            subtract={subtract(setXMin)}
+                                            add={operations(setXMin, 'add')}
+                                            subtract={operations(setXMin, 'subtract')}
                                             data={"xMin"}
                                         />
                                         <span className="fs-text">%</span>
@@ -92,8 +88,8 @@ export default memo(function PannerButton() {
                                             orientation="row"
                                             disable="configs"
                                             output={xMax}
-                                            add={add(setXMax)}
-                                            subtract={subtract(setXMax)}
+                                            add={operations(setXMax, 'add')}
+                                            subtract={operations(setXMax, 'subtract')}
                                             data={"xMax"}
                                         />
                                         <span className="fs-text">%</span>
@@ -115,8 +111,8 @@ export default memo(function PannerButton() {
                                             orientation="row"
                                             disable="configs"
                                             output={yMin}
-                                            add={add(setYMin)}
-                                            subtract={subtract(setYMin)}
+                                            add={operations(setYMin, 'add')}
+                                            subtract={operations(setYMin, 'subtract')}
                                             data={"yMin"}
                                         />
                                         <span className="fs-text">%</span>
@@ -128,8 +124,8 @@ export default memo(function PannerButton() {
                                             orientation="row"
                                             disable="configs"
                                             output={yMax}
-                                            add={add(setYMax)}
-                                            subtract={subtract(setYMax)}
+                                            add={operations(setYMax, 'add')}
+                                            subtract={operations(setYMax, 'subtract')}
                                             data={"yMax"}
                                         />
                                         <span className="fs-text">%</span>
@@ -150,8 +146,8 @@ export default memo(function PannerButton() {
                                             orientation="row"
                                             disable="configs"
                                             output={zMin}
-                                            add={add(setZMin)}
-                                            subtract={subtract(setZMin)}
+                                            add={operations(setZMin, 'add')}
+                                            subtract={operations(setZMin, 'subtract')}
                                             data={"zMin"}
                                         />
                                         <span className="fs-text">%</span>
@@ -163,8 +159,8 @@ export default memo(function PannerButton() {
                                             orientation="row"
                                             disable="configs"
                                             output={zMax}
-                                            add={add(setZMax)}
-                                            subtract={subtract(setZMax)}
+                                            add={operations(setZMax, 'add')}
+                                            subtract={operations(setZMax, 'subtract')}
                                             data={"zMax"}
                                         />
                                         <span className="fs-text">%</span>

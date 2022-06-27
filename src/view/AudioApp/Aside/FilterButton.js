@@ -58,48 +58,37 @@ export default memo(function FilterButton() {
     const [qMin, setQMin] = useState(Number.parseFloat(localStorageFilter.qMin).toFixed(2));
     const [types, setTypes] = useState(localStorageFilter.types);
 
-    const addQ = (setTime) => {
+    const operationQ = (setTime, operation) => {
         return function(data) {
             let v = 0.05;
             if (GSFilter[data] >= 2) v = 0.1; 
-            GSFilter[data] = Number.parseFloat((GSFilter[data] + v).toFixed(2));
+            if (operation === "add") {
+                GSFilter[data] = Number.parseFloat((GSFilter[data] + v).toFixed(2));
+            } else {
+                GSFilter[data] = Number.parseFloat((GSFilter[data] - v).toFixed(2))
+            } 
             let res = GSFilter[data].toFixed(2);
             changeLocalStorage(data, res);
             setTime(() => res);
         }
     }
-    const subtractQ = (setTime) => {
-        return function(data) {
-            let v = 0.05;
-            if (GSFilter[data] > 2) v = 0.1; 
-            GSFilter[data] = Number.parseFloat((GSFilter[data] - v).toFixed(2))
-            let res = GSFilter[data].toFixed(2);
-            changeLocalStorage(data, res);
-            setTime(() => res);
-        }
-    }
-    const addFrequency = (setTime) => {
+
+    const operationFrequency = (setTime, operation) => {
         return function(data) {
             let v = 1000;
             if (GSFilter[data] < 200) v = 10;
             else if (GSFilter[data] < 1000) v = 50;
             else if (GSFilter[data] < 10000) v = 100;
-            GSFilter[data] += v;
+            if (operation === "add") {
+                GSFilter[data] += v;
+            } else {
+                GSFilter[data] -= v;
+            }
             changeLocalStorage(data, GSFilter[data]);
             setTime(() => GSFilter[data]);
         }
     }
-    const subtractFrequency = (setTime) => {
-        return function(data) {
-            let v = 1000;
-            if (GSFilter[data] < 200) v = 10;
-            else if (GSFilter[data] < 1000) v = 50;
-            else if (GSFilter[data] < 10000) v = 100;
-            GSFilter[data] -= v;
-            changeLocalStorage(data, GSFilter[data]);
-            setTime(() => GSFilter[data]);
-        }
-    }
+
     const reset = () => {
         let filter = initState.filter;
         GSFilter.frequencyMax = filter.frequencyMax;
@@ -139,8 +128,8 @@ export default memo(function FilterButton() {
                                             orientation="row"
                                             disable="configs"
                                             output={frequencyMin}
-                                            add={addFrequency(setFrequencyMin)}
-                                            subtract={subtractFrequency(setFrequencyMin)}
+                                            add={operationFrequency(setFrequencyMin, 'add')}
+                                            subtract={operationFrequency(setFrequencyMin, 'subtract')}
                                             data={"frequencyMin"}
                                         />
                                         <span className="fs-text">Hz</span>
@@ -152,8 +141,8 @@ export default memo(function FilterButton() {
                                             orientation="row"
                                             disable="configs"
                                             output={frequencyMax}
-                                            add={addFrequency(setFrequencyMax)}
-                                            subtract={subtractFrequency(setFrequencyMax)}
+                                            add={operationFrequency(setFrequencyMax, 'add')}
+                                            subtract={operationFrequency(setFrequencyMax, 'subtract')}
                                             data={"frequencyMax"}
                                         />
                                         <span className="fs-text">Hz</span>
@@ -173,8 +162,8 @@ export default memo(function FilterButton() {
                                             orientation="row"
                                             disable="configs"
                                             output={qMin}
-                                            add={addQ(setQMin)}
-                                            subtract={subtractQ(setQMin)}
+                                            add={operationQ(setQMin, 'add')}
+                                            subtract={operationQ(setQMin, 'subtract')}
                                             data={"qMin"}
                                         />
                                     </div>
@@ -184,8 +173,8 @@ export default memo(function FilterButton() {
                                             orientation="row"
                                             disable="configs"
                                             output={qMax}
-                                            add={addQ(setQMax)}
-                                            subtract={subtractQ(setQMax)}
+                                            add={operationQ(setQMax, 'add')}
+                                            subtract={operationQ(setQMax, 'subtract')}
                                             data={"qMax"}
                                         />
                                     </div>

@@ -44,6 +44,7 @@ export const GSFilter = GLOBAL_STATE.filter;
 export const GSDelay = GLOBAL_STATE.delay;
 export const GSPlayBackRate = GLOBAL_STATE.playBackRate;
 export const GSTimeInterval = GLOBAL_STATE.timeInterval;
+export const GSFadeTime = GLOBAL_STATE.fadeTime;
 export const GSProbabilityOfExecutionSets = GLOBAL_STATE.probabilityOfExecutionSets;
 export const AUDIO_MAP = GLOBAL_STATE.AUDIO_MAP;
 export const ADD_Audio = GLOBAL_STATE.ADD_Audio;
@@ -70,15 +71,6 @@ export const GSEngine = (val) => {
  * @return {boolean}
  */
 export const GSHasAudios = () => GLOBAL_STATE.hasAudios;
-
-/**
- * @param {number|undefined} val 
- * @return {number}
- */
-export const GSFadeTime = (val) => {
-  if (typeof val === "number") GLOBAL_STATE.fadeTime = val;
-  return GLOBAL_STATE.fadeTime;
-}
 
 /**
  * @param {number|undefined} val 
