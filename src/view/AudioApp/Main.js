@@ -76,27 +76,6 @@ export default memo(function Main(props) {
       <div className="files-container flex-column">
         <div id="files" className="files flex-column">
           <div className="flex-row flex-wrap justify-c">
-            {/*          
-              <AudioCard
-                handleSetAudioList={props.handleSetAudioList}
-                key={"audio-101"}
-                id={"audio-101"}
-                appIsPlaying={isPlaying}
-                isPlaying={{value: false,color: "transparent"}}
-                data={{
-                  title: "Test - audio101.wav",
-                  delay: {isDisable: false},
-                  filter: {isDisable: false},
-                  panner: {isDisable: false},
-                  randomCurrentTime: {isDisable: false},
-                  playBackRate: {isDisable: false},
-                  volume: {value: 1, get: function() {return this.value}, set: function(val){this.value = val}},
-                  endTimePoint: {value: 200, get: function() {return this.value}, set: function(val){this.value = val}},
-                  startTimePoint: {value: 0, get: function() {return this.value}, set: function(val){this.value = val}},
-                  isPlaying: false,
-                }}
-              />  
-             */}
             { [...audioList].map((val) => (
               <AudioCard
                 handleSetAudioList={props.handleSetAudioList}

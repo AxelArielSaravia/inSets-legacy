@@ -1,4 +1,4 @@
-import { memo, useState, useReducer } from "react";
+import { memo, useState } from "react";
 import { addFiles, clearFiles } from "../../core/handleFiles.js";
 
 import { DisableAllProvider } from "./DisableAllProvider.js"

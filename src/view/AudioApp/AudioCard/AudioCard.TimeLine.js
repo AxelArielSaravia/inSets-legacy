@@ -15,22 +15,27 @@ export default function AudioCardTimeLine(props) {
         left: `${calcPercent(props.duration, currentTime) - 100}%`, 
         backgroundColor: props.appIsPlaying && props.isPlaying ? props.color : "" 
     };
+
+    const startTimePoint = props.startTimePoint;
+    const isPlaying = props.isPlaying;
+    const randomCurrentTime = props.randomCurrentTime;
+    const color = props.color;
     
     useEffect(() => {
-        if (!props.isPlaying) {
+        if (!isPlaying) {
             setCurrentTime((state) => {
-                if (state !==  props.startTimePoint)
-                    return props.startTimePoint;
+                if (state !== startTimePoint)
+                    return startTimePoint;
                 else 
                     return state;
             });
         }
-    }, [props.startTimePoint, props.isPlaying]);
+    }, [startTimePoint, isPlaying]);
 
 
     useEffect(() => {   
-        if (props.isPlaying) {
-            setCurrentTime(() => props.randomCurrentTime);
+        if (isPlaying) {
+            setCurrentTime(() => randomCurrentTime);
             if (interval.current) {
                 clearInterval(interval.current);
                 interval.current = null;
@@ -43,10 +48,10 @@ export default function AudioCardTimeLine(props) {
                 clearTimeout(interval.current);
                 interval.current = null;
             }
-            setCurrentTime(() => props.startTimePoint);
+            setCurrentTime(() => startTimePoint);
         }
 
-    }, [props.isPlaying, props.randomCurrentTime, props.color]);
+    }, [isPlaying, randomCurrentTime, color]);
 
     return (
         <div className="audioCard-timeLine">
