@@ -37,8 +37,8 @@ function GrupSetsButtons(props) {
                 <div className="flex-row align-c justify-c">
                     <h4 className="fs-text">
                         { props.lastIndex !== n
-                            ? `Sets of size ${props.lastIndex}-${props.setOf.length - 1 + props.lastIndex}:`
-                            : `Sets of size ${n}:`
+                            ? `Sizes ${props.lastIndex} to ${props.setOf.length - 1 + props.lastIndex}:`
+                            : `Size ${n}:`
                         }
                     </h4>
                     <ScrollButton
@@ -64,7 +64,7 @@ function GrupSetsButtons(props) {
                     {props.setOf.map((v, i2) => (
                         <div key={`set-${i2+props.index}`} className="flex-row align-c justify-c p-2">
                             <span className="fs-text" style={{marginRight: "10px"}}>
-                                {`Sets of size ${i2+props.lastIndex}:`}
+                                {`Size ${i2+props.lastIndex}:`}
                             </span>
                             <ScrollButton
                                 orientation="row"
@@ -190,7 +190,7 @@ export default function SetsButton(props) {
                     </div> 
                     {arrOfProbability.map((val, i) => (
                         <div key={"set-" + i} className="flex-row align-c justify-c p-2">
-                            <h4 className="fs-text">{"Sets of size " + i + ":"}</h4>
+                            <h4 className="fs-text">{"Size " + i + ":"}</h4>
                             <ScrollButton
                                 orientation="row"
                                 disable="configs"

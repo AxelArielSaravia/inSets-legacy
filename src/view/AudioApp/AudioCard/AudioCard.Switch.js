@@ -1,11 +1,22 @@
-import { useState, memo } from "react";
+import { useState, useEffect,memo } from "react";
 
 import Switch from "../SwitchButton.js";
 
 export default memo(function Switcher(props) {
+    const isAllDisable = props.isAllDisable;
     const [isDisable, setIsDisable] = useState(props.effect.isDisable);
  
+    useEffect(() => {
+        if (isAllDisable.generalBTN) {
+            props.effect.isDisable = isAllDisable.value;
+            setIsDisable(() => isAllDisable.value);
+        }
+    }, [isAllDisable]);
+
     const handleOnClick = () => {
+        if (isAllDisable.value) {
+            props.setIsAllDisable(props.effectName);
+        }
         props.effect.isDisable = !props.effect.isDisable;
         setIsDisable(() => props.effect.isDisable);
     }
@@ -20,14 +31,3 @@ export default memo(function Switcher(props) {
         
     );
 });
-/* <button type="button" onClick={handleOnClick}>
-    <label 
-        className="switcher flex-row align-c justify-c" 
-        role="switch" 
-        aria-checked="true"
-        title={props.title ? props.title : ""}
-    >
-        <input type="checkbox" name="switcher" className="hidden" checked={isDisable} onChange={handleOnClick}/>
-        <span className="switcher_thumb fs-text">{props.name}</span>
-    </label>
-</button> */

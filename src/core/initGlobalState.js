@@ -46,6 +46,7 @@ export const GSPlayBackRate = GLOBAL_STATE.playBackRate;
 export const GSTimeInterval = GLOBAL_STATE.timeInterval;
 export const GSFadeTime = GLOBAL_STATE.fadeTime;
 export const GSProbabilityOfExecutionSets = GLOBAL_STATE.probabilityOfExecutionSets;
+export const GSRandomCurrentTime = GLOBAL_STATE.randomCurrentTime;
 export const AUDIO_MAP = GLOBAL_STATE.AUDIO_MAP;
 export const ADD_Audio = GLOBAL_STATE.ADD_Audio;
 export const DELETE_Audio = GLOBAL_STATE.DELETE_Audio;
@@ -80,20 +81,3 @@ export const GSHasAudios = () => GLOBAL_STATE.hasAudios;
   if (typeof val === "boolean") GLOBAL_STATE.isStarted = val;
   return GLOBAL_STATE.isStarted;
 }
-
-/**
- * @param {boolean} val
- * @returns {boolean}
- */
-export const setGSRandomCurrentTime = (val) => {
-  if (typeof val === 'boolean') 
-    GLOBAL_STATE.randomCurrentTime = val;
-  else 
-    GLOBAL_STATE.randomCurrentTime = !GLOBAL_STATE.randomCurrentTime;
-  return GLOBAL_STATE.randomCurrentTime;
-}
-
-/**
- * @returns {boolean} 
- */
-export const getGSRandomCurrentTimeDisable = () => GLOBAL_STATE.randomCurrentTimeDisable;

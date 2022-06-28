@@ -1,4 +1,4 @@
-import { useState, memo } from "react";
+import { useState, useEffect, memo } from "react";
 
 import { GSDelay } from "../../../core/initGlobalState.js";
 import initState from "../../../core/initState.json";
@@ -6,6 +6,7 @@ import initState from "../../../core/initState.json";
 import AsideButton from "./AsideButton.js";
 import TouchButton from "../TouchButton.js";
 import ToolButton from "../ToolButton.js";
+import Switch from "../SwitchButton.js";
 
 
 function changeLocalStorage(name, value) {
@@ -14,41 +15,47 @@ function changeLocalStorage(name, value) {
     localStorage.setItem('delay', JSON.stringify(localStorageDelay)); 
 }
 
-export default memo(function DelayButton() {
+export default memo(function DelayButton(props) {
     let localStorageDelay = JSON.parse(localStorage.getItem('delay'));
 
-    //const [disableAll, setDisableAll] = useState(localStorageDelay.disableAll);
     const [timeMin, setTimeMin] = useState(localStorageDelay.timeMin * 1000);
     const [timeMax, setTimeMax] = useState(localStorageDelay.timeMax * 1000);
     const [feedbackMin, setFeedbackMin] = useState(localStorageDelay.feedbackMin * 100);
     const [feedbackMax, setFeedbackMax] = useState(localStorageDelay.feedbackMax * 100);
 
-    const operationTime = (setTime, operation) => {
-        return function(data) {
-            if (operation === "add") {
-                GSDelay[data] = Number.parseFloat((GSDelay[data] + 0.1).toFixed(1));
-            } else {
-                GSDelay[data] = Number.parseFloat((GSDelay[data] - 0.1).toFixed(1));
-            }
-            const val =  GSDelay[data];
-            //console.log(data, val)
-            changeLocalStorage(data, val);
-            setTime(_ => Math.floor(val * 1000));
-        }
+    const disableAll = props.disableAll;
+
+    useEffect(() => {
+        GSDelay.disableAll = !GSDelay.disableAll;
+        const res = GSDelay.disableAll;
+        changeLocalStorage("disableAll", res);
+    }, [disableAll]);
+
+    const handleOnClick = () => {
+        props.setDisableAll("delay");
     }
 
-    const operationFeedback = (setTime, operation) => {
-        return function(data) {
-            if (operation === "add") {
-                GSDelay[data] = Number.parseFloat((GSDelay[data] + 0.01).toFixed(2));
-            } else {
-                GSDelay[data] = Number.parseFloat((GSDelay[data] - 0.01).toFixed(2));
-            }
-            const val = GSDelay[data];
-            console.log(data, val)
-            changeLocalStorage(data, val);
-            setTime(_ => Math.floor(val * 100));
+    const operationTime = (setTime, operation) => (data) => {
+        if (operation === "add") {
+            GSDelay[data] = Number.parseFloat((GSDelay[data] + 0.1).toFixed(1));
+        } else {
+            GSDelay[data] = Number.parseFloat((GSDelay[data] - 0.1).toFixed(1));
         }
+        const val =  GSDelay[data];
+        changeLocalStorage(data, val);
+        setTime(_ => Math.floor(val * 1000));
+    }
+
+    const operationFeedback = (setTime, operation) => (data) => {
+        if (operation === "add") {
+            GSDelay[data] = Number.parseFloat((GSDelay[data] + 0.01).toFixed(2));
+        } else {
+            GSDelay[data] = Number.parseFloat((GSDelay[data] - 0.01).toFixed(2));
+        }
+        const val = GSDelay[data];
+        console.log(data, val)
+        changeLocalStorage(data, val);
+        setTime(_ => Math.floor(val * 100));
     }
 
     const reset = () => {
@@ -59,7 +66,6 @@ export default memo(function DelayButton() {
         GSDelay.feedbackMax = delay.feedbackMax;
         GSDelay.disableAll = delay.disableAll;
         localStorage.setItem('delay', JSON.stringify(delay));
-        //setDisableAll(_ => delay.disableAll);
         setTimeMin(_ => delay.timeMin * 1000);
         setTimeMax(_ => delay.timeMax * 1000);
         setFeedbackMin(_ => delay.feedbackMin * 100);
@@ -71,6 +77,17 @@ export default memo(function DelayButton() {
             title="Delay"
             description="Change the delay configurations."
         >
+             <div className="flex-row align-c justify-c p-3">
+                <Switch
+                    onClick={handleOnClick}
+                    isDisable={disableAll.value}
+                    title="disable all filters effect"
+                >
+                    <span className="fs-text" style={{width: "107px"}}>
+                        {!disableAll.value ? "disable all" : "enable all"}
+                    </span>
+                </Switch>
+            </div>
             <div className="flex-column align-c justify-c p-3">
                 <ToolButton onClick={reset}>Reset</ToolButton>
             </div>

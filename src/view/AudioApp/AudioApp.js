@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { memo, useState, useReducer } from "react";
 import { addFiles, clearFiles } from "../../core/handleFiles.js";
+
+import { DisableAllProvider } from "./DisableAllProvider.js"
 
 import DropFiles from "../DropFiles.js";
 import Aside from "./Aside.js";
@@ -8,12 +10,16 @@ import DropArea from "../DropArea.js";
 
 import './AudioApp.scss';
 
+
+
 //COMPONENTS
 //App Component
 function AudioApp(props) {
   const [hasAudios, setHasAudios] = useState(false);
   const [audioList, setAudioList] = useState(new Map());
   const [filesLoading, setFilesLoading] = useState(0); 
+
+
 
   const handleSetAudioList = (map) => {
     setAudioList(() => new Map([...map]));
@@ -55,21 +61,24 @@ function AudioApp(props) {
     }
   };
 
+  
   return (
     <div className="audio-app flex-row">
-      <section className="tool-section">
-        <Aside audioList_size={audioList.size}/>
-      </section>
-      <section className="main-section flex-column align-c justify-c">
-        <Main
-          audioList={audioList}
-          filesLoading={filesLoading}
-          hasAudios={hasAudios}
-          handleAddOnClick={handleAddOnClick}
-          handleClearOnClick={handleClearOnClick}
-          handleSetAudioList={handleSetAudioList}
-        />
-      </section>
+      <DisableAllProvider>
+        <section className="tool-section">
+          <Aside audioList_size={audioList.size}/>
+        </section>
+        <section className="main-section flex-column align-c justify-c">
+          <Main
+            audioList={audioList}
+            filesLoading={filesLoading}
+            hasAudios={hasAudios}
+            handleAddOnClick={handleAddOnClick}
+            handleClearOnClick={handleClearOnClick}
+            handleSetAudioList={handleSetAudioList}
+          />
+        </section>
+      </DisableAllProvider>
       {
         props.isDragActive && (
           <DropFiles
@@ -85,4 +94,4 @@ function AudioApp(props) {
   );
 }
 
-export default AudioApp;
+export default memo(AudioApp);

@@ -472,12 +472,20 @@ function GlobalPlayBackRateState(obj) {
         },
         "min": {
             get: function() { return min },
-            set: function(val) { if (typeof val === "number" && isInsideInterval(GlobalPlayBackRateState.MIN, this.max, val)) min = val; },
+            set: function(val) { 
+                if (typeof val === "number" 
+                    && isInsideInterval(GlobalPlayBackRateState.MIN, this.max, val)
+                ) min = val; 
+            },
             enumerable: true
         },
         "max": {
             get: function() { return max },
-            set: function(val) { if (typeof val === "number" && isInsideInterval(this.min, GlobalPlayBackRateState.MIN, val)) max = val; },
+            set: function(val) { 
+                if (typeof val === "number" 
+                    && isInsideInterval(this.min, GlobalPlayBackRateState.MAX, val)
+                ) max = val; 
+            },
             enumerable: true
         },
     });
@@ -629,6 +637,26 @@ function ProbabilityOfExecutionSets() {
 }
 
 /**
+ * @class GlobalRandomCurrentTime
+ * @param {{disableAll: boolean}} obj
+ */
+ function GlobalRandomCurrentTime(obj) {
+    /** @type {boolean} */
+    let disableAll; 
+
+    if (typeof obj === "object" && obj !== null) {
+        disableAll = obj.hasOwnProperty("disableAll")
+            ? !!obj.disableAll 
+            : false;
+    }
+    Object.defineProperty(this, "disableAll", {
+        get: function() { return disableAll },
+        set: function(val) { if (typeof val === "boolean") disableAll = val; },
+        enumerable: true
+    });
+}
+
+/**
  * @param {ElementsState} obj
  * @return {GlobalState}
  */
@@ -636,8 +664,6 @@ const createGlobalState = (elementsState) => {
     const globalState = {}
     /**@type {"audioBuffer"|"audioNode"}*/
     let engine = "audioBuffer";
-    /**@type {boolean}*/
-    let randomCurrentTimeDisable = elementsState?.randomCurrentTimeDisable ?? true;
     /**@type {boolean}*/
     let isStarted = false;
  
@@ -667,7 +693,7 @@ const createGlobalState = (elementsState) => {
             enumerable: true
         },
         "CLEAR_Audio": {
-            value: function (id) {
+            value: function () {
                 globalState.AUDIO_MAP.clear();
                 globalState.probabilityOfExecutionSets.clear();
             },
@@ -715,9 +741,8 @@ const createGlobalState = (elementsState) => {
             value: new GlobalPlayBackRateState(elementsState?.playBackRate),
             enumerable: true
         },
-        "randomCurrentTimeDisable": {
-            get: function () { return randomCurrentTimeDisable },
-            set: function(val) { if (typeof val === "boolean") randomCurrentTimeDisable = val },
+        "randomCurrentTime": {
+            value: new GlobalRandomCurrentTime(elementsState?.randomCurrentTime),
             enumerable: true
         },
         "probabilityOfExecutionSets": {
@@ -1022,9 +1047,9 @@ function AudioPlayBackRateState(globalPlayBackRateState) {
  * @class RandomCurrentTime
  * @param {boolean} randomAudioCurrentTime 
  */
-function RandomCurrentTime(GSRandomCurrentTimeDisable = true) {
+function RandomCurrentTime(GSRandomCurrentTime) {
     /**@type {boolean}*/
-    let randomCurrentTimeDisable = GSRandomCurrentTimeDisable;
+    let randomCurrentTimeDisable = GSRandomCurrentTime?.disableAll ?? false;
     /**@type {nmumber}*/
     let VALUE = 0;
 
@@ -1153,7 +1178,7 @@ function createAudioState(id, title, type, duration, elementsState) {
             enumerable: true
         },
         "randomCurrentTime": {
-            value: new RandomCurrentTime(elementsState?.randomCurrentTimeDisable),
+            value: new RandomCurrentTime(elementsState?.randomCurrentTime),
             enumerable: true
         },
         "source": {
@@ -1168,10 +1193,10 @@ function createAudioState(id, title, type, duration, elementsState) {
                     if (typeof val !== "number" || DURATION <= 0.5) return;
                     //we keep 0.4 seconds of sound 
                     startTimePoint = val > endTimePoint - 0.5
-                    ? endTimePoint - 0.5
-                    : val < 0 
-                    ? 0
-                    : val;
+                        ? endTimePoint - 0.5
+                        : val < 0 
+                        ? 0
+                        : val;
                 },
             },
             enumerable: true

@@ -49,44 +49,51 @@ const FilterTypeButton = memo(function (props) {
     );
 });
 
-export default memo(function FilterButton() {
+export default memo(function FilterButton(props) {
     let localStorageFilter = JSON.parse(localStorage.getItem('filter'));
-    //const [disableAll, setDisableAll] = useState(localStorageFilter.disableAll);
     const [frequencyMax, setFrequencyMax] = useState(localStorageFilter.frequencyMax);
     const [frequencyMin, setFrequencyMin] = useState(localStorageFilter.frequencyMin);
     const [qMax, setQMax] = useState(Number.parseFloat(localStorageFilter.qMax).toFixed(2));
     const [qMin, setQMin] = useState(Number.parseFloat(localStorageFilter.qMin).toFixed(2));
     const [types, setTypes] = useState(localStorageFilter.types);
+    const disableAll = props.disableAll;
 
-    const operationQ = (setTime, operation) => {
-        return function(data) {
-            let v = 0.05;
-            if (GSFilter[data] >= 2) v = 0.1; 
-            if (operation === "add") {
-                GSFilter[data] = Number.parseFloat((GSFilter[data] + v).toFixed(2));
-            } else {
-                GSFilter[data] = Number.parseFloat((GSFilter[data] - v).toFixed(2))
-            } 
-            let res = GSFilter[data].toFixed(2);
-            changeLocalStorage(data, res);
-            setTime(() => res);
-        }
+    useEffect(() => {
+        GSFilter.disableAll = !GSFilter.disableAll;
+        const res = GSFilter.disableAll;
+        changeLocalStorage("disableAll", res);
+    }, [disableAll]);
+
+    const handleOnClick = () => {
+        props.setDisableAll("filter");
     }
 
-    const operationFrequency = (setTime, operation) => {
-        return function(data) {
-            let v = 1000;
-            if (GSFilter[data] < 200) v = 10;
-            else if (GSFilter[data] < 1000) v = 50;
-            else if (GSFilter[data] < 10000) v = 100;
-            if (operation === "add") {
-                GSFilter[data] += v;
-            } else {
-                GSFilter[data] -= v;
-            }
-            changeLocalStorage(data, GSFilter[data]);
-            setTime(() => GSFilter[data]);
+    const operationQ = (setTime, operation) => (data) => {
+        let v = 0.05;
+        if (GSFilter[data] >= 2) v = 0.1; 
+        if (operation === "add") {
+            GSFilter[data] = Number.parseFloat((GSFilter[data] + v).toFixed(2));
+        } else {
+            GSFilter[data] = Number.parseFloat((GSFilter[data] - v).toFixed(2))
+        } 
+        let res = GSFilter[data].toFixed(2);
+        changeLocalStorage(data, res);
+        setTime(() => res);
+     }
+    
+
+    const operationFrequency = (setTime, operation) => (data) => {
+        let v = 1000;
+        if (GSFilter[data] < 200) v = 10;
+        else if (GSFilter[data] < 1000) v = 50;
+        else if (GSFilter[data] < 10000) v = 100;
+        if (operation === "add") {
+            GSFilter[data] += v;
+        } else {
+            GSFilter[data] -= v;
         }
+        changeLocalStorage(data, GSFilter[data]);
+        setTime(() => GSFilter[data]);
     }
 
     const reset = () => {
@@ -98,7 +105,6 @@ export default memo(function FilterButton() {
         GSFilter.types = filter.types;
         GSFilter.disableAll = filter.disableAll;
         localStorage.setItem('filter', JSON.stringify(filter));
-        //setDisableAll(_ => filter.disableAll);
         setFrequencyMax(_ => filter.frequencyMax);
         setFrequencyMin(_ => filter.frequencyMin);
         setQMax(_ => Number.parseFloat(filter.qMax).toFixed(2));
@@ -111,6 +117,17 @@ export default memo(function FilterButton() {
             title="Filter"
             description="Change the filter configurations."
         >
+            <div className="flex-row align-c justify-c p-3">
+                <Switch
+                    onClick={handleOnClick}
+                    isDisable={disableAll.value}
+                    title="disable all filters effect"
+                >
+                    <span className="fs-text" style={{width: "107px"}}>
+                        {!disableAll.value ? "disable all" : "enable all"}
+                    </span>
+                </Switch>
+            </div>
             <div className="flex-column align-c justify-c p-3">
                 <ToolButton onClick={reset}>Reset</ToolButton>
             </div>

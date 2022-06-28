@@ -8,7 +8,7 @@ import {
     GSPanner,
     GSFadeTime,
     GSPlayBackRate, 
-    getGSRandomCurrentTimeDisable,
+    GSRandomCurrentTime,
     GSTimeInterval,
     GSIsStarted,
     ADD_Audio,
@@ -50,7 +50,7 @@ const elementsState = {
     filter: GSFilter,
     delay: GSDelay,
     playBackRate: GSPlayBackRate,
-    randomCurrentTimeDisable: getGSRandomCurrentTimeDisable()
+    randomCurrentTime: GSRandomCurrentTime
 }
 
 /**
@@ -285,7 +285,7 @@ const play = (id, cb) => {
         //CHANGE THE CURRENT TIME
         let startPoint = audioState.startTimePoint.get();
 
-        if (!audioState.randomCurrentTime.isDisable && !getGSRandomCurrentTimeDisable()) {
+        if (!audioState.randomCurrentTime.isDisable && !GSRandomCurrentTime.disableAll) {
             audioState.randomCurrentTime.random(audioState.startTimePoint.get(), audioState.endTimePoint.get());
             startPoint = audioState.randomCurrentTime.value;
         } else {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState, useContext } from "react";
 import { play, stop, setAudioConfiguration, deleteAudio } from "../../../core/audioEffects.js";
 
 import Switcher from "./AudioCard.Switch.js";
@@ -6,15 +6,24 @@ import TimeText from "./AudioCard.TimeText.js";
 import TimeLine from "./AudioCard.TimeLine.js";
 import Volume from "./AudioCard.Volume.js";
 
+import { ContextDisableAll } from "../DisableAllProvider.js";
+
 import "./AudioCard.scss"; 
 
-export default function AudioCard(props) {
-    const [states, setStates] = useState(props.states);
-    const [startTimePoint, setStartTimePoint] = useState(props.data.startTimePoint.get());
-    const [endTimePoint, setEndTimePoint] = useState(props.data.endTimePoint.get());
-    const data = props.data;
+export default memo(function AudioCard(props) {
+    const propsState = props.states;
+    const propData = props.data;
+    const [states, setStates] = useState(propsState);
+    const [startTimePoint, setStartTimePoint] = useState(propData.startTimePoint.get());
+    const [endTimePoint, setEndTimePoint] = useState(propData.endTimePoint.get());
 
-    useEffect(() => { setStates(() => props.states); }, [props.states]);
+    const [isAllDisable, dispatchDisableAll] = useContext(ContextDisableAll);
+
+    useEffect(() => { setStates(() => propsState); }, [propsState]);
+
+    const setIsAllDisable = (name) => {
+        dispatchDisableAll({type: "audioCard", typeEffect: name});
+    } 
 
     const add = (setTime) => {
         return function(timePoint) {
@@ -22,14 +31,12 @@ export default function AudioCard(props) {
             setTime(() => timePoint.get());
         }
     }
-
     const subtract = (setTime) => {
         return function(timePoint) {
             timePoint.set(timePoint.get() - 1);
             setTime(() => timePoint.get());
         }
     }
-    
     const changeState = (isPlaying, randomCurrentTime) => {
         setStates(() => ({
             isPlaying: isPlaying,
@@ -37,7 +44,6 @@ export default function AudioCard(props) {
             color: ""
         }));
     }
-
     const onClickPlay = () => {
         if (!states.isPlaying) {
             setAudioConfiguration(props.id);
@@ -61,7 +67,7 @@ export default function AudioCard(props) {
                 <i className="flex-row align-c fs-text-l bi bi-x"></i>
             </button>
             <div className="audioCard-name">
-                <h4 className="fs-text ellipsis">{data.title}</h4>
+                <h4 className="fs-text ellipsis">{propData.title}</h4>
             </div>
             <div className="audioCard-tools flex-row">
                 <div className="audioCard-tools_left flex-column align-c">
@@ -69,14 +75,14 @@ export default function AudioCard(props) {
                         appIsPlaying={props.appIsPlaying}
                         startTimePoint={startTimePoint} 
                         endTimePoint={endTimePoint} 
-                        duration={data.duration} 
+                        duration={propData.duration} 
                         isPlaying={states?.isPlaying}
                         randomCurrentTime={states?.randomCurrentTime}
                         color={states?.color}
                     />
                     <div className="audioCard-play flex-row align-center justify-c"> 
                         <TimeText 
-                            data={data.startTimePoint} 
+                            data={propData.startTimePoint} 
                             time={startTimePoint} 
                             add={add(setStartTimePoint)} 
                             subtract={subtract(setStartTimePoint)}
@@ -93,7 +99,7 @@ export default function AudioCard(props) {
                             </button>
                         </div>
                         <TimeText 
-                            data={data.endTimePoint} 
+                            data={propData.endTimePoint} 
                             time={endTimePoint} 
                             add={add(setEndTimePoint)} 
                             subtract={subtract(setEndTimePoint)}
@@ -102,15 +108,50 @@ export default function AudioCard(props) {
                 </div>
                 <div className="audioCard-tools_right flex-column align-end">
                     <div className="audioCard-pluggins">
-                        <Volume volume={data.volume} id={props.id}/>
-                        <Switcher effect={data.panner} name="panner" title="panner effect"/>
-                        <Switcher effect={data.delay} name="delay" title="delay effect"/>
-                        <Switcher effect={data.filter} name="filter" title="filter effect"/>
-                        <Switcher effect={data.playBackRate} name="rate" title="random playback rate"/>
-                        <Switcher effect={data.randomCurrentTime}name="RCT" title="random change current time"/>
+                        <Volume volume={propData.volume} id={props.id}/>
+                        <Switcher
+                            isAllDisable={isAllDisable.panner}
+                            setIsAllDisable={setIsAllDisable}
+                            effect={propData.panner}
+                            effectName="panner"
+                            name="panner"
+                            title="panner effect"
+                        />
+                        <Switcher
+                            isAllDisable={isAllDisable.delay}
+                            setIsAllDisable={setIsAllDisable}
+                            effect={propData.delay} 
+                            effectName="delay"
+                            name="delay" 
+                            title="delay effect"
+                        />
+                        <Switcher
+                            isAllDisable={isAllDisable.filter}
+                            setIsAllDisable={setIsAllDisable}
+                            effect={propData.filter}
+                            effectName="filter"
+                            name="filter" 
+                            title="filter effect"
+                        />
+                        <Switcher
+                            isAllDisable={isAllDisable.playBackRate}
+                            setIsAllDisable={setIsAllDisable}
+                            effect={propData.playBackRate} 
+                            effectName="playBackRate"
+                            name="rate"
+                            title="random playback rate"
+                        />
+                        <Switcher
+                            isAllDisable={isAllDisable.randomCurrentTime}
+                            setIsAllDisable={setIsAllDisable}
+                            effect={propData.randomCurrentTime}
+                            effectName="randomCurrentTime"
+                            name="RCT" 
+                            title="random change current time"
+                        />
                     </div>
                 </div>
             </div>
         </div>
     );
-}
+});

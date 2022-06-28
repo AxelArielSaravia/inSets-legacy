@@ -1,4 +1,4 @@
-import { useState, memo } from "react";
+import { useState, useEffect, memo } from "react";
 
 import { GSPanner } from "../../../core/initGlobalState.js";
 import initState from "../../../core/initState.json";
@@ -6,6 +6,7 @@ import initState from "../../../core/initState.json";
 import AsideButton from "./AsideButton.js";
 import TouchButton from "../TouchButton.js";
 import ToolButton from "../ToolButton.js";
+import Switch from "../SwitchButton.js";
 
 function changeLocalStorage(name, value) {
     let localStoragePanner = JSON.parse(localStorage.getItem('panner'));
@@ -13,9 +14,8 @@ function changeLocalStorage(name, value) {
     localStorage.setItem('panner', JSON.stringify(localStoragePanner)); 
 }
 
-export default memo(function PannerButton() {
+export default memo(function PannerButton(props) {
     let localStoragePanner = JSON.parse(localStorage.getItem('panner'));
-    //const [disableAll, setDisableAll] = useState(localStoragePanner.disableAll);
     const [xMax, setXMax] = useState(localStoragePanner.xMax);
     const [xMin, setXMin] = useState(localStoragePanner.xMin);
     const [yMax, setYMax] = useState(localStoragePanner.yMax);
@@ -23,17 +23,27 @@ export default memo(function PannerButton() {
     const [zMax, setZMax] = useState(localStoragePanner.zMax);
     const [zMin, setZMin] = useState(localStoragePanner.zMin);
 
-    const operations = (setTime, operation) => {
-        return function(data) {
-            if (operation === 'add') {
-                GSPanner[data] += 1;
-            } else {
-                GSPanner[data] -= 1;
-            }
-            const val =  GSPanner[data];
-            changeLocalStorage(data, val);
-            setTime(_ => val);
+    const disableAll = props.disableAll;
+
+    useEffect(() => {
+        GSPanner.disableAll = !GSPanner.disableAll;
+        const res = GSPanner.disableAll;
+        changeLocalStorage("disableAll", res);
+    }, [disableAll]);
+
+    const handleOnClick = () => {
+        props.setDisableAll("panner");
+    }
+
+    const operations = (setTime, operation) => (data) => {
+        if (operation === 'add') {
+            GSPanner[data] += 1;
+        } else {
+            GSPanner[data] -= 1;
         }
+        const val =  GSPanner[data];
+        changeLocalStorage(data, val);
+        setTime(_ => val);
     }
     const reset = () => {
         let panner = initState.panner;
@@ -45,7 +55,6 @@ export default memo(function PannerButton() {
         GSPanner.zMin = panner.zMin;
         GSPanner.disableAll = panner.disableAll;
         localStorage.setItem('panner', JSON.stringify(panner));
-        //setDisableAll(_ => panner.disableAll);
         setXMax(() => panner.xMax);
         setXMin(() => panner.xMin);
         setYMax(() => panner.yMax);
@@ -58,6 +67,17 @@ export default memo(function PannerButton() {
             title="Panner"
             description="Change the intervals of panner configurations."
         >
+            <div className="flex-row align-c justify-c p-3">
+                <Switch
+                    onClick={handleOnClick}
+                    isDisable={disableAll.value}
+                    title="disable all filters effect"
+                >
+                    <span className="fs-text" style={{width: "107px"}}>
+                        {!disableAll.value ? "disable all" : "enable all"}
+                    </span>
+                </Switch>
+            </div>
             <div className="flex-column align-c justify-c p-3">
                 <ToolButton onClick={reset}>Reset</ToolButton>
             </div>

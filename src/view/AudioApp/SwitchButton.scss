@@ -7,36 +7,41 @@
         background-color: var(--primary-l-color);
         width: 100%;
         height: 100%;
+        transition: opacity 0.2s ease-out;
         padding: 2px 4px;
         border-radius: 2px;
+    }
+    .switcher_cross {
+        display: inline-block;
+        width: 100%;
+        height: 100%;
         position: relative;
-        transition: opacity 0.2s ease-out;
         overflow: hidden;
     }
 
-    .switcher_thumb:after {
+    .switcher_cross:after {
         content: "";
         display: block;
         position: absolute;
-        width: 87%;
+        width: 100%;
         height: 1px;
         background-color: var(--secondary-color);
         top: 50%;
         opacity: 0;
-        transform: rotate(0.04turn);
+        transform: rotate(10deg);
         transition: opacity 0.2s ease-out;
     }
     
-    .switcher_thumb:before {
+    .switcher_cross:before {
         content: "";
         display: block;
         position: absolute;
-        width: 87%;
+        width: 100%;
         height: 1px;
         background-color: var(--secondary-color);
         top: 50%;
         opacity: 0;
-        transform: rotate(-0.04turn);
+        transform: rotate(-10deg);
         transition: opacity 0.2s ease-out;
     }
 
@@ -44,8 +49,8 @@
         opacity: 50%;
     }
 
-    input:checked + .switcher_thumb:after,
-    input:checked + .switcher_thumb:before {
+    input:checked + .switcher_thumb .switcher_cross:after,
+    input:checked + .switcher_thumb .switcher_cross:before {
         opacity: 70%;
     }
 }

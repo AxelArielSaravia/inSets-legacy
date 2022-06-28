@@ -29,7 +29,9 @@
     "min": 0.8, 
     "max": 2
   },
-  "randomCurrentTimeDisable": false,
+  "randomCurrentTime": {
+    "disableAll": false
+  },
   "timeInterval":{
     "min": 800, 
     "max": 5000 

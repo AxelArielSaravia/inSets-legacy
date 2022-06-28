@@ -10,15 +10,14 @@ import ToolButton from "./ToolButton.js";
 import "./Main.scss";
 
 export default memo(function Main(props) {
-  //console.log("Update Main");//DEBUGGER
-
   const [isPlaying, setIsPlaying] = useState(false);
   const [audiosStates, setAudiosStates] = useState({});
+  const audioList = props.audioList;
 
   useEffect(() => { 
     setAudiosStates((state) => {
       const audiosPlayingObj = {...state};
-      props.audioList.forEach((el, i) => {
+      audioList.forEach((el, i) => {
         if (!state[i]){
           audiosPlayingObj[i] = {
             isPlaying: el.isPlaying,
@@ -29,7 +28,7 @@ export default memo(function Main(props) {
       });
       return audiosPlayingObj
     });
-  }, [props.audioList]);
+  }, [audioList]);
 
   const changeAudiosStates = (id, isPlaying, randomCurrentTime, color) => {
     setAudiosStates(state => ({
@@ -98,7 +97,7 @@ export default memo(function Main(props) {
                 }}
               />  
              */}
-            { [...props.audioList].map((val) => (
+            { [...audioList].map((val) => (
               <AudioCard
                 handleSetAudioList={props.handleSetAudioList}
                 key={val[0]}

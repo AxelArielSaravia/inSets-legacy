@@ -13,8 +13,19 @@ export default function SwitchButton(props) {
                 aria-checked="true"
                 title={props.title ? props.title : ""}
             >
-                <input type="checkbox" name="switcher" className="hidden" checked={props.isDisable} onChange={props.onClick}/>
-                <span className="switcher_thumb fs-text">{props.name}</span>
+                <input 
+                    type="checkbox" 
+                    name="switcher" 
+                    className="hidden" 
+                    checked={props.isDisable} 
+                    onChange={props.onClick}
+                />
+                    <div className="switcher_thumb flex-column align-c justify-c">
+                        {props.name ? ( 
+                            <span className="switcher_cross fs-text">{props.name}</span>
+                        ) : props.children
+                        }
+                    </div>
             </label>
         </button>
     );
