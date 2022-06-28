@@ -59,7 +59,7 @@ export default memo(function FilterButton(props) {
     const disableAll = props.disableAll;
 
     useEffect(() => {
-        GSFilter.disableAll = !GSFilter.disableAll;
+        GSFilter.disableAll = disableAll.value;
         const res = GSFilter.disableAll;
         changeLocalStorage("disableAll", res);
     }, [disableAll]);

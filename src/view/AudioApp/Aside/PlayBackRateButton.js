@@ -23,7 +23,7 @@ export default memo(function PlayBackRateButton(props) {
     const disableAll = props.disableAll;
 
     useEffect(() => {
-        GSPlayBackRate.disableAll = !GSPlayBackRate.disableAll;
+        GSPlayBackRate.disableAll = disableAll.value;
         const res = GSPlayBackRate.disableAll;
         changeLocalStorage("disableAll", res);
     }, [disableAll]);

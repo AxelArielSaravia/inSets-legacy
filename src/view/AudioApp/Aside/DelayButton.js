@@ -26,7 +26,7 @@ export default memo(function DelayButton(props) {
     const disableAll = props.disableAll;
 
     useEffect(() => {
-        GSDelay.disableAll = !GSDelay.disableAll;
+        GSDelay.disableAll = disableAll.value;
         const res = GSDelay.disableAll;
         changeLocalStorage("disableAll", res);
     }, [disableAll]);

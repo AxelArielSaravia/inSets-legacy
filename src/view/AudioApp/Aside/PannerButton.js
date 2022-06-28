@@ -27,7 +27,7 @@ export default memo(function PannerButton(props) {
 
     useEffect(() => {
         console.log("panner disableAll", disableAll);
-        GSPanner.disableAll = !GSPanner.disableAll;
+        GSPanner.disableAll = disableAll.value;
         const res = GSPanner.disableAll;
         changeLocalStorage("disableAll", res);
         console.log("GSPanner", GSPanner.disableAll);

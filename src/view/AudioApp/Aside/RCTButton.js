@@ -15,7 +15,7 @@ export default memo(function RCTButton(props) {
     const disableAll = props.disableAll;
 
     useEffect(() => {
-        GSRandomCurrentTime.disableAll = !GSRandomCurrentTime.disableAll;
+        GSRandomCurrentTime.disableAll = disableAll.value;
         const res = GSRandomCurrentTime.disableAll;
         changeLocalStorage(res);
     }, [disableAll]);
