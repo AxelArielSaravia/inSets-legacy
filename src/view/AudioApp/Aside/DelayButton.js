@@ -83,7 +83,7 @@ export default memo(function DelayButton(props) {
                     isDisable={disableAll.value}
                     title="disable all filters effect"
                 >
-                    <span className="fs-text" style={{width: "107px"}}>
+                    <span className="fs-text" style={{width: "110px"}}>
                         {!disableAll.value ? "disable all" : "enable all"}
                     </span>
                 </Switch>
