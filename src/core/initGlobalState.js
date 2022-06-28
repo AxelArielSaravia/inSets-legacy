@@ -11,19 +11,18 @@ import initState from "./initState.json";
  */
 const handleInitState = (elementsState) => {
   const keysOfElementsState = Object.keys(elementsState);
-/*   if (localStorage.getItem('state') != null) {
-
-  } */
-  localStorage.setItem('state', true);
-
-  keysOfElementsState.forEach(name => {
-    const el = elementsState[name];
-    if (typeof el === "object" && el !== null) {
-      localStorage.setItem(name, JSON.stringify(elementsState[name]));
-    } else {
-      localStorage.setItem(name, elementsState[name]);
-    }
-  });
+  if (localStorage.getItem('state') == null) {
+    localStorage.setItem('state', true);
+  
+    keysOfElementsState.forEach(name => {
+      const el = elementsState[name];
+      if (typeof el === "object" && el !== null) {
+        localStorage.setItem(name, JSON.stringify(elementsState[name]));
+      } else {
+        localStorage.setItem(name, elementsState[name]);
+      }
+    });
+  } 
 
   const  returnObj = {};
 
