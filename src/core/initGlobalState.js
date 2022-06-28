@@ -11,8 +11,8 @@ import initState from "./initState.json";
  */
 const handleInitState = (elementsState) => {
   const keysOfElementsState = Object.keys(elementsState);
+  localStorage.clear();
   if (localStorage.getItem('state') == null) {
-    localStorage.clear();
     localStorage.setItem('state', true);
   
     keysOfElementsState.forEach(name => {
