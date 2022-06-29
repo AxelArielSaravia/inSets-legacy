@@ -4,13 +4,14 @@ const ContextDisableAll = createContext(null);
 
 const value = () => {
     const arr = ["delay", "filter", "panner", "playBackRate", "randomCurrentTime"]
-    const storage = {};
+    const obj = {};
     arr.forEach(el => {
-        storage[el] = {};
-        storage[el].value = localStorage[el]?.disableAll ?? false;
-        storage[el].generalBTN = false
+        let storage = JSON.parse(localStorage.getItem(el));
+        obj[el] = {};
+        obj[el].value = storage.disableAll ?? false;
+        obj[el].generalBTN = false
     }); 
-    return storage;
+    return obj;
 }
 
 const disableReducer = (state, action) => {
