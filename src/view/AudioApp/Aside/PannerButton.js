@@ -29,7 +29,6 @@ export default memo(function PannerButton(props) {
         GSPanner.disableAll = disableAll.value;
         const res = GSPanner.disableAll;
         changeLocalStorage("disableAll", res);
-        console.log("GSPanner", GSPanner.disableAll);
     }, [disableAll]);
 
     const handleOnClick = () => {

@@ -33,9 +33,9 @@ function GrupSetsButtons(props) {
 
     return (
         <>
-            <div className="flex-row align-c justify-sb p-2">
+            <div className="flex-row align-c justify-c p-2"  style={{width: "98%"}}>
                 <div className="flex-row align-c justify-c">
-                    <h4 className="fs-text">
+                    <h4 className="fs-text flex-row align-c justify-c" style={{width: "150px"}}>
                         { props.lastIndex !== n
                             ? `Sizes ${props.lastIndex} to ${props.setOf.length - 1 + props.lastIndex}:`
                             : `Size ${n}:`
@@ -115,7 +115,7 @@ function GrupSetsButtonsGen(props) {
             {grupNumberSize > 0 && newArr.map((setOf, i1) => {
                 let lastIndex = i1 * grupNumberSize;
                 return (
-                    <div key={"setOf-" + i1} className="">
+                    <div key={"setOf-" + i1} className="flex-column align-c justify-c">
                         <GrupSetsButtons 
                             setOf={setOf}
                             lastIndex={lastIndex}
