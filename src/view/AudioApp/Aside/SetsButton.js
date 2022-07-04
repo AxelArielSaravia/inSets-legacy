@@ -35,7 +35,7 @@ function GrupSetsButtons(props) {
         <>
             <div className="flex-row align-c justify-c p-2"  style={{width: "98%"}}>
                 <div className="flex-row align-c justify-c">
-                    <h4 className="fs-text flex-row align-c justify-c" style={{width: "150px"}}>
+                    <h4 className="fs-text flex-row align-c justify-c" style={{width: "100%"}}>
                         { props.lastIndex !== n
                             ? `Sizes ${props.lastIndex} to ${props.setOf.length - 1 + props.lastIndex}:`
                             : `Size ${n}:`
@@ -53,8 +53,8 @@ function GrupSetsButtons(props) {
                 { props.lastIndex !== n && (
                     <ToolButton onClick={handleOnClick} className="">
                         { hidden
-                            ? <i className="flex-column align-c justify-c bi bi-chevron-compact-right"></i>
-                            : <i className="flex-column align-c justify-c bi bi-chevron-compact-down"></i>
+                            ? <i style={{padding: "0px"}} className="flex-column align-c justify-c bi bi-chevron-compact-right"></i>
+                            : <i style={{padding: "0px"}} className="flex-column align-c justify-c bi bi-chevron-compact-down"></i>
                         }
                     </ToolButton>
                 )}

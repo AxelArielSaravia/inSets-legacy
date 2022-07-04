@@ -64,15 +64,17 @@ const elementsState = {
 }
 
 /**
- * @param {Map<string, AudioState>} map 
  * @returns {string}
  */
- const createId = () => {
-    let n = Math.floor(Math.random() * 100);
-    while (AUDIO_MAP.has("audio-"+n)) {
-      n = Math.floor(Math.random() * 100);
+ function createId() {
+    const values = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_";
+    let str = Date.now() + "";
+    for (let i = 0; i < 8; i++) {
+        let indexValue = Math.floor(Math.random() * values.length);
+        let indexPosition = Math.floor(Math.random() * str.length);
+        str = str.slice(0, indexPosition) + values[indexValue] + str.slice(indexPosition);
     }
-    return "audio-"+n;
+    return str;
 }
 
 const audioStateFromFile_AudioNode = (file, callback) => {
@@ -403,22 +405,22 @@ const createNewSetExecution = () => {
     //selects elements for the set
     if (AUDIO_MAP.size / 2 >= n) {
         executeSet = new Set();
-        let posiblesAudios = [...AUDIO_MAP.keys()];
+        let possibleAudios = [...AUDIO_MAP.keys()];
         console.log("while start");//DEBUGGER
         while (executeSet.size < n) {
-            let n = random(0, posiblesAudios.length-1);
-            executeSet.add(AUDIO_MAP.get(posiblesAudios[n]));
-            posiblesAudios.slice(n, 1);
+            let n = random(0, possibleAudios.length-1);
+            executeSet.add(AUDIO_MAP.get(possibleAudios[n]));
+            possibleAudios.slice(n, 1);
         }
         console.log("while end");//DEBUGGER
     } else {
         console.log("while start");//DEBUGGER
-        let posiblesAudios = [...AUDIO_MAP.values()];
+        let possibleAudios = [...AUDIO_MAP.values()];
         for (let total = AUDIO_MAP.size - n; total > 0; total--) {
-            let n = random(0, posiblesAudios.length-1);
-            posiblesAudios.slice(n, 1);
+            let n = random(0, possibleAudios.length-1);
+            possibleAudios.slice(n, 1);
         }
-        executeSet = new Set(posiblesAudios);
+        executeSet = new Set(possibleAudios);
         console.log("while end");//DEBUGGER
     }
 

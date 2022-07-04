@@ -110,8 +110,8 @@
   letter-spacing: 1.5px;
   margin: 5px 0;
 }
-.fs-text-l { font-size: 1.8rem; }
-.fs-text { font-size: 1.2rem; }
+.fs-text-l { font-size: 1.6rem; }
+.fs-text { font-size: 1.1rem; }
 .fs-text-s { font-size: 1rem; } /* no used */
 
 
@@ -153,8 +153,7 @@
 }
 */
 
-@media screen and (max-width: 1300px) {
-
+@media screen and (max-width: 1400px) {
   .flex-r-change { flex-direction: column; }
   .flex-c-change { flex-direction: row; }
   
