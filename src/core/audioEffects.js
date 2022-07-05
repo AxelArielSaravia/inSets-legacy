@@ -11,6 +11,7 @@ import {
     GSRandomCurrentTime,
     GSTimeInterval,
     GSIsStarted,
+    GSSTARTED_ID,
     ADD_Audio,
     DELETE_Audio,
     GSProbabilityOfExecutionSets
@@ -260,74 +261,75 @@ const createAudioRandomChain = (audioCtx, audioState) => {
 }
 
 const setAudioConfiguration = (id) => {
-    let audioState = AUDIO_MAP.get(id);
+    const AUDIO_STATE = AUDIO_MAP.get(id);
 
     //CONNECTIONS
     if (GSEngine() === "audioBuffer") {
-        audioState.source = AUDIO_CONTEXT().createBufferSource();
-        audioState.source.buffer = audioState.audioEngine;
+        AUDIO_STATE.source = AUDIO_CONTEXT().createBufferSource();
+        AUDIO_STATE.source.buffer = AUDIO_STATE.audioEngine;
     } 
-    let [input, output] = createAudioRandomChain(AUDIO_CONTEXT(), audioState);
+    let [input, output] = createAudioRandomChain(AUDIO_CONTEXT(), AUDIO_STATE);
 
-    audioState.source.connect(input);
+    AUDIO_STATE.source.connect(input);
     output.connect(AUDIO_CONTEXT().destination);
 
-    audioState.outputGain = output;
+    AUDIO_STATE.outputGain = output;
 
-    audioState = input = output = null;
+    input = output = null;
 }
 
 const play = (id, cb) => {
-    let audioState = AUDIO_MAP.get(id);
-
-    if (audioState) {
+    const AUDIO_STATE = AUDIO_MAP.get(id);
+    if (AUDIO_STATE) {
         //FADE IN (to a random value)
-        audioState.outputGain.gain.exponentialRampToValueAtTime(audioState.volume.get(), AUDIO_CONTEXT().currentTime + GSFadeTime.time / 1000);
+        AUDIO_STATE.outputGain.gain.exponentialRampToValueAtTime(AUDIO_STATE.volume.get(), AUDIO_CONTEXT().currentTime + GSFadeTime.time / 1000);
 
         //CHANGE THE CURRENT TIME
-        let startPoint = audioState.startTimePoint.get();
+        let startPoint = AUDIO_STATE.startTimePoint.get();
 
-        if (!audioState.randomCurrentTime.isDisable && !GSRandomCurrentTime.disableAll) {
-            audioState.randomCurrentTime.random(audioState.startTimePoint.get(), audioState.endTimePoint.get());
-            startPoint = audioState.randomCurrentTime.value;
+        if (!AUDIO_STATE.randomCurrentTime.isDisable && !GSRandomCurrentTime.disableAll) {
+            AUDIO_STATE.randomCurrentTime.random(AUDIO_STATE.startTimePoint.get(), AUDIO_STATE.endTimePoint.get());
+            startPoint = AUDIO_STATE.randomCurrentTime.value;
         } else {
-            audioState.randomCurrentTime.value = startPoint;
+            AUDIO_STATE.randomCurrentTime.value = startPoint;
         }
         
         if (GSEngine() === "audioNode") {
-            audioState.audioEngine.currentTime = startPoint;
-            audioState.audioEngine.play();
+            AUDIO_STATE.audioEngine.currentTime = startPoint;
+            AUDIO_STATE.audioEngine.play();
             
-            audioState.audioEngine.ontimeupdate = function(e) {
-                if (e.target.currentTime >= audioState.endTimePoint.get()) {
+            AUDIO_STATE.audioEngine.ontimeupdate = function(e) {
+                if (e.target.currentTime >= AUDIO_STATE.endTimePoint.get()) {
                     stop(id, cb);
                 }
             }
         } else {
-            let a = audioState.endTimePoint.get() - startPoint;
-            let startNum = audioState.startNum.set();
+            const START_ID =  createId();
+            AUDIO_STATE.startID.value = START_ID;
+            
+            const END_TIME = AUDIO_STATE.endTimePoint.get() - startPoint;
+            
+            AUDIO_STATE.source.start(0, startPoint);
 
-            audioState.source.start(0, startPoint);
-
-            wait(Math.floor(a * 1000))
+            wait(Math.floor(END_TIME * 1000))
             .then(() => {
-                if (audioState.startNum.get() === startNum && audioState.isPlaying) {
+                if (AUDIO_STATE.startID.value === START_ID && AUDIO_STATE.isPlaying) {
                     return stop(id, cb);
                 }
             });  
         }
-        audioState.isPlaying = true;
-        if (typeof cb === "function") cb(audioState.isPlaying, audioState.randomCurrentTime.value);
+        AUDIO_STATE.isPlaying = true;
+        if (typeof cb === "function") cb(AUDIO_STATE.isPlaying, AUDIO_STATE.randomCurrentTime.value);
     }
 }
 
 const stop = (id, cb) => {
-    let audioState = AUDIO_MAP.get(id);
-    if (audioState && audioState.isPlaying) {
+    const AUDIO_STATE = AUDIO_MAP.get(id);
+    if (AUDIO_STATE && AUDIO_STATE.isPlaying) {
         //FADE OUT 
-        audioState.outputGain.gain.exponentialRampToValueAtTime(0.01, AUDIO_CONTEXT().currentTime + GSFadeTime.time / 1000);
+        AUDIO_STATE.outputGain.gain.exponentialRampToValueAtTime(0.01, AUDIO_CONTEXT().currentTime + GSFadeTime.time / 1000);
         return wait(GSFadeTime.time)
-        .then(() => disconnect(audioState, cb));
+        .then(() => disconnect(AUDIO_STATE, cb));
     }
     return Promise.resolve(false);
 }
@@ -369,11 +371,11 @@ const deleteAudio = (id, cb) => {
 }
 
 const changeVolume = (id, val) => {
-    let audioState = AUDIO_MAP.get(id);
-    if (audioState) {
-        audioState.volume.set(val);
-        if (audioState.isPlaying) {
-            audioState.outputGain.gain.value = audioState.volume.get()
+    const AUDIO_STATE = AUDIO_MAP.get(id);
+    if (AUDIO_STATE) {
+        AUDIO_STATE.volume.set(val);
+        if (AUDIO_STATE.isPlaying) {
+            AUDIO_STATE.outputGain.gain.value = AUDIO_STATE.volume.get()
         }
     }
 }
@@ -384,15 +386,30 @@ const changeVolume = (id, val) => {
  */
 const wait = ms => new Promise(resolve => setInterval(resolve, ms));
 
-const randomTimeExecution = (cb) => {
-    if (GSIsStarted()) {
+const changeGSSTARTED_ID = () => GSSTARTED_ID(createId());
+
+const randomTimeExecution = (cb, startedID) => {
+    if (GSIsStarted() && GSSTARTED_ID() === startedID) {
         randomSetsExecution(cb);
         const n = random(GSTimeInterval.min, GSTimeInterval.max);
         console.log("next execution: ", n + " ms");//DEBUGGER
         //fadeTime (ms) is the wait execution of play() because we will fadeout the audio if its playing 
-        wait(n).then(() => randomTimeExecution(cb));
-    } 
+        wait(n).then(() => randomTimeExecution(cb, startedID));
+    } else {
+        console.log("END ID:", startedID )
+    }
 }
+
+const AudioProbabilityArray = (AUDIO_MAP) => {
+    let arrOfAudioProbabilities = [];
+    AUDIO_MAP.forEach((value, key) => {
+        let v = value.probability.value;
+        let arr = (new Array(v)).fill(key);
+        arrOfAudioProbabilities = arrOfAudioProbabilities.concat(arr);
+    });
+    return arrOfAudioProbabilities
+}
+
 
 const createNewSetExecution = () => {
     //select set size
@@ -400,28 +417,31 @@ const createNewSetExecution = () => {
     console.log("set execution: ",n);//DEBUGGER
     
     /**@type {Set}*/
-    let executeSet;
-    
+    const executeSet = new Set();
     //selects elements for the set
     if (AUDIO_MAP.size / 2 >= n) {
-        executeSet = new Set();
-        let possibleAudios = [...AUDIO_MAP.keys()];
-        console.log("while start");//DEBUGGER
+        let possibleAudios = AudioProbabilityArray(AUDIO_MAP);
+        //console.log("possibleAudios: ",possibleAudios);
+        //console.log("while start");//DEBUGGER
         while (executeSet.size < n) {
-            let n = random(0, possibleAudios.length-1);
-            executeSet.add(AUDIO_MAP.get(possibleAudios[n]));
-            possibleAudios.slice(n, 1);
+            let name = possibleAudios[random(0, possibleAudios.length-1)];
+            executeSet.add(AUDIO_MAP.get(name));
+            possibleAudios = possibleAudios.filter(key => key !== name);
         }
-        console.log("while end");//DEBUGGER
+        //console.log("executeSet: ", executeSet);
+        //console.log("while end");//DEBUGGER
+
     } else {
-        console.log("while start");//DEBUGGER
-        let possibleAudios = [...AUDIO_MAP.values()];
+        let possibleAudios = AudioProbabilityArray(AUDIO_MAP);
+        //console.log("possibleAudios: ",possibleAudios);
         for (let total = AUDIO_MAP.size - n; total > 0; total--) {
-            let n = random(0, possibleAudios.length-1);
-            possibleAudios.slice(n, 1);
+            let name = possibleAudios[random(0, possibleAudios.length-1)];
+            possibleAudios = possibleAudios.filter(key => key !== name);
         }
-        executeSet = new Set(possibleAudios);
-        console.log("while end");//DEBUGGER
+        (new Set(possibleAudios)).forEach(key => {
+            executeSet.add(AUDIO_MAP.get(key));
+        });
+        //console.log("executeSet: ", executeSet);
     }
 
     const newColorSet = `rgb(${random(32, 141)},${random(32, 141)},${random(32, 141)})`;
@@ -461,14 +481,15 @@ const stopAll = (cb) => {
 
 export {
     createAudioContext,
-    changeAudioEngine,
-    setAudioContextPannerPosition,
     createAudioStateFromFile,
-    setAudioConfiguration,
-    play,
-    stop,
-    deleteAudio,
+    changeAudioEngine,
+    changeGSSTARTED_ID,
     changeVolume,
+    deleteAudio,
+    play,
     randomTimeExecution,
+    setAudioConfiguration,
+    setAudioContextPannerPosition,
+    stop,
     stopAll,
 }

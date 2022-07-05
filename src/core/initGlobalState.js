@@ -51,6 +51,7 @@ export const AUDIO_MAP = GLOBAL_STATE.AUDIO_MAP;
 export const ADD_Audio = GLOBAL_STATE.ADD_Audio;
 export const DELETE_Audio = GLOBAL_STATE.DELETE_Audio;
 export const CLEAR_Audio = GLOBAL_STATE.CLEAR_Audio;
+export const GSSTARTED_ID = GLOBAL_STATE.STARTED_ID;
 
 export const AUDIO_CONTEXT = (val) => {
   if (typeof val !== "undefined") {

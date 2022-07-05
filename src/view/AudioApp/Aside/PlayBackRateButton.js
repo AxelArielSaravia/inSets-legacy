@@ -81,6 +81,8 @@ export default memo(function PlayBackRateButton(props) {
                                     <div className="flex-row align-c justify-sb p-2">
                                         <span className="fs-text">min:</span>
                                         <TouchButton
+                                            scroll
+                                            touch
                                             textStyle={{width: "40px"}}
                                             orientation="row"
                                             disable="configs"
@@ -93,6 +95,8 @@ export default memo(function PlayBackRateButton(props) {
                                     <div className="flex-row align-c justify-sb p-2">
                                         <span className="fs-text">max:</span>
                                         <TouchButton
+                                            scroll
+                                            touch
                                             textStyle={{width: "40px"}}
                                             orientation="row"
                                             disable="configs"

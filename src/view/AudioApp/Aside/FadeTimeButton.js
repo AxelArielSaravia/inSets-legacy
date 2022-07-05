@@ -49,6 +49,8 @@ export default memo(function FadeTimeButton() {
                                     <div className="flex-row align-c justify-sb p-2">
                                         <h4 className="fs-text">Time:</h4>
                                         <TouchButton
+                                            scroll
+                                            touch
                                             textStyle={{width: "35px"}}
                                             orientation="row"
                                             disable="configs"

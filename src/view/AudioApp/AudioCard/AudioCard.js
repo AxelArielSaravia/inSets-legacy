@@ -5,10 +5,36 @@ import Switcher from "./AudioCard.Switch.js";
 import TimeText from "./AudioCard.TimeText.js";
 import TimeLine from "./AudioCard.TimeLine.js";
 import Volume from "./AudioCard.Volume.js";
+import TouchButton from "../TouchButton.js"
 
 import { ContextDisableAll } from "../DisableAllProvider.js";
 
 import "./AudioCard.scss"; 
+
+function ProbabilityButton(props) {
+    const [value, setValue] = useState(props.probability.value);
+
+    const add = () => {
+        props.probability.value += 1;
+        setValue(() =>  props.probability.value);
+    }
+    const subtract = () => {
+        if (value > 1) {
+            props.probability.value -= 1;
+            setValue(() => props.probability.value);
+        }
+    }
+
+    return (
+        <TouchButton
+            orientation="row"
+            add={add}
+            subtract={subtract}
+            output={value}
+        />
+    );
+}
+
 
 export default memo(function AudioCard(props) {
     const propsState = props.states;
@@ -66,7 +92,8 @@ export default memo(function AudioCard(props) {
             >
                 <i className="flex-row align-c fs-text-l bi bi-x"></i>
             </button>
-            <div className="audioCard-name">
+            <div className="audioCard-name flex-row">
+                <ProbabilityButton probability={propData.probability}/>
                 <h4 className="fs-text ellipsis">{propData.title}</h4>
             </div>
             <div className="audioCard-tools flex-row">

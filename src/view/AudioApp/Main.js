@@ -1,6 +1,6 @@
 import { memo, useState, useEffect } from "react";
 import { GSIsStarted } from "../../core/initGlobalState.js";
-import { randomTimeExecution, stopAll } from "../../core/audioEffects.js";
+import { randomTimeExecution, stopAll, changeGSSTARTED_ID } from "../../core/audioEffects.js";
 
 import AddFilesButton from "./AddFilesButton.js";
 import AudioCard from "./AudioCard/AudioCard.js";
@@ -42,9 +42,10 @@ export default memo(function Main(props) {
   };
 
   const handlePlayOnClick = () => {
+    const startID = changeGSSTARTED_ID();
     GSIsStarted(!isPlaying);
     if (!isPlaying) {
-      randomTimeExecution(changeAudiosStates);
+      randomTimeExecution(changeAudiosStates, startID);
     } else {
       stopAll(changeAudiosStates);
     }

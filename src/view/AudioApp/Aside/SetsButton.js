@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { GSProbabilityOfExecutionSets } from "../../../core/initGlobalState.js";
 
 import AsideButton from "./AsideButton.js";
-import ScrollButton from "../ScrollButton.js";
+import TouchButton from "../TouchButton.js";
 import ToolButton from "../ToolButton.js";
 
 function separateArrInSetsOf(arr, n) {
@@ -41,9 +41,8 @@ function GrupSetsButtons(props) {
                             : `Size ${n}:`
                         }
                     </h4>
-                    <ScrollButton
+                    <TouchButton
                         orientation="row"
-                        disable="configs"
                         output={props.output}
                         add={props.superAdd}
                         subtract={props.superSubtract}
@@ -66,9 +65,8 @@ function GrupSetsButtons(props) {
                             <span className="fs-text" style={{marginRight: "10px"}}>
                                 {`Size ${i2+props.lastIndex}:`}
                             </span>
-                            <ScrollButton
+                            <TouchButton
                                 orientation="row"
-                                disable="configs"
                                 output={v}
                                 add={props.add}
                                 subtract={props.subtract}
@@ -96,10 +94,12 @@ function GrupSetsButtonsGen(props) {
     }, [n, clickReset]);
 
     const add = (j, a, k) => {
-        let arr = [...generalArrOfProbability];
-        let v = ++arr[j];
-        a.forEach((_,i) => props.add(i+k, v));
-        setGeneralArrOfProbability(_ => arr);
+        if (generalArrOfProbability[j] < arrOfProbability_length * 2) {
+            let arr = [...generalArrOfProbability];
+            let v = ++arr[j];
+            a.forEach((_,i) => props.add(i+k, v));
+            setGeneralArrOfProbability(_ => arr);
+        }
     }
     const subtract = (j, a, k) => {
         if (generalArrOfProbability[j] > 0) {
@@ -191,9 +191,8 @@ export default function SetsButton(props) {
                     {arrOfProbability.map((val, i) => (
                         <div key={"set-" + i} className="flex-row align-c justify-c p-2">
                             <h4 className="fs-text">{"Size " + i + ":"}</h4>
-                            <ScrollButton
+                            <TouchButton
                                 orientation="row"
-                                disable="configs"
                                 output={val}
                                 add={add}
                                 subtract={subtract}
@@ -209,7 +208,8 @@ export default function SetsButton(props) {
                     </div>
                     <div className="flex-row align-c justify-c p-2">
                         <span className="fs-text">Order in grups of:</span>
-                        <ScrollButton
+                        <TouchButton
+                            scroll
                             orientation="row"
                             disable="configs"
                             output={grupNumberSize}

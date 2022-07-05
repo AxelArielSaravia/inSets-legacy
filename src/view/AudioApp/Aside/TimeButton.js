@@ -5,7 +5,6 @@ import initState from "../../../core/initState.json";
 
 import AsideButton from "./AsideButton.js";
 import TouchButton from "../TouchButton.js";
-import ScrollButton from "../ScrollButton.js";
 import ToolButton from "../ToolButton.js";
 
 
@@ -28,17 +27,17 @@ export default function TimeButton(props) {
     const subtractValue = () => {
         if (value > 10) { setValue(state =>  state / 10); }
     }
-    const add = (setTime, time) => {
+    const add = (setTime) => {
         return function(data) {
             GSTimeInterval[data] += value;
-            changeLocalStorage(time, GSTimeInterval[data]);
+            changeLocalStorage(data, GSTimeInterval[data]);
             setTime(() => GSTimeInterval[data]);
         }
     }
-    const subtract = (setTime, time) => {
+    const subtract = (setTime) => {
         return function(data) {
             GSTimeInterval[data] -= value;
-            changeLocalStorage(time, GSTimeInterval[data]);
+            changeLocalStorage(data, GSTimeInterval[data]);
             setTime(() => GSTimeInterval[data]);
         }
     }
@@ -64,7 +63,8 @@ export default function TimeButton(props) {
                 <div style={{width:"160px"}}>
                     <div className="flex-row align-c justify-sb p-2">
                         <span className="fs-text-s">Value:</span>
-                        <ScrollButton
+                        <TouchButton
+                            scroll
                             textStyle={{width: "60px"}}
                             orientation="row"
                             disable="configs"
@@ -84,12 +84,14 @@ export default function TimeButton(props) {
                                     <div className="flex-row align-c justify-sb p-3">
                                         <h4 className="fs-text">Min:</h4>
                                         <TouchButton
+                                            scroll
+                                            touch
                                             textStyle={{width: "70px"}}
                                             orientation="row"
                                             disable="configs"
                                             output={min}
-                                            add={add(setMin, "min")}
-                                            subtract={subtract(setMin, "min")}
+                                            add={add(setMin)}
+                                            subtract={subtract(setMin)}
                                             data={"min"}
                                         />
                                         <span className="fs-text">ms</span>
@@ -101,12 +103,14 @@ export default function TimeButton(props) {
                                     <div className="flex-row align-c justify-sb p-3">
                                         <h4 className="fs-text">Max:</h4>
                                         <TouchButton
+                                            scroll
+                                            touch
                                             textStyle={{width: "70px"}}
                                             orientation="row"
                                             disable="configs"
                                             output={max}
-                                            add={add(setMax, "max")}
-                                            subtract={subtract(setMax, "max")}
+                                            add={add(setMax)}
+                                            subtract={subtract(setMax)}
                                             data={"max"}
                                         />
                                         <span className="fs-text">ms</span>

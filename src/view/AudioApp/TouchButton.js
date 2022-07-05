@@ -41,11 +41,11 @@ export default function TouchButton(props) {
     return (
         <div 
             className={props.orientation === "row" ?  className + " flex-row-reverse" : className + " flex-column"} 
-            onWheel={handleOnWheel} 
-            onMouseEnter={mouseEnter} 
-            onMouseLeave={mouseOut} 
-            onTouchStart={handleTouchStart} 
-            onTouchMove={handleTouchMove}
+            onWheel={props.scroll ? handleOnWheel : null} 
+            onMouseEnter={props.scroll ? mouseEnter : null} 
+            onMouseLeave={props.scroll ? mouseOut : null} 
+            onTouchStart={props.touch ? handleTouchStart : null} 
+            onTouchMove={props.touch ? handleTouchMove : null}
         >
             <button
                 className="touchButton-action flex-column justify-c align-c" 

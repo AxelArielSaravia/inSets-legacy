@@ -601,7 +601,8 @@ function ProbabilityOfExecutionSets() {
             value: function(i, value) {
                 if (typeof i === "number"
                  && i < this.length 
-                 && typeof value === "number" 
+                 && typeof value === "number"
+                 && value <= this.length * 2
                  && value > -1
                 ) {
                     arrOfValues[i] = value;
@@ -662,6 +663,8 @@ function ProbabilityOfExecutionSets() {
  */
 const createGlobalState = (elementsState) => {
     const globalState = {}
+    /**@type {string}*/
+    let STARTED_ID = "";
     /**@type {"audioBuffer"|"audioNode"}*/
     let engine = "audioBuffer";
     /**@type {boolean}*/
@@ -685,6 +688,13 @@ const createGlobalState = (elementsState) => {
             },
             enumerable: true
         },
+        "CLEAR_Audio": {
+            value: function () {
+                globalState.AUDIO_MAP.clear();
+                globalState.probabilityOfExecutionSets.clear();
+            },
+            enumerable: true
+        },
         "DELETE_Audio": {
             value: function (id) {
                 globalState.AUDIO_MAP.delete(id);
@@ -692,10 +702,12 @@ const createGlobalState = (elementsState) => {
             },
             enumerable: true
         },
-        "CLEAR_Audio": {
-            value: function () {
-                globalState.AUDIO_MAP.clear();
-                globalState.probabilityOfExecutionSets.clear();
+        "STARTED_ID": {
+            value: function(val) {
+                if (typeof val === "string") {
+                    STARTED_ID = val;
+                }
+                return STARTED_ID;
             },
             enumerable: true
         },
@@ -1081,6 +1093,23 @@ function RandomCurrentTime(GSRandomCurrentTime) {
 }
 
 /**
+ * @class ProbabilityValue
+ */
+function ProbabilityValue() {
+    let VALUE = 1;
+    Object.defineProperty(this, "value", {
+            get: function() { return VALUE; },
+            set: function(val) {
+                if (val > 0) {
+                    VALUE = val;
+                }
+            },
+            enumerable: true
+        }
+    );
+}
+
+/**
  * @param {ElementsState} elementsState 
  * @param {string} id 
  * @param {string} title 
@@ -1106,8 +1135,8 @@ function createAudioState(id, title, type, duration, elementsState) {
     let volume = MAX_VOLUME //* 80 / 100;
     /**@type {boolean}*/
     let isPlaying = false;
-    /**@type {number}*/
-    let startNum = 0;
+    /**@type {string}*/
+    let start_ID = "";
 
     Object.defineProperties(audioState, {
         "MAX_VOLUME": { 
@@ -1153,14 +1182,10 @@ function createAudioState(id, title, type, duration, elementsState) {
             set: function(val) { if (typeof val === "boolean") isPlaying = val },
             enumerable: true
         },
-        "startNum": { 
+        "startID": { 
             value: {
-                get: function() { return startNum },
-                set: function() {
-                    if (startNum === 50) startNum = 0;
-                    else startNum = startNum + 1; 
-                    return startNum;
-                },
+                get: function() { return start_ID; },
+                set: function(val) { start_ID = val; },
             },
             enumerable: true
         },
@@ -1175,6 +1200,10 @@ function createAudioState(id, title, type, duration, elementsState) {
         }, 
         "playBackRate": {
             value: new AudioPlayBackRateState(elementsState?.playBackRate),
+            enumerable: true
+        },
+        "probability": {
+            value: new ProbabilityValue(),
             enumerable: true
         },
         "randomCurrentTime": {

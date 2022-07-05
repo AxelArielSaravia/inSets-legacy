@@ -9,7 +9,7 @@ export default memo(function Aside(props) {
   //console.log("Update Aside"); //DEBUGGER
   const [toolsSwitch, setToolsSwitch] = useState(false);
   const [toolConfig, setToolConfig] = useState(false);
-  const [configButton, setConfigButton] = useState();
+  const [configButton, setConfigButton] = useState("");
 
 
   const handleToolsSwitchOnClick = () => {
@@ -44,7 +44,7 @@ export default memo(function Aside(props) {
     }
   }, [toolsSwitch]);
 
-  
+  const panelClassName =  "panel flex-column";
 
   return (
     <aside className="aside flex-column">
@@ -56,45 +56,72 @@ export default memo(function Aside(props) {
           }
         </ToolButton>
       </div>
-      <div className={!toolsSwitch ? "panel panel-hidden flex-column" : "panel flex-column"}>
+      <div className={
+          !toolsSwitch ? panelClassName + " panel-hidden"
+          : toolConfig ? panelClassName + " panel-invisible"
+          : panelClassName}>
         <div className="flex-column">
           <div className="aside-button flex-row">
-            <ToolButton className="flex-row" onClick={() => { handleButtonsOnClick("SETS") }}>
+            <ToolButton 
+              className="flex-row" 
+              onClick={() => { handleButtonsOnClick("SETS") }}
+            >
               <h4 className="fs-text">Sets</h4>
             </ToolButton>
           </div>
           <div className="aside-button flex-row">
-            <ToolButton className="flex-row" onClick={() => { handleButtonsOnClick("TIME") }}>
+            <ToolButton 
+              className="flex-row" 
+              onClick={() => { handleButtonsOnClick("TIME") }}
+            >
               <h4 className="fs-text">Time</h4>
             </ToolButton>
           </div>
           <div className="aside-button flex-row">
-            <ToolButton className="flex-row text-left" onClick={() => { handleButtonsOnClick("FADETIME") }}>
+            <ToolButton 
+              className="flex-row text-left" 
+              onClick={() => { handleButtonsOnClick("FADETIME") }}
+            >
               <h4 className="fs-text">Fade Time</h4>
             </ToolButton>
           </div>
           <div className="aside-button flex-row">
-            <ToolButton className="flex-row" onClick={() => { handleButtonsOnClick("PANNER") }}>
+            <ToolButton 
+              className="flex-row" 
+              onClick={() => { handleButtonsOnClick("PANNER") }}
+            >
               <h4 className="fs-text">Panner</h4>
             </ToolButton>
           </div>
           <div className="aside-button flex-row">
-            <ToolButton className="flex-row" onClick={() => { handleButtonsOnClick("FILTER") }}>
+            <ToolButton 
+              className="flex-row" 
+              onClick={() => { handleButtonsOnClick("FILTER") }}
+            >
               <h4 className="fs-text">Filter</h4>
             </ToolButton>
           </div>
           <div className="aside-button flex-row">
-            <ToolButton className="flex-row" onClick={() => { handleButtonsOnClick("DELAY") }}>
+            <ToolButton 
+              className="flex-row" 
+              onClick={() => { handleButtonsOnClick("DELAY") }}
+            >
               <h4 className="fs-text">Delay</h4>
             </ToolButton>
           </div>
           <div className="aside-button flex-row">
-            <ToolButton className="flex-row" onClick={() => { handleButtonsOnClick("RATE") }}>
+            <ToolButton 
+              className="flex-row" 
+              onClick={() => { handleButtonsOnClick("RATE") }}
+            >
               <h4 className="fs-text">Rate</h4>
             </ToolButton>
           </div>
           <div className="aside-button flex-row">
-            <ToolButton className="flex-row" onClick={() => { handleButtonsOnClick("RCT") }}>
+            <ToolButton 
+              className="flex-row" 
+              onClick={() => { handleButtonsOnClick("RCT") }}
+            >
               <h4 className="fs-text">RCT</h4>
             </ToolButton>
           </div>

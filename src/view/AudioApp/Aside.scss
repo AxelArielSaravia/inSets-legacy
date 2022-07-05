@@ -67,6 +67,9 @@
         z-index: 1;
       }
     }
+    .panel.panel-invisible {
+      opacity: 0;
+    }
     .panel {
       position: absolute;
       top: 2rem;
@@ -75,7 +78,7 @@
       transition: top .2s ease-in-out;
       opacity: 98%;
       padding: 0;
-      
+
       .tool-button {
         max-width: unset;
         align-items: center;

@@ -17,6 +17,8 @@ const durationToTime = (val) => {
 export default function AudioCardTimeText(props) {
     const t = durationToTime(props.time);
     return <TouchButton
+        scroll
+        touch
         output={t}
         add={props.add}
         subtract={props.subtract}
