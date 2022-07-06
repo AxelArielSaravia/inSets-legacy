@@ -139,19 +139,6 @@
   transition: all 0.1s ease-out 0.1s;
 }
 
-/* 
-@media screen and (max-width: 1200px) {
-  .fs-text-l {
-    font-size: 1.8rem;
-  }
-  .fs-text {
-    font-size: 1rem;
-  }
-  .fs-text-s  {
-    font-size: 1rem;
-  }
-}
-*/
 
 @media screen and (max-width: 1400px) {
   .flex-r-change { flex-direction: column; }
@@ -162,8 +149,3 @@
   .fs-text-s  { font-size: 0.8rem; }
 }
 
-/* 
-@media screen and (max-width: 640px) { 
-  
-} 
-*/

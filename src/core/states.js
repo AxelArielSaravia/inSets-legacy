@@ -697,8 +697,10 @@ const createGlobalState = (elementsState) => {
         },
         "DELETE_Audio": {
             value: function (id) {
-                globalState.AUDIO_MAP.delete(id);
-                globalState.probabilityOfExecutionSets.pop();
+                let bool = globalState.AUDIO_MAP.delete(id);
+                if (bool) {
+                    globalState.probabilityOfExecutionSets.pop();
+                }
             },
             enumerable: true
         },

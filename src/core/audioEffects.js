@@ -218,9 +218,9 @@ const changePlayBackRate = (audioState) => {
  * @param {AudioState} audioState 
  * @returns {[GainNode, GainNode]}
  */
-const createAudioRandomChain = (audioCtx, audioState) => {
-    const inputGain = audioCtx.createGain();
-    const outputGain = audioCtx.createGain();
+const createAudioRandomChain = async (audioCtx, audioState) => {
+    const inputGain = await audioCtx.createGain();
+    const outputGain = await audioCtx.createGain();
     
     //set min gain value to create a fadeIn later
     outputGain.gain.value = 0.01;
@@ -231,24 +231,24 @@ const createAudioRandomChain = (audioCtx, audioState) => {
     //PANNER
     if (randomDecide() && !audioState.panner.isDisable) {
         audioState.panner.random(GSPanner);
-        const PANNER = createPanner(audioCtx, audioState.panner);
-        input.connect(PANNER);
+        const PANNER = await createPanner(audioCtx, audioState.panner);
+        await input.connect(PANNER);
         input = PANNER; 
     }
 
     //FILTER
     if (randomDecide() && !audioState.filter.isDisable) {
         audioState.filter.random(GSFilter);
-        const FILTER = createFilter(audioCtx, audioState.filter);
-        input.connect(FILTER)
+        const FILTER = await createFilter(audioCtx, audioState.filter);
+        await input.connect(FILTER)
         input = FILTER;  
     }
 
     //DELAY
     if (randomDecide() && !audioState.delay.isDisable) {
         audioState.delay.random(GSDelay);
-        const feedback = createDelay(audioCtx, audioState.delay);
-        input.connect(feedback);
+        const feedback = await createDelay(audioCtx, audioState.delay);
+        await input.connect(feedback);
         input = feedback;
     }
 
@@ -256,26 +256,28 @@ const createAudioRandomChain = (audioCtx, audioState) => {
         changePlayBackRate(audioState);
     }
 
-    input.connect(outputGain);
+    await input.connect(outputGain);
     return [inputGain, outputGain];
 }
 
-const setAudioConfiguration = (id) => {
-    const AUDIO_STATE = AUDIO_MAP.get(id);
-
-    //CONNECTIONS
-    if (GSEngine() === "audioBuffer") {
-        AUDIO_STATE.source = AUDIO_CONTEXT().createBufferSource();
-        AUDIO_STATE.source.buffer = AUDIO_STATE.audioEngine;
-    } 
-    let [input, output] = createAudioRandomChain(AUDIO_CONTEXT(), AUDIO_STATE);
-
-    AUDIO_STATE.source.connect(input);
-    output.connect(AUDIO_CONTEXT().destination);
-
-    AUDIO_STATE.outputGain = output;
-
-    input = output = null;
+const setAudioConfiguration = async (id) => {
+    if (AUDIO_MAP.has(id)) {
+        const AUDIO_STATE = AUDIO_MAP.get(id);
+    
+        //CONNECTIONS
+        if (GSEngine() === "audioBuffer") {
+            AUDIO_STATE.source = await AUDIO_CONTEXT().createBufferSource();
+            AUDIO_STATE.source.buffer = await AUDIO_STATE.audioEngine;
+        } 
+        let [input, output] = await createAudioRandomChain(AUDIO_CONTEXT(), AUDIO_STATE);
+    
+        await AUDIO_STATE.source.connect(input);
+        await output.connect(AUDIO_CONTEXT().destination);
+    
+        AUDIO_STATE.outputGain = output;
+    
+        input = output = null;
+    }
 }
 
 const play = (id, cb) => {
@@ -364,10 +366,8 @@ const disconnect = (audioState, cb) => {
  */
 const deleteAudio = (id, cb) => {
     stop(id)
-    .finally(() => {
-        DELETE_Audio(id);
-        cb(AUDIO_MAP);
-    });
+    .then(() => DELETE_Audio(id))
+    .then(() => cb(AUDIO_MAP));
 }
 
 const changeVolume = (id, val) => {
@@ -415,25 +415,24 @@ const createNewSetExecution = () => {
     //select set size
     const n = GSProbabilityOfExecutionSets.lengthOfExecutionSet();
     console.log("set execution: ",n);//DEBUGGER
-    
     /**@type {Set}*/
     const executeSet = new Set();
     //selects elements for the set
     if (AUDIO_MAP.size / 2 >= n) {
         let possibleAudios = AudioProbabilityArray(AUDIO_MAP);
-        //console.log("possibleAudios: ",possibleAudios);
+        //console.log("possibleAudios: ",possibleAudios);//DEBUGGER
         //console.log("while start");//DEBUGGER
         while (executeSet.size < n) {
             let name = possibleAudios[random(0, possibleAudios.length-1)];
             executeSet.add(AUDIO_MAP.get(name));
             possibleAudios = possibleAudios.filter(key => key !== name);
         }
-        //console.log("executeSet: ", executeSet);
+        //console.log("executeSet: ", executeSet);//DEBUGGER
         //console.log("while end");//DEBUGGER
 
     } else {
         let possibleAudios = AudioProbabilityArray(AUDIO_MAP);
-        //console.log("possibleAudios: ",possibleAudios);
+        //console.log("possibleAudios: ",possibleAudios);//DEBUGGER
         for (let total = AUDIO_MAP.size - n; total > 0; total--) {
             let name = possibleAudios[random(0, possibleAudios.length-1)];
             possibleAudios = possibleAudios.filter(key => key !== name);
@@ -441,7 +440,7 @@ const createNewSetExecution = () => {
         (new Set(possibleAudios)).forEach(key => {
             executeSet.add(AUDIO_MAP.get(key));
         });
-        //console.log("executeSet: ", executeSet);
+        //console.log("executeSet: ", executeSet);//DEBUGGER
     }
 
     const newColorSet = `rgb(${random(32, 141)},${random(32, 141)},${random(32, 141)})`;
@@ -451,20 +450,15 @@ const createNewSetExecution = () => {
 
 const randomSetsExecution = (cb) => {
     const [executeSet, newColorSet] = createNewSetExecution();
-
     executeSet.forEach((data) => {
         if (data.isPlaying) {
             stop(data.id, (isPlaying, rct) => cb(data.id, isPlaying, rct))
-            .then(() => {
-                setAudioConfiguration(data.id);
-                play(data.id, (isPlaying, rct) => cb(data.id, isPlaying, rct, newColorSet));
-            })
+            .then(() => setAudioConfiguration(data.id))
+            .then(() => play(data.id, (isPlaying, rct) => cb(data.id, isPlaying, rct, newColorSet)));
         } else {
             wait(GSFadeTime.time)
-            .then(() => {
-                setAudioConfiguration(data.id);
-                play(data.id, (isPlaying, rct) => cb(data.id, isPlaying, rct, newColorSet));
-            });
+            .then(() => setAudioConfiguration(data.id))
+            .then(() => play(data.id, (isPlaying, rct) => cb(data.id, isPlaying, rct, newColorSet)));
         }
     });
 }
