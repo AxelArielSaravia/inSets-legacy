@@ -82,8 +82,8 @@ body *,
 }
 *:focus-visible {
   border-radius: 5px;
-  outline: 2px solid var(--secondary-color)!important;
-  outline-offset: 3px;
+  box-shadow: 0 0 0 2px var(--secondary-color)!important;
+  outline: none;
 }
 
 a {

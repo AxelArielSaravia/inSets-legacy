@@ -7,35 +7,30 @@
 
   .file-buttons {
     width: 100%;
-    
+
+    .tool-button {
+      position: relative;
+      z-index: 2;
+      margin: 10px 1%;
+      border: 1px solid var(--secondary-color);
+      cursor: pointer;
+    }
     
     .fileInput-contain {
-      margin: 10px 1%;
       position: relative;
       padding: 0;
-
-      .tool-button {
-        margin: 0;
-        position: relative;
-        z-index: 2;
-        cursor: pointer;
-      }
+      
       .fileInput {
         position: absolute;
+        margin: 10px 0;
         top: 0;
         left: 0;
         width: 100%;
         height: min-content;
         border-radius: 2px;
-        padding: 2px;
-        margin: 0;
+        padding: 3px;
         z-index: 1;
       }
-    }
-    .tool-button {
-      margin: 10px 1%;
-      box-shadow: 0 0 0 1px var(--secondary-color);
-      background-color: var(--primary-color);
     }
     
     .start-button {

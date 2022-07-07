@@ -1,7 +1,7 @@
 {
   "delay": {
     "disableAll": false,
-    "timeMin": 1,
+    "timeMin": 0.5,
     "timeMax": 2,
     "feedbackMin": 0.1, 
     "feedbackMax": 0.85
