@@ -70,10 +70,10 @@ export default memo(function AudioCard(props) {
             color: ""
         }));
     }
-    const onClickPlay = () => {
+    const onClickPlay = async () => {
         if (!states.isPlaying) {
-            setAudioConfiguration(props.id);
-            play(props.id, changeState);
+            await setAudioConfiguration(props.id);
+            await play(props.id, changeState);
         } else {
             stop(props.id, changeState);
         }

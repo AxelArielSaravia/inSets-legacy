@@ -309,11 +309,11 @@ const play = (id, cb) => {
             const START_ID =  createId();
             AUDIO_STATE.startID.value = START_ID;
             
-            const END_TIME = AUDIO_STATE.endTimePoint.get() - startPoint;
+            const END_TIME = Math.floor((AUDIO_STATE.endTimePoint.get() - startPoint) * 1000);
             
             AUDIO_STATE.source.start(0, startPoint);
 
-            wait(Math.floor(END_TIME * 1000))
+            wait(Math.floor(END_TIME))
             .then(() => {
                 if (AUDIO_STATE.startID.value === START_ID && AUDIO_STATE.isPlaying) {
                     return stop(id, cb);
@@ -396,7 +396,7 @@ const randomTimeExecution = (cb, startedID) => {
         //fadeTime (ms) is the wait execution of play() because we will fadeout the audio if its playing 
         wait(n).then(() => randomTimeExecution(cb, startedID));
     } else {
-        console.log("END ID:", startedID )
+        console.log("END");
     }
 }
 
