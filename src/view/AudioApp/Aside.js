@@ -11,7 +11,6 @@ export default memo(function Aside(props) {
   const [toolConfig, setToolConfig] = useState(false);
   const [configButton, setConfigButton] = useState("");
 
-
   const handleToolsSwitchOnClick = () => {
     setToolsSwitch((state) => !state);
   }

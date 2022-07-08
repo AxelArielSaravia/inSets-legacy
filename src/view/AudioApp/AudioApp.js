@@ -19,8 +19,6 @@ function AudioApp(props) {
   const [audioList, setAudioList] = useState(new Map());
   const [filesLoading, setFilesLoading] = useState(0); 
 
-
-
   const handleSetAudioList = (map) => {
     setAudioList(() => new Map([...map]));
   }

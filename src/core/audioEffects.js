@@ -389,6 +389,7 @@ const wait = ms => new Promise(resolve => setInterval(resolve, ms));
 const changeGSSTARTED_ID = () => GSSTARTED_ID(createId());
 
 const randomTimeExecution = (cb, startedID) => {
+    console.log("GSIsStarted: ",GSIsStarted());
     if (GSIsStarted() && GSSTARTED_ID() === startedID) {
         randomSetsExecution(cb);
         const n = random(GSTimeInterval.min, GSTimeInterval.max);
@@ -410,25 +411,21 @@ const AudioProbabilityArray = (AUDIO_MAP) => {
     return arrOfAudioProbabilities
 }
 
-
 const createNewSetExecution = () => {
     //select set size
     const n = GSProbabilityOfExecutionSets.lengthOfExecutionSet();
-    console.log("set execution: ",n);//DEBUGGER
+    console.log("set execution size: ",n);//DEBUGGER
     /**@type {Set}*/
     const executeSet = new Set();
     //selects elements for the set
     if (AUDIO_MAP.size / 2 >= n) {
         let possibleAudios = AudioProbabilityArray(AUDIO_MAP);
         //console.log("possibleAudios: ",possibleAudios);//DEBUGGER
-        //console.log("while start");//DEBUGGER
         while (executeSet.size < n) {
             let name = possibleAudios[random(0, possibleAudios.length-1)];
             executeSet.add(AUDIO_MAP.get(name));
             possibleAudios = possibleAudios.filter(key => key !== name);
         }
-        //console.log("executeSet: ", executeSet);//DEBUGGER
-        //console.log("while end");//DEBUGGER
 
     } else {
         let possibleAudios = AudioProbabilityArray(AUDIO_MAP);
@@ -440,9 +437,8 @@ const createNewSetExecution = () => {
         (new Set(possibleAudios)).forEach(key => {
             executeSet.add(AUDIO_MAP.get(key));
         });
-        //console.log("executeSet: ", executeSet);//DEBUGGER
     }
-
+    //console.log("executeSet: ", executeSet);//DEBUGGER
     const newColorSet = `rgb(${random(32, 141)},${random(32, 141)},${random(32, 141)})`;
 
     return [executeSet, newColorSet];
@@ -454,19 +450,30 @@ const randomSetsExecution = (cb) => {
         if (data.isPlaying) {
             stop(data.id, (isPlaying, rct) => cb(data.id, isPlaying, rct))
             .then(() => setAudioConfiguration(data.id))
-            .then(() => play(data.id, (isPlaying, rct) => cb(data.id, isPlaying, rct, newColorSet)));
+            .then(() => {
+                if (GSIsStarted()) {
+                    console.log("play AUDIO: ", data.id);//DEBUGGER
+                    play(data.id, (isPlaying, rct) => cb(data.id, isPlaying, rct, newColorSet));
+                }
+            });
         } else {
             wait(GSFadeTime.time)
             .then(() => setAudioConfiguration(data.id))
-            .then(() => play(data.id, (isPlaying, rct) => cb(data.id, isPlaying, rct, newColorSet)));
+            .then(() => {
+                if (GSIsStarted()) {
+                    console.log("play AUDIO: ", data.id);//DEBUGGER
+                    play(data.id, (isPlaying, rct) => cb(data.id, isPlaying, rct, newColorSet));
+                }
+            });
         }
     });
+    
 }
-
 
 const stopAll = (cb) => {
     AUDIO_MAP.forEach(data => {
         if (data.isPlaying) {
+            console.log("stop AUDIO: ",data.id);
             stop(data.id, (isPlaying, rtc) => cb(data.id, isPlaying, rtc));
         }
     });
