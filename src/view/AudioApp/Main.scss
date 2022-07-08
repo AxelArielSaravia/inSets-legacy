@@ -19,10 +19,10 @@
     .fileInput-contain {
       position: relative;
       padding: 0;
+      margin: 10px 1%;
       
       .fileInput {
         position: absolute;
-        margin: 10px 0;
         top: 0;
         left: 0;
         width: 100%;
@@ -30,6 +30,9 @@
         border-radius: 2px;
         padding: 3px;
         z-index: 1;
+      }
+      .tool-button {
+        margin: 0;
       }
     }
     
@@ -42,7 +45,6 @@
   }
   
   .files-container {
-    
     width: 100%;
     height: 100%;
   

@@ -396,7 +396,7 @@ const randomTimeExecution = (cb, startedID) => {
         //fadeTime (ms) is the wait execution of play() because we will fadeout the audio if its playing 
         wait(n).then(() => randomTimeExecution(cb, startedID));
     } else {
-        console.log("END");
+        console.log("END"); 
     }
 }
 
