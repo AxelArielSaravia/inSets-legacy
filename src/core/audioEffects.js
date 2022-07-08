@@ -452,7 +452,7 @@ const randomSetsExecution = (cb) => {
             .then(() => setAudioConfiguration(data.id))
             .then(() => {
                 if (GSIsStarted()) {
-                    console.log("play AUDIO: ", data.id);//DEBUGGER
+                    //console.log("play AUDIO: ", data.id);//DEBUGGER
                     play(data.id, (isPlaying, rct) => cb(data.id, isPlaying, rct, newColorSet));
                 }
             });
@@ -461,7 +461,7 @@ const randomSetsExecution = (cb) => {
             .then(() => setAudioConfiguration(data.id))
             .then(() => {
                 if (GSIsStarted()) {
-                    console.log("play AUDIO: ", data.id);//DEBUGGER
+                    //console.log("play AUDIO: ", data.id);//DEBUGGER
                     play(data.id, (isPlaying, rct) => cb(data.id, isPlaying, rct, newColorSet));
                 }
             });
@@ -473,7 +473,7 @@ const randomSetsExecution = (cb) => {
 const stopAll = (cb) => {
     AUDIO_MAP.forEach(data => {
         if (data.isPlaying) {
-            console.log("stop AUDIO: ",data.id);
+            //console.log("stop AUDIO: ",data.id);
             stop(data.id, (isPlaying, rtc) => cb(data.id, isPlaying, rtc));
         }
     });
