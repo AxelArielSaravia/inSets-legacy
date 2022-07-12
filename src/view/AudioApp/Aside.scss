@@ -25,6 +25,9 @@
       width: 100%;
     }
   }
+  .disable-all_btn {
+    width: 120px;
+  }
 }
 
 
@@ -78,6 +81,7 @@
       transition: top .2s ease-in-out;
       opacity: 98%;
       padding: 0;
+      height: unset;
 
       .tool-button {
         max-width: unset;

@@ -123,7 +123,7 @@ export default memo(function FilterButton(props) {
                     isDisable={disableAll.value}
                     title="disable all filters effect"
                 >
-                    <span className="fs-text" style={{width: "110px"}}>
+                    <span className="fs-text disable-all_btn">
                         {!disableAll.value ? "disable all" : "enable all"}
                     </span>
                 </Switch>

@@ -263,7 +263,6 @@ const createAudioRandomChain = async (audioCtx, audioState) => {
 const setAudioConfiguration = async (id) => {
     if (AUDIO_MAP.has(id)) {
         const AUDIO_STATE = AUDIO_MAP.get(id);
-    
         //CONNECTIONS
         if (GSEngine() === "audioBuffer") {
             AUDIO_STATE.source = await AUDIO_CONTEXT().createBufferSource();
@@ -389,7 +388,6 @@ const wait = ms => new Promise(resolve => setInterval(resolve, ms));
 const changeGSSTARTED_ID = () => GSSTARTED_ID(createId());
 
 const randomTimeExecution = (cb, startedID) => {
-    console.log("GSIsStarted: ",GSIsStarted());
     if (GSIsStarted() && GSSTARTED_ID() === startedID) {
         randomSetsExecution(cb);
         const n = random(GSTimeInterval.min, GSTimeInterval.max);
