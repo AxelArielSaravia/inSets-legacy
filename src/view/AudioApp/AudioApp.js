@@ -15,7 +15,6 @@ import './AudioApp.scss';
 //COMPONENTS
 //App Component
 function AudioApp(props) {
-  const [hasAudios, setHasAudios] = useState(false);
   const [audioList, setAudioList] = useState(new Map());
   const [filesLoading, setFilesLoading] = useState(0); 
 
@@ -23,36 +22,28 @@ function AudioApp(props) {
     setAudioList(() => new Map([...map]));
   }
 
+  const handleAddFiles = (files) => {
+    addFiles(
+      () => setFilesLoading((state) => state + 1), 
+      files, 
+      (map) => {
+        setFilesLoading((state) => {
+          if (state > 0) return state - 1;
+          return state;
+        });
+        handleSetAudioList(map);
+      }
+    ); 
+  }
+
   const handleFileDrop = (e) => {
     const files = e.dataTransfer.files;
-    setFilesLoading((state) => state + files.length);
-    setHasAudios(() => true);
-    addFiles(files, (map) => {
-      setFilesLoading((state) => {
-        if (state > 0) return state - 1;
-        return state;
-      });
-      handleSetAudioList(map);
-    });
+    handleAddFiles(files);
   };
   
-  const handleAddOnClick = (files) => {
-    setFilesLoading((state) => state + files.length);
-    setHasAudios(() => true);
-    addFiles(files, (map) => {
-      setFilesLoading((state) => {
-        if (state > 0) return state - 1;
-        return state;
-      });
-      handleSetAudioList(map);
-    });
-  };
 
   const handleClearOnClick = () => {
-    if (hasAudios) {
-      if (filesLoading === 0) {
-        setHasAudios(() => false);
-      }
+    if (audioList.size > 0) {
       clearFiles(() => {
         setAudioList(() => new Map());
       });
@@ -70,8 +61,7 @@ function AudioApp(props) {
           <Main
             audioList={audioList}
             filesLoading={filesLoading}
-            hasAudios={hasAudios}
-            handleAddOnClick={handleAddOnClick}
+            handleAddOnClick={handleAddFiles}
             handleClearOnClick={handleClearOnClick}
             handleSetAudioList={handleSetAudioList}
           />
