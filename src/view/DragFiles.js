@@ -1,42 +1,50 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useState} from "react";
 /**
  * @param {{ children: Function, render: Function, className?: string, style?: object}} props 
  * @returns 
  */
-function DragFiles( props) {
+function DragFiles(props) {
   const [isDragActive, setIsDragActive] = useState(false);
-
+  const start = props.start;
   let counter = 1;
 
   const handleDragEnter = () => {
-    counter++;
-    setIsDragActive((state) => !state ? !state : state);
+    if (start) {
+      counter++;
+      setIsDragActive((state) => !state ? !state : state);
+    }
   };
 
   const handleDragLeave = () => {
-    counter--;
-    if (counter === 0) {
-      setIsDragActive((state) => state? !state : state);
+    if (start) {
+      counter--;
+      if (counter === 0) {
+        setIsDragActive((state) => state? !state : state);
+      }
     }
   };
 
   const handleDrop = () => {
-    counter = 0;
-    setIsDragActive(() => false);
+    if (start) {
+      counter = 0;
+      setIsDragActive(() => false);
+    }
   };
 
   useEffect(() => {
-    if (!isDragActive) {
-      document.addEventListener('dragenter', handleDragEnter);
-      document.addEventListener('dragleave', handleDragLeave);
-      document.addEventListener('drop', handleDrop);
+    if (start) {
+      if (!isDragActive) {
+        document.addEventListener('dragenter', handleDragEnter);
+        document.addEventListener('dragleave', handleDragLeave);
+        document.addEventListener('drop', handleDrop);
+      }
+      return () => {
+        document.removeEventListener('dragenter', handleDragEnter);
+        document.removeEventListener('dragleave', handleDragLeave);
+        document.removeEventListener('drop', handleDrop);
+      };
     }
-    return () => {
-      document.removeEventListener('dragenter', handleDragEnter);
-      document.removeEventListener('dragleave', handleDragLeave);
-      document.removeEventListener('drop', handleDrop);
-    };
-  }, [isDragActive]);
+  }, [isDragActive, start]);
   
 
   return (
@@ -47,7 +55,7 @@ function DragFiles( props) {
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
-    { props.children(isDragActive) }
+      { props.children(isDragActive) }
     </div>
   );
 }

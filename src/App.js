@@ -31,6 +31,7 @@ function App() {
   return (
     <DragFiles
       className="flex-column"
+      start={startApp}
       style={{
         width: '100%',
         height: '100%',
@@ -101,7 +102,13 @@ function App() {
                         </label>
                       </div>
                       <div className="init-message">
-                        <button className="startApp-button fs-text-l" type="button" onClick={handleAcceptOnClick}>Start App</button>
+                        <button 
+                          className="startApp-button fs-text-l" 
+                          type="button" 
+                          onClick={handleAcceptOnClick}
+                        >
+                          Start App
+                        </button>
                       </div>
                     </div>
                   </section>
