@@ -1233,7 +1233,7 @@ function createAudioState(id, title, type, duration, elementsState) {
             enumerable: true
         },
         "title": {
-            value: title,
+            value: title.slice(0, title.lastIndexOf(".")),
             enumerable: true
         },
         "type": {

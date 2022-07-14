@@ -36,7 +36,7 @@ const changeAudioEngine = (val) => GSEngine(val);
  * @param {AaudioPannerState} audioPannerState 
  */
  const setAudioContextPannerPosition = () => {
-    let audioCtx = AUDIO_CONTEXT();
+    const audioCtx = AUDIO_CONTEXT();
     if (audioCtx.listener.positionX) {
         audioCtx.listener.positionX.value = 6;
         audioCtx.listener.positionY.value = 6;
@@ -71,8 +71,8 @@ const elementsState = {
     const values = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_";
     let str = Date.now() + "";
     for (let i = 0; i < 8; i++) {
-        let indexValue = Math.floor(Math.random() * values.length);
-        let indexPosition = Math.floor(Math.random() * str.length);
+        const indexValue = Math.floor(Math.random() * values.length);
+        const indexPosition = Math.floor(Math.random() * str.length);
         str = str.slice(0, indexPosition) + values[indexValue] + str.slice(indexPosition);
     }
     return str;
@@ -140,14 +140,14 @@ const createAudioStateFromFile = (file, id, callback) => {
  */
 const createDelay = (audioCtx, audioDelayState) => {
 
-    let DELAY = new DelayNode(audioCtx, {
+    const DELAY = new DelayNode(audioCtx, {
         delayTime: audioDelayState.delayTime,
         maxDelayTime: audioDelayState.maxDelayTime,
         channelCountMode: audioDelayState.channelCountMode,
         channelInterpretation: audioDelayState.channelInterpretation,
     });
 
-    let feedback = audioCtx.createGain();
+    const feedback = audioCtx.createGain();
     feedback.gain.value = audioDelayState.feedback;
 
     feedback.connect(DELAY);
@@ -179,7 +179,7 @@ const createFilter = (audioCtx, audioFilterState) => {
  * @returns {PannerNode}
  */
 const createPanner = (audioCtx, audioPannerState) => {
-    let PANNER = audioCtx.createPanner();
+    const PANNER = audioCtx.createPanner();
     PANNER.panningModel = audioPannerState.panningModel;
     PANNER.distanceModel = audioPannerState.channelCountMode;
     PANNER.refDistance = audioPannerState.refDistance;
