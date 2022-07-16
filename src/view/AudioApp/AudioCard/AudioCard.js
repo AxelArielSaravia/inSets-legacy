@@ -84,101 +84,101 @@ export default memo(function AudioCard(props) {
     }
 
     return (
-        <div className="audioCard" style={props.appIsPlaying && states?.isPlaying && states?.color ? {boxShadow:"0 0 2px 2px " +  states?.color} : {}}>
-            <button 
-                type="button" 
-                className="delete-button"
-                onClick={handleOnClickDeleteButton}
-            >
-                <i className="flex-row align-c fs-text-l bi bi-x"></i>
-            </button>
-            <div className="audioCard-name flex-row">
-                <ProbabilityButton probability={propData.probability}/>
-                <h4 className="fs-text ellipsis">{propData.title}</h4>
-            </div>
-            <div className="audioCard-tools flex-row">
-                <div className="audioCard-tools_left flex-column align-c">
-                    <TimeLine 
-                        appIsPlaying={props.appIsPlaying}
-                        startTimePoint={startTimePoint} 
-                        endTimePoint={endTimePoint} 
-                        duration={propData.duration} 
-                        isPlaying={states?.isPlaying}
-                        randomCurrentTime={states?.randomCurrentTime}
-                        color={states?.color}
-                    />
-                    <div className="audioCard-play flex-row align-center justify-c"> 
-                        <TimeText 
-                            data={propData.startTimePoint} 
-                            time={startTimePoint} 
-                            add={add(setStartTimePoint)} 
-                            subtract={subtract(setStartTimePoint)}
+            <div className="audioCard" style={props.appIsPlaying && states?.isPlaying && states?.color ? {boxShadow:"0 0 2px 2px " +  states?.color} : {}}>
+                <button 
+                    type="button" 
+                    className="delete-button"
+                    onClick={handleOnClickDeleteButton}
+                >
+                    <i className="flex-row align-c fs-text-l bi bi-x"></i>
+                </button>
+                <div className="audioCard-name flex-row">
+                    <ProbabilityButton probability={propData.probability}/>
+                    <h4 className="fs-text ellipsis">{propData.title}</h4>
+                </div>
+                <div className="audioCard-tools flex-row">
+                    <div className="audioCard-tools_left flex-column align-c">
+                        <TimeLine 
+                            appIsPlaying={props.appIsPlaying}
+                            startTimePoint={startTimePoint} 
+                            endTimePoint={endTimePoint} 
+                            duration={propData.duration} 
+                            isPlaying={states?.isPlaying}
+                            randomCurrentTime={states?.randomCurrentTime}
+                            color={states?.color}
                         />
-                        <div className="audioCard-play-button flex-column align-c justify-c">
-                            <button 
-                                type="button"
-                                onClick={onClickPlay}
-                            >
-                                {states?.isPlaying
-                                    ? <i className="flex-row align-c fs-text-l bi bi-pause-fill"/>
-                                    : <i className="flex-row align-c fs-text-l bi bi-play-fill"/>
-                                }
-                            </button>
+                        <div className="audioCard-play flex-row align-center justify-c"> 
+                            <TimeText 
+                                data={propData.startTimePoint} 
+                                time={startTimePoint} 
+                                add={add(setStartTimePoint)} 
+                                subtract={subtract(setStartTimePoint)}
+                            />
+                            <div className="audioCard-play-button flex-column align-c justify-c">
+                                <button 
+                                    type="button"
+                                    onClick={onClickPlay}
+                                >
+                                    {states?.isPlaying
+                                        ? <i className="flex-row align-c fs-text-l bi bi-pause-fill"/>
+                                        : <i className="flex-row align-c fs-text-l bi bi-play-fill"/>
+                                    }
+                                </button>
+                            </div>
+                            <TimeText 
+                                data={propData.endTimePoint} 
+                                time={endTimePoint} 
+                                add={add(setEndTimePoint)} 
+                                subtract={subtract(setEndTimePoint)}
+                            />
                         </div>
-                        <TimeText 
-                            data={propData.endTimePoint} 
-                            time={endTimePoint} 
-                            add={add(setEndTimePoint)} 
-                            subtract={subtract(setEndTimePoint)}
-                        />
                     </div>
-                </div>
-                <div className="audioCard-tools_right flex-column align-end">
-                    <div className="audioCard-pluggins">
-                        <Volume volume={propData.volume} id={props.id}/>
-                        <Switcher
-                            isAllDisable={isAllDisable.panner}
-                            setIsAllDisable={setIsAllDisable}
-                            effect={propData.panner}
-                            effectName="panner"
-                            name="panner"
-                            title="panner effect"
-                        />
-                        <Switcher
-                            isAllDisable={isAllDisable.delay}
-                            setIsAllDisable={setIsAllDisable}
-                            effect={propData.delay} 
-                            effectName="delay"
-                            name="delay" 
-                            title="delay effect"
-                        />
-                        <Switcher
-                            isAllDisable={isAllDisable.filter}
-                            setIsAllDisable={setIsAllDisable}
-                            effect={propData.filter}
-                            effectName="filter"
-                            name="filter" 
-                            title="filter effect"
-                        />
-                        <Switcher
-                            isAllDisable={isAllDisable.playBackRate}
-                            setIsAllDisable={setIsAllDisable}
-                            effect={propData.playBackRate} 
-                            effectName="playBackRate"
-                            name="rate"
-                            title="random playback rate"
-                        />
-                        <Switcher
-                            isAllDisable={isAllDisable.randomCurrentTime}
-                            setIsAllDisable={setIsAllDisable}
-                            effect={propData.randomCurrentTime}
-                            effectName="randomCurrentTime"
-                            name="RCT" 
-                            title="random change current time"
-                        />
+                    <div className="audioCard-tools_right flex-column align-end">
+                        <div className="audioCard-pluggins">
+                            <Volume volume={propData.volume} id={props.id}/>
+                            <Switcher
+                                isAllDisable={isAllDisable.panner}
+                                setIsAllDisable={setIsAllDisable}
+                                effect={propData.panner}
+                                effectName="panner"
+                                name="panner"
+                                title="panner effect"
+                            />
+                            <Switcher
+                                isAllDisable={isAllDisable.delay}
+                                setIsAllDisable={setIsAllDisable}
+                                effect={propData.delay} 
+                                effectName="delay"
+                                name="delay" 
+                                title="delay effect"
+                            />
+                            <Switcher
+                                isAllDisable={isAllDisable.filter}
+                                setIsAllDisable={setIsAllDisable}
+                                effect={propData.filter}
+                                effectName="filter"
+                                name="filter" 
+                                title="filter effect"
+                            />
+                            <Switcher
+                                isAllDisable={isAllDisable.playBackRate}
+                                setIsAllDisable={setIsAllDisable}
+                                effect={propData.playBackRate} 
+                                effectName="playBackRate"
+                                name="rate"
+                                title="random playback rate"
+                            />
+                            <Switcher
+                                isAllDisable={isAllDisable.randomCurrentTime}
+                                setIsAllDisable={setIsAllDisable}
+                                effect={propData.randomCurrentTime}
+                                effectName="randomCurrentTime"
+                                name="RCT" 
+                                title="random change current time"
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
     );
 });

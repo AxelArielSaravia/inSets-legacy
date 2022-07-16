@@ -126,9 +126,10 @@ const audioStateFromFile_AudioBuffer = (file, callback) => {
 }
 
 const createAudioStateFromFile = (file, id, callback) => {
-    if (GSEngine() === "audioNode") {
+    const engine = GSEngine();
+    if (engine === "audioNode") {
         return audioStateFromFile_AudioNode(file, id, callback)
-    } else {
+    } else if (engine === "audioBuffer"){
         return audioStateFromFile_AudioBuffer(file, id, callback);
     }
 }
@@ -204,11 +205,17 @@ const createPanner = (audioCtx, audioPannerState) => {
     return PANNER;
 }
 
-const changePlayBackRate = (audioState) => {
-    audioState.playBackRate.random(GSPlayBackRate);
-    if (GSEngine() === "audioNode") {
-        audioState.audioEngine.playbackRate = audioState.playBackRate.value;
-    } else {
+const changePlayBackRate = (audioState, bool) => {
+    const engine = GSEngine();
+    if (engine === "audioNode") {
+        if (bool && randomDecide()) {
+            audioState.playBackRate.random(GSPlayBackRate);
+            audioState.audioEngine.playbackRate = audioState.playBackRate.value;
+        } else {
+            audioState.audioEngine.playbackRate = 1;
+        }
+    } else if (engine === "audioBuffer" && bool) {
+        audioState.playBackRate.random(GSPlayBackRate);
         audioState.source.playbackRate.value = audioState.playBackRate.value;
     }
 }
@@ -227,15 +234,18 @@ const createAudioRandomChain = async (audioCtx, audioState) => {
 
     let input = inputGain;
 
-    //the randomDecide() means 50% of posibilities that the effect change randomly
+    //PLAYBACK RATE
+    changePlayBackRate(audioState, !audioState.playBackRate.isDisable);
+
     //PANNER
-    if (randomDecide() && !audioState.panner.isDisable) {
+    if (!audioState.panner.isDisable) {
         audioState.panner.random(GSPanner);
         const PANNER = await createPanner(audioCtx, audioState.panner);
         await input.connect(PANNER);
         input = PANNER; 
     }
-
+    
+    //the randomDecide() means 50% of posibilities that the effect change randomly
     //FILTER
     if (randomDecide() && !audioState.filter.isDisable) {
         audioState.filter.random(GSFilter);
@@ -250,10 +260,6 @@ const createAudioRandomChain = async (audioCtx, audioState) => {
         const feedback = await createDelay(audioCtx, audioState.delay);
         await input.connect(feedback);
         input = feedback;
-    }
-
-    if (randomDecide() && !audioState.playBackRate.isDisable) {
-        changePlayBackRate(audioState);
     }
 
     await input.connect(outputGain);
