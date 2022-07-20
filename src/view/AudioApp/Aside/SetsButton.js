@@ -23,6 +23,11 @@ function separateArrInSetsOf(arr, n) {
     return resArr;
 }
 
+const percent = (val, arrOfProbability) => {
+    let N = arrOfProbability.reduce((ac, el) => ac + el, 0);
+    return Math.floor(val / N * 100);
+};
+
 function GrupSetsButtons(props) {
     const [hidden, setHidden] = useState(true);
 
@@ -48,6 +53,7 @@ function GrupSetsButtons(props) {
                         subtract={props.superSubtract}
                         data={props.data}
                     />
+                    <p className="fs-text">{percent(props.output, props.arrOfProbability) + '%'}</p>
                 </div>
                 { props.lastIndex !== n && (
                     <ToolButton onClick={handleOnClick} className="">
@@ -72,6 +78,7 @@ function GrupSetsButtons(props) {
                                 subtract={props.subtract}
                                 data={i2+props.lastIndex}
                             />
+                            <p className="fs-text">{percent(v, props.arrOfProbability) + '%'}</p>
                         </div>
                     ))}
                 </div>
@@ -126,6 +133,7 @@ function GrupSetsButtonsGen(props) {
                             data={setOf}
                             add={props.add}
                             subtract={props.subtract}
+                            arrOfProbability={props.arrOfProbability}
                         />
                     </div>
                 );
@@ -172,6 +180,8 @@ export default function SetsButton(props) {
         setClickReset(state => !state);
     }
 
+  
+
     return (
         <AsideButton 
             title="Sets"
@@ -182,7 +192,7 @@ export default function SetsButton(props) {
                 <div style={{padding: "20px 0"}}>
                     <p className="fs-text text-center">No audio files</p>
                 </div>
-             ) : audioList_size < 11
+             ) : audioList_size < 10
              ? (
                 <>
                     <div className="flex-column align-c justify-c p-3">
@@ -198,6 +208,7 @@ export default function SetsButton(props) {
                                 subtract={subtract}
                                 data={i}
                             />
+                            <p className="fs-text">{percent(val, arrOfProbability) + '%'}</p>
                         </div>
                     ))}
                 </>

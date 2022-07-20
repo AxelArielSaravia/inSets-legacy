@@ -12,14 +12,6 @@ import { createAudioStateFromFile, stop } from "./audioEffects.js";
  */
 const isValidAudioType = (type) => (/^audio\/\w+$/).test(type);
 
-/**
- * @param {File} file
- * @returns {boolean}
- */
-const filesHaveValidAudioType = (file) => {
-  console.log("File type: ",file.type);
-  return isValidAudioType(file.type);
-};
 
 /**
  * @param {FileList} files 
@@ -28,7 +20,7 @@ const filesHaveValidAudioType = (file) => {
 const addFiles = (onFileType, files, callback)  => {
   console.log(files);
   for (let file of files) {
-    if (filesHaveValidAudioType(file)) {
+    if (isValidAudioType(file.type)) {
       if(onFileType) onFileType();
       createAudioStateFromFile(file, () => callback(AUDIO_MAP));
     }

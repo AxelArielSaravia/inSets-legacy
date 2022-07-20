@@ -95,7 +95,7 @@
 
 .fs-title {
   font-weight: 800;
-  font-size: 1.2rem;
+  font-size: 1rem;
   letter-spacing: 1.5px;
 }
 
@@ -103,6 +103,9 @@
 .fs-text { font-size: 0.8rem; }
 .fs-text-s { font-size: 0.6rem; } /* no used */
 
+@media screen and (min-width: 300px) { 
+  .fs-title { font-size: 1.2rem; }
+}
 
 @media screen and (min-width: 420px) {
   .fs-title { font-size: 1.4rem; }
