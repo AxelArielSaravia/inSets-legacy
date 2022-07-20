@@ -3,8 +3,8 @@
     padding: 2px;
 
     .switcher_thumb {
-        color: var(--secondary-color);
-        background-color: var(--primary-l-color);
+        color:var(--c-secondary);
+        background-color:var(--c-transitive1);
         width: 100%;
         height: 100%;
         transition: opacity 0.2s ease-out;
@@ -25,7 +25,7 @@
         position: absolute;
         width: 100%;
         height: 1px;
-        background-color: var(--secondary-color);
+        background-color:var(--c-secondary);
         top: 50%;
         opacity: 0;
         transform: rotate(10deg);
@@ -38,7 +38,7 @@
         position: absolute;
         width: 100%;
         height: 1px;
-        background-color: var(--secondary-color);
+        background-color:var(--c-secondary);
         top: 50%;
         opacity: 0;
         transform: rotate(-10deg);

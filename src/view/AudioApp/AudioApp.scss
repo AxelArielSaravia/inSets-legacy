@@ -1,4 +1,6 @@
 .audio-app {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100%;
   flex-grow: 1;
@@ -17,7 +19,9 @@
     flex-grow: 1;
   }
 }
-
+.tool-section {
+  padding: 0 10px 10px;
+}
 
 .dropFile{
   width: 100%;
@@ -25,17 +29,17 @@
   position: absolute;
   left: 0;
   top: 0;
-  background-color: var(--primary-color);
-  color: var(--secondary-color);
+  background-color:var(--c-primary);
+  color:var(--c-secondary);
   opacity: 80%;
   z-index: 10;
 }
 
-@media screen and (max-width: 780px) {
+@media screen and (min-width: 620px) {
   .audio-app {
-    flex-direction: column !important;
+    flex-direction: row;
   }
   .tool-section {
-    padding: 0 10px 10px;
+    padding: 0;
   }
 }

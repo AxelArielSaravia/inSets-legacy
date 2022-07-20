@@ -2,7 +2,7 @@
     width: 100%;
     max-width: 350px;
     height: min-content;
-    background-color: var(--primary-color);
+    background-color:var(--c-primary);
     position:relative;
     margin: 6px;
     padding: 8px;
@@ -73,8 +73,8 @@
     animation-iteration-count: infinite;
     animation-name: placeHolderShimmer;
     animation-timing-function: linear;
-    background-color: var(--primary-l-color);
-    background: linear-gradient(to right, var(--primary-l-color) 8%, var(--primary-color) 18%, var(--primary-l-color) 33%);
+    background-color:var(--c-transitive1);
+    background: linear-gradient(to right,var(--c-transitive1) 8%,var(--c-primary) 18%,var(--c-transitive1) 33%);
     background-size: 800px 104px;
     position: relative;
 }

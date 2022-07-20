@@ -9,9 +9,8 @@
         width: 100%; height: .6rem;
         margin: 0; padding: 0;
 
-        background-color: var(--primary-l-color);
-        background-size: 100% 100%;
-        background-repeat: no-repeat;
+        background-color:var(--c-transitive1);
+
 
         border-radius: 2px;
 
@@ -27,37 +26,38 @@
             cursor: pointer;
         }
         
-        &::-webkit-slider-runnable-track { @include track(); }
+        &::-webkit-slider-runnable-track { @include track();}
         &::-moz-range-track { @include track(); }
         &::-ms-track { @include track(); }
         
         @mixin thumb() {
+            display: block;
             margin:0; padding: 0;
-            height: 100%; width: .5rem;
-            background-color: var(--secondary-color);
+            height: .6rem; width: .5rem;
             cursor: pointer;
-            box-shadow:
-                -.5rem 0 0 .5rem var(--secondary-color), 
-                -1rem 0 0 .5rem var(--secondary-color),
-                -2rem 0 0 .5rem var(--secondary-color), 
-                -3rem 0 0 .5rem var(--secondary-color), 
-                -4rem 0 0 .5rem var(--secondary-color), 
-                -5rem 0 0 .5rem var(--secondary-color), 
-                -6rem 0 0 .5rem var(--secondary-color), 
-                -7rem 0 0 .5rem var(--secondary-color), 
-                -8rem 0 0 .5rem var(--secondary-color), 
-                -9rem 0 0 .5rem var(--secondary-color), 
-                -10rem 0 0 .5rem var(--secondary-color); 
+            border-radius: 0;
+            background-color: var(--c-secondary);
+            box-shadow: 
+                -1rem 0 0 1rem var(--c-secondary),
+                -2rem 0 0 1rem var(--c-secondary),
+                -3rem 0 0 1rem var(--c-secondary),
+                -4rem 0 0 1rem var(--c-secondary),
+                -5rem 0 0 1rem var(--c-secondary),
+                -6rem 0 0 1rem var(--c-secondary),
+            ;
+          
         }
+
         &::-webkit-slider-thumb { @include thumb(); }
         &::-moz-range-thumb { @include thumb(); }
         &::-ms-thumb { @include thumb(); }
 
         &,
-        &::-webkit-slider-runnable-track, 
+        &::-webkit-slider-runnable-track,
         &::-webkit-slider-thumb {
           -webkit-appearance: none;
         }
+
         &::-ms-track {
             color: transparent;
         }
@@ -66,5 +66,6 @@
         &::-ms-tooltip {
             display: none;
         }
-    }   
+        
+    }
 }

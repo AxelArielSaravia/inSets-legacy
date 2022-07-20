@@ -20,12 +20,12 @@ export default function SwitchButton(props) {
                     checked={props.isDisable} 
                     onChange={props.onClick}
                 />
-                    <div className="switcher_thumb flex-column align-c justify-c">
-                        {props.name ? ( 
-                            <span className="switcher_cross fs-text">{props.name}</span>
-                        ) : props.children
-                        }
-                    </div>
+                <div className="switcher_thumb flex-row align-c">
+                    {props.name ? ( 
+                        <span className="switcher_cross fs-text">{props.name}</span>
+                     ) : props.children
+                    }
+                </div>
             </label>
         </button>
     );

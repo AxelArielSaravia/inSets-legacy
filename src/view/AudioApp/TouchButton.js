@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./TouchButton.scss";
 
 const disableWheel = (e) => {
@@ -30,10 +30,12 @@ export default function TouchButton(props) {
     
     const handleTouchMove = (e) => {
         let x = e.touches[0].clientX;
-        if (x > point) 
+        if (x > point) {
             props.add(props.data);
-        else if (x < point)
-        props.subtract(props.data);
+        } else if (x < point) {
+            props.subtract(props.data);
+        }
+        setPoint(() => e.touches[0].clientX)
     }
     const handleTouchStart = (e) => { setPoint(() => e.touches[0].clientX) }
     const className = "touchButton justify-c align-c";

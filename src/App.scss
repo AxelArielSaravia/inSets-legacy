@@ -4,7 +4,7 @@
       width: 100%;
       height: 100%;
       padding: 10px;
-      background-color: var(--primary-l-color);
+      background-color: var(--c-transitive1);
     }
 }
   
@@ -21,14 +21,14 @@
 .init-message {
     padding: 10px 5px;
     * { padding: 2px 0; }
-    label { margin: 10px 0; }
+    label { margin: 10px 5px; }
 }
 
 .startApp-button {
     padding: 3px;
     border-radius: 5px;
-    color: var(--secondary-color);
-    border: 1px solid var(--secondary-color);
+    color:var(--c-secondary);
+    border: 1px solid var(--c-secondary);
 }
 
 .audioEngine-button {
@@ -39,7 +39,7 @@
     
     input { display: none; }
     input:checked ~ div .checkmark {
-        background-color: var(--secondary-color);
+        background-color: var(--c-secondary);
     }
     input:checked ~ div .checkmark:after {
         opacity: 1;
@@ -52,7 +52,7 @@
         width: 25px;
         margin:0;
         margin-right: 10px;
-        background-color: var(--primary-l-color);
+        background-color: var(--c-transitive1);
         border-radius: 50%;
     }
     .checkmark:after {
@@ -65,7 +65,7 @@
         width: 8px;
         height: 8px;
         border-radius: 50%;
-        background-color: var(--primary-color);
+        background-color: var(--c-primary);
         transition: all 200ms ease-out ;
     }
 
@@ -78,14 +78,14 @@
 @media (hover: hover) and (pointer: fine) {
 
     .audioEngine-button:hover input:checked ~ div .checkmark:after {
-        background-color: var(--primary-color);
+        background-color: var(--c-primary);
     }
     
     .audioEngine-button:hover input ~ div .checkmark:after {  
         top: 2px;
         left: 11px;
         opacity: 1;
-        background-color: var(--secondary-color);
+        background-color: var(--c-secondary);
     }
 }
 

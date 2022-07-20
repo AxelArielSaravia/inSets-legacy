@@ -53,7 +53,7 @@ function App() {
                   <section className="init-section flex-column align-c justify-c">
                     <div className="flex-column align-c justify-c">
                       <div className="init-message flex-column align-c justify-c">
-                        <h2 className="fs-text-l text-center">inSets Composition App</h2>
+                        <h2 className="fs-title text-center">inSets Composition App</h2>
                       </div>
                       <div className="init-message flex-column align-c justify-c">
                         <p className="fs-text text-center">This project was created by</p>

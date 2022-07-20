@@ -175,7 +175,7 @@ export default function SetsButton(props) {
     return (
         <AsideButton 
             title="Sets"
-            description="Change the probability value of the n size set execution."
+            description="Change the probability value of set execution size."
         >
             {audioList_size === 0 
              ? (

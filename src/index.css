@@ -9,23 +9,25 @@
   src: url('./fonts/CutiveMono-Regular.ttf') format('truetype');
 }
 
-:root {
-  color-scheme: light dark;
-}
 
 /* THEMES */
 .dark {
-  --primary-color: #131212;
-  --primary-l-color: #222020;
-  --primary-ls-color: #464242;
-  --secondary-color: #f7e0e0;
+  --c-primary: #131212;
+  --c-secondary: #f7e0e0;
+  --c-transitive1: #222020;
+  --c-transitive2: #464242;
+  accent-color: #f7e0e0;
 }
 
 .light {
-  --primary-color: #f7e0e0;
-  --primary-l-color: #cfbcbc;
-  --primary-ls-color: #a89999;
-  --secondary-color: #131212;
+  --c-primary: #f7e0e0;
+  --c-secondary: #131212;
+  --c-transitive1: #cfbcbc;
+  --c-transitive2: #a89999;
+  accent-color: #131212;
+}
+:root {
+  color-scheme: light dark;
 }
 
 
@@ -48,15 +50,15 @@ body {
 
   box-sizing: border-box;
 
-  background-color: var(--primary-color);
-  color: var(--secondary-color);
+  background-color:var(--c-primary);
+  color: var(--c-secondary);
 }
 
 
 /* SCROLLBAR FIREFOX */
 * {
   scrollbar-width: thin;          /* "auto" or "thin" */
-  scrollbar-color: var(--primary-ls-color) var(--primary-color);   /* scroll thumb and track */ 
+  scrollbar-color:var(--c-transitive2) var(--c-primary);   /* scroll thumb and track */ 
 }
 
 /* SCROLLBAR webkit */
@@ -65,7 +67,7 @@ body {
   
 }
 *::-webkit-scrollbar-thumb {
-  background-color: var(--primary-ls-color);    /* color of the scroll thumb */
+  background-color:var(--c-transitive2);    /* color of the scroll thumb */
   border-radius: 20px;       /* roundness of the scroll thumb */
 }
 
@@ -82,7 +84,7 @@ body *,
 }
 *:focus-visible {
   border-radius: 5px;
-  box-shadow: 0 0 0 2px var(--secondary-color)!important;
+  box-shadow: 0 0 0 2pxvar(--c-secondary)!important;
   outline: none;
 }
 
@@ -105,7 +107,7 @@ li {
   list-style-type: none;
 }
 i {
-  color: var(--secondary-color);
+  color:var(--c-secondary);
 }
 
 button {
@@ -133,5 +135,6 @@ input[type=range] {
   width: 100%;
   height: 100%;
 }
+
 
 @import "./style/utiles.css";

@@ -52,7 +52,7 @@ function AudioApp(props) {
 
   
   return (
-    <div className="audio-app flex-row">
+    <div className="audio-app">
       <DisableAllProvider>
         <section className="tool-section">
           <Aside audioList_size={audioList.size}/>

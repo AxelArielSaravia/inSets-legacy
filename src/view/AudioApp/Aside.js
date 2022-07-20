@@ -47,7 +47,7 @@ export default memo(function Aside(props) {
 
   return (
     <aside className="aside flex-column">
-      <div className="tools-switch hidden align-c justify-c"> 
+      <div className="tools-switch align-c justify-c"> 
         <ToolButton onClick={handleToolsSwitchOnClick}>
           { toolsSwitch
             ? <i className="flex-column align-c justify-c bi bi-chevron-compact-up"></i>

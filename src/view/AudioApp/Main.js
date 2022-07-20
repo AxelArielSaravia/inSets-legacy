@@ -54,7 +54,7 @@ export default memo(function Main(props) {
 
   return (
     <main className="main flex-column align-c">
-      <div className="file-buttons flex-wrap flex-row align-c justify-c">
+      <div className="file-buttons flex-row align-c justify-c">
         <AddFilesButton onClick={props.handleAddOnClick} />
         <ToolButton 
           className="start-button flex-row align-c justify-c"
@@ -67,7 +67,7 @@ export default memo(function Main(props) {
           <h4 className="fs-text-l">{!isPlaying ? "Start" : "Stop"}</h4>
         </ToolButton>
         <ToolButton 
-          className="flex-row"
+          className="flex-row align-c justify-c"
           onClick={props.handleClearOnClick}
         >
           <i className="tool-button_icon fs-text bi bi-trash-fill"></i>
