@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 
 import { GSProbabilityOfExecutionSets } from "../../../core/initGlobalState.js";
 
@@ -24,8 +24,9 @@ function separateArrInSetsOf(arr, n) {
 }
 
 const percent = (val, arrOfProbability) => {
+    if (val <= 0) return '0';
     let N = arrOfProbability.reduce((ac, el) => ac + el, 0);
-    return Math.floor(val / N * 100);
+    return (val / N * 100).toFixed(1);
 };
 
 function GrupSetsButtons(props) {
@@ -38,51 +39,47 @@ function GrupSetsButtons(props) {
 
     return (
         <>
-            <div className="flex-row align-c justify-c p-2"  style={{width: "98%"}}>
-                <div className="flex-row align-c justify-c">
-                    <h4 className="fs-text flex-row align-c justify-c" style={{width: "100%"}}>
-                        { props.lastIndex !== n
-                            ? `Sizes ${props.lastIndex} to ${props.setOf.length - 1 + props.lastIndex}:`
-                            : `Size ${n}:`
-                        }
-                    </h4>
-                    <TouchButton
-                        orientation="row"
-                        output={props.output}
-                        add={props.superAdd}
-                        subtract={props.superSubtract}
-                        data={props.data}
-                    />
-                    <p className="fs-text">{percent(props.output, props.arrOfProbability) + '%'}</p>
-                </div>
-                { props.lastIndex !== n && (
-                    <ToolButton onClick={handleOnClick} className="">
-                        { hidden
-                            ? <i style={{padding: "0px"}} className="flex-column align-c justify-c bi bi-chevron-compact-right"></i>
-                            : <i style={{padding: "0px"}} className="flex-column align-c justify-c bi bi-chevron-compact-down"></i>
-                        }
-                    </ToolButton>
-                )}
-            </div>
-            <div className="flex-column align-c">
-                <div className={hidden ? "hidden" : ""}>
-                    {props.setOf.map((v, i2) => (
-                        <div key={`set-${i2+props.index}`} className="flex-row align-c justify-c p-2">
-                            <span className="fs-text" style={{marginRight: "10px"}}>
-                                {`Size ${i2+props.lastIndex}:`}
-                            </span>
-                            <TouchButton
-                                orientation="row"
-                                output={v}
-                                add={props.add}
-                                subtract={props.subtract}
-                                data={i2+props.lastIndex}
-                            />
-                            <p className="fs-text">{percent(v, props.arrOfProbability) + '%'}</p>
-                        </div>
-                    ))}
-                </div>
-            </div>
+            <h4 className="fs-text flex-row align-c justify-c">
+                { props.lastIndex !== n
+                    ? `${props.lastIndex}-${props.setOf.length - 1 + props.lastIndex}:`
+                    : `${n}:`
+                }
+            </h4>
+            <TouchButton
+                orientation="row"
+                output={props.output}
+                add={props.superAdd}
+                subtract={props.superSubtract}
+                data={props.data}
+            />
+            <p className="fs-text">-</p>
+            { props.lastIndex !== n ? (
+                <ToolButton onClick={handleOnClick} className="set-group">
+                    { hidden
+                        ? <i style={{padding: "0px"}} className="flex-column align-c justify-c bi bi-chevron-compact-right"></i>
+                        : <i style={{padding: "0px"}} className="flex-column align-c justify-c bi bi-chevron-compact-down"></i>
+                    }
+                </ToolButton>
+            ) : <div></div>}
+            {!hidden &&  props.lastIndex !== n && (
+                props.setOf.map((v, i2) => (
+                    <Fragment key={`set-${i2+props.index}`}>
+                        <span className="fs-text">
+                            {`${i2+props.lastIndex}:`}
+                        </span>
+                        <TouchButton
+                            orientation="row"
+                            output={v}
+                            add={props.add}
+                            subtract={props.subtract}
+                            data={i2+props.lastIndex}
+                        />
+                        <p className="fs-text">{percent(v, props.arrOfProbability) + '%'}</p>
+                        <div></div>
+                    </Fragment>
+                ))
+            )}
+
         </>
     );
 }
@@ -118,11 +115,15 @@ function GrupSetsButtonsGen(props) {
     }
 
     return (
-        <>
+        <div className="set-container4">
+            <h4 className="fs-text">Size</h4>
+            <h4 className="fs-text">Value</h4>
+            <h4 className="fs-text">Probability</h4>
+            <div></div>
             {grupNumberSize > 0 && newArr.map((setOf, i1) => {
                 let lastIndex = i1 * grupNumberSize;
                 return (
-                    <div key={"setOf-" + i1} className="flex-column align-c justify-c">
+                    <Fragment key={"setOf-" + i1}>
                         <GrupSetsButtons 
                             setOf={setOf}
                             lastIndex={lastIndex}
@@ -135,10 +136,10 @@ function GrupSetsButtonsGen(props) {
                             subtract={props.subtract}
                             arrOfProbability={props.arrOfProbability}
                         />
-                    </div>
+                    </Fragment>
                 );
             })}
-        </>
+        </div>
     );
 }
 
@@ -192,50 +193,53 @@ export default function SetsButton(props) {
                 <div style={{padding: "20px 0"}}>
                     <p className="fs-text text-center">No audio files</p>
                 </div>
-             ) : audioList_size < 10
-             ? (
-                <>
-                    <div className="flex-column align-c justify-c p-3">
-                        <ToolButton onClick={reset}>Reset</ToolButton>
-                    </div> 
-                    {arrOfProbability.map((val, i) => (
-                        <div key={"set-" + i} className="flex-row align-c justify-c p-2">
-                            <h4 className="fs-text">{"Size " + i + ":"}</h4>
-                            <TouchButton
-                                orientation="row"
-                                output={val}
-                                add={add}
-                                subtract={subtract}
-                                data={i}
-                            />
-                            <p className="fs-text">{percent(val, arrOfProbability) + '%'}</p>
-                        </div>
-                    ))}
-                </>
              ) : (
                 <>
                     <div className="flex-column align-c justify-c p-3">
                         <ToolButton onClick={reset}>Reset</ToolButton>
                     </div>
-                    <div className="flex-row align-c justify-c p-2">
-                        <span className="fs-text">Order in grups of:</span>
-                        <TouchButton
-                            scroll
-                            orientation="row"
-                            disable="configs"
-                            output={grupNumberSize}
-                            add={(val) => {if (grupNumberSize < audioList_size)setGrupNumberSize(state => state + val)}}
-                            subtract={(val) => {if (grupNumberSize > 1) setGrupNumberSize(state => state - val)}}
-                            data={1}
+                    { audioList_size < 10 ? (
+                        <div className="set-container3"> 
+                            <h4 className="fs-text">Size</h4>
+                            <h4 className="fs-text">Value</h4>
+                            <h4 className="fs-text">Probability</h4>
+                            {arrOfProbability.map((val, i) => (
+                                <Fragment key={"set-" + i}>
+                                    <h4 className="fs-text">{i}</h4>
+                                    <TouchButton
+                                        orientation="row"
+                                        output={val}
+                                        add={add}
+                                        subtract={subtract}
+                                        data={i}
+                                    />
+                                    <p className="fs-text">{percent(val, arrOfProbability) + '%'}</p>
+                                </Fragment>
+                            ))}
+                        </div>
+                    ) : (
+                    <>
+                        <div className="flex-row align-c justify-c p-2">
+                            <span className="fs-text">Order in grups of:</span>
+                            <TouchButton
+                                scroll
+                                orientation="row"
+                                disable="configs"
+                                output={grupNumberSize}
+                                add={(val) => {if (grupNumberSize < audioList_size)setGrupNumberSize(state => state + val)}}
+                                subtract={(val) => {if (grupNumberSize > 1) setGrupNumberSize(state => state - val)}}
+                                data={1}
+                            />
+                        </div>
+                        <GrupSetsButtonsGen
+                            arrOfProbability={arrOfProbability}
+                            grupNumberSize={grupNumberSize}
+                            add={add}
+                            subtract={subtract}
+                            clickReset={clickReset}
                         />
-                    </div>
-                    <GrupSetsButtonsGen
-                        arrOfProbability={arrOfProbability}
-                        grupNumberSize={grupNumberSize}
-                        add={add}
-                        subtract={subtract}
-                        clickReset={clickReset}
-                    />
+                    </>
+                    )}
                 </>
              )
                         

@@ -27,7 +27,7 @@
         right: 1px;
     }
     .tool-button {
-        width: auto !important;
+        width: min-content !important;
         background-color: transparent;
         border: 1px solid var(--c-secondary);
         padding: 5px !important;
@@ -39,14 +39,36 @@
 }
 
 .inactive {
-    left: -300px;
-}
-.inactive {
     z-index: 0;
     padding: 0;
     height: 0;
     opacity: 0;
 }
+.set-container3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto;
+    justify-items: center;
+/*     & > * {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    } */
+}
+.set-container4 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) 30px;
+    grid-template-rows: auto;
+    justify-items: center;
+    align-items: center;
+    /* & > * {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    } */
+}
+
+
 @media screen and (min-width: 620px) {
     .configs {
         width: 340px;
@@ -66,5 +88,11 @@
     }
     .inactive {
         left: -300px;
+    }
+}
+
+@media screen and (min-width: 1400px) {
+    .configs {
+        width: 500px;
     }
 }
