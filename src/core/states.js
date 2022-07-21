@@ -567,7 +567,9 @@ Object.defineProperties(FadeTime, {
 function ProbabilityOfExecutionSets() {
     /** @type {number[]} */
     let arrOfValues = [1];
-
+    /** @type {number[]} */
+    let ZEROS = 0;
+ 
     Object.defineProperties(this, {
         "length": {
             get: function() { return arrOfValues.length },
@@ -602,10 +604,12 @@ function ProbabilityOfExecutionSets() {
                 if (typeof i === "number"
                  && i < this.length 
                  && typeof value === "number"
-                 && value <= this.length * 2
-                 && value > -1
+                 && value > -1 && value <= 50
+                 && (arrOfValues[i] !== 1 || value !== 0 || ZEROS !== arrOfValues.length-1)
                 ) {
-                    arrOfValues[i] = value;
+                    if (arrOfValues[i] === 0 && value !== 0) ZEROS--;
+                    else if (arrOfValues[i] !== 0 && value === 0) ZEROS++;
+                    arrOfValues[i] = value; 
                 } 
             },
             enumerable: true
@@ -622,15 +626,18 @@ function ProbabilityOfExecutionSets() {
              * @returns {number}
              */
             value: function() {
-                let arrOfSetsLength = [];
+                let sum = 0;
+                let arrOfSums = [];
                 arrOfValues.forEach((v,i) => {
                     if (v > 0) {
-                        let arr = (new Array(v)).fill(i);
-                        arrOfSetsLength = arrOfSetsLength.concat(arr);
+                        sum += v;
+                        arrOfSums.push([i, sum]);
                     }
                 });
-                let n = random(0, arrOfSetsLength.length - 1);
-                return arrOfSetsLength[n];
+                let n = random(1, sum);
+                for (let i = 0; i < arrOfSums.length; i++) {
+                    if (n <= arrOfSums[i][1]) return arrOfSums[i][0]
+                }
             },
             enumerable: true
         }
@@ -1102,7 +1109,10 @@ function ProbabilityValue() {
     Object.defineProperty(this, "value", {
             get: function() { return VALUE; },
             set: function(val) {
-                if (val > 0) {
+                if (
+                 typeof val === "number"
+                 && val > 0 && val <= 50
+                ) {
                     VALUE = val;
                 }
             },

@@ -11,27 +11,37 @@ import { ContextDisableAll } from "../DisableAllProvider.js";
 
 import "./AudioCard.scss"; 
 
+const percent = (val, N) => {
+    if (val <= 0) return '0';
+    return Math.floor(val / N * 100);
+};
+
 function ProbabilityButton(props) {
     const [value, setValue] = useState(props.probability.value);
 
     const add = () => {
         props.probability.value += 1;
         setValue(() =>  props.probability.value);
+        props.setAC_MustralTotal(state => state + 1);
     }
     const subtract = () => {
         if (value > 1) {
             props.probability.value -= 1;
             setValue(() => props.probability.value);
+            props.setAC_MustralTotal(state => state - 1);
         }
     }
 
     return (
-        <TouchButton
-            orientation="row"
-            add={add}
-            subtract={subtract}
-            output={value}
-        />
+        <>
+            <TouchButton
+                orientation="row"
+                add={add}
+                subtract={subtract}
+                output={value}
+            />
+            <p className="fs-text text-center">{percent(value, props.AC_MustralTotal) + "%"}</p>
+        </>
     );
 }
 
@@ -85,16 +95,20 @@ export default memo(function AudioCard(props) {
 
     return (
             <div className="audioCard" style={props.appIsPlaying && states?.isPlaying && states?.color ? {boxShadow:"0 0 2px 2px " +  states?.color} : {}}>
-                <button 
-                    type="button" 
-                    className="delete-button"
-                    onClick={handleOnClickDeleteButton}
-                >
-                    <i className="flex-row align-c fs-text-l bi bi-x"></i>
-                </button>
-                <div className="audioCard-name flex-row">
-                    <ProbabilityButton probability={propData.probability}/>
+                <div className="audioCard-head align-c justify-sb">
                     <h4 className="fs-text ellipsis">{propData.title}</h4>
+                    <ProbabilityButton
+                        AC_MustralTotal={props.AC_MustralTotal}
+                        setAC_MustralTotal={props.setAC_MustralTotal}
+                        probability={propData.probability}
+                    />
+                    <button 
+                        type="button" 
+                        className="delete-button"
+                        onClick={handleOnClickDeleteButton}
+                    >
+                        <i className="flex-row align-c fs-text-l bi bi-x"></i>
+                    </button>
                 </div>
                 <div className="audioCard-tools flex-row">
                     <div className="audioCard-tools_left flex-column align-c">

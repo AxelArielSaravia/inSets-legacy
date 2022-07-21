@@ -9,20 +9,20 @@
     border-radius: 5px;
     
     .delete-button {
-        position:absolute;
-        right: 0;
-        top: 0;
+
         width: 20px;
         height: 20px;
+        background-color: var(--c-transitive1);
+        border-radius: 2px;
         i {
             font-size: 20px;
         }
     }
 
-    .audioCard-name {
-        //padding-left: 5px;
-        padding-right: 20px;
+    .audioCard-head {
         padding-bottom: 10px;
+        display: grid;
+        grid-template-columns: 60% 15% 15% 20px;
     }
     .audioCard-tools {
         width: 100%;

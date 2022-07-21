@@ -13,6 +13,7 @@ export default memo(function Main(props) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [audiosStates, setAudiosStates] = useState({});
   const audioList = props.audioList;
+  const [AC_MustralTotal, setAC_MustralTotal] = useState([...audioList].reduce((acc, el) => acc + el[1].probability.value, 0));
 
   useEffect(() => { 
     setAudiosStates((state) => {
@@ -28,6 +29,7 @@ export default memo(function Main(props) {
       });
       return audiosPlayingObj
     });
+    setAC_MustralTotal(() => [...audioList].reduce((acc, el) => acc + el[1].probability.value, 0))
   }, [audioList]);
 
   const changeAudiosStates = (id, isPlaying, randomCurrentTime, color) => {
@@ -85,6 +87,9 @@ export default memo(function Main(props) {
                 appIsPlaying={isPlaying}
                 states={audiosStates[val[0]]}
                 data={val[1]}
+                AC_MustralTotal={AC_MustralTotal}
+                setAC_MustralTotal={setAC_MustralTotal}
+               
               />
             ))}
             {(new Array(props.filesLoading)).fill(0).map((v, i) => (

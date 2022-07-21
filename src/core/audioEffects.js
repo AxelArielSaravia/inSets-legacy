@@ -393,6 +393,8 @@ const wait = ms => new Promise(resolve => setInterval(resolve, ms));
 
 const changeGSSTARTED_ID = () => GSSTARTED_ID(createId());
 
+const colorSet = () => `rgb(${random(32, 141)},${random(32, 141)},${random(32, 141)})`;
+
 const randomTimeExecution = (cb, startedID) => {
     if (GSIsStarted() && GSSTARTED_ID() === startedID) {
         randomSetsExecution(cb);
@@ -422,8 +424,8 @@ const createNewSetExecution = () => {
     /**@type {Set}*/
     const executeSet = new Set();
     //selects elements for the set
+    let possibleAudios = AudioProbabilityArray(AUDIO_MAP);
     if (AUDIO_MAP.size / 2 >= n) {
-        let possibleAudios = AudioProbabilityArray(AUDIO_MAP);
         //console.log("possibleAudios: ",possibleAudios);//DEBUGGER
         while (executeSet.size < n) {
             let name = possibleAudios[random(0, possibleAudios.length-1)];
@@ -432,7 +434,6 @@ const createNewSetExecution = () => {
         }
 
     } else {
-        let possibleAudios = AudioProbabilityArray(AUDIO_MAP);
         //console.log("possibleAudios: ",possibleAudios);//DEBUGGER
         for (let total = AUDIO_MAP.size - n; total > 0; total--) {
             let name = possibleAudios[random(0, possibleAudios.length-1)];
@@ -443,13 +444,12 @@ const createNewSetExecution = () => {
         });
     }
     //console.log("executeSet: ", executeSet);//DEBUGGER
-    const newColorSet = `rgb(${random(32, 141)},${random(32, 141)},${random(32, 141)})`;
-
-    return [executeSet, newColorSet];
+    return executeSet;
 }
 
 const randomSetsExecution = (cb) => {
-    const [executeSet, newColorSet] = createNewSetExecution();
+    const executeSet = createNewSetExecution();
+    const newColorSet = colorSet();
     executeSet.forEach((data) => {
         if (data.isPlaying) {
             stop(data.id, (isPlaying, rct) => cb(data.id, isPlaying, rct))

@@ -156,24 +156,19 @@ export default function SetsButton(props) {
         setClickReset(_ => false);
     }, [clickReset])
 
-    const add = (i, newVal) => {
+    const operation = (type) => (i, newVal) => {
         if (newVal != null) {
             GSProbabilityOfExecutionSets.set(i, newVal);
         } else {
             let val = GSProbabilityOfExecutionSets.get(i);
-            GSProbabilityOfExecutionSets.set(i, val+1)
+            if (type === "add") 
+                GSProbabilityOfExecutionSets.set(i, val+1);
+            else if (type === "subtract")
+                GSProbabilityOfExecutionSets.set(i, val-1);
+            
         }
         setArrOfProbability(() => GSProbabilityOfExecutionSets.values);
-    }
-    const subtract = (i, newVal) => {
-        if (newVal != null) {
-            GSProbabilityOfExecutionSets.set(i, newVal);
-        } else {
-            let val = GSProbabilityOfExecutionSets.get(i);
-            GSProbabilityOfExecutionSets.set(i, val-1)
-        }
-        setArrOfProbability(() => GSProbabilityOfExecutionSets.values);
-    }
+    } 
 
     const reset = () => {
         GSProbabilityOfExecutionSets.reset();
@@ -209,8 +204,8 @@ export default function SetsButton(props) {
                                     <TouchButton
                                         orientation="row"
                                         output={val}
-                                        add={add}
-                                        subtract={subtract}
+                                        add={operation('add')}
+                                        subtract={operation('subtract')}
                                         data={i}
                                     />
                                     <p className="fs-text">{percent(val, arrOfProbability) + '%'}</p>
@@ -234,8 +229,8 @@ export default function SetsButton(props) {
                         <GrupSetsButtonsGen
                             arrOfProbability={arrOfProbability}
                             grupNumberSize={grupNumberSize}
-                            add={add}
-                            subtract={subtract}
+                            add={operation('add')}
+                            subtract={operation('subtract')}
                             clickReset={clickReset}
                         />
                     </>
