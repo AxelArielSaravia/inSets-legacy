@@ -55,29 +55,29 @@
     }
 
     .panel.panel-hidden {
-      height: 100%;
       top: 0;
-      z-index: 4;
-      transform: translateY(0);
-
+      height: 100%;
       & > div {
-        transform: scaleY(0);
-        opacity: 0;
         z-index: 1;
+        transform: scaleY(0);
       }
     }
     .panel.panel-invisible {
       opacity: 0;
+      
     }
     .panel {
-      position: absolute;
-      top: 2rem;
-      transform: translateY(10px);
-      z-index: 4;
-      transition: top .2s ease-in-out;
-      opacity: 98%;
-      padding: 0;
       height: unset;
+      position: absolute;
+      top: 45px;
+      //transform: translateY(42px) scaleY(100%);
+      
+      z-index: 4;
+
+      padding: 0;
+      opacity: 98%;
+
+      transition: top .2s ease-in-out;
 
       .tool-button {
         max-width: unset;
@@ -93,14 +93,13 @@
 
         position: relative;
         z-index: 2;
-        
-        background:var(--c-primary);
-        border: 4px solid var(--c-transitive1);
-        border-radius: 10px;
 
         padding: 6px 0;
-
-        transition: opacity .2s ease-out;
+        
+        border: 4px solid var(--c-transitive1);
+        border-radius: 10px;
+        
+        background:var(--c-primary);
       }
       .aside-button {
         width: 120px;
@@ -119,7 +118,6 @@
       .aside-button {
         width: unset;
         display: block;
-
       }
     }
   }

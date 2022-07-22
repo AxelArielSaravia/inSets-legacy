@@ -30,49 +30,81 @@ const percent = (val, arrOfProbability) => {
 };
 
 function GrupSetsButtons(props) {
+    const areAllValuesIqual = props.setOf.every(el => props.setOf[0] === el);
+    const [value, setValue] = useState(areAllValuesIqual ? props.setOf[0] : 0);
     const [hidden, setHidden] = useState(true);
+    const clickReset = props.clickReset;
+    const n = props.setOf.length - 1 + props.startIndex;
+    
+    useEffect(() => {
+        if (!areAllValuesIqual) {
+            setValue(() => 0);
+        } else {
+            setValue(() => props.setOf[0]);
+        }
+    }, [areAllValuesIqual]);
 
-    const handleOnClick = () => {
-        setHidden(state => !state);
+    useEffect(() => {
+        if (clickReset) {
+            setValue(() => 1);
+        }
+    }, [clickReset]);
+
+    const handleOnClick = () => setHidden(state => !state);
+
+    const add = (a) => {
+        console.log(value);
+        if (value < 50) {
+            a.forEach((_,i) => props.add(i + props.startIndex, value+1));
+            setValue(state => ++state);
+        }
     }
-    const n = props.setOf.length - 1 + props.lastIndex;
+    const subtract = (a) => {
+        if (value > 0) {
+            a.forEach((_,i) => props.subtract(i + props.startIndex, value-1));
+            setValue(state => --state);
+        }
+    }
 
     return (
         <>
-            <h4 className="fs-text flex-row align-c justify-c">
-                { props.lastIndex !== n
-                    ? `${props.lastIndex}-${props.setOf.length - 1 + props.lastIndex}:`
+            <h4 className="fs-text flex-row align-c justify-c p-2">
+                { props.startIndex !== n
+                    ? `${props.startIndex}-${n}:`
                     : `${n}:`
                 }
             </h4>
             <TouchButton
                 orientation="row"
-                output={props.output}
-                add={props.superAdd}
-                subtract={props.superSubtract}
-                data={props.data}
+                output={!areAllValuesIqual? "-" :value}
+                add={add}
+                subtract={subtract}
+                data={props.setOf}
+                textStyle={{fontWeight: "900"}}
             />
-            <p className="fs-text">-</p>
-            { props.lastIndex !== n ? (
+            <h4 className="fs-text">
+                { areAllValuesIqual ? percent(value, props.arrOfProbability) + '%' : '-' }
+            </h4>
+            { props.startIndex !== n ? (
                 <ToolButton onClick={handleOnClick} className="set-group">
                     { hidden
-                        ? <i style={{padding: "0px"}} className="flex-column align-c justify-c bi bi-chevron-compact-right"></i>
-                        : <i style={{padding: "0px"}} className="flex-column align-c justify-c bi bi-chevron-compact-down"></i>
+                        ? <i style={{padding: "0px"}} className="fs-text flex-column align-c justify-c bi bi-caret-right"></i>
+                        : <i style={{padding: "0px"}} className="fs-text flex-column align-c justify-c bi bi-caret-down"></i>
                     }
                 </ToolButton>
             ) : <div></div>}
-            {!hidden &&  props.lastIndex !== n && (
+            {!hidden &&  props.startIndex !== n && (
                 props.setOf.map((v, i2) => (
                     <Fragment key={`set-${i2+props.index}`}>
-                        <span className="fs-text">
-                            {`${i2+props.lastIndex}:`}
+                        <span className="fs-text p-2">
+                            {`${i2+props.startIndex}:`}
                         </span>
                         <TouchButton
                             orientation="row"
                             output={v}
                             add={props.add}
                             subtract={props.subtract}
-                            data={i2+props.lastIndex}
+                            data={i2+props.startIndex}
                         />
                         <p className="fs-text">{percent(v, props.arrOfProbability) + '%'}</p>
                         <div></div>
@@ -87,54 +119,26 @@ function GrupSetsButtons(props) {
 function GrupSetsButtonsGen(props) {
     const grupNumberSize = props.grupNumberSize;
     const clickReset = props.clickReset;
-    const arrOfProbability_length = props.arrOfProbability.length;
-    const n = Math.ceil(arrOfProbability_length/ grupNumberSize);
-    const [generalArrOfProbability, setGeneralArrOfProbability] = useState((new Array(n)).fill(1));
-
-    const newArr = separateArrInSetsOf(props.arrOfProbability, props.grupNumberSize);
-
-    useEffect(() => {
-        setGeneralArrOfProbability(() => (new Array(n)).fill(1))
-    }, [n, clickReset]);
-
-    const add = (j, a, k) => {
-        if (generalArrOfProbability[j] < arrOfProbability_length * 2) {
-            let arr = [...generalArrOfProbability];
-            let v = ++arr[j];
-            a.forEach((_,i) => props.add(i+k, v));
-            setGeneralArrOfProbability(_ => arr);
-        }
-    }
-    const subtract = (j, a, k) => {
-        if (generalArrOfProbability[j] > 0) {
-            let arr = [...generalArrOfProbability];
-            let v = --arr[j];
-            a.forEach((_,i) => props.subtract(i+k, v));
-            setGeneralArrOfProbability(_ => arr);
-        }
-    }
+    let newArr = separateArrInSetsOf(props.arrOfProbability, props.grupNumberSize);
 
     return (
-        <div className="set-container4">
+        <div className="set-container4 grid align-c">
             <h4 className="fs-text">Size</h4>
             <h4 className="fs-text">Value</h4>
             <h4 className="fs-text">Probability</h4>
             <div></div>
             {grupNumberSize > 0 && newArr.map((setOf, i1) => {
-                let lastIndex = i1 * grupNumberSize;
+                let startIndex = i1 * grupNumberSize;
                 return (
-                    <Fragment key={"setOf-" + i1}>
+                    <Fragment key={"setOf-" + startIndex +"-"+ (setOf.length - 1 + startIndex)}>
                         <GrupSetsButtons 
                             setOf={setOf}
-                            lastIndex={lastIndex}
+                            startIndex={startIndex}
                             index={i1}
-                            superAdd={(a) => add(i1, a, lastIndex)}
-                            superSubtract={(a) => subtract(i1, a, lastIndex)}
-                            output={generalArrOfProbability[i1]}
-                            data={setOf}
                             add={props.add}
                             subtract={props.subtract}
                             arrOfProbability={props.arrOfProbability}
+                            clickReset={clickReset}
                         />
                     </Fragment>
                 );
@@ -152,6 +156,7 @@ export default function SetsButton(props) {
     useEffect(() => {
         setArrOfProbability(() => GSProbabilityOfExecutionSets.values);
     }, [audioList_size]);
+
     useEffect(() => {
         setClickReset(_ => false);
     }, [clickReset])
@@ -176,8 +181,6 @@ export default function SetsButton(props) {
         setClickReset(state => !state);
     }
 
-  
-
     return (
         <AsideButton 
             title="Sets"
@@ -194,13 +197,13 @@ export default function SetsButton(props) {
                         <ToolButton onClick={reset}>Reset</ToolButton>
                     </div>
                     { audioList_size < 10 ? (
-                        <div className="set-container3"> 
-                            <h4 className="fs-text">Size</h4>
+                        <div className="set-container3 grid align-c"> 
+                            <h4 className="fs-text p-2">Size</h4>
                             <h4 className="fs-text">Value</h4>
                             <h4 className="fs-text">Probability</h4>
                             {arrOfProbability.map((val, i) => (
                                 <Fragment key={"set-" + i}>
-                                    <h4 className="fs-text">{i}</h4>
+                                    <h4 className="fs-text p-2">{i}</h4>
                                     <TouchButton
                                         orientation="row"
                                         output={val}
@@ -214,7 +217,7 @@ export default function SetsButton(props) {
                         </div>
                     ) : (
                     <>
-                        <div className="flex-row align-c justify-c p-2">
+                        <div className="flex-row align-c justify-c p-3">
                             <span className="fs-text">Order in grups of:</span>
                             <TouchButton
                                 scroll

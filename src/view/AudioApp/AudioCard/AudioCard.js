@@ -95,7 +95,7 @@ export default memo(function AudioCard(props) {
 
     return (
             <div className="audioCard" style={props.appIsPlaying && states?.isPlaying && states?.color ? {boxShadow:"0 0 2px 2px " +  states?.color} : {}}>
-                <div className="audioCard-head align-c justify-sb">
+                <div className="audioCard-head grid align-c justify-sb">
                     <h4 className="fs-text ellipsis">{propData.title}</h4>
                     <ProbabilityButton
                         AC_MustralTotal={props.AC_MustralTotal}
@@ -148,7 +148,7 @@ export default memo(function AudioCard(props) {
                         </div>
                     </div>
                     <div className="audioCard-tools_right flex-column align-end">
-                        <div className="audioCard-pluggins">
+                        <div className="audioCard-pluggins grid">
                             <Volume volume={propData.volume} id={props.id}/>
                             <Switcher
                                 isAllDisable={isAllDisable.panner}

@@ -21,7 +21,6 @@
 
     .audioCard-head {
         padding-bottom: 10px;
-        display: grid;
         grid-template-columns: 60% 15% 15% 20px;
     }
     .audioCard-tools {
@@ -51,11 +50,18 @@
             width: 100%;
 
             .audioCard-pluggins {
-                display: grid;
                 grid-template-columns: repeat(2, 1fr);
                 grid-template-rows: repeat(3, 1fr);
                 width: 95%;
             }
+        }
+    }
+}
+
+@media scren and (min-width: 300px) {
+    .audioCard {
+        .audioCard-head {
+            grid-template-columns: 50% 20% 20% 20px;
         }
     }
 }

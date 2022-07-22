@@ -16,6 +16,11 @@
   flex-wrap: wrap;
 }
 
+/* GRID */
+.grid {
+  display: grid;
+}
+
 .align-c {
   align-items: center;
 }

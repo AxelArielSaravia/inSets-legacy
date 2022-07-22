@@ -609,6 +609,7 @@ function ProbabilityOfExecutionSets() {
                 ) {
                     if (arrOfValues[i] === 0 && value !== 0) ZEROS--;
                     else if (arrOfValues[i] !== 0 && value === 0) ZEROS++;
+                    console.log(ZEROS);
                     arrOfValues[i] = value; 
                 } 
             },
