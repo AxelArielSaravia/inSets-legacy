@@ -590,33 +590,42 @@ function ProbabilityOfExecutionSets() {
             enumerable: true
         },
         "pop": {
-            value: function() { if (this.length > 1) arrOfValues.pop(); },
+            value: function() { 
+                if (arrOfValues.length > 1) {
+                    arrOfValues.pop();
+                    if (ZEROS === arrOfValues.length) {
+                        arrOfValues[arrOfValues.length-1] = 1;
+                        ZEROS--;
+                    }
+                }
+
+            },
             enumerable: true
         },
         "reset": {
             value: function() { 
-                arrOfValues = (new Array(this.length)).fill(1);
+                arrOfValues = (new Array(arrOfValues.length)).fill(1);
+                ZEROS = 0;
             },
             enumerable: true
         },
         "set": {
             value: function(i, value) {
                 if (typeof i === "number"
-                 && i < this.length 
+                 && i < arrOfValues.length 
                  && typeof value === "number"
                  && value > -1 && value <= 50
                  && (arrOfValues[i] !== 1 || value !== 0 || ZEROS !== arrOfValues.length-1)
                 ) {
                     if (arrOfValues[i] === 0 && value !== 0) ZEROS--;
                     else if (arrOfValues[i] !== 0 && value === 0) ZEROS++;
-                    console.log(ZEROS);
                     arrOfValues[i] = value; 
                 } 
             },
             enumerable: true
         },
         "clear": {
-            value: function() { arrOfValues = [1]; },
+            value: function() { arrOfValues = [1]; ZEROS = 0},
             enumerable: true
         },
         /**
