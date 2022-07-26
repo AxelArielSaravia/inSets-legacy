@@ -1,14 +1,15 @@
 {
   "delay": {
-    "disableAll": false,
+    "areAllDisable": false,
     "timeMin": 0.5,
     "timeMax": 2,
     "feedbackMin": 0.1, 
     "feedbackMax": 0.85
   },
-  "fadeTime": 150,
+  "fadeIn": 80,
+  "fadeOut": 140,
   "filter": {
-    "disableAll": false,
+    "areAllDisable": false,
     "frequencyMin": 80, 
     "frequencyMax": 15000,
     "qMin": 0.1,
@@ -16,7 +17,7 @@
     "types": ["lowpass", "highpass", "bandpass", "notch"] 
   },
   "panner": {
-    "disableAll": false,
+    "areAllDisable": false,
     "xMin": -30, 
     "xMax": 30,
     "yMin": -30, 
@@ -25,13 +26,11 @@
     "zMax": 30
   },
   "playBackRate": {
-    "disableAll": false,
+    "areAllDisable": false,
     "min": 0.8, 
     "max": 2
   },
-  "randomCurrentTime": {
-    "disableAll": false
-  },
+  "randomStartPoint": false,
   "timeInterval":{
     "min": 800, 
     "max": 5000 

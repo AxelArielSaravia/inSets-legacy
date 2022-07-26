@@ -1,19 +1,21 @@
 import { memo, useState, useEffect } from "react";
 
-import ToolButton from "./ToolButton.js";
-import AsideConfig from "./Aside/AsideConfig.js";
+import ToolButton from "../ToolButton.js";
+import AsideConfig from "./AsideConfig.js";
 import "./Aside.scss"
 
 
-export default memo(function Aside(props) {
+export default memo(function Aside() {
   //console.log("Update Aside"); //DEBUGGER
   const [toolsSwitch, setToolsSwitch] = useState(false);
   const [toolConfig, setToolConfig] = useState(false);
   const [configButton, setConfigButton] = useState("");
 
+  
   const handleToolsSwitchOnClick = () => {
     setToolsSwitch((state) => !state);
   }
+  
   const handleButtonsOnClick = (val) => {
     setToolConfig(state => {
       if (state && val === configButton) {
@@ -23,7 +25,15 @@ export default memo(function Aside(props) {
     });
     setConfigButton(() => val); 
   }
-
+  const setsOnClick = () => { handleButtonsOnClick("SETS") }
+  const timeOnClick = () => { handleButtonsOnClick("TIME") }
+  const fadeTimeOnClick = () => { handleButtonsOnClick("FADETIME") }
+  const pannerOnClick = () => { handleButtonsOnClick("PANNER") }
+  const filterOnClick = () => { handleButtonsOnClick("FILTER") }
+  const delayOnClick = () => { handleButtonsOnClick("DELAY") }
+  const playBackRateOnClick = () => { handleButtonsOnClick("RATE") }
+  const randomStartPointOnClick = () => { handleButtonsOnClick("RSP") }
+  
   useEffect(() => {
     const el = (e) => { 
       if ( e.target.matches(".tools-switch *")
@@ -63,7 +73,7 @@ export default memo(function Aside(props) {
           <div className="aside-button flex-row">
             <ToolButton 
               className="flex-row" 
-              onClick={() => { handleButtonsOnClick("SETS") }}
+              onClick={setsOnClick}
             >
               <h4 className="fs-text">Sets</h4>
             </ToolButton>
@@ -119,9 +129,9 @@ export default memo(function Aside(props) {
           <div className="aside-button flex-row">
             <ToolButton 
               className="flex-row" 
-              onClick={() => { handleButtonsOnClick("RCT") }}
+              onClick={() => { handleButtonsOnClick("RSP") }}
             >
-              <h4 className="fs-text">RCT</h4>
+              <h4 className="fs-text">RSP</h4>
             </ToolButton>
           </div>
         </div>
@@ -130,7 +140,6 @@ export default memo(function Aside(props) {
         active={toolConfig} 
         onClick={() => setToolConfig(() => false)}
         configButton={configButton}
-        audioList_size={props.audioList_size}
       />
     </aside>
   );

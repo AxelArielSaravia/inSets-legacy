@@ -1,67 +1,34 @@
-import { useState, useEffect, memo } from "react";
-
-import { GSPanner } from "../../../core/initGlobalState.js";
-import initState from "../../../core/initState.json";
+import { memo } from "react";
 
 import AsideButton from "./AsideButton.js";
 import TouchButton from "../TouchButton.js";
 import ToolButton from "../ToolButton.js";
 import Switch from "../SwitchButton.js";
 
-function changeLocalStorage(name, value) {
-    let localStoragePanner = JSON.parse(localStorage.getItem('panner'));
-    localStoragePanner[name] = value;
-    localStorage.setItem('panner', JSON.stringify(localStoragePanner)); 
-}
-
 export default memo(function PannerButton(props) {
-    let localStoragePanner = JSON.parse(localStorage.getItem('panner'));
-    const [xMax, setXMax] = useState(localStoragePanner.xMax);
-    const [xMin, setXMin] = useState(localStoragePanner.xMin);
-    const [yMax, setYMax] = useState(localStoragePanner.yMax);
-    const [yMin, setYMin] = useState(localStoragePanner.yMin);
-    const [zMax, setZMax] = useState(localStoragePanner.zMax);
-    const [zMin, setZMin] = useState(localStoragePanner.zMin);
-
-    const disableAll = props.disableAll;
-
-    useEffect(() => {
-        GSPanner.disableAll = disableAll.value;
-        const res = GSPanner.disableAll;
-        changeLocalStorage("disableAll", res);
-    }, [disableAll]);
+    const panner = props.panner;
+    const xMin = panner.xMin;
+    const xMax = panner.xMax;
+    const yMin = panner.yMin;
+    const yMax = panner.yMax;    
+    const zMin = panner.zMin;
+    const zMax = panner.zMax;
+    const areAllDisable = panner.areAllDisable.value;
 
     const handleOnClick = () => {
-        props.setDisableAll("panner");
+        props.setDispatcher("panner", "areAllDisable/global", !areAllDisable);
     }
 
-    const operations = (setTime, operation) => (data) => {
-        if (operation === 'add') {
-            GSPanner[data] += 1;
-        } else {
-            GSPanner[data] -= 1;
+    const operation = (operation, type) => (data) => {
+        if (operation === "add") {
+            props.setDispatcher("panner", type, data + 1);
+        } else if (operation === "subtract") {
+            props.setDispatcher("panner", type, data - 1);
         }
-        const val =  GSPanner[data];
-        changeLocalStorage(data, val);
-        setTime(_ => val);
     }
-    const reset = () => {
-        let panner = initState.panner;
-        GSPanner.xMax = panner.xMax;
-        GSPanner.xMin = panner.xMin;
-        GSPanner.yMax = panner.yMax;
-        GSPanner.yMin = panner.yMin;
-        GSPanner.zMax = panner.zMax;
-        GSPanner.zMin = panner.zMin;
-        GSPanner.disableAll = panner.disableAll;
-        localStorage.setItem('panner', JSON.stringify(panner));
-        setXMax(() => panner.xMax);
-        setXMin(() => panner.xMin);
-        setYMax(() => panner.yMax);
-        setYMin(() => panner.yMin);
-        setZMax(() => panner.zMax);
-        setZMin(() => panner.zMin);
-    }
+
+    const reset = () => { props.setDispatcher("panner", "reset", null); }
+
     return (
         <AsideButton 
             title="Panner"
@@ -70,11 +37,11 @@ export default memo(function PannerButton(props) {
             <div className="flex-row align-c justify-c p-3">
                 <Switch
                     onClick={handleOnClick}
-                    isDisable={disableAll.value}
-                    title="disable all filters effect"
+                    isDisable={areAllDisable}
+                    title="disable all panner effect"
                 >
                     <span className="fs-text disable-all_btn">
-                        {!disableAll.value ? "disable all" : "enable all"}
+                        { areAllDisable ? "enable all" : "disable all" }
                     </span>
                 </Switch>
             </div>
@@ -82,7 +49,7 @@ export default memo(function PannerButton(props) {
                 <ToolButton onClick={reset}>Reset</ToolButton>
             </div>
             <div className="flex-column align-c">
-                <div style={{width:"240px"}}>
+                <div className="effect-container">
                     <div className="p-2">
                         <div className="p-2 border rounded">
                             <h4 className="fs-text">Position X:</h4>
@@ -97,9 +64,9 @@ export default memo(function PannerButton(props) {
                                             orientation="row"
                                             disable="configs"
                                             output={xMin}
-                                            add={operations(setXMin, 'add')}
-                                            subtract={operations(setXMin, 'subtract')}
-                                            data={"xMin"}
+                                            add={operation('add', 'xMin')}
+                                            subtract={operation('subtract', 'xMin')}
+                                            data={xMin}
                                         />
                                         <span className="fs-text">%</span>
                                     </div>
@@ -112,9 +79,9 @@ export default memo(function PannerButton(props) {
                                             orientation="row"
                                             disable="configs"
                                             output={xMax}
-                                            add={operations(setXMax, 'add')}
-                                            subtract={operations(setXMax, 'subtract')}
-                                            data={"xMax"}
+                                            add={operation('add', 'xMax')}
+                                            subtract={operation('subtract', 'xMax')}
+                                            data={xMax}
                                         />
                                         <span className="fs-text">%</span>
                                     </div>
@@ -127,7 +94,6 @@ export default memo(function PannerButton(props) {
                             <h4 className="fs-text">Position Y:</h4>
                             <div className="flex-column align-c justify-sb">
                                 <div style={{width:"140px"}}>
-
                                     <div className="flex-row align-c justify-sb p-2">
                                         <span className="fs-text">min:</span>
                                         <TouchButton
@@ -137,9 +103,9 @@ export default memo(function PannerButton(props) {
                                             orientation="row"
                                             disable="configs"
                                             output={yMin}
-                                            add={operations(setYMin, 'add')}
-                                            subtract={operations(setYMin, 'subtract')}
-                                            data={"yMin"}
+                                            add={operation('add', 'yMin')}
+                                            subtract={operation('subtract', 'yMin')}
+                                            data={yMin}
                                         />
                                         <span className="fs-text">%</span>
                                     </div>
@@ -152,9 +118,9 @@ export default memo(function PannerButton(props) {
                                             orientation="row"
                                             disable="configs"
                                             output={yMax}
-                                            add={operations(setYMax, 'add')}
-                                            subtract={operations(setYMax, 'subtract')}
-                                            data={"yMax"}
+                                            add={operation('add', 'yMax')}
+                                            subtract={operation('subtract', 'yMax')}
+                                            data={yMax}
                                         />
                                         <span className="fs-text">%</span>
                                     </div>
@@ -176,9 +142,9 @@ export default memo(function PannerButton(props) {
                                             orientation="row"
                                             disable="configs"
                                             output={zMin}
-                                            add={operations(setZMin, 'add')}
-                                            subtract={operations(setZMin, 'subtract')}
-                                            data={"zMin"}
+                                            add={operation('add', 'zMin')}
+                                            subtract={operation('subtract', 'zMin')}
+                                            data={zMin}
                                         />
                                         <span className="fs-text">%</span>
                                     </div>
@@ -191,9 +157,9 @@ export default memo(function PannerButton(props) {
                                             orientation="row"
                                             disable="configs"
                                             output={zMax}
-                                            add={operations(setZMax, 'add')}
-                                            subtract={operations(setZMax, 'subtract')}
-                                            data={"zMax"}
+                                            add={operation('add', 'zMax')}
+                                            subtract={operation('subtract', 'zMax')}
+                                            data={zMax}
                                         />
                                         <span className="fs-text">%</span>
                                     </div>

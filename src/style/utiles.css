@@ -84,9 +84,10 @@
 .c-primary { /* no used */
   color:var(--c-primary) !important;
 }
-.c-secondary {
+/* c-secondary {
   color: var(--c-secondary) !important;
 }
+ */
 
 .ellipsis {
   text-overflow: ellipsis;

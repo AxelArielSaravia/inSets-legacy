@@ -1,11 +1,12 @@
 import { memo, useEffect } from "react";
+import useAddFiles from "../core/useAddFiles.js";
 
 /**
  * @param {{ children: Function, render: Function, className?: string, style?: object}} props 
  * @returns 
  */
 function DropFiles(props) {
-  
+  const addFiles = useAddFiles();
   /**
    * @param {Event} e
    */
@@ -33,9 +34,7 @@ function DropFiles(props) {
    */
   const handleFileDrop = (e) => {
     e.preventDefault();
-    if ("onFileDrop" in props) {
-      props.onFileDrop(e);
-    }
+    addFiles(e.dataTransfer.files);
   };
 
   return (

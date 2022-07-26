@@ -1,33 +1,29 @@
-import { useState } from "react";
-import { createAudioContext, changeAudioEngine } from "./core/audioEffects.js" 
+import { useState, useContext, memo } from "react";
+//import { createAudioContext, changeAudioEngine } from "./core/audioEffects.js" 
 
-import AudioApp from "./view/AudioApp/AudioApp.js";
+import { GlobalContext, GlobalState, initAudioContext } from "./core/Globals.js";
+
+import AppContainer from "./view/AppContainer.js";
 import Header from "./view/Header/Header.js";
 import DragFiles from "./view/DragFiles.js";
 
-import './App.scss';
+import './InitScreen.scss';
 
 
 //COMPONENTS
 //App Component
-function App() {
-  const hasAudioContext = window.AudioContext || window.webkitAudioContext;
+const InitScreen = memo(function InitScreen() {
+  const [global, globalDipatch] = useContext(GlobalContext);
   const [startApp, setStartApp] = useState(false);
-  const [engine, setEngine] = useState("audioBuffer");
 
   const handleAcceptOnClick = () => {
-    createAudioContext();
+    initAudioContext();
     setStartApp(() => true)
   };
 
-  const handleRadioOnChange = (e) => {
-    changeAudioEngine(e.target.value);
-    setEngine(() => e.target.value);
-  }
-  const handleRadioOnClick = (val) => {
-    changeAudioEngine(val);
-    setEngine(() => val);
-  }
+  const handleRadioOnChange = (e) => globalDipatch({type: "ENGINE_TYPE", value: e.target.value});
+  const handleRadioOnClick = (val) => globalDipatch({type: "ENGINE_TYPE", value: val});
+  
   return (
     <DragFiles
       className="flex-column"
@@ -44,11 +40,13 @@ function App() {
           <section className="header-section flex-column align-c justify-c">
             <Header />
           </section>
-          { hasAudioContext
+          { GlobalState.hasAudioContext
             ? (
               <>
               { startApp 
-                ? <AudioApp isDragActive={isDragActive}/>
+                ? (
+                  <AppContainer isDragActive={isDragActive}/>
+                )
                 : (
                   <section className="init-section flex-column align-c justify-c">
                     <div className="flex-column align-c justify-c">
@@ -67,13 +65,13 @@ function App() {
                             name="audioEngine" 
                             value="audioBuffer" 
                             onChange={handleRadioOnChange} 
-                            checked={engine === "audioBuffer"}
+                            checked={global.ENGINE_TYPE === "audioBuffer"}
                           />
                           <div className="flex-row align-c ">
                             <button 
                               className="checkmark" 
                               role="switch" 
-                              aria-checked={engine === "audioBuffer"}
+                              aria-checked={global.ENGINE_TYPE === "audioBuffer"}
                               onClick={() => handleRadioOnClick("audioBuffer")}
                             />
                             <span className="fs-text text-bold">AudioBuffers:</span>
@@ -87,13 +85,13 @@ function App() {
                             name="audioEngine"
                             value="audioNode"
                             onChange={handleRadioOnChange} 
-                            checked={engine === "audioNode"}
+                            checked={global.ENGINE_TYPE === "audioNode"}
                           />
                           <div className="flex-row align-c ">
                             <button
                               className="checkmark" 
                               role="switch" 
-                              aria-checked={engine === "audioNode"} 
+                              aria-checked={global.ENGINE_TYPE === "audioNode"} 
                               onClick={() => handleRadioOnClick("audioNode")}
                             />
                             <span className="fs-text text-bold">AudioNodes:</span>
@@ -136,6 +134,6 @@ function App() {
       )}
     </DragFiles>
   );
-}
+})
 
-export default App;
+export default InitScreen;

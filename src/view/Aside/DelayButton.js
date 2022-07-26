@@ -1,76 +1,30 @@
-import { useState, useEffect, memo } from "react";
-
-import { GSDelay } from "../../../core/initGlobalState.js";
-import initState from "../../../core/initState.json";
+import { memo } from "react";
 
 import AsideButton from "./AsideButton.js";
 import TouchButton from "../TouchButton.js";
 import ToolButton from "../ToolButton.js";
 import Switch from "../SwitchButton.js";
 
-
-function changeLocalStorage(name, value) {
-    let localStorageDelay = JSON.parse(localStorage.getItem('delay'));
-    localStorageDelay[name] = value;
-    localStorage.setItem('delay', JSON.stringify(localStorageDelay)); 
-}
-
 export default memo(function DelayButton(props) {
-    let localStorageDelay = JSON.parse(localStorage.getItem('delay'));
-
-    const [timeMin, setTimeMin] = useState(localStorageDelay.timeMin * 1000);
-    const [timeMax, setTimeMax] = useState(localStorageDelay.timeMax * 1000);
-    const [feedbackMin, setFeedbackMin] = useState(localStorageDelay.feedbackMin * 100);
-    const [feedbackMax, setFeedbackMax] = useState(localStorageDelay.feedbackMax * 100);
-
-    const disableAll = props.disableAll;
-
-    useEffect(() => {
-        GSDelay.disableAll = disableAll.value;
-        const res = GSDelay.disableAll;
-        changeLocalStorage("disableAll", res);
-    }, [disableAll]);
-
+    const delay = props.delay;
+    const timeMin = delay.timeMin;
+    const timeMax = delay.timeMax;
+    const feedbackMin = delay.feedbackMin;
+    const feedbackMax = delay.feedbackMax;
+    const areAllDisable = delay.areAllDisable.value;
     const handleOnClick = () => {
-        props.setDisableAll("delay");
+        props.setDispatcher("delay", "areAllDisable/global", !areAllDisable);
     }
 
-    const operationTime = (setTime, operation) => (data) => {
+    const operation = (operation, type) => (data) => {
         if (operation === "add") {
-            GSDelay[data] = Number.parseFloat((GSDelay[data] + 0.1).toFixed(1));
-        } else {
-            GSDelay[data] = Number.parseFloat((GSDelay[data] - 0.1).toFixed(1));
+            props.setDispatcher("delay", type, data + 1);
+        } else if (operation === "subtract"){
+            props.setDispatcher("delay", type, data - 1);
         }
-        const val =  GSDelay[data];
-        changeLocalStorage(data, val);
-        setTime(_ => Math.floor(val * 1000));
     }
 
-    const operationFeedback = (setTime, operation) => (data) => {
-        if (operation === "add") {
-            GSDelay[data] = Number.parseFloat((GSDelay[data] + 0.01).toFixed(2));
-        } else {
-            GSDelay[data] = Number.parseFloat((GSDelay[data] - 0.01).toFixed(2));
-        }
-        const val = GSDelay[data];
-        console.log(data, val)
-        changeLocalStorage(data, val);
-        setTime(_ => Math.floor(val * 100));
-    }
-
-    const reset = () => {
-        let delay = initState.delay;
-        GSDelay.timeMin = delay.timeMin;
-        GSDelay.timeMax = delay.timeMax;
-        GSDelay.feedbackMin = delay.feedbackMin;
-        GSDelay.feedbackMax = delay.feedbackMax;
-        GSDelay.disableAll = delay.disableAll;
-        localStorage.setItem('delay', JSON.stringify(delay));
-        setTimeMin(_ => delay.timeMin * 1000);
-        setTimeMax(_ => delay.timeMax * 1000);
-        setFeedbackMin(_ => delay.feedbackMin * 100);
-        setFeedbackMax(_ => delay.feedbackMax * 100);
-    }
+    const reset = () => { props.setDispatcher("delay", "reset", null); }
 
     return (
         <AsideButton
@@ -80,11 +34,11 @@ export default memo(function DelayButton(props) {
              <div className="flex-row align-c justify-c p-3">
                 <Switch
                     onClick={handleOnClick}
-                    isDisable={disableAll.value}
-                    title="disable all filters effect"
+                    isDisable={areAllDisable}
+                    title="disable all delay effects"
                 >
                     <span className="fs-text disable-all_btn">
-                        {!disableAll.value ? "disable all" : "enable all"}
+                        { areAllDisable ? "enable all" : "disable all" }
                     </span>
                 </Switch>
             </div>
@@ -92,7 +46,7 @@ export default memo(function DelayButton(props) {
                 <ToolButton onClick={reset}>Reset</ToolButton>
             </div>
             <div className="flex-column align-c">
-                <div style={{width:"240px"}}>
+                <div className="effect-container">
                     <div className="p-2">
                         <div className="p-2 border rounded">
                             <h4 className="fs-text">Time:</h4>
@@ -107,9 +61,9 @@ export default memo(function DelayButton(props) {
                                             orientation="row"
                                             disable="configs"
                                             output={timeMin}
-                                            add={operationTime(setTimeMin, 'add')}
-                                            subtract={operationTime(setTimeMin, 'subtract')}
-                                            data={"timeMin"}
+                                            add={operation("add", 'timeMin')}
+                                            subtract={operation("subtract", 'timeMin')}
+                                            data={timeMin}
                                         />
                                         <span className="fs-text">ms</span>
                                     </div>
@@ -122,9 +76,9 @@ export default memo(function DelayButton(props) {
                                             orientation="row"
                                             disable="configs"
                                             output={timeMax}
-                                            add={operationTime(setTimeMax, 'add')}
-                                            subtract={operationTime(setTimeMax, 'subtract')}
-                                            data={"timeMax"}
+                                            add={operation("add", 'timeMax')}
+                                            subtract={operation("subtract", 'timeMax')}
+                                            data={timeMax}
                                         />
                                         <span className="fs-text">ms</span>
                                     </div>
@@ -146,9 +100,9 @@ export default memo(function DelayButton(props) {
                                             orientation="row"
                                             disable="configs"
                                             output={feedbackMin}
-                                            add={operationFeedback(setFeedbackMin, 'add')}
-                                            subtract={operationFeedback(setFeedbackMin, 'subtract')}
-                                            data={"feedbackMin"}
+                                            add={operation("add", 'feedbackMin')}
+                                            subtract={operation("subtract", 'feedbackMin')}
+                                            data={feedbackMin}
                                             
                                         />
                                         <span className="fs-text">%</span>
@@ -162,9 +116,9 @@ export default memo(function DelayButton(props) {
                                             orientation="row"
                                             disable="configs"
                                             output={feedbackMax}
-                                            add={operationFeedback(setFeedbackMax, 'add')}
-                                            subtract={operationFeedback(setFeedbackMax, 'subtract')}
-                                            data={"feedbackMax"}
+                                            add={operation("add", 'feedbackMax')}
+                                            subtract={operation("subtract", 'feedbackMax')}
+                                            data={feedbackMax}
                                         />
                                         <span className="fs-text">%</span>
                                     </div>

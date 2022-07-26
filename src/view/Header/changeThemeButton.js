@@ -1,4 +1,4 @@
-import useThemeChanger from "../useThemeChanger.js";
+import useThemeChanger from "./useThemeChanger.js";
 
 import "./changeThemeButton.scss";
 

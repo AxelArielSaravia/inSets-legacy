@@ -1,54 +1,28 @@
 import { useState } from "react";
 
-import { GSTimeInterval } from "../../../core/initGlobalState.js";
-import initState from "../../../core/initState.json";
-
 import AsideButton from "./AsideButton.js";
 import TouchButton from "../TouchButton.js";
 import ToolButton from "../ToolButton.js";
 
-
-function changeLocalStorage(time, value) {
-    let localStorageTime = JSON.parse(localStorage.getItem('timeInterval'));
-    localStorageTime[time] = value;
-    localStorage.setItem('timeInterval', JSON.stringify(localStorageTime)); 
-}
-
 export default function TimeButton(props) {
-    const localStorageTime = JSON.parse(localStorage.getItem('timeInterval'));
-
-    const [min, setMin] = useState(localStorageTime.min);
-    const [max, setMax] = useState(localStorageTime.max);
+    const timeInterval = props.timeInterval;
+    const min = timeInterval.min;
+    const max = timeInterval.max;
+    const TouchButton_TextStyle = {width: "70px"};
     const [value, setValue] = useState(100);
-
     const addValue = () => {
         if (value < 1001) { setValue(state =>  state * 10); }
     }
     const subtractValue = () => {
         if (value > 10) { setValue(state =>  state / 10); }
     }
-    const add = (setTime) => {
-        return function(data) {
-            GSTimeInterval[data] += value;
-            changeLocalStorage(data, GSTimeInterval[data]);
-            setTime(() => GSTimeInterval[data]);
-        }
-    }
-    const subtract = (setTime) => {
-        return function(data) {
-            GSTimeInterval[data] -= value;
-            changeLocalStorage(data, GSTimeInterval[data]);
-            setTime(() => GSTimeInterval[data]);
-        }
-    }
-    const reset = () => {
-        let timeInterval = initState.timeInterval;
-        GSTimeInterval.min = timeInterval.min;
-        GSTimeInterval.max = timeInterval.max;
-        localStorage.setItem('timeInterval', JSON.stringify(timeInterval));
-        setMin(() => timeInterval.min);
-        setMax(() => timeInterval.max);
-    }
+
+    const minAdd = (data) => { props.setDispatcher("timeInterval", "min", data + value); }
+    const minSubtract = (data) => { props.setDispatcher("timeInterval", "min", data - value); }
+    const maxAdd = (data) => { props.setDispatcher("timeInterval", "max", data + value); }
+    const maxSubtract = (data) => { props.setDispatcher("timeInterval", "max", data - value); }
+
+    const reset = () => { props.setDispatcher("timeInterval", "reset", null); }
 
     return (
         <AsideButton 
@@ -76,7 +50,7 @@ export default function TimeButton(props) {
                 </div>
             </div>
             <div className="flex-column align-c">
-                <div style={{width:"240px"}}>
+                <div className="effect-container">
                     <div className="p-2">
                         <div className="p-2 border rounded">
                             <div className="flex-column align-c justify-sb">
@@ -86,13 +60,13 @@ export default function TimeButton(props) {
                                         <TouchButton
                                             scroll
                                             touch
-                                            textStyle={{width: "70px"}}
+                                            textStyle={TouchButton_TextStyle}
                                             orientation="row"
                                             disable="configs"
                                             output={min}
-                                            add={add(setMin)}
-                                            subtract={subtract(setMin)}
-                                            data={"min"}
+                                            add={minAdd}
+                                            subtract={minSubtract}
+                                            data={min}
                                         />
                                         <span className="fs-text">ms</span>
                                     </div>
@@ -105,13 +79,13 @@ export default function TimeButton(props) {
                                         <TouchButton
                                             scroll
                                             touch
-                                            textStyle={{width: "70px"}}
+                                            textStyle={TouchButton_TextStyle}
                                             orientation="row"
                                             disable="configs"
                                             output={max}
-                                            add={add(setMax)}
-                                            subtract={subtract(setMax)}
-                                            data={"max"}
+                                            add={maxAdd}
+                                            subtract={maxSubtract}
+                                            data={max}
                                         />
                                         <span className="fs-text">ms</span>
                                     </div>

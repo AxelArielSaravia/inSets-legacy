@@ -1,6 +1,5 @@
 import { useContext, useEffect } from "react";
-
-import { ContextDisableAll } from "../DisableAllProvider.js";
+import { GlobalContext } from "../../core/Globals.js";
 
 import SetsButton from "./SetsButton.js";
 import TimeButton from "./TimeButton.js";
@@ -9,22 +8,30 @@ import FilterButton from "./FilterButton.js";
 import DelayButton from "./DelayButton.js";
 import FadeTimeButton from "./FadeTimeButton.js";
 import PlayBackRateButton from "./PlayBackRateButton.js";
-import RCTButton from "./RCTButton.js";
+import RSPButton from "./RSPButton.js";
 
 import "./AsideConfig.scss";
 
 const classText = "configs flex-column align-c";
 
-
 export default function AsideConfig(props) {
+    const [global, globalDispatcher] = useContext(GlobalContext);
     const active = props.active;
     const configButton = props.configButton;
     const onClick = props.onClick;
+    const panner = global.panner;
+    const delay = global.delay;
+    const filter = global.filter;
+    const playBackRate = global.playBackRate;
+    const randomStartPoint = global.randomStartPoint;
+    const timeInterval = global.timeInterval;
+    const audioListSize = global.audioListSize;
+    const arrOfProbability = global.probabilityOfSetSize.arrOfValues;
+    const fadeIn = global.fadeIn;
+    const fadeOut = global.fadeOut;
 
-    const [disableAll, dispatchDisableAll] = useContext(ContextDisableAll);
-
-    const setDisableAll = (name) => {
-        dispatchDisableAll({type: "disable", typeEffect: name});
+    const setDispatcher = (variable, type, value , i = null) => {
+        globalDispatcher({variable: variable, type: type, value: value, i: i});
     }
 
     useEffect(() => {
@@ -57,36 +64,47 @@ export default function AsideConfig(props) {
                 <i className="flex-row align-c fs-text-l bi bi-x"></i>
             </button>
             {   configButton === "SETS"? (
-                    <SetsButton audioList_size={props.audioList_size}/>
+                    <SetsButton
+                        arrOfProbability={arrOfProbability}
+                        audioListSize={audioListSize}
+                        setDispatcher={setDispatcher}
+                    />
                 ) :
                 configButton === "TIME" ? (
-                    <TimeButton/> 
+                    <TimeButton
+                        setDispatcher={setDispatcher}
+                        timeInterval={timeInterval}
+                    /> 
                 ) : configButton === "FADETIME" ? ( 
-                    <FadeTimeButton/> 
+                    <FadeTimeButton
+                        fadeIn={fadeIn}
+                        fadeOut={fadeOut}
+                        setDispatcher={setDispatcher}
+                    /> 
                 ) : configButton === "PANNER" ? ( 
                     <PannerButton 
-                        disableAll={disableAll.panner} 
-                        setDisableAll={setDisableAll}
+                        panner={panner}
+                        setDispatcher={setDispatcher}
                     /> 
                 ) : configButton === "FILTER" ? ( 
-                    <FilterButton 
-                        disableAll={disableAll.filter} 
-                        setDisableAll={setDisableAll}
+                    <FilterButton
+                        filter={filter}
+                        setDispatcher={setDispatcher}
                     /> 
                 ) : configButton === "DELAY" ? ( 
                     <DelayButton 
-                        disableAll={disableAll.delay} 
-                        setDisableAll={setDisableAll}
+                        delay={delay}
+                        setDispatcher={setDispatcher}
                     /> 
                 ) : configButton === "RATE" ? ( 
-                    <PlayBackRateButton 
-                        disableAll={disableAll.playBackRate} 
-                        setDisableAll={setDisableAll}
+                    <PlayBackRateButton
+                        playBackRate={playBackRate}
+                        setDispatcher={setDispatcher}
                     /> 
-                ) : configButton === "RCT" ? ( 
-                    <RCTButton 
-                        disableAll={disableAll.randomCurrentTime} 
-                        setDisableAll={setDisableAll}
+                ) : configButton === "RSP" ? ( 
+                    <RSPButton
+                        randomStartPoint={randomStartPoint}
+                        setDispatcher={setDispatcher}
                     /> 
                 ) : null
             }

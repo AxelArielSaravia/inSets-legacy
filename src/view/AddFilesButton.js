@@ -1,12 +1,15 @@
 import { memo } from "react";
+import useAddFiles from "../core/useAddFiles.js" 
 
-export default memo(function AddFilesButton(props) {
+export default memo(function AddFilesButton() {
+  const addFiles = useAddFiles();
+
   const handelClick = (e) => { 
     e.currentTarget.value = "" 
   }
 
   const handelOnInput = (e) => {
-    props.onClick(e.currentTarget.files) 
+    addFiles(e.currentTarget.files);
   }
   
   return (

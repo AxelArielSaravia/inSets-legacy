@@ -1,7 +1,5 @@
 import { useState, useEffect, Fragment } from "react";
 
-import { GSProbabilityOfExecutionSets } from "../../../core/initGlobalState.js";
-
 import AsideButton from "./AsideButton.js";
 import TouchButton from "../TouchButton.js";
 import ToolButton from "../ToolButton.js";
@@ -53,15 +51,14 @@ function GrupSetsButtons(props) {
     const handleOnClick = () => setHidden(state => !state);
 
     const add = (a) => {
-        console.log(value);
         if (value < 50) {
-            a.forEach((_,i) => props.add(i + props.startIndex, value+1));
+            a.forEach((_,i) => props.add(i + props.startIndex, value + 1));
             setValue(state => ++state);
         }
     }
     const subtract = (a) => {
         if (value > 0) {
-            a.forEach((_,i) => props.subtract(i + props.startIndex, value-1));
+            a.forEach((_,i) => props.subtract(i + props.startIndex, value - 1));
             setValue(state => --state);
         }
     }
@@ -119,7 +116,7 @@ function GrupSetsButtons(props) {
 function GrupSetsButtonsGen(props) {
     const grupNumberSize = props.grupNumberSize;
     const clickReset = props.clickReset;
-    let newArr = separateArrInSetsOf(props.arrOfProbability, props.grupNumberSize);
+    const newArr = separateArrInSetsOf(props.arrOfProbability, props.grupNumberSize);
 
     return (
         <div className="set-container4 grid align-c">
@@ -128,7 +125,7 @@ function GrupSetsButtonsGen(props) {
             <h4 className="fs-text">Probability</h4>
             <div></div>
             {grupNumberSize > 0 && newArr.map((setOf, i1) => {
-                let startIndex = i1 * grupNumberSize;
+                const startIndex = i1 * grupNumberSize;
                 return (
                     <Fragment key={"setOf-" + startIndex +"-"+ (setOf.length - 1 + startIndex)}>
                         <GrupSetsButtons 
@@ -148,45 +145,43 @@ function GrupSetsButtonsGen(props) {
 }
 
 export default function SetsButton(props) {
-    const audioList_size = props.audioList_size;
-    const [arrOfProbability, setArrOfProbability] = useState(GSProbabilityOfExecutionSets.values)
+    const audioListSize = props.audioListSize;
+    const arrOfProbability = props.arrOfProbability;
     const [grupNumberSize, setGrupNumberSize] = useState(5);
     const [clickReset, setClickReset] = useState(false);
 
-    useEffect(() => {
-        setArrOfProbability(() => GSProbabilityOfExecutionSets.values);
-    }, [audioList_size]);
-
-    useEffect(() => {
-        setClickReset(_ => false);
-    }, [clickReset])
+    useEffect(() => { setClickReset(() => false); }, [clickReset])
 
     const operation = (type) => (i, newVal) => {
         if (newVal != null) {
-            GSProbabilityOfExecutionSets.set(i, newVal);
+            props.setDispatcher("probabilityOfSetSize", "set", newVal, i);
         } else {
-            let val = GSProbabilityOfExecutionSets.get(i);
-            if (type === "add") 
-                GSProbabilityOfExecutionSets.set(i, val+1);
+            const value = arrOfProbability[i];
+            if (type === "add")
+                props.setDispatcher("probabilityOfSetSize", "set", value + 1, i);
             else if (type === "subtract")
-                GSProbabilityOfExecutionSets.set(i, val-1);
-            
+                props.setDispatcher("probabilityOfSetSize", "set", value - 1, i);
         }
-        setArrOfProbability(() => GSProbabilityOfExecutionSets.values);
     } 
 
     const reset = () => {
-        GSProbabilityOfExecutionSets.reset();
-        setArrOfProbability(() => GSProbabilityOfExecutionSets.values);
+        props.setDispatcher("probabilityOfSetSize", "reset", null);
         setClickReset(state => !state);
     }
-
+    const addGrupNumberSize = (val) => {
+        if (grupNumberSize < audioListSize) 
+            setGrupNumberSize(state => state + val)
+    }
+    const subtractGrupNumberSize = (val) => {
+        if (grupNumberSize > 1) 
+            setGrupNumberSize(state => state - val)
+    }
     return (
         <AsideButton 
             title="Sets"
             description="Change the probability value of set execution size."
         >
-            {audioList_size === 0 
+            {audioListSize === 0 
              ? (
                 <div style={{padding: "20px 0"}}>
                     <p className="fs-text text-center">No audio files</p>
@@ -196,7 +191,7 @@ export default function SetsButton(props) {
                     <div className="flex-column align-c justify-c p-3">
                         <ToolButton onClick={reset}>Reset</ToolButton>
                     </div>
-                    { audioList_size < 10 ? (
+                    { audioListSize < 10 ? (
                         <div className="set-container3 grid align-c"> 
                             <h4 className="fs-text p-2">Size</h4>
                             <h4 className="fs-text">Value</h4>
@@ -224,8 +219,8 @@ export default function SetsButton(props) {
                                 orientation="row"
                                 disable="configs"
                                 output={grupNumberSize}
-                                add={(val) => {if (grupNumberSize < audioList_size)setGrupNumberSize(state => state + val)}}
-                                subtract={(val) => {if (grupNumberSize > 1) setGrupNumberSize(state => state - val)}}
+                                add={addGrupNumberSize}
+                                subtract={subtractGrupNumberSize}
                                 data={1}
                             />
                         </div>

@@ -7,7 +7,7 @@
     <meta name="theme-color" content="#1a1818"/>
     <meta
       name="description"
-      content=""
+      content="inSets composition app. This app generate music from mixing audio files"
     />
     <link rel="apple-touch-icon" href="./logo192.png" />
     <link rel="manifest" href="./manifest.json" />
@@ -16,33 +16,33 @@
     <style media="screen">
       @import url('https://fonts.googleapis.com/css2?family=Cutive+Mono&display=swap');
       :root { color-scheme: light dark; }
-      .dark { --primary-color: #131212; --primary-l-color: #222020; --primary-ls-color: #464242; --secondary-color: #f7e0e0; }
-      .light { --primary-color: #f7e0e0; --primary-l-color: #cfbcbc; --primary-ls-color: #a89999; --secondary-color: #131212; }
-      body { padding: 0;margin: 0; width: 100%;height: 100%; font-family: 'Cutive Mono', monospace; font-weight: normal; font-size: 10px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; -webkit-tap-highlight-color: transparent; background-color: var(--primary-color); color: var(--secondary-color); box-sizing: border-box; }
+      .dark {--c-primary: #131212;--c-secondary: #f7e0e0;--c-transitive1: #222020;--c-transitive2: #464242;accent-color: #f7e0e0;}
+      .light {--c-primary: #f7e0e0;--c-secondary: #131212;--c-transitive1: #cfbcbc;--c-transitive2: #a89999;accent-color: #131212;}
+      body { padding: 0;margin: 0; width: 100%;height: 100%; font-family: 'Cutive Mono', monospace; font-weight: normal; font-size: 10px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; -webkit-tap-highlight-color: transparent; background-color: var(--c-primary); color: var(--c-secondary); box-sizing: border-box; }
       body *, *, *::after, *::before { padding: 0; margin: 0; box-sizing: border-box; }
       a { text-decoration: none;}
       a:link, a:hover, a:active, a:visited, a:checked, a:focus { outline: none; text-decoration: none; color: unset; background-color: transparent; }
       li { list-style-type: none; }
-      i { color: var(--secondary-color); }
+      i { color: var(--c-secondary); }
       button { padding: 0; margin: 0; outline: none; border: none; cursor: pointer; background-color: transparent; }
       button:hover, button:active, button:focus { box-shadow: transparent; user-select: none; }
-      .change-theme-button { background-color: transparent; color: var(--secondary-color); margin: 0  10px; padding: 2px; }
+      .change-theme-button { background-color: transparent; color: var(--c-secondary); padding: 2px; }
       .hidden { display: none; } 
-      .header { width: 100%; height: 100%; padding: 10px; background-color: var(--primary-l-color); }
-      .title { padding-left: 20px; } 
-      .fs-title { font-weight: 800; font-size: 1.6rem; letter-spacing: 1.5px; margin: 5px 0; } 
-      .fs-text { font-size: 1.2rem; } .fs-text-l { font-size: 1.8rem; }
+      .header { width: 100%; height: 100%; padding: 10px; background-color: var(--c-transitive1); }
+      .title { padding-left: 20px; }
+      .fs-title {font-weight: 800;font-size: 1rem;letter-spacing: 1.5px;}
+      .fs-text { font-size: 0.8rem; } .fs-text-l { font-size: 1rem; }
       .buttons div { margin: 0 10px; }
       .flex-row { display: flex; flex-direction: row; }
       .align-c { align-items: center; } .justify-sb { justify-content: space-between; } 
-      #message { background: var(--secondary-color); color: var(--primary-color);  max-width: 360px; margin: 100px auto 16px; padding: 32px 24px 16px; border-radius: 3px; }
+      #message { width: 90%; background: var(--c-secondary); color: var(--c-primary);  max-width: 360px; margin: 100px auto 16px; padding: 32px 24px 16px; border-radius: 3px; }
       #message h3 { font-weight: normal; font-size: 16px; margin: 16px 0 12px; }
       #message h2 { font-weight: bold; font-size: 16px; margin: 0 0 8px; }
       #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
-
-      @media (max-width: 370px) {
-        #message { margin:100px 5px 0 ; }
-      }
+      @media screen and (min-width: 300px) {.fs-title { font-size: 1.2rem; }}
+      @media screen and (min-width: 420px) { .fs-title { font-size: 1.4rem; }.fs-text-l { font-size: 1.2rem; }.fs-text { font-size: 1rem; }}
+      @media screen and (min-width: 1400px) {.fs-title { font-size: 1.6rem; }.fs-text-l { font-size: 1.4rem; }.fs-text { font-size: 1.2rem; }}
+      @media screen and (max-width: 370px) {#message { margin:100px 5px 0;}}
     </style>
   </head>
   <body>
