@@ -7,6 +7,9 @@
 @font-face {
   font-family: "Cutive Mono";
   src: url('./fonts/CutiveMono-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: fallback;
 }
 
 
