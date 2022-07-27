@@ -11,12 +11,9 @@ const GlobalContext = createContext(null);
  */
 const handleInitState = (elementsState) => {
     const keysOfElementsState = Object.keys(elementsState);
-    if (localStorage.getItem('version') !== "v0.2.2") {
+    if (localStorage.getItem('version') !== "v0.2.3") {
         localStorage.clear();
-        localStorage.setItem("version", "v0.2.2");
-    }
-    if (localStorage.getItem('state') == null) {
-        localStorage.setItem('state', true);
+        localStorage.setItem("version", "v0.2.3");
         keysOfElementsState.forEach(key => {
             const el = elementsState[key];
             if (typeof el === "object" && el !== null) {
