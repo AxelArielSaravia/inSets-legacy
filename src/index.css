@@ -12,7 +12,6 @@
   font-display: fallback;
 }
 
-
 /* THEMES */
 .dark {
   --c-primary: #131212;
@@ -29,6 +28,7 @@
   --c-transitive2: #a89999;
   accent-color: #131212;
 }
+
 :root {
   color-scheme: light dark;
 }
@@ -48,7 +48,6 @@ body {
   font-size: 10px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-    
   -webkit-tap-highlight-color: transparent;
 
   box-sizing: border-box;
@@ -56,7 +55,11 @@ body {
   background-color:var(--c-primary);
   color: var(--c-secondary);
 }
-
+@media (display-mode: standalone) {
+  body {
+    overscroll-behavior-y: contain;
+  }
+}
 
 /* SCROLLBAR FIREFOX */
 * {
@@ -87,7 +90,7 @@ body *,
 }
 *:focus-visible {
   border-radius: 5px;
-  box-shadow: 0 0 0 2pxvar(--c-secondary)!important;
+  box-shadow: 0 0 0 2px var(--c-secondary)!important;
   outline: none;
 }
 
@@ -106,12 +109,9 @@ a:focus{
   background-color: transparent;
 }
 
-li {
-  list-style-type: none;
-}
-i {
-  color:var(--c-secondary);
-}
+li { list-style-type: none; }
+
+i { color:var(--c-secondary); }
 
 button {
   padding: 0;

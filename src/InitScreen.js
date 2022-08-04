@@ -1,11 +1,9 @@
 import { useState, useContext, memo } from "react";
-//import { createAudioContext, changeAudioEngine } from "./core/audioEffects.js" 
+import { GlobalContext, GlobalState, initAudioContext } from "./app/Globals.js";
 
-import { GlobalContext, GlobalState, initAudioContext } from "./core/Globals.js";
-
-import AppContainer from "./view/AppContainer.js";
-import Header from "./view/Header/Header.js";
-import DragFiles from "./view/DragFiles.js";
+import AppContainer from "./features/AppContainer.js";
+import Header from "./features/Header/Header.js";
+import DragFiles from "./features/DragFiles.js";
 
 import './InitScreen.scss';
 
