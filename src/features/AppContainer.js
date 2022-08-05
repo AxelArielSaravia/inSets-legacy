@@ -11,23 +11,28 @@ import './AppContainer.scss';
 //App Component
 function AppContainer(props) {
   return (
-    <div className="audio-app">
-      <section className="tool-section">
-        <Aside/>
+    <>
+      <div className="audio-app">
+        <section className="tool-section">
+          <Aside/>
+        </section>
+        <section className="main-section flex-column align-c justify-c">
+          <Main/>
+        </section>
+        {
+          props.isDragActive && (
+            <DropFiles
+              className="dropFile flex-column align-c justify-c"
+            >
+              <DropArea />
+            </DropFiles>
+          )
+        }
+      </div>
+      <section>
+        <footer className="fs-text-s text-center p-3">by Axel Ariel Saravia</footer>
       </section>
-      <section className="main-section flex-column align-c justify-c">
-        <Main/>
-      </section>
-      {
-        props.isDragActive && (
-          <DropFiles
-            className="dropFile flex-column align-c justify-c"
-          >
-            <DropArea />
-          </DropFiles>
-        )
-      }
-    </div>
+    </>
   );
 }
 
