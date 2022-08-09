@@ -5,29 +5,32 @@ import TouchButton from "../TouchButton.js";
 import ToolButton from "../ToolButton.js";
 import Switch from "../SwitchButton.js";
 
-export default memo(function PlayBackRateButton(props) {
-    const playBackRate = props.playBackRate;
-    const min = playBackRate.min;
-    const max = playBackRate.max;
+export default memo(function PlayBackRateButton({playBackRate, setDispatcher}) {
+    const { min, max } = playBackRate;
     const areAllDisable = playBackRate.areAllDisable.value;
     const resMin = min.toFixed(1); 
     const resMax = max.toFixed(1);
 
-    const TouchButton_TextStyle = { width: "40px" };
-
     const handleOnClick = () => {
-        props.setDispatcher("playBackRate", "areAllDisable/global", !areAllDisable);
+        setDispatcher("playBackRate", "areAllDisable/global", !areAllDisable);
     }
 
     const operation = (operation, type) => (data) => {
         if (operation === "add") {
-            props.setDispatcher("playBackRate", type, data + 0.1);
+            const value = Number.parseFloat((data + 0.1).toFixed(1));
+            setDispatcher("playBackRate", type, value);
         } else if (operation === "subtract"){
-            props.setDispatcher("playBackRate", type, data - 0.1);
+            const value = Number.parseFloat((data - 0.1).toFixed(1));
+            setDispatcher("playBackRate", type, value);
         }
     }
 
-    const reset = () => { props.setDispatcher("playBackRate", "reset", null); }
+    const reset = () => { setDispatcher("playBackRate", "reset", null); }
+
+    const add_min = operation("add", "min");
+    const add_max = operation("add", "max");
+    const subtract_min = operation("subtract", "min");
+    const subtract_max = operation("subtract", "max");
 
     return (
         <AsideButton
@@ -60,12 +63,12 @@ export default memo(function PlayBackRateButton(props) {
                                         <TouchButton
                                             scroll
                                             touch
-                                            textStyle={TouchButton_TextStyle}
+                                            textStyle={{ width: "40px" }}
                                             orientation="row"
                                             disable="configs"
                                             output={resMin}
-                                            add={operation('add', "min")}
-                                            subtract={operation('subtract', "min")}
+                                            add={add_min}
+                                            subtract={subtract_min}
                                             data={min}
                                         />
                                     </div>
@@ -74,12 +77,12 @@ export default memo(function PlayBackRateButton(props) {
                                         <TouchButton
                                             scroll
                                             touch
-                                            textStyle={TouchButton_TextStyle}
+                                            textStyle={{ width: "40px" }}
                                             orientation="row"
                                             disable="configs"
                                             output={resMax}
-                                            add={operation('add', "max")}
-                                            subtract={operation('subtract', "max")}
+                                            add={add_max}
+                                            subtract={subtract_max}
                                             data={max}
                                         />
                                     </div>

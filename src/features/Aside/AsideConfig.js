@@ -14,21 +14,20 @@ import "./AsideConfig.scss";
 
 const classText = "configs flex-column align-c";
 
-export default function AsideConfig(props) {
-    const [global, globalDispatcher] = useContext(GlobalContext);
-    const active = props.active;
-    const configButton = props.configButton;
-    const onClick = props.onClick;
-    const panner = global.panner;
-    const delay = global.delay;
-    const filter = global.filter;
-    const playBackRate = global.playBackRate;
-    const randomStartPoint = global.randomStartPoint;
-    const timeInterval = global.timeInterval;
-    const audioListSize = global.audioListSize;
-    const arrOfProbability = global.probabilityOfSetSize.arrOfValues;
-    const fadeIn = global.fadeIn;
-    const fadeOut = global.fadeOut;
+export default function AsideConfig({active, configButton, onClick }) {
+    const [{
+        panner, 
+        delay,
+        filter,
+        playBackRate,
+        randomStartPoint,
+        timeInterval,
+        audioListSize,
+        probabilityOfSetSize,
+        fadeIn,
+        fadeOut
+    }, globalDispatcher] = useContext(GlobalContext);
+    const arrOfProbability = probabilityOfSetSize.arrOfValues;
 
     const setDispatcher = (variable, type, value , i = null) => {
         globalDispatcher({variable: variable, type: type, value: value, i: i});

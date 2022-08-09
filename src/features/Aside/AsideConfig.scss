@@ -82,12 +82,18 @@
         transition: left 100ms ease-out;
     }
     .inactive {
-        left: -300px;
+        left: -340px;
+    }
+    .effect-container {
+        width: 250px;
     }
 }
 
 @media screen and (min-width: 1400px) {
     .configs {
         width: 500px;
+    }
+    .inactive {
+        left: -500px;
     }
 }

@@ -1,4 +1,4 @@
-import { useState, useEffect, memo} from "react";
+import { useState, useEffect, memo, useMemo } from "react";
 import { globalFilterStatic } from "../../app/Globals.js";
 
 import AsideButton from "./AsideButton.js";
@@ -6,10 +6,8 @@ import TouchButton from "../TouchButton.js";
 import ToolButton from "../ToolButton.js";
 import Switch from "../SwitchButton.js";
 
-const FilterTypeButton = memo(function (props) {
-    const types = props.types
-    const value = props.value;
-    const index = types.indexOf(props.value);
+const FilterTypeButton = memo(function ({types, setTypes, value}) {
+    const index = types.indexOf(value);
     const [isDisable, setIsDisable] = useState(index === -1);
 
     useEffect(() => {
@@ -22,13 +20,13 @@ const FilterTypeButton = memo(function (props) {
         const arr = [...types];
         const index = types.indexOf(value);
         if (isDisable) {
-            if (index === -1) arr.push(props.value);
+            if (index === -1) arr.push(value);
             setIsDisable(() => false);
         } else if (arr.length > 1){
             arr.splice(index, 1);
             setIsDisable(() => true);
         }
-        props.setTypes(arr);
+        setTypes(arr);
     }
 
     return (
@@ -39,50 +37,51 @@ const FilterTypeButton = memo(function (props) {
         />
     );
 });
-
-export default memo(function FilterButton(props) {
-    const filter = props.filter;
-    const frequencyMin = filter.frequencyMin;
-    const frequencyMax = filter.frequencyMax;
-    const qMin = filter.qMin;
-    const qMax = filter.qMax;
-    const types = filter.types
-    const areAllDisable = filter.areAllDisable.value;
+export default memo(function FilterButton({filter, setDispatcher}) {
+    const { frequencyMin, frequencyMax, qMin, qMax, types } = filter;
     const TYPES = globalFilterStatic.TYPES;
-
-    const resQMin = filter.qMin.toFixed(2);
-    const resQMax = filter.qMax.toFixed(2);
+    const areAllDisable = filter.areAllDisable.value;
+    const resQMin = qMin.toFixed(2);
+    const resQMax = qMax.toFixed(2);
 
     const handleOnClick = () => {
-        props.setDispatcher("filter", "areAllDisable/global", !areAllDisable);
+        setDispatcher("filter", "areAllDisable/global", !areAllDisable);
     }
 
-    const operationQ = (operation, type) => (data) => {
-        let v = data >= 2 ? 0.1 : 0.05;
+    const operationQ = useMemo(() => (operation, type) => (data) => {
+        const v = data >= 2 ? 0.1 : 0.05;
         if (operation === "add") {
-            props.setDispatcher("filter", type, data + v);
+            const value = Number.parseFloat((data + v).toFixed(2));
+            setDispatcher("filter", type, value);
         } else if (operation === "subtract") {
-            props.setDispatcher("filter", type, data - v);
+            const value = Number.parseFloat((data - v).toFixed(2));
+            setDispatcher("filter", type, value);
         }
-    }
-
-    const operationFrequency = (operation, type) => (data) => {
-        let v = data < 200 ? 10 
+    }, [setDispatcher]);
+    
+    const operationFrequency = useMemo(() => (operation, type) => (data) => {
+        const v = data < 200 ? 10 
             : data < 1000 ? 50 
             : data < 1000 ? 100
-            :1000;
+            : 1000;
         if (operation === "add") {
-            props.setDispatcher("filter", type, v);
+            setDispatcher("filter", type, data + v);
         } else if (operation === "subtract") {
-            props.setDispatcher("filter", type, v);
+            setDispatcher("filter", type, data - v);
         }
-    }
+    }, [setDispatcher]);
+    const reset = () => { setDispatcher("filter", "reset", null); }
+    const setTypes = (newValue) => { setDispatcher("filter", "types", newValue); }
 
-    const reset = () => { props.setDispatcher("filter", "reset", null); }
-
-    const setTypes = (newValue) => {
-        props.setDispatcher("filter", "types", newValue);
-    }
+    const add_qMin = useMemo(() => operationQ("add", "qMin"), [operationQ]);
+    const add_qMax = useMemo(() => operationQ("add", "qMax"), [operationQ]);
+    const subtract_qMin = useMemo(() => operationQ("subtract", "qMin"), [operationQ]);
+    const subtract_qMax = useMemo(() => operationQ("subtract", "qMax"), [operationQ]);
+    const add_frequencyMin = useMemo(() => operationFrequency("add", "frequencyMin"), [operationFrequency]);
+    const add_frequencyMax = useMemo(() => operationFrequency("add", "frequencyMax"), [operationFrequency]);
+    const subtract_frequencyMin = useMemo(() => operationFrequency("subtract", "frequencyMin"), [operationFrequency]);
+    const subtract_frequencyMax = useMemo(() => operationFrequency("subtract", "frequencyMax"), [operationFrequency]);
+    
 
     return (
         <AsideButton
@@ -119,8 +118,8 @@ export default memo(function FilterButton(props) {
                                             orientation="row"
                                             disable="configs"
                                             output={frequencyMin}
-                                            add={operationFrequency('add', 'frequencyMin')}
-                                            subtract={operationFrequency('subtract', 'frequencyMin')}
+                                            add={add_frequencyMin}
+                                            subtract={subtract_frequencyMin}
                                             data={frequencyMin}
                                         />
                                         <span className="fs-text">Hz</span>
@@ -134,8 +133,8 @@ export default memo(function FilterButton(props) {
                                             orientation="row"
                                             disable="configs"
                                             output={frequencyMax}
-                                            add={operationFrequency('add', 'frequencyMax')}
-                                            subtract={operationFrequency('subtract', 'frequencyMax')}
+                                            add={add_frequencyMax}
+                                            subtract={subtract_frequencyMax}
                                             data={frequencyMax}
                                         />
                                         <span className="fs-text">Hz</span>
@@ -152,22 +151,24 @@ export default memo(function FilterButton(props) {
                                     <div className="flex-row align-c justify-sb p-2">
                                         <span className="fs-text">min:</span>
                                         <TouchButton
+                                            scroll
                                             orientation="row"
                                             disable="configs"
                                             output={resQMin}
-                                            add={operationQ('add', 'qMin')}
-                                            subtract={operationQ('subtract', 'qMin')}
+                                            add={add_qMin}
+                                            subtract={subtract_qMin}
                                             data={qMin}
                                         />
                                     </div>
                                     <div className="flex-row align-c justify-sb p-2">
                                         <span className="fs-text">max:</span>
                                         <TouchButton
+                                            scroll
                                             orientation="row"
                                             disable="configs"
                                             output={resQMax}
-                                            add={operationQ('add', 'qMax')}
-                                            subtract={operationQ('subtract', 'qMax')}
+                                            add={add_qMax}
+                                            subtract={subtract_qMax}
                                             data={qMax}
                                         />
                                     </div>

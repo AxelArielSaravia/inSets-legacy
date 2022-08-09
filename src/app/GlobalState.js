@@ -17,9 +17,9 @@ import initState from "./initState.json";
  */
 const isInsideInterval = (min, max, val) => min <= val && val <= max; 
 
-async function changeLocalStorage(property, key, value) {
+function changeLocalStorage(property, key, value) {
     if (key != null) {
-        let localStorageProperty = JSON.parse(localStorage.getItem(property));
+        const localStorageProperty = JSON.parse(localStorage.getItem(property));
         localStorageProperty[key] = value;
         localStorage.setItem(property, JSON.stringify(localStorageProperty)); 
     }  else {
@@ -119,7 +119,11 @@ const globalDelayReducer = (state, action) => {
                 feedbackMin: initState.delay.feedbackMin,
                 feedbackMax: initState.delay.feedbackMax,
             }
-            changeLocalStorage("delay", null, newDelay);
+            {
+                const localNewDelay = {...newDelay};
+                localNewDelay.areAllDisable = newDelay.areAllDisable.value;
+                changeLocalStorage("delay", null, localNewDelay);
+            }
             return newDelay
         }
         case "timeMin": {
@@ -307,7 +311,11 @@ const globalFilterReducer = (state, action) => {
                 qMax: initState.filter.qMax,
                 types: initState.filter.types
             }
-            changeLocalStorage("filter", null, newFilter);
+            {
+                const localNewFilter = {...newFilter};
+                localNewFilter.areAllDisable = newFilter.areAllDisable.value;
+                changeLocalStorage("filter", null, localNewFilter);
+            }
             return newFilter
         }
         case "types": {
@@ -372,7 +380,7 @@ const createGlobalPannerObj = (obj) => {
             ? obj.xMax 
             : globalPannerStatic.MAX;
 
-        GlobalPannerObj.yMin = obj.hasOwnProperty("yMin") && isInsideInterval(globalPannerStatic.MIN, globalPannerStatic, obj.yMin)
+        GlobalPannerObj.yMin = obj.hasOwnProperty("yMin") && isInsideInterval(globalPannerStatic.MIN, globalPannerStatic.MAX, obj.yMin)
             ? obj.yMin 
             : globalPannerStatic.MIN;
 
@@ -433,7 +441,11 @@ const globalPannerReducer = (state, action) => {
                 zMin: initState.panner.zMin,
                 zMax: initState.panner.zMax,
             }
-            changeLocalStorage("panner", null, newPanner);
+            {
+                const localNewPanner = {...newPanner};
+                localNewPanner.areAllDisable = newPanner.areAllDisable.value;
+                changeLocalStorage("panner", null, localNewPanner);
+            }
             return newPanner
         }
         case "xMin": {
@@ -589,7 +601,11 @@ const globalPlayBackRateReducer = (state, action) => {
                 min: initState.playBackRate.min,
                 max: initState.playBackRate.max,
             }
-            changeLocalStorage("playBackRate", null, newPlayBackRate);
+            {
+                const localnewPBR = {...newPlayBackRate};
+                localnewPBR.areAllDisable = newPlayBackRate.areAllDisable.value;
+                changeLocalStorage("playBackRate", null, localnewPBR);
+            }
             return newPlayBackRate
         }
         default: return state;
@@ -662,7 +678,11 @@ const globalTimeIntervalReducer = (state, action) => {
                 min: initState.timeInterval.min,
                 max: initState.timeInterval.max,
             }
-            changeLocalStorage("timeInterval", null, newTimeInterval);
+            {
+                const localNewTI = {...newTimeInterval};
+                localNewTI.areAllDisable = newTimeInterval.areAllDisable.value;
+                changeLocalStorage("timeInterval", null, localNewTI);
+            }
             return newTimeInterval
         }
         default: return state;
@@ -711,7 +731,7 @@ const globalRandomStartPointReducer = (state, action) => {
  */
 const createGlobalFadeTimeValue = (num) => {
     /**@type {number}*/
-    const fadeTime = typeof num === "number" && isInsideInterval(globalFadeTimeStatic.MIN, globalFadeTimeStatic.MAX, num) 
+    const fadeTime = Number.isInteger(num) && isInsideInterval(globalFadeTimeStatic.MIN, globalFadeTimeStatic.MAX, num) 
         ? num
         : 150;//default
     return fadeTime;
@@ -724,7 +744,7 @@ const createGlobalFadeTimeValue = (num) => {
  */
 const globalFadeTimeReducer = (state, action) => {
     if (action.type === "change"
-        && typeof action.value === "number"
+        && Number.isInteger(action.value)
         && isInsideInterval(globalFadeTimeStatic.MIN, globalFadeTimeStatic.MAX, action.value)
      ) {
         GlobalState[action.variable] = action.value;
