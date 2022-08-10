@@ -1,4 +1,4 @@
-import { useState, useEffect, memo, useMemo } from "react";
+import { useState, useEffect, memo, useMemo, useCallback } from "react";
 import { globalFilterStatic } from "../../app/Globals.js";
 
 import AsideButton from "./AsideButton.js";
@@ -50,7 +50,7 @@ export default memo(function FilterButton({filter, setDispatcher}) {
     const reset = () => { setDispatcher("filter", "reset", null); }
     const setTypes = (newValue) => { setDispatcher("filter", "types", newValue); }
 
-    const operationQ = useMemo(() => (operation, type) => (data) => {
+    const operationQ = useCallback((operation, type) => (data) => {
         const v = data >= 2 ? 0.1 : 0.05;
         if (operation === "add") {
             const value = Number.parseFloat((data + v).toFixed(2));
@@ -61,7 +61,7 @@ export default memo(function FilterButton({filter, setDispatcher}) {
         }
     }, [setDispatcher]);
     
-    const operationFrequency = useMemo(() => (operation, type) => (data) => {
+    const operationFrequency = useCallback((operation, type) => (data) => {
         const v = data < 200 ? 10 
             : data < 1000 ? 50 
             : data < 1000 ? 100

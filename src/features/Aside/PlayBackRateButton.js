@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useCallback } from "react";
 
 import AsideButton from "./AsideButton.js";
 import TouchButton from "../TouchButton.js";
@@ -15,8 +15,8 @@ export default memo(function PlayBackRateButton({playBackRate, setDispatcher}) {
         setDispatcher("playBackRate", "areAllDisable/global", !areAllDisable);
     }
 
-    const operation = (operation, type) => (data) => {
-        const _value = data > 1 ? 0.5 : 0.01 
+    const operation = useCallback((operation, type) => (data) => {
+        const _value = data > 1 ? 0.1 : 0.05;
         if (operation === "add") {
             const value = Number.parseFloat((data + _value).toFixed(2));
             setDispatcher("playBackRate", type, value);
@@ -24,7 +24,7 @@ export default memo(function PlayBackRateButton({playBackRate, setDispatcher}) {
             const value = Number.parseFloat((data - _value).toFixed(2));
             setDispatcher("playBackRate", type, value);
         }
-    }
+    }, [setDispatcher])
 
     const reset = () => { setDispatcher("playBackRate", "reset", null); }
 

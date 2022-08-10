@@ -1,6 +1,5 @@
 import { memo, useEffect } from "react";
 
-
 import Switch from "../SwitchButton.js";
 
 export default memo(function Switcher(props) {

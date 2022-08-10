@@ -4,23 +4,49 @@ import AsideButton from "./AsideButton.js";
 import TouchButton from "../TouchButton.js";
 import ToolButton from "../ToolButton.js";
 
+const isMinorThanTen = (num) => num < 10 ? "0" + num : num;
+const durationToTime = (val) => {
+    const _val = Math.floor(val);
+    const ms = (_val / 100) % 10;
+    const sec = Number.parseInt(_val / 1000) % 60;
+    const min = Number.parseInt(_val / 60000) % 60;
+    return isMinorThanTen(min) + ":" + isMinorThanTen(sec) + "." + ms ;
+}
+
+const _resValue = (v) => {
+    if (v >= 60000) return [Number.parseInt(v / 60000) % 60, "m"];
+    else if (v >= 1000) return [Number.parseInt(v / 1000) % 60, "s"];
+    return [v, "ms"];
+}
+
 export default function TimeButton({timeInterval, setDispatcher}) {
     const min = timeInterval.min;
-    const max = timeInterval.max
+    const max = timeInterval.max;
+    const resMin = durationToTime(min);
+    const resMax = durationToTime(max);
     const [value, setValue] = useState(100);
+    const [v, v_text] = useMemo(() => _resValue(value), [value]);
     const addValue = () => {
-        if (value < 1001) { setValue(state =>  state * 10); }
+        if (value < 60001) { 
+            const v = value < 10000 ? value * 10
+                : value + 50000;
+            setValue(() =>  v); 
+        }
     }
     const subtractValue = () => {
-        if (value > 10) { setValue(state =>  state / 10); }
+        if (value > 100) {
+            const v = value < 60000 ? value / 10
+                : value - 50000;
+            setValue(() => v);
+        }
     }
-    const operation = useMemo(() => (operation, type) => (data) => {
+    const operation = (operation, type) => (data) => {
         if (operation === "add") {
             setDispatcher("timeInterval", type, data + value);
         } else if (operation === "subtract") {
             setDispatcher("timeInterval", type, data - value);
         }
-    }, [setDispatcher, value]);
+    };
     const add_min = operation("add", "min");
     const subtract_min = operation("subtract", "min");
     const add_max = operation("add", "max");
@@ -42,14 +68,14 @@ export default function TimeButton({timeInterval, setDispatcher}) {
                     <div className="flex-row align-c justify-sb p-2">
                         <span className="fs-text-s p-2">Value:</span>
                         <TouchButton
-                            scroll
-                            textClass="effect-container_text-l"
+                            textClass="effect-container_text-s"
                             orientation="row"
                             disable="configs"
                             add={addValue}
                             subtract={subtractValue}
-                            output={value}
+                            output={v}
                         />
+                        <span className="fs-text p-2">{v_text}</span>
                     </div>
                 </div>
             </div>
@@ -64,15 +90,14 @@ export default function TimeButton({timeInterval, setDispatcher}) {
                                         <TouchButton
                                             scroll
                                             touch
-                                            textClass="effect-container_text-xl"
                                             orientation="row"
                                             disable="configs"
-                                            output={min}
+                                            output={resMin}
                                             add={add_min}
                                             subtract={subtract_min}
                                             data={min}
                                         />
-                                        <span className="fs-text p-2">ms</span>
+                                        <span className="fs-text p-2">mm:ss.ms</span>
                                     </div>
                                 </div>
                             </div>                         
@@ -83,15 +108,14 @@ export default function TimeButton({timeInterval, setDispatcher}) {
                                         <TouchButton
                                             scroll
                                             touch
-                                            textClass="effect-container_text-xl"
                                             orientation="row"
                                             disable="configs"
-                                            output={max}
+                                            output={resMax}
                                             add={add_max}
                                             subtract={subtract_max}
                                             data={max}
                                         />
-                                        <span className="fs-text p-2">ms</span>
+                                        <span className="fs-text p-2">mm:ss.ms</span>
                                     </div>
                                 </div>
                             </div>     

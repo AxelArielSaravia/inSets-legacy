@@ -1,4 +1,4 @@
-import { memo, useMemo } from "react";
+import { memo, useCallback, useMemo } from "react";
 
 import AsideButton from "./AsideButton.js";
 import TouchButton from "../TouchButton.js";
@@ -12,7 +12,7 @@ export default memo(function PannerButton({panner, setDispatcher}) {
         setDispatcher("panner", "areAllDisable/global", !areAllDisable);
     }
     
-    const operation = useMemo(() => (operation, type) => (data) => {
+    const operation = useCallback((operation, type) => (data) => {
         if (operation === "add") {
             setDispatcher("panner", type, data + 1); 
         } else if (operation === "subtract") {

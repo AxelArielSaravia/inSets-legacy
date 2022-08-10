@@ -1,4 +1,4 @@
-import { memo, useMemo } from "react";
+import { memo, useMemo, useCallback } from "react";
 
 import AsideButton from "./AsideButton.js";
 import TouchButton from "../TouchButton.js";
@@ -7,7 +7,7 @@ import ToolButton from "../ToolButton.js";
 
 export default memo(function FadeTimeButton({fadeIn, fadeOut, setDispatcher}) {
 
-    const operation = useMemo(() => (operation, variable) => (data) => {
+    const operation = useCallback((operation, variable) => (data) => {
         if (operation === "add") {
             setDispatcher(variable, "change", data + 10);
         } else if (operation === "subtract") {

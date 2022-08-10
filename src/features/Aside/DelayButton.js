@@ -1,4 +1,4 @@
-import { memo, useMemo } from "react";
+import { memo, useMemo, useCallback } from "react";
 
 import AsideButton from "./AsideButton.js";
 import TouchButton from "../TouchButton.js";
@@ -17,7 +17,7 @@ export default memo(function DelayButton({delay, setDispatcher}) {
         setDispatcher("delay", "areAllDisable/global", !areAllDisable);
     }
     const reset = () => { setDispatcher("delay", "reset", null); }
-    const timeOperation = useMemo(() => (operation, type, v) => (data) => {
+    const timeOperation = useCallback((operation, type, v) => (data) => {
         if (operation === "add") {
             const value = Number.parseFloat((data + 0.1).toFixed(1));
             setDispatcher("delay", type, value);
@@ -26,7 +26,7 @@ export default memo(function DelayButton({delay, setDispatcher}) {
             setDispatcher("delay", type, value);
         }
     }, [setDispatcher]);
-    const feedbackOperation = useMemo(() => (operation, type) => (data) => {
+    const feedbackOperation = useCallback((operation, type) => (data) => {
         if (operation === "add") {
             const value = Number.parseFloat((data + 0.05).toFixed(2));
             setDispatcher("delay", type, value);

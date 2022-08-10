@@ -1,27 +1,24 @@
 import TouchButton from "../TouchButton.js";
 
 const isMinorThanTen = (num) => num < 10 ? "0" + num : num;
-
 const durationToTime = (val) => {
-    val = Math.floor(val);
-    let sec = val % 60;
-    val = Math.floor((val-sec) / 60);
-    let min = val % 60;
-    let hr = Math.floor((val-min) / 60);
-
+    const _val = Math.floor(val);
+    const sec = _val % 60;
+    const min = Number.parseInt(_val / 60) % 60;
+    const hr = Number.parseInt(_val / 3600);
     let str = (hr > 0) ? hr + ":" : "";
     str += isMinorThanTen(min) + ":" + isMinorThanTen(sec);
     return str;
 }
 
-export default function AudioCardTimeText(props) {
-    const t = durationToTime(props.time);
+export default function AudioCardTimeText({time, add, subtract, data}) {
+    const t = durationToTime(time);
     return <TouchButton
         scroll
         touch
         output={t}
-        add={props.add}
-        subtract={props.subtract}
-        data={props.data}
+        add={add}
+        subtract={subtract}
+        data={data}
     />;
 }
