@@ -16,7 +16,7 @@ export default memo(function PlayBackRateButton({playBackRate, setDispatcher}) {
     }
 
     const operation = (operation, type) => (data) => {
-        const _value = data > 1 ? 0.1 : 0.01 
+        const _value = data > 1 ? 0.5 : 0.01 
         if (operation === "add") {
             const value = Number.parseFloat((data + _value).toFixed(2));
             setDispatcher("playBackRate", type, value);
