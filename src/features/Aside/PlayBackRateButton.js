@@ -16,11 +16,12 @@ export default memo(function PlayBackRateButton({playBackRate, setDispatcher}) {
     }
 
     const operation = useCallback((operation, type) => (data) => {
-        const _value = data > 1 ? 0.1 : 0.05;
         if (operation === "add") {
+            const _value = data >= 1 ? 0.1 : 0.05;
             const value = Number.parseFloat((data + _value).toFixed(2));
             setDispatcher("playBackRate", type, value);
         } else if (operation === "subtract"){
+            const _value = data > 1 ? 0.1 : 0.05;
             const value = Number.parseFloat((data - _value).toFixed(2));
             setDispatcher("playBackRate", type, value);
         }

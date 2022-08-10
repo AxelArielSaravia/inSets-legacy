@@ -14,9 +14,11 @@ const durationToTime = (val) => {
 }
 
 const _resValue = (v) => {
-    if (v >= 60000) return [Number.parseInt(v / 60000) % 60, "m"];
-    else if (v >= 1000) return [Number.parseInt(v / 1000) % 60, "s"];
-    return [v, "ms"];
+    return v === 60000 ? "1 m"
+        : v === 30000 ? "30 s"
+        : v === 10000 ? "10 s"
+        : v === 1000 ? "1 s"
+        : "100 ms";
 }
 
 export default function TimeButton({timeInterval, setDispatcher}) {
@@ -25,18 +27,22 @@ export default function TimeButton({timeInterval, setDispatcher}) {
     const resMin = durationToTime(min);
     const resMax = durationToTime(max);
     const [value, setValue] = useState(100);
-    const [v, v_text] = useMemo(() => _resValue(value), [value]);
+    const value_text = useMemo(() => _resValue(value), [value]);
     const addValue = () => {
-        if (value < 60001) { 
-            const v = value < 10000 ? value * 10
-                : value + 50000;
+        if (value < 60000) { 
+            const v = value === 100 ? 1000
+                : value === 1000 ? 10000 
+                : value === 10000 ? 30000
+                : 60000 
             setValue(() =>  v); 
         }
     }
     const subtractValue = () => {
         if (value > 100) {
-            const v = value < 60000 ? value / 10
-                : value - 50000;
+            const v = value === 60000 ? 30000
+                : value === 30000 ? 10000 
+                : value === 10000 ? 1000
+                : 100 
             setValue(() => v);
         }
     }
@@ -62,20 +68,29 @@ export default function TimeButton({timeInterval, setDispatcher}) {
             <div className="flex-column align-c justify-c p-3">
                 <ToolButton onClick={reset}>Reset</ToolButton>
             </div>
-            <div className="flex-column align-c p-3">
-                <p className="fs-text-s text-center">Change the add and subtract value.</p>
-                <div>
-                    <div className="flex-row align-c justify-sb p-2">
-                        <span className="fs-text-s p-2">Value:</span>
+            <div className="flex-column">
+                <div className="flex-column align-c p-3">
+                    <div className="flex-row align-c">
+                        <span className="fs-text p-2">{"value schema:"}</span>
+                        <span className="fs-text text-bold p-2">mm:ss.ms</span>
+                    </div>
+                    <div className="flex-row align-c p-2">
+                        <span className="fs-text-s text-bold">minutes:seconds.milliseconds</span>
+                    </div>
+                </div>
+                <div className="flex-column align-c p-2">
+                    <p className="fs-text-s text-center p-2">Change the add and subtract value.</p>
+                    <div className="flex-row align-c">
                         <TouchButton
-                            textClass="effect-container_text-s"
+                            touch
+                            scroll
+                            textClass="effect-container_text-xl"
                             orientation="row"
                             disable="configs"
                             add={addValue}
                             subtract={subtractValue}
-                            output={v}
+                            output={value_text}
                         />
-                        <span className="fs-text p-2">{v_text}</span>
                     </div>
                 </div>
             </div>
@@ -97,7 +112,6 @@ export default function TimeButton({timeInterval, setDispatcher}) {
                                             subtract={subtract_min}
                                             data={min}
                                         />
-                                        <span className="fs-text p-2">mm:ss.ms</span>
                                     </div>
                                 </div>
                             </div>                         
@@ -115,7 +129,6 @@ export default function TimeButton({timeInterval, setDispatcher}) {
                                             subtract={subtract_max}
                                             data={max}
                                         />
-                                        <span className="fs-text p-2">mm:ss.ms</span>
                                     </div>
                                 </div>
                             </div>     
