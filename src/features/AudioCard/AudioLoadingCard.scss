@@ -88,13 +88,13 @@
     }
 }
 
-@media screen and (max-width: 340px) {
+@media screen and (max-width: 320px) {
     .audioLoadingCard {
-      .audioLoadingCard-tools {
-        flex-direction: column !important;
-        .audioLoadingCard_right { 
-            align-items: center !important;
-        } 
-      }
+        .audioLoadingCard-tools {
+            flex-direction: column !important;
+            .audioLoadingCard_right { 
+                align-items: center !important;
+            } 
+        }
     }
-  }
+}

@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useMemo } from "react";
 import { GlobalContext } from "../../app/Globals.js";
 
 import SetsButton from "./SetsButton.js";
@@ -29,9 +29,9 @@ export default function AsideConfig({active, configButton, onClick }) {
     }, globalDispatcher] = useContext(GlobalContext);
     const arrOfProbability = probabilityOfSetSize.arrOfValues;
 
-    const setDispatcher = (variable, type, value , i = null) => {
+    const setDispatcher = useMemo(() => (variable, type, value , i = null) => {
         globalDispatcher({variable: variable, type: type, value: value, i: i});
-    }
+    }, [globalDispatcher]);
 
     useEffect(() => {
         const el = (e) => { 

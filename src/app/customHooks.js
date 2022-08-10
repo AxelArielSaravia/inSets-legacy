@@ -35,8 +35,13 @@ const audioStateFromFile_AudioNode = (file, dispatcher) => {
       console.warn(`Can not play this audio type ${file.type}`);
       return;
     }
+    //presersPitch false in playbackrate
+    if ('preservesPitch' in htmlAudio) {
+      htmlAudio.preservesPitch = false;
+    }
     htmlAudio.addEventListener("canplaythrough", () => {
       /* the audio is now playable; play it if permissions allow */
+
       const id = createId();
       let source = GlobalState.AUDIO_CONTEXT.createMediaElementSource(htmlAudio); 
       let audioState = createAudioState(id, file.name, file.type, htmlAudio.duration, GlobalState);

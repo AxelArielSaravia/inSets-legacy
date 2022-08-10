@@ -329,7 +329,7 @@ const deleteAudio = async (id, globalDispatcher, audioDispatcher) => {
 
 const calculateTheLenghtOfSetExecution = () => {
     let sum = 0;
-    let arrOfSums = [];
+    const arrOfSums = [];
     const arrOfValues = GlobalState.probabilityOfSetSize;
     arrOfValues.forEach((v,i) => {
         if (v > 0) {
@@ -337,7 +337,7 @@ const calculateTheLenghtOfSetExecution = () => {
             arrOfSums.push([i, sum]);
         }
     });
-    let n = random(1, sum);
+    const n = random(1, sum);
     for (let i = 0; i < arrOfSums.length; i++) {
         if (n <= arrOfSums[i][1]) return arrOfSums[i][0]
     }
@@ -347,8 +347,8 @@ const calculateTheLenghtOfSetExecution = () => {
 const AudioProbabilityArray = (AUDIO_LIST) => {
     let arrOfAudioProbabilities = [];
     AUDIO_LIST.forEach((element, key) => {
-        let v = element.probability;
-        let arr = (new Array(v)).fill(key);
+        const v = element.probability;
+        const arr = (new Array(v)).fill(key);
         arrOfAudioProbabilities = arrOfAudioProbabilities.concat(arr);
     });
     return arrOfAudioProbabilities
@@ -366,7 +366,7 @@ const createNewSetExecution = () => {
     let possibleAudios = AudioProbabilityArray(AUDIO_LIST);
     if (AUDIO_LIST.size / 2 >= n) {
         while (executeSet.length < n) {
-            let _KEY = possibleAudios[random(0, possibleAudios.length-1)];
+            const _KEY = possibleAudios[random(0, possibleAudios.length-1)];
             executeSet.push(_KEY);
             possibleAudios = possibleAudios.filter(key => key !== _KEY);
         }
@@ -385,14 +385,16 @@ const createNewSetExecution = () => {
 const randomSetsExecution = (audioDispatcher) => {
     const executeSet = createNewSetExecution();
     if (executeSet.length > 0) {
+        //create new color;
         const newColor = changeColor();
+        
         executeSet.forEach(_ID => {
             const AUDIO_STATE = GlobalState.AUDIO_LIST.get(_ID);
             if (AUDIO_STATE.isPlaying) {
                 Promise.resolve()
                 .then(() => stop(_ID, audioDispatcher))
-                .then(() => {
-                    if (GlobalState.IS_STARTED) {
+                .then((bool) => {
+                    if (bool && GlobalState.IS_STARTED) {
                         audioDispatcher({
                             id:_ID, 
                             variable: "color", 
@@ -441,8 +443,8 @@ const startApp = async (globalDispatcher, audioDispatcher) => {
 
 const stopApp = async (globalDispatcher, audioDispatcher) => {
    await globalDispatcher({type: "stop"});
-    GlobalState.AUDIO_LIST.forEach((data, key) => {
-        if (data.isPlaying) {
+    GlobalState.AUDIO_LIST.forEach(({isPlaying}, key) => {
+        if (isPlaying) {
             stop(key, audioDispatcher);
         }
     });

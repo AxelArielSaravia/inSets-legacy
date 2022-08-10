@@ -1,18 +1,18 @@
-export default function AsideButton(props) {
+export default function AsideButton({title, description, children}) {
     return (
         <div className="asideButton">
-            {props.title && (
+            {title && (
                 <div className="asideButton-title">
                     <h3 className="fs-text-l text-center" style={{marginBottom: "10px"}}>
-                        {props.title}
+                        {title}
                     </h3>
                 </div>
             )}
             <div className="asideButton-content">
-                {props.description != null && (
-                    <p className="fs-text text-center">{props.description}</p>
+                {description != null && (
+                    <p className="fs-text text-center">{description}</p>
                 )}
-                {props.children}
+                {children}
             </div>
     </div>
     );

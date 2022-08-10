@@ -10,8 +10,8 @@ export default memo(function DelayButton({delay, setDispatcher}) {
     const areAllDisable = delay.areAllDisable.value;
     const resTimeMin = timeMin.toFixed(1);
     const resTimeMax = timeMax.toFixed(1);
-    const resFeedbackMin = feedbackMin.toFixed(2);
-    const resFeedbackMax = feedbackMax.toFixed(2);
+    const resFeedbackMin = Number.parseInt(feedbackMin * 100);
+    const resFeedbackMax = Number.parseInt(feedbackMax * 100);
 
     const handleOnClick = () => {
         setDispatcher("delay", "areAllDisable/global", !areAllDisable);
@@ -69,13 +69,13 @@ export default memo(function DelayButton({delay, setDispatcher}) {
                         <div className="p-2 border rounded">
                             <h4 className="fs-text">Time:</h4>
                             <div className="flex-column align-c justify-sb">
-                                <div style={{width:"165px"}}>
-                                    <div className="flex-row align-c justify-sb p-2">
-                                        <span className="fs-text">min:</span>
+                                <div>
+                                    <div className="flex-row align-c justify-sb">
+                                        <span className="fs-text p-2">min:</span>
                                         <TouchButton
                                             scroll
                                             touch
-                                            textStyle={{width: "30px"}}
+                                            textClass="effect-container_text-s"
                                             orientation="row"
                                             disable="configs"
                                             output={resTimeMin}
@@ -83,14 +83,14 @@ export default memo(function DelayButton({delay, setDispatcher}) {
                                             subtract={subtract_timeMin}
                                             data={timeMin}
                                         />
-                                        <span className="fs-text">sec</span>
+                                        <span className="fs-text p-2">sec</span>
                                     </div>
-                                    <div className="flex-row align-c justify-sb p-2">
-                                        <span className="fs-text">max:</span>
+                                    <div className="flex-row align-c justify-sb">
+                                        <span className="fs-text p-2">max:</span>
                                         <TouchButton
                                             scroll
                                             touch
-                                            textStyle={{width: "30px"}}
+                                            textClass="effect-container_text-s"
                                             orientation="row"
                                             disable="configs"
                                             output={resTimeMax}
@@ -98,7 +98,7 @@ export default memo(function DelayButton({delay, setDispatcher}) {
                                             subtract={subtract_timeMax}
                                             data={timeMax}
                                         />
-                                        <span className="fs-text">sec</span>
+                                        <span className="fs-text p-2">sec</span>
                                     </div>
                                 </div>
                             </div>
@@ -108,13 +108,13 @@ export default memo(function DelayButton({delay, setDispatcher}) {
                         <div className="p-2 border rounded">
                             <h4 className="fs-text">Feedback:</h4>
                             <div className="flex-column align-c justify-sb">
-                                <div style={{width:"134px"}}>
-                                    <div className="flex-row align-c justify-sb p-2">
-                                        <span className="fs-text">min:</span>
+                                <div>
+                                    <div className="flex-row align-c justify-sb">
+                                        <span className="fs-text p-2">min:</span>
                                         <TouchButton
                                             scroll
                                             touch
-                                            textStyle={{width: "45px"}}
+                                            textClass="effect-container_text-s"
                                             orientation="row"
                                             disable="configs"
                                             output={resFeedbackMin}
@@ -123,14 +123,14 @@ export default memo(function DelayButton({delay, setDispatcher}) {
                                             data={feedbackMin}
                                             
                                         />
-                                        <span className="fs-text">%</span>
+                                        <span className="fs-text p-2">%</span>
                                     </div>
-                                    <div className="flex-row align-c justify-sb p-2">
-                                        <span className="fs-text">max:</span>
+                                    <div className="flex-row align-c justify-sb">
+                                        <span className="fs-text p-2">max:</span>
                                         <TouchButton
                                             scroll
                                             touch
-                                            textStyle={{width: "45px"}}
+                                            textClass="effect-container_text-s"
                                             orientation="row"
                                             disable="configs"
                                             output={resFeedbackMax}
@@ -138,7 +138,7 @@ export default memo(function DelayButton({delay, setDispatcher}) {
                                             subtract={subtract_feedbackMax}
                                             data={feedbackMax}
                                         />
-                                        <span className="fs-text">%</span>
+                                        <span className="fs-text p-2">%</span>
                                     </div>
                                 </div>
                             </div>

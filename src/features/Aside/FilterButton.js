@@ -47,6 +47,8 @@ export default memo(function FilterButton({filter, setDispatcher}) {
     const handleOnClick = () => {
         setDispatcher("filter", "areAllDisable/global", !areAllDisable);
     }
+    const reset = () => { setDispatcher("filter", "reset", null); }
+    const setTypes = (newValue) => { setDispatcher("filter", "types", newValue); }
 
     const operationQ = useMemo(() => (operation, type) => (data) => {
         const v = data >= 2 ? 0.1 : 0.05;
@@ -70,8 +72,6 @@ export default memo(function FilterButton({filter, setDispatcher}) {
             setDispatcher("filter", type, data - v);
         }
     }, [setDispatcher]);
-    const reset = () => { setDispatcher("filter", "reset", null); }
-    const setTypes = (newValue) => { setDispatcher("filter", "types", newValue); }
 
     const add_qMin = useMemo(() => operationQ("add", "qMin"), [operationQ]);
     const add_qMax = useMemo(() => operationQ("add", "qMax"), [operationQ]);
@@ -82,7 +82,6 @@ export default memo(function FilterButton({filter, setDispatcher}) {
     const subtract_frequencyMin = useMemo(() => operationFrequency("subtract", "frequencyMin"), [operationFrequency]);
     const subtract_frequencyMax = useMemo(() => operationFrequency("subtract", "frequencyMax"), [operationFrequency]);
     
-
     return (
         <AsideButton
             title="Filter"
@@ -108,13 +107,13 @@ export default memo(function FilterButton({filter, setDispatcher}) {
                         <div className="p-2 border rounded">
                             <h4 className="fs-text">Frequency:</h4>
                             <div className="flex-column align-c justify-sb">
-                                <div style={{width:"175px"}}>
-                                    <div className="flex-row align-c justify-sb p-2">
-                                        <span className="fs-text">min:</span>
+                                <div>
+                                    <div className="flex-row align-c justify-sb">
+                                        <span className="fs-text p-2">min:</span>
                                         <TouchButton
                                             scroll
                                             touch
-                                            textStyle={{width: "59px"}}
+                                            textClass="effect-container_text-l"
                                             orientation="row"
                                             disable="configs"
                                             output={frequencyMin}
@@ -122,14 +121,14 @@ export default memo(function FilterButton({filter, setDispatcher}) {
                                             subtract={subtract_frequencyMin}
                                             data={frequencyMin}
                                         />
-                                        <span className="fs-text">Hz</span>
+                                        <span className="fs-text p-2">Hz</span>
                                     </div>
-                                    <div className="flex-row align-c justify-sb p-2">
-                                        <span className="fs-text">max:</span>
+                                    <div className="flex-row align-c justify-sb">
+                                        <span className="fs-text p-2">max:</span>
                                         <TouchButton
                                             scroll
                                             touch
-                                            textStyle={{width: "59px"}}
+                                            textClass="effect-container_text-l"
                                             orientation="row"
                                             disable="configs"
                                             output={frequencyMax}
@@ -137,7 +136,7 @@ export default memo(function FilterButton({filter, setDispatcher}) {
                                             subtract={subtract_frequencyMax}
                                             data={frequencyMax}
                                         />
-                                        <span className="fs-text">Hz</span>
+                                        <span className="fs-text p-2">Hz</span>
                                     </div>
                                 </div>
                             </div>
@@ -148,8 +147,8 @@ export default memo(function FilterButton({filter, setDispatcher}) {
                             <h4 className="fs-text">Q:</h4>
                             <div className="flex-column align-c justify-sb">
                                 <div style={{width:"110px"}}>
-                                    <div className="flex-row align-c justify-sb p-2">
-                                        <span className="fs-text">min:</span>
+                                    <div className="flex-row align-c justify-sb">
+                                        <span className="fs-text p-2">min:</span>
                                         <TouchButton
                                             scroll
                                             orientation="row"
@@ -160,8 +159,8 @@ export default memo(function FilterButton({filter, setDispatcher}) {
                                             data={qMin}
                                         />
                                     </div>
-                                    <div className="flex-row align-c justify-sb p-2">
-                                        <span className="fs-text">max:</span>
+                                    <div className="flex-row align-c justify-sb">
+                                        <span className="fs-text p-2">max:</span>
                                         <TouchButton
                                             scroll
                                             orientation="row"
@@ -180,7 +179,7 @@ export default memo(function FilterButton({filter, setDispatcher}) {
                         <div className="p-2 border rounded">
                             <h4 className="fs-text">Types:</h4>
                             <div className="flex-column align-c justify-sb p-2">
-                                <div style={{width:"200px"}}>
+                                <div>
                                     <div className="flex-row flex-wrap justify-c">
                                         {TYPES.map((el) => (
                                             <div key={"filter_type-" + el} className="p-2">

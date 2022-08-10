@@ -678,11 +678,7 @@ const globalTimeIntervalReducer = (state, action) => {
                 min: initState.timeInterval.min,
                 max: initState.timeInterval.max,
             }
-            {
-                const localNewTI = {...newTimeInterval};
-                localNewTI.areAllDisable = newTimeInterval.areAllDisable.value;
-                changeLocalStorage("timeInterval", null, localNewTI);
-            }
+            changeLocalStorage("timeInterval", null, newTimeInterval);
             return newTimeInterval
         }
         default: return state;

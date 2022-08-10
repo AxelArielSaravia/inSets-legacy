@@ -60,13 +60,13 @@ export default memo(function PannerButton({panner, setDispatcher}) {
                         <div className="p-2 border rounded">
                             <h4 className="fs-text">Position X:</h4>
                             <div className="flex-column align-c justify-sb">
-                                <div style={{width:"140px"}}>
-                                    <div className="flex-row align-c justify-sb p-2">
-                                        <span className="fs-text">min:</span>
+                                <div>
+                                    <div className="flex-row align-c justify-sb">
+                                        <span className="fs-text p-2">min:</span>
                                         <TouchButton
                                             scroll
                                             touch
-                                            textStyle={{width:"35px"}}
+                                            textClass="effect-container_text-s"
                                             orientation="row"
                                             disable="configs"
                                             output={xMin}
@@ -74,14 +74,14 @@ export default memo(function PannerButton({panner, setDispatcher}) {
                                             subtract={subtract_xMin}
                                             data={xMin}
                                         />
-                                        <span className="fs-text">%</span>
+                                        <span className="fs-text p-2">%</span>
                                     </div>
-                                    <div className="flex-row align-c justify-sb p-2">
-                                        <span className="fs-text">max:</span>
+                                    <div className="flex-row align-c justify-sb">
+                                        <span className="fs-text p-2">max:</span>
                                         <TouchButton
                                             scroll
                                             touch
-                                            textStyle={{width:"35px"}}
+                                            textClass="effect-container_text-s"
                                             orientation="row"
                                             disable="configs"
                                             output={xMax}
@@ -89,7 +89,7 @@ export default memo(function PannerButton({panner, setDispatcher}) {
                                             subtract={subtract_xMax}
                                             data={xMax}
                                         />
-                                        <span className="fs-text">%</span>
+                                        <span className="fs-text p-2">%</span>
                                     </div>
                                 </div>
                             </div>
@@ -99,13 +99,13 @@ export default memo(function PannerButton({panner, setDispatcher}) {
                         <div className="p-2 border rounded">
                             <h4 className="fs-text">Position Y:</h4>
                             <div className="flex-column align-c justify-sb">
-                                <div style={{width:"140px"}}>
-                                    <div className="flex-row align-c justify-sb p-2">
-                                        <span className="fs-text">min:</span>
+                                <div>
+                                    <div className="flex-row align-c justify-sb">
+                                        <span className="fs-text p-2">min:</span>
                                         <TouchButton
                                             scroll
                                             touch
-                                            textStyle={{width:"35px"}}
+                                            textClass="effect-container_text-s"
                                             orientation="row"
                                             disable="configs"
                                             output={yMin}
@@ -113,14 +113,14 @@ export default memo(function PannerButton({panner, setDispatcher}) {
                                             subtract={subtract_yMin}
                                             data={yMin}
                                         />
-                                        <span className="fs-text">%</span>
+                                        <span className="fs-text p-2">%</span>
                                     </div>
-                                    <div className="flex-row align-c justify-sb p-2">
-                                        <span className="fs-text">max:</span>
+                                    <div className="flex-row align-c justify-sb">
+                                        <span className="fs-text p-2">max:</span>
                                         <TouchButton
                                             scroll
                                             touch
-                                            textStyle={{width:"35px"}}
+                                            textClass="effect-container_text-s"
                                             orientation="row"
                                             disable="configs"
                                             output={yMax}
@@ -128,7 +128,7 @@ export default memo(function PannerButton({panner, setDispatcher}) {
                                             subtract={subtract_yMax}
                                             data={yMax}
                                         />
-                                        <span className="fs-text">%</span>
+                                        <span className="fs-text p-2">%</span>
                                     </div>
                                 </div>
                             </div>
@@ -138,13 +138,13 @@ export default memo(function PannerButton({panner, setDispatcher}) {
                         <div className="p-2 border rounded">
                             <h4 className="fs-text">Position Z:</h4>
                             <div className="flex-column align-c justify-sb">
-                                <div style={{width:"140px"}}>
-                                    <div className="flex-row align-c justify-sb p-2">
-                                        <span className="fs-text">min:</span>
+                                <div>
+                                    <div className="flex-row align-c justify-sb">
+                                        <span className="fs-text p-2">min:</span>
                                         <TouchButton
                                             scroll
                                             touch
-                                            textStyle={{width:"35px"}}
+                                            textClass="effect-container_text-s"
                                             orientation="row"
                                             disable="configs"
                                             output={zMin}
@@ -152,14 +152,14 @@ export default memo(function PannerButton({panner, setDispatcher}) {
                                             subtract={subtract_zMin}
                                             data={zMin}
                                         />
-                                        <span className="fs-text">%</span>
+                                        <span className="fs-text p-2">%</span>
                                     </div>
-                                    <div className="flex-row align-c justify-sb p-2">
-                                        <span className="fs-text">max:</span>
+                                    <div className="flex-row align-c justify-sb">
+                                        <span className="fs-text p-2">max:</span>
                                         <TouchButton
                                             scroll
                                             touch
-                                            textStyle={{width:"35px"}}
+                                            textClass="effect-container_text-s"
                                             orientation="row"
                                             disable="configs"
                                             output={zMax}
@@ -167,7 +167,7 @@ export default memo(function PannerButton({panner, setDispatcher}) {
                                             subtract={subtract_zMax}
                                             data={zMax}
                                         />
-                                        <span className="fs-text">%</span>
+                                        <span className="fs-text p-2">%</span>
                                     </div>
                                 </div>
                             </div>

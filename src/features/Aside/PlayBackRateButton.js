@@ -8,19 +8,20 @@ import Switch from "../SwitchButton.js";
 export default memo(function PlayBackRateButton({playBackRate, setDispatcher}) {
     const { min, max } = playBackRate;
     const areAllDisable = playBackRate.areAllDisable.value;
-    const resMin = min.toFixed(1); 
-    const resMax = max.toFixed(1);
+    const resMin = min.toFixed(2); 
+    const resMax = max.toFixed(2);
 
     const handleOnClick = () => {
         setDispatcher("playBackRate", "areAllDisable/global", !areAllDisable);
     }
 
     const operation = (operation, type) => (data) => {
+        const _value = data > 1 ? 0.1 : 0.01 
         if (operation === "add") {
-            const value = Number.parseFloat((data + 0.1).toFixed(1));
+            const value = Number.parseFloat((data + _value).toFixed(2));
             setDispatcher("playBackRate", type, value);
         } else if (operation === "subtract"){
-            const value = Number.parseFloat((data - 0.1).toFixed(1));
+            const value = Number.parseFloat((data - _value).toFixed(2));
             setDispatcher("playBackRate", type, value);
         }
     }
@@ -35,13 +36,13 @@ export default memo(function PlayBackRateButton({playBackRate, setDispatcher}) {
     return (
         <AsideButton
             title="Rate"
-            description="Change the Playback rate"
+            description="Change the Playback rate. The normal playback rate is multiplied by this value to obtain the current rate"
         >
             <div className="flex-row align-c justify-c p-3">
                 <Switch
                     onClick={handleOnClick}
                     isDisable={areAllDisable}
-                    title="disable all playback rate effects"
+                    title="disable all playback Rate effects"
                 >
                     <span className="fs-text disable-all_btn">
                         {areAllDisable ? "enable all" : "disable all" }
@@ -55,15 +56,14 @@ export default memo(function PlayBackRateButton({playBackRate, setDispatcher}) {
                 <div className="effect-container">
                     <div className="p-2">
                         <div className="p-2 border rounded">
-                            <h4 className="fs-text">Rate:</h4>
+                            <h4 className="fs-text">Playback Rate:</h4>
                             <div className="flex-column align-c justify-sb">
-                                <div style={{width:"135px"}}>
-                                    <div className="flex-row align-c justify-sb p-2">
-                                        <span className="fs-text">min:</span>
+                                <div>
+                                    <div className="flex-row align-c justify-sb">
+                                        <span className="fs-text p-2">min:</span>
                                         <TouchButton
                                             scroll
                                             touch
-                                            textStyle={{ width: "40px" }}
                                             orientation="row"
                                             disable="configs"
                                             output={resMin}
@@ -71,13 +71,13 @@ export default memo(function PlayBackRateButton({playBackRate, setDispatcher}) {
                                             subtract={subtract_min}
                                             data={min}
                                         />
+                                        <span className="fs-text p-2">*</span>
                                     </div>
-                                    <div className="flex-row align-c justify-sb p-2">
-                                        <span className="fs-text">max:</span>
+                                    <div className="flex-row align-c justify-sb">
+                                        <span className="fs-text p-2">max:</span>
                                         <TouchButton
                                             scroll
                                             touch
-                                            textStyle={{ width: "40px" }}
                                             orientation="row"
                                             disable="configs"
                                             output={resMax}
@@ -85,6 +85,7 @@ export default memo(function PlayBackRateButton({playBackRate, setDispatcher}) {
                                             subtract={subtract_max}
                                             data={max}
                                         />
+                                        <span className="fs-text p-2">*</span>
                                     </div>
                                 </div>
                             </div>

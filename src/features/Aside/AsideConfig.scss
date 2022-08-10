@@ -34,10 +34,12 @@
         border: 1px solid var(--c-secondary);
         padding: 5px !important;
     }
-    .asideButton {
-        height: 100%;
-    }
-
+    .asideButton { height: 100%; }
+    .effect-container { width: 220px; }
+    .effect-container_text-s { width: 25px; }
+    .effect-container_text-m { width: 35px; }
+    .effect-container_text-l { width: 40px; }
+    .effect-container_text-xl { width: 47px; }
 }
 
 .inactive {
@@ -61,9 +63,17 @@
         padding: 0 !important;
     }
 }
-.effect-container {
-    width: 240px;
+
+@media screen and (min-width: 420px) {
+    .configs {
+        .effect-container { width: 260px; }
+        .effect-container_text-s { width: 30px; }
+        .effect-container_text-m { width: 40px; }
+        .effect-container_text-l { width: 50px; }
+        .effect-container_text-xl { width: 60px; }
+    }
 }
+
 
 @media screen and (min-width: 620px) {
     .configs {
@@ -81,19 +91,17 @@
         opacity: 95%;
         transition: left 100ms ease-out;
     }
-    .inactive {
-        left: -340px;
-    }
-    .effect-container {
-        width: 250px;
-    }
+    .inactive { left: -340px; }
 }
 
 @media screen and (min-width: 1400px) {
     .configs {
         width: 500px;
+        .effect-container { width: 320px; }
+        .effect-container_text-s,
+        .effect-container_text-m { width: 40px; }
+        .effect-container_text-l { width: 60px; }
+        .effect-container_text-xl { width: 70px; }
     }
-    .inactive {
-        left: -500px;
-    }
+    .inactive { left: -500px; }
 }
