@@ -1,4 +1,8 @@
-import { memo, useState, useEffect, useMemo, useCallback } from "react";
+import { memo, useReducer, useMemo, useCallback } from "react";
+
+import { useOnClickClose } from "../hook.js";
+
+import { IconChevronUp, IconChevronDown } from "../../../icons/index.js";
 
 import ToolButton from "../../../components/ToolButton/index.js";
 import AsideConfig from "../AsideConfig/component.js";
@@ -7,69 +11,54 @@ import "./style.scss"
 
 const panelClassName =  "panel flex-column";
 
-export default memo(function Aside() {
-    //console.log("Update Aside"); //DEBUGGER
-    const [toolsSwitch, setToolsSwitch] = useState(false);
-    const [toolConfig, setToolConfig] = useState(false);
-    const [configButton, setConfigButton] = useState("");
-
-    const handleToolsSwitchOnClick = () => {
-        setToolsSwitch((state) => !state);
+const initReducerstate = { switchActive: false, configActive: false, configName: ""};
+const reducer = (state = initReducerstate, action) => {
+    switch (action.type) {
+        case "configName/change": return {
+            switchActive: state.switchActive,
+            configActive: !(state.configActive && state.configName === action.payload),
+            configName: action.payload
+        };
+        case "configActive/toFalse": return { ...state, configActive: false };
+        case "switchActive/change": return { ...state, switchActive: !state.switchActive };
+        default: return state;
     }
-    
-    const handleButtonsOnClick = useCallback((val) => {
-        setToolConfig(state => {
-            if (state && val === configButton) {
-                return false;
-            }
-            return true;
-        });
-        setConfigButton(() => val); 
-    }, [configButton])
-    
-    const setsOnClick = useCallback(() => { handleButtonsOnClick("SETS") }, [handleButtonsOnClick]);
-    const timeOnClick = useCallback(() => { handleButtonsOnClick("TIME") }, [handleButtonsOnClick]);
-    const fadeTimeOnClick = useCallback(() => { handleButtonsOnClick("FADETIME") }, [handleButtonsOnClick]);
-    const pannerOnClick = useCallback(() => { handleButtonsOnClick("PANNER") }, [handleButtonsOnClick]);
-    const filterOnClick = useCallback(() => { handleButtonsOnClick("FILTER") }, [handleButtonsOnClick]);
-    const delayOnClick = useCallback(() => { handleButtonsOnClick("DELAY") }, [handleButtonsOnClick]);
-    const playBackRateOnClick = useCallback(() => { handleButtonsOnClick("RATE") }, [handleButtonsOnClick]);
-    const randomStartPointOnClick = useCallback(() => { handleButtonsOnClick("RSP") }, [handleButtonsOnClick]);
+} 
 
-    useEffect(() => {
-        const el = (e) => { 
-            if ( e.target.matches(".tools-switch *")
-                || e.target.matches(".panel *")
-                || e.target.matches(".configs")
-                || e.target.matches(".configs *")
-            ) {
-                return;
-            }
-            handleToolsSwitchOnClick();
-        }
-        if (toolsSwitch) {
-            document.addEventListener('click', el);
-            return () => {
-                document.removeEventListener('click', el);
-            } 
-        }
-    }, [toolsSwitch]);
+export default memo(function Aside() {
+    const [{switchActive, configActive, configName}, dispatch] = useReducer(reducer, initReducerstate); 
 
-    const _ClassName = useMemo( () => (
-        !toolsSwitch ? panelClassName + " panel-hidden"
-        : toolConfig ? panelClassName + " panel-invisible"
+    const switchOnClick = () => { dispatch({type: "switchActive/change"}) }
+    
+    const setsOnClick = useCallback(() => { dispatch({type: "configName/change",payload: "SETS"}) }, []);
+    const timeOnClick = useCallback(() => { dispatch({type: "configName/change",payload: "TIME"}) }, []);
+    const fadeTimeOnClick = useCallback(() => { dispatch({type: "configName/change",payload: "FADETIME"}) }, []);
+    const pannerOnClick = useCallback(() => { dispatch({type: "configName/change",payload: "PANNER"}) }, []);
+    const filterOnClick = useCallback(() => { dispatch({type: "configName/change",payload: "FILTER"}) }, []);
+    const delayOnClick = useCallback(() => { dispatch({type: "configName/change",payload: "DELAY"}) }, []);
+    const playBackRateOnClick = useCallback(() => { dispatch({type: "configName/change",payload: "RATE"}) }, []);
+    const randomStartPointOnClick = useCallback(() => { dispatch({type: "configName/change",payload: "RSP"}) }, []);
+
+    
+    
+    const closeConfig = useCallback(() => { dispatch({type: "configActive/toFalse"}); }, [])
+    
+    const _ClassName = useMemo(() => (
+        !switchActive ? panelClassName + " panel-hidden"
+        : configActive ? panelClassName + " panel-invisible"
         : panelClassName
-    ), [toolsSwitch, toolConfig]);
-
+    ), [switchActive, configActive]);
+        
+    useOnClickClose(switchActive, ".aside *", switchOnClick);
+    
     return (
         <aside className="aside flex-column">
             <div className="tools-switch align-c justify-c"> 
-                <ToolButton onClick={handleToolsSwitchOnClick}>
-                { toolsSwitch
-                    ? <i className="flex-column align-c justify-c bi bi-chevron-compact-up"></i>
-                    : <i className="flex-column align-c justify-c bi bi-chevron-compact-down"></i>
+                <ToolButton className="flex-column align-c justify-c" onClick={switchOnClick} />
+                { switchActive 
+                    ? <IconChevronUp className="icon" />
+                    : <IconChevronDown className="icon"/>
                 }
-                </ToolButton>
             </div>
             <div className={_ClassName}>
                 <div className="flex-column">
@@ -140,9 +129,9 @@ export default memo(function Aside() {
                 </div>
             </div>
             <AsideConfig 
-                active={toolConfig} 
-                onClick={() => setToolConfig(() => false)}
-                configButton={configButton}
+                active={configActive} 
+                closeConfig={closeConfig}
+                configName={configName}
             />
         </aside>
     );

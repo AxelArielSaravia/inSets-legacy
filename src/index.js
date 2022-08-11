@@ -6,8 +6,6 @@ import InitScreen from './features/InitScreen.js';
 
 import handleInitState from './services/localStorage/index.js';
 
-
-import 'bootstrap-icons/font/bootstrap-icons.css';
 import './index.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

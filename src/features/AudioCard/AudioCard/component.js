@@ -1,5 +1,8 @@
 import { memo, useCallback } from "react";
+
 import { play, stop, setAudioVolume, deleteAudio } from "../../../services/Audio/index.js"
+
+import { IconX, IconPlay, IconPause } from "../../../icons/index.js";
 
 import Switcher from "../AudioCardSwitch/component.js";
 import TimeText from "../AudioCardTimeText/component.js";
@@ -121,7 +124,7 @@ export default memo(function AudioCard({
                     className="delete-button"
                     onClick={deleteHandleOnClick}
                 >
-                    <i className="flex-row align-c fs-text-l bi bi-x"></i>
+                    <IconX className="icon"/>
                 </button>
             </div>
             <div className="audioCard-tools flex-row">
@@ -145,11 +148,12 @@ export default memo(function AudioCard({
                         <div className="audioCard-play-button flex-column align-c justify-c">
                             <button 
                                 type="button"
+                                className="flex-column align-c"
                                 onClick={onClickPlay}
                             >
-                                {isPlaying
-                                    ? <i className="flex-row align-c fs-text-l bi bi-pause-fill"/>
-                                    : <i className="flex-row align-c fs-text-l bi bi-play-fill"/>
+                                { isPlaying
+                                    ? <IconPause className="icon"/>
+                                    : <IconPlay className="icon"/>
                                 }
                             </button>
                         </div>

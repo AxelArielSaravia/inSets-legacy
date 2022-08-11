@@ -1,5 +1,9 @@
-import { useContext, useEffect, useMemo } from "react";
+import { useContext, useMemo } from "react";
+import { useOnClickClose } from "../hook.js";
+
 import { GlobalContext } from "../../../context/Global/index.js";
+
+import { IconX } from "../../../icons/index.js";
 
 import SetsButton from "../SetsButton/component.js";
 import TimeButton from "../TimeButton/component.js";
@@ -14,7 +18,7 @@ import "./style.scss";
 
 const classText = "configs flex-column align-c";
 
-export default function AsideConfig({active, configButton, onClick }) {
+function AsideConfigContent({configName}) {
     const [{
         panner, 
         delay,
@@ -33,80 +37,74 @@ export default function AsideConfig({active, configButton, onClick }) {
         globalDispatcher({variable: variable, type: type, value: value, i: i});
     }, [globalDispatcher]);
 
-    useEffect(() => {
-        const el = (e) => { 
-          if (e.target.matches(".configs")
-            || e.target.matches(".configs *")
-            || e.target.matches(".panel")
-            || e.target.matches(".panel *")
-          ) {
-            return;
-          }
-          onClick();
-        }
+    switch (configName) {
+        case "SETS": return (
+            <SetsButton
+                arrOfProbability={arrOfProbability}
+                audioListSize={audioListSize}
+                setDispatcher={setDispatcher}
+            />
+        );
+        case "TIME": return (
+            <TimeButton
+                setDispatcher={setDispatcher}
+                timeInterval={timeInterval}
+            /> 
+        );
+        case "FADETIME": return (
+            <FadeTimeButton
+                fadeIn={fadeIn}
+                fadeOut={fadeOut}
+                setDispatcher={setDispatcher}
+            /> 
+        );
+        case "PANNER": return (
+            <PannerButton 
+                panner={panner}
+                setDispatcher={setDispatcher}
+            /> 
+        );
+        case "FILTER": return (
+            <FilterButton
+                filter={filter}
+                setDispatcher={setDispatcher}
+            />
+        );
+        case "DELAY": return (
+            <DelayButton 
+                delay={delay}
+                setDispatcher={setDispatcher}
+            /> 
+        );
+        case "RATE": return (
+            <PlayBackRateButton
+                playBackRate={playBackRate}
+                setDispatcher={setDispatcher}
+            /> 
+        );
+        case "RSP": return (
+            <RSPButton
+                randomStartPoint={randomStartPoint}
+                setDispatcher={setDispatcher}
+            /> 
+        );
+        default: return null;
+    }
+}
 
-        if (active) {
-            document.addEventListener('click', el);
-            return () => {
-                document.removeEventListener('click', el);
-            } 
-        }
-      }, [active, onClick]);
-    
+export default function AsideConfig({active, configName, closeConfig }) {
+    useOnClickClose(active, ".aside *", closeConfig);
+
     return (
         <div id="configs" className={active ? classText : classText + " inactive"}>
             <button 
                 type="button" 
-                className="delete-button"
-                onClick={onClick}
+                className="delete-button flex-column align-c"
+                onClick={closeConfig}
             >
-                <i className="flex-row align-c fs-text-l bi bi-x"></i>
+                <IconX className="icon-l"/>
             </button>
-            {   configButton === "SETS"? (
-                    <SetsButton
-                        arrOfProbability={arrOfProbability}
-                        audioListSize={audioListSize}
-                        setDispatcher={setDispatcher}
-                    />
-                ) :
-                configButton === "TIME" ? (
-                    <TimeButton
-                        setDispatcher={setDispatcher}
-                        timeInterval={timeInterval}
-                    /> 
-                ) : configButton === "FADETIME" ? ( 
-                    <FadeTimeButton
-                        fadeIn={fadeIn}
-                        fadeOut={fadeOut}
-                        setDispatcher={setDispatcher}
-                    /> 
-                ) : configButton === "PANNER" ? ( 
-                    <PannerButton 
-                        panner={panner}
-                        setDispatcher={setDispatcher}
-                    /> 
-                ) : configButton === "FILTER" ? ( 
-                    <FilterButton
-                        filter={filter}
-                        setDispatcher={setDispatcher}
-                    /> 
-                ) : configButton === "DELAY" ? ( 
-                    <DelayButton 
-                        delay={delay}
-                        setDispatcher={setDispatcher}
-                    /> 
-                ) : configButton === "RATE" ? ( 
-                    <PlayBackRateButton
-                        playBackRate={playBackRate}
-                        setDispatcher={setDispatcher}
-                    /> 
-                ) : configButton === "RSP" ? ( 
-                    <RSPButton
-                        randomStartPoint={randomStartPoint}
-                        setDispatcher={setDispatcher}
-                    /> 
-                ) : null
-            }
+            <AsideConfigContent configName={configName}/>
         </div>
     );
 }

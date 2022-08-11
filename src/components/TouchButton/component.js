@@ -1,10 +1,14 @@
 import { useState } from "react";
+
+import { IconArrowDown, IconArrowUp, IconArrowLeft, IconArrowRight } from "../../icons/index.js";
+
 import "./style.scss";
 
 const disableWheel = (e) => {
     e.preventDefault();
     return false;
 }
+
 const className = "touchButton justify-c align-c";
 
 export default function TouchButton({
@@ -65,9 +69,9 @@ export default function TouchButton({
                 type="button"
                 onClick={() => add(data)}
             >
-                {orientation === "row"
-                 ? <i className="bi bi-caret-right-fill flex-column justify-c align-c"/>
-                 : <i className="bi bi-caret-up-fill flex-column justify-c align-c"/>
+                { orientation === "row"
+                    ? <IconArrowRight className="icon-m icon"/>
+                    : <IconArrowUp className="icon-m icon"/>
                 }
             </button>
             <p className={"fs-text text-center " + textClass} style={textStyle? textStyle : {}}>
@@ -79,8 +83,8 @@ export default function TouchButton({
                 onClick={() => subtract(data)}
             >
                 {orientation === "row"
-                 ? <i className="bi bi-caret-left-fill flex-column justify-c align-c"/>
-                 : <i className="bi bi-caret-down-fill flex-column justify-c align-c"/>
+                 ? <IconArrowLeft className="icon-m icon"/>
+                 : <IconArrowDown className="icon-m icon"/>
                 }
             </button>
         </div>

@@ -9,13 +9,12 @@
     border-radius: 5px;
     
     .delete-button {
-
         width: 20px;
         height: 20px;
         background-color: var(--c-transitive1);
         border-radius: 2px;
-        i {
-            font-size: 20px;
+        .icon {
+            width: 20px;
         }
     }
 
@@ -26,20 +25,18 @@
     .audioCard-tools {
         width: 100%;
         height: 100%;
-       
       
         .audioCard-tools_left {
             width: 100%;
             .audioCard-timeslider {
                 width: 100%;
-
             }
 
             .audioCard-play {
                 .audioCard-play-button {
                     button {
-                        i {
-                            font-size: 2.5rem;
+                        .icon {
+                            width: 50px;
                         }
                     }
                 }
@@ -71,11 +68,16 @@
     .audioCard {
       .audioCard-tools {
         flex-direction: column !important;
-
         .audioCard-tools_right { 
             align-items: center !important;
 
         } 
       }
+    }
+}
+
+@media screen and (min-width: 800px) {
+    .audioCard {
+        max-width: 400px;
     }
 }

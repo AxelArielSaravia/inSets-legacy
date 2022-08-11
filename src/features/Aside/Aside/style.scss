@@ -42,15 +42,18 @@
             z-index: 5;
             border-radius: 10px;
     
-            i {
-                width: 100%;
-                font-size: 2rem;
+            .icon {
+                position: fixed;
+                z-index: 4;
+                width: 35px;
             }
             .tool-button {
-                background-color:var(--c-transitive1);
+                position: relative;
+                z-index: 5;
+                height: 35px;
                 margin: 0;
                 padding: 0;
-                border-radius: 10px;
+                background-color:transparent;
             }
         }
     
@@ -70,10 +73,7 @@
             height: unset;
             position: absolute;
             top: 45px;
-            //transform: translateY(42px) scaleY(100%);
-            
             z-index: 4;
-    
             padding: 0;
             opacity: 98%;
     

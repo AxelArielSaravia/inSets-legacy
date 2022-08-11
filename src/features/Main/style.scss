@@ -84,7 +84,7 @@
       .start-button {
         h4 {
           width: 70px;
-      }
+        }
       }
     }
   }
@@ -94,10 +94,8 @@
   .main {
     .file-buttons {
       h4 { display: none; }
-      i { font-size: 1rem; }
-      .start-button {
-        i { font-size: 1.5rem; }
-      }
+      .icon-m { width: 25px; }
+      .icon-l { width: 30px; }
     }
   }
 }

@@ -1,21 +1,13 @@
 .audioCard-volume {
     width: 100%;
-    i { 
-        transform: translateX(-10%);
-        font-size: 1.6rem; 
-    }
+    .icon { width: 40px; }
     .audioCard-volume_input {
         display: inline-block;
         width: 100%; height: .6rem;
         margin: 0; padding: 0;
-
         background-color:var(--c-transitive1);
-
-
         border-radius: 2px;
-
         overflow: hidden;
-        
         cursor: pointer;
         transform: translateX(-5px);
 

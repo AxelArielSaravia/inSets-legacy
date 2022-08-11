@@ -2,64 +2,63 @@
 
 /* THEMES */
 .dark {
-  --c-primary: #131212;
-  --c-secondary: #f7e0e0;
-  --c-transitive1: #222020;
-  --c-transitive2: #464242;
-  accent-color: #f7e0e0;
+    --c-primary: #131212;
+    --c-secondary: #f7e0e0;
+    --c-transitive1: #222020;
+    --c-transitive2: #464242;
+    accent-color: #f7e0e0;
+    color-scheme: dark;
 }
 
 .light {
-  --c-primary: #f7e0e0;
-  --c-secondary: #131212;
-  --c-transitive1: #cfbcbc;
-  --c-transitive2: #a89999;
-  accent-color: #131212;
+    --c-primary: #f7e0e0;
+    --c-secondary: #131212;
+    --c-transitive1: #cfbcbc;
+    --c-transitive2: #a89999;
+    accent-color: #131212;
+    color-scheme: light;
 }
-
-:root {
-  color-scheme: light dark;
-}
-
 
 /* CSS */
 body {
-  padding: 0;
-  margin: 0;
+    padding: 0;
+    margin: 0;
 
-  width: 100%;
-  height: 100%;
-  font-weight: normal;
-  font-size: 10px;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-tap-highlight-color: transparent;
+    width: 100%;
+    height: 100%;
 
-  box-sizing: border-box;
+    font-family: 'Cutive Mono', monospace; 
 
-  background-color:var(--c-primary);
-  color: var(--c-secondary);
+    font-weight: normal;
+    font-size: 10px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: transparent;
+
+    box-sizing: border-box;
+
+    background-color:var(--c-primary);
+    color: var(--c-secondary);
 }
 @media (display-mode: standalone) {
-  body {
-    overscroll-behavior-y: contain;
-  }
+    body {
+        overscroll-behavior-y: contain;
+    }
 }
 
 /* SCROLLBAR FIREFOX */
 * {
-  scrollbar-width: thin;          /* "auto" or "thin" */
-  scrollbar-color:var(--c-transitive2) var(--c-primary);   /* scroll thumb and track */ 
+    scrollbar-width: thin;          /* "auto" or "thin" */
+    scrollbar-color:var(--c-transitive2) var(--c-primary);   /* scroll thumb and track */ 
 }
 
 /* SCROLLBAR webkit */
 *::-webkit-scrollbar {
-  width: 5px;               /* width of the entire scrollbar */
-  
+    width: 5px;               /* width of the entire scrollbar */
 }
 *::-webkit-scrollbar-thumb {
-  background-color:var(--c-transitive2);    /* color of the scroll thumb */
-  border-radius: 20px;       /* roundness of the scroll thumb */
+    background-color:var(--c-transitive2);    /* color of the scroll thumb */
+    border-radius: 20px;       /* roundness of the scroll thumb */
 }
 
 /* Refresh */
@@ -67,20 +66,20 @@ body *,
 *,
 *::after, 
 *::before {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-  font-family: 'Courier New',monospace;
-  user-select: none;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Courier New',monospace;
+    user-select: none;
 }
 *:focus-visible {
-  border-radius: 5px;
-  box-shadow: 0 0 0 2px var(--c-secondary)!important;
-  outline: none;
+    border-radius: 5px;
+    box-shadow: 0 0 0 2px var(--c-secondary)!important;
+    outline: none;
 }
 
 a {
-  text-decoration: none;
+    text-decoration: none;
 }
 a:link,
 a:hover, 
@@ -88,10 +87,10 @@ a:active,
 a:visited, 
 a:checked,
 a:focus{
-  outline: none;
-  text-decoration: none;
-  color: unset;
-  background-color: transparent;
+    outline: none;
+    text-decoration: none;
+    color: unset;
+    background-color: transparent;
 }
 
 li { list-style-type: none; }
@@ -99,30 +98,30 @@ li { list-style-type: none; }
 i { color:var(--c-secondary); }
 
 button {
-  padding: 0;
-  margin: 0;
-  outline: none;
-  border: none;
-  cursor: pointer;
-  background-color: transparent;
+    padding: 0;
+    margin: 0;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
 }
 
 button:hover, 
 button:active,
 button:focus {
-  box-shadow: transparent;
-  user-select: none;
+    box-shadow: transparent;
+    user-select: none;
 }
 
 input[type=range] {
-  height: 4px;
+    height: 4px;
 }
 
 /* ROOT */
 #root{
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    height: 100%;
 }
 
 
-@import "./style/utiles.css";
+@import "./style/utils.css";

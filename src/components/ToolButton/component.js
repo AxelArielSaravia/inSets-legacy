@@ -1,13 +1,14 @@
 import "./style.scss";
 
-export default function ToolButton(props) {
+export default function ToolButton({className = "", onClick, children}) {
+ 
     return (
         <button
-            className={props.className? "tool-button " + props.className : "tool-button"}
+            className={"tool-button " + className}
             type="button"
-            onClick={props.onClick}
+            onClick={onClick}
         >
-            {props.children}
+            {children}
         </button>
     );
 }

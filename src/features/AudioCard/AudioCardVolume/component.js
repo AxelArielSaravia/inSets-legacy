@@ -1,9 +1,10 @@
+import { IconVolume } from "../../../icons/index.js";
 import "./style.scss";
 
 export default function AudioCardVolume(props) {
     return (
         <div className="audioCard-volume flex-row justify-c align-c"> 
-            <i className="bi bi-volume-off-fill flex-row align-c"/>
+            <IconVolume className="icon"/>
             <input 
                 className="audioCard-volume_input" 
                 type="range" 
