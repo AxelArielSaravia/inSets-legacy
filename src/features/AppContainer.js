@@ -1,15 +1,14 @@
 import { memo } from "react";
 
-import DropFiles from "./DropFiles.js";
-import Aside from "./Aside/Aside.js";
-import Main from "./Main.js";
-import DropArea from "./DropArea.js";
+import { DropFiles } from "./DragAndDrop/index.js";
+import Aside from "./Aside/index.js";
+import Main from "./Main/index.js";
 
 import './AppContainer.scss';
 
 //COMPONENTS
 //App Component
-function AppContainer(props) {
+function AppContainer({isDragActive}) {
   return (
     <>
       <div className="audio-app">
@@ -20,12 +19,10 @@ function AppContainer(props) {
           <Main/>
         </section>
         {
-          props.isDragActive && (
+          isDragActive && (
             <DropFiles
               className="dropFile flex-column align-c justify-c"
-            >
-              <DropArea />
-            </DropFiles>
+            />
           )
         }
       </div>

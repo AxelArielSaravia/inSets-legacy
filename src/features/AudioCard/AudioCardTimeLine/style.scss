@@ -1,0 +1,29 @@
+.audioCard-timeLine {
+    width: 100%;
+    height: 20px;
+    position: relative;
+    margin: 2px 0;    
+    overflow: hidden;
+    background-color:var(--c-transitive1);
+
+    .timeLine {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color:var(--c-transitive2);
+        opacity: 80%;
+        top: 0;
+        z-index: 2;
+        transition: left .2s ease-out, right .2s ease-out;
+
+    }
+    .currentTime {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color:var(--c-secondary);
+        top: 0;
+        z-index: 1;
+        transition: left .2s ease-out;
+    }
+}

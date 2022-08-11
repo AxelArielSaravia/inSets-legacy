@@ -1,0 +1,124 @@
+.aside {
+    position: relative;
+    z-index: 6;
+
+    height: 100%;
+    width: 100%;
+
+    .tools-switch {
+        display: none;
+    }
+  
+    .tool-button {
+        width: 100%;
+        padding: 10px 4px;
+    }
+  
+    .panel {
+        width: 100%;
+        height: 100%;
+        padding: 5px;
+        border-radius: 10px;
+    
+        z-index: 5;
+        background:var(--c-transitive1);
+    
+        .aside-button {
+            position: relative;
+            width: 100%;
+        }
+    }
+}
+  
+@media screen and (max-width: 620px) {
+    .aside {
+        padding: 0;
+    
+        .tools-switch {
+            background-color:var(--c-transitive1);
+            display: flex;
+            width: 100%;
+            position: relative;
+            z-index: 5;
+            border-radius: 10px;
+    
+            i {
+                width: 100%;
+                font-size: 2rem;
+            }
+            .tool-button {
+                background-color:var(--c-transitive1);
+                margin: 0;
+                padding: 0;
+                border-radius: 10px;
+            }
+        }
+    
+        .panel.panel-hidden {
+            top: 0;
+            height: 100%;
+            & > div {
+                z-index: 1;
+                transform: scaleY(0);
+            }
+        }
+        .panel.panel-invisible {
+            opacity: 0;
+            
+        }
+        .panel {
+            height: unset;
+            position: absolute;
+            top: 45px;
+            //transform: translateY(42px) scaleY(100%);
+            
+            z-index: 4;
+    
+            padding: 0;
+            opacity: 98%;
+    
+            transition: top .2s ease-in-out;
+    
+            .tool-button {
+                max-width: unset;
+                align-items: center;
+                justify-content: center;
+                background-color:var(--c-transitive1);
+            }
+            
+            & > div {
+                flex-direction: row !important;
+                flex-wrap: wrap;
+                justify-content: center;
+        
+                position: relative;
+                z-index: 2;
+        
+                padding: 6px 0;
+                
+                border: 4px solid var(--c-transitive1);
+                border-radius: 10px;
+                
+                background:var(--c-primary);
+            }
+            .aside-button {
+                width: 120px;
+                margin: 0 5px;
+            }
+        }
+    }
+}
+  
+  @media screen and (max-width: 420px) {
+    .aside {
+        .tool-button {
+            padding: 10px 8px;
+        }
+        .panel {
+            .aside-button {
+                width: unset;
+                display: block;
+            }
+        }
+    }
+}
