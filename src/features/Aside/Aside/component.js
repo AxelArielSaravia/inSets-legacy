@@ -20,8 +20,11 @@ const reducer = (state = initReducerstate, action) => {
             configName: action.payload
         };
         case "configActive/toFalse": return { ...state, configActive: false };
-        case "switchActive/change": return { ...state, switchActive: !state.switchActive };
-        case "toInitState": return initReducerstate;
+        case "switchActive/change": return { 
+            ...state, 
+            switchActive: !state.switchActive, 
+            configActive: false 
+        };
         default: return state;
     }
 } 
@@ -29,8 +32,6 @@ const reducer = (state = initReducerstate, action) => {
 export default memo(function Aside() {
     const [{switchActive, configActive, configName}, dispatch] = useReducer(reducer, initReducerstate); 
 
-    const switchOnClick = () => { dispatch({type: "switchActive/change"}) }
-    
     const setsOnClick = useCallback(() => { dispatch({type: "configName/change",payload: "SETS"}) }, []);
     const timeOnClick = useCallback(() => { dispatch({type: "configName/change",payload: "TIME"}) }, []);
     const fadeTimeOnClick = useCallback(() => { dispatch({type: "configName/change",payload: "FADETIME"}) }, []);
@@ -39,10 +40,10 @@ export default memo(function Aside() {
     const delayOnClick = useCallback(() => { dispatch({type: "configName/change",payload: "DELAY"}) }, []);
     const playBackRateOnClick = useCallback(() => { dispatch({type: "configName/change",payload: "RATE"}) }, []);
     const randomStartPointOnClick = useCallback(() => { dispatch({type: "configName/change",payload: "RSP"}) }, []);
-
+    
     const closeConfig = useCallback(() => { dispatch({type: "configActive/toFalse"}); }, [])
-    const closeAll = useCallback(() => { dispatch({type: "toInitState"}) }, []);
-
+    const switchOnClick = () => { dispatch({type: "switchActive/change"}) }
+    
     const _ClassName = useMemo(() => (
         !switchActive ? panelClassName + " panel-hidden"
         : configActive ? panelClassName + " panel-invisible"
@@ -131,7 +132,6 @@ export default memo(function Aside() {
             <AsideConfig 
                 active={configActive} 
                 closeConfig={closeConfig}
-                closeAll={closeAll}
                 configName={configName}
             />
         </aside>

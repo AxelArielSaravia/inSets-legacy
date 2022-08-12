@@ -92,10 +92,10 @@ function AsideConfigContent({configName}) {
     }
 }
 
-export default function AsideConfig({active, configName, closeConfig, closeAll }) {
+export default function AsideConfig({active, configName, closeConfig }) {
     const _className = active ? classText : classText + " inactive";
 
-    useOnClickClose(active, ".aside *", closeAll);
+    useOnClickClose(active, ".aside *", closeConfig);
 
     return (
         <div id="configs" className={_className}>
