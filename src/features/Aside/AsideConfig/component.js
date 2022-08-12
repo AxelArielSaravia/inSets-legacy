@@ -92,11 +92,13 @@ function AsideConfigContent({configName}) {
     }
 }
 
-export default function AsideConfig({active, configName, closeConfig }) {
-    useOnClickClose(active, ".aside *", closeConfig);
+export default function AsideConfig({active, configName, closeConfig, closeAll }) {
+    const _className = active ? classText : classText + " inactive";
+
+    useOnClickClose(active, ".aside *", closeAll);
 
     return (
-        <div id="configs" className={active ? classText : classText + " inactive"}>
+        <div id="configs" className={_className}>
             <button 
                 type="button" 
                 className="delete-button flex-column align-c"

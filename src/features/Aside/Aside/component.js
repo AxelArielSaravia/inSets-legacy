@@ -21,6 +21,7 @@ const reducer = (state = initReducerstate, action) => {
         };
         case "configActive/toFalse": return { ...state, configActive: false };
         case "switchActive/change": return { ...state, switchActive: !state.switchActive };
+        case "toInitState": return initReducerstate;
         default: return state;
     }
 } 
@@ -39,16 +40,15 @@ export default memo(function Aside() {
     const playBackRateOnClick = useCallback(() => { dispatch({type: "configName/change",payload: "RATE"}) }, []);
     const randomStartPointOnClick = useCallback(() => { dispatch({type: "configName/change",payload: "RSP"}) }, []);
 
-    
-    
     const closeConfig = useCallback(() => { dispatch({type: "configActive/toFalse"}); }, [])
-    
+    const closeAll = useCallback(() => { dispatch({type: "toInitState"}) }, []);
+
     const _ClassName = useMemo(() => (
         !switchActive ? panelClassName + " panel-hidden"
         : configActive ? panelClassName + " panel-invisible"
         : panelClassName
     ), [switchActive, configActive]);
-        
+    
     useOnClickClose(switchActive, ".aside *", switchOnClick);
     
     return (
@@ -131,6 +131,7 @@ export default memo(function Aside() {
             <AsideConfig 
                 active={configActive} 
                 closeConfig={closeConfig}
+                closeAll={closeAll}
                 configName={configName}
             />
         </aside>
