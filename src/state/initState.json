@@ -22,8 +22,8 @@
     "xMax": 30,
     "yMin": -30, 
     "yMax": 30,
-    "zMin": -30, 
-    "zMax": 30
+    "zMin": -50, 
+    "zMax": 0
   },
   "playBackRate": {
     "areAllDisable": false,

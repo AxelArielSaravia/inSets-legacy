@@ -34,7 +34,7 @@ Object.freeze(globalPlayBackRateStatic);
 
 /** Values are in miliseconds
  * @type {{MIN: 400, MAX: 600000}} */
-    const globalTimeIntervalStatic = {
+const globalTimeIntervalStatic = {
     MIN: 400,
     MAX: 600000
 }
@@ -52,7 +52,7 @@ Object.freeze(globalFadeTimeStatic);
 const pannerListener = {
     X: 6,
     Y: 6,
-    Z: 6
+    Z: 1
 }
 Object.freeze(pannerListener);
 

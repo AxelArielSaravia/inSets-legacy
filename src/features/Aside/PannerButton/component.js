@@ -8,6 +8,8 @@ import Switch from "../../../components/SwitchButton/index.js";
 
 export default memo(function PannerButton({panner, setDispatcher}) {
     const {xMin, xMax, yMin, yMax, zMin, zMax} = panner;
+    const resZMin = useMemo(() => zMin + 50, [zMin]);
+    const resZMax = useMemo(() => zMax + 50, [zMax]);
     const areAllDisable = panner.areAllDisable.value;
     const handleOnClick = () => {
         setDispatcher("panner", "areAllDisable/global", !areAllDisable);
@@ -148,7 +150,7 @@ export default memo(function PannerButton({panner, setDispatcher}) {
                                             textClass="effect-container_text-s"
                                             orientation="row"
                                             disable="configs"
-                                            output={zMin}
+                                            output={resZMin}
                                             add={add_zMin}
                                             subtract={subtract_zMin}
                                             data={zMin}
@@ -163,7 +165,7 @@ export default memo(function PannerButton({panner, setDispatcher}) {
                                             textClass="effect-container_text-s"
                                             orientation="row"
                                             disable="configs"
-                                            output={zMax}
+                                            output={resZMax}
                                             add={add_zMax}
                                             subtract={subtract_zMax}
                                             data={zMax}

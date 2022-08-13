@@ -68,8 +68,8 @@ const createDelay = (audioCtx, audioDelayConfig) => {
  * @param {AudioPanner} audioPanner 
  * @returns {PannerNode}
  */
-const createPanner = (audioCtx, audioPannerConfig) => {
-    const PANNER = audioCtx.createPanner();
+const createPanner = async (audioCtx, audioPannerConfig) => {
+    const PANNER = await audioCtx.createPanner();
     PANNER.coneInnerAngle = audioPannerConfig.coneInnerAngle;
     PANNER.coneOuterAngle = audioPannerConfig.coneOuterAngle;
     PANNER.coneOuterGain = audioPannerConfig.coneOuterGain;
@@ -83,7 +83,7 @@ const createPanner = (audioCtx, audioPannerConfig) => {
     PANNER.positionY.value = audioPannerConfig.positionY;
     PANNER.positionZ.value = audioPannerConfig.positionZ;
     PANNER.refDistance = audioPannerConfig.refDistance;
-    PANNER.rolloffFactor = audioPannerConfig.rolloffFactor;
+    console.log(audioPannerConfig.asd)
     return PANNER;
 }
 
@@ -96,9 +96,9 @@ const createPanner = (audioCtx, audioPannerConfig) => {
  * @param {AudioState} audioState 
  * @returns {[GainNode, GainNode]}
  */
-const createAudioRandomChain = (audioCtx, audioState) => {
-    const inputGain = audioCtx.createGain();
-    const outputGain = audioCtx.createGain();
+const createAudioRandomChain = async (audioCtx, audioState) => {
+    const inputGain = await audioCtx.createGain();
+    const outputGain = await audioCtx.createGain();
     
     //set min gain value to create a fadeIn later
     outputGain.gain.value = 0.01;
@@ -108,26 +108,26 @@ const createAudioRandomChain = (audioCtx, audioState) => {
     //PANNER
     if (!audioState.pannerIsDisable) {
         const audioPannerConfig = createAudioPannerConfiguration(GlobalState.panner);
-        const PANNER = createPanner(audioCtx, audioPannerConfig);
-        input.connect(PANNER);
+        const PANNER = await createPanner(audioCtx, audioPannerConfig);
+        await input.connect(PANNER);
         input = PANNER; 
     }
     //FILTER
     if (randomDecide() && !audioState.filterIsDisable) {
         const audioFilterConfig =  createAudioFilterConfiguration(GlobalState.filter);
         const FILTER =  createFilter(audioCtx, audioFilterConfig);
-        input.connect(FILTER)
+        await input.connect(FILTER)
         input = FILTER;  
     }
     //DELAY
     if (randomDecide() && !audioState.delayIsDisable) {
         const audioDelayConfig = createAudioDelayConfiguration(GlobalState.delay)
         const feedback = createDelay(audioCtx, audioDelayConfig);
-        input.connect(feedback);
+        await input.connect(feedback);
         input = feedback;
     }
 
-    input.connect(outputGain);
+    await input.connect(outputGain);
     return [inputGain, outputGain];
 }
 
@@ -161,14 +161,12 @@ const setAudioConfiguration = async (AUDIO_STATE) => {
     }
     
     //CONNECTIONS
-    let [input, output] = await createAudioRandomChain(GlobalState.AUDIO_CONTEXT, AUDIO_STATE);
+    const [input, output] = await createAudioRandomChain(GlobalState.AUDIO_CONTEXT, AUDIO_STATE);
 
     await AUDIO_STATE.source.connect(input);
     await output.connect(GlobalState.AUDIO_CONTEXT.destination);
 
     AUDIO_STATE.outputGain = output;
-
-    input = output = null;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -290,13 +288,13 @@ const setRandomStartPoint = (AUDIO_STATE, audioDispatcher) => {
 const play = async (id, audioDispatcher) => {
     const AUDIO_STATE = GlobalState.AUDIO_LIST.get(id);
     if (AUDIO_STATE != null) {
-
+        
         setRandomStartPoint(AUDIO_STATE, audioDispatcher);
 
         await setAudioConfiguration(AUDIO_STATE);
 
         fadeIn(AUDIO_STATE);
-
+        
         if (GlobalState.ENGINE_TYPE === "audioNode") {
             play_ENGINE_audioNode(AUDIO_STATE);
             calculateEnd_ENGINE_audioNode(AUDIO_STATE, audioDispatcher);
@@ -305,7 +303,6 @@ const play = async (id, audioDispatcher) => {
             play_ENGINE_audioBuffer(AUDIO_STATE);
             calculateEnd_ENGINE_audioBuffer(AUDIO_STATE, audioDispatcher);
         }
-
         await audioDispatcher({id: id, type: "play"});
         
         return true;

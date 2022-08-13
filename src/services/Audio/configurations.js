@@ -1,4 +1,4 @@
-import { pannerListener, globalDelayStatic } from "../../state/Global/index.js"
+import { pannerListener,globalPannerStatic, globalDelayStatic } from "../../state/Global/index.js"
 import { random } from "../utils.js";
 
 /**
@@ -77,22 +77,27 @@ const createAudioFilterConfiguration = (GlobalFilter) => {
  * @param {GlobalPanner} GlobalPanner
  * @return {AudioPanner} 
  */
-const createAudioPannerConfiguration = (GlobalPanner) => ({
-    coneInnerAngle: 360,
-    coneOuterAngle: 0,
-    coneOuterGain: 0,
-    distanceModel: "inverse",
-    maxDistance: 10000,
-    orientationX: 1,
-    orientationY: 0,
-    orientationZ: 0,
-    panningModel: "HRTF",
-    positionX: random(GlobalPanner.xMin / 10, GlobalPanner.xMax /10) + pannerListener.X,
-    positionY: random(GlobalPanner.yMin / 10, GlobalPanner.yMax /10) + pannerListener.Y,
-    positionZ: random(GlobalPanner.zMin / 10, GlobalPanner.zMax /10) + pannerListener.Z,
-    refDistance: 1,
-    rolloffFactor: 1 
-});
+const createAudioPannerConfiguration = (GlobalPanner) => {
+    const positionZ = random(GlobalPanner.zMin / 10, GlobalPanner.zMax /10) + Math.abs(globalPannerStatic.MIN / 10) + pannerListener.Z;
+    const positionX = random(GlobalPanner.xMin / 10, GlobalPanner.xMax /10) + pannerListener.X;
+    const positionY = random(GlobalPanner.yMin / 10, GlobalPanner.yMax /10) + pannerListener.Y;
+    return {
+        coneInnerAngle: 360,
+        coneOuterAngle: 0,
+        coneOuterGain: 0,
+        distanceModel: "inverse",
+        maxDistance: 10000,
+        orientationX: 1,
+        orientationY: 0,
+        orientationZ: 0,
+        panningModel: "HRTF",
+        positionZ: positionZ, 
+        positionX: positionX,
+        positionY: positionY,
+        refDistance: 1,
+        asd: this.positionX
+    }
+};
 
 /**
  * @param {GlobalPlayBackRate} GlobalPlayBackRate 

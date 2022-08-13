@@ -34,7 +34,8 @@ const InitScreen = memo(function InitScreen() {
 
   const handleAcceptOnClick = () => {
     initAudioContext(GlobalState);
-    setStartApp(() => true)
+    setStartApp(() => true);
+    console.log(GlobalState.AUDIO_CONTEXT.listener);
   };
 
   const handleRadioOnChange = (e) => globalDipatch({type: "ENGINE_TYPE", value: e.target.value});
