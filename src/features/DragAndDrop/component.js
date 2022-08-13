@@ -1,5 +1,7 @@
 import { memo, useState, useEffect } from "react";
 
+import { IconMusicFile } from "../../icons/index.js";
+
 import useAddFiles from "../../hooks/useAddFiles/index.js";
 
 /**
@@ -8,18 +10,14 @@ import useAddFiles from "../../hooks/useAddFiles/index.js";
 const preventDefault = (e) => { e.preventDefault(); };
 
 
-const DropArea = ({disable}) => {
-    const text = disable ? "Drop disable" : "Drop files";
+const DropArea = () => {
     return (
         <> 
-            <div className={"dragfile flex-row align-c justify-c "}>
-                { disable
-                    ? <i className="bi bi-file-earmark-excel" style={{fontSize: "100px"}}></i>
-                    : <i className="bi bi-file-earmark-music" style={{fontSize: "100px"}}></i>
-                }
+            <div className="dragfile flex-row align-c justify-c">
+               <IconMusicFile className="icon-drop"/>
             </div>
             <div>
-                <p className="fs-text">{text}</p>
+                <p className="fs-text p-2">Drop files</p>
             </div>
         </>
     )
@@ -29,7 +27,7 @@ const DropArea = ({disable}) => {
  * @param {{ children: Function, className?: string, style?: object}} props 
  * @returns 
  */
-const DropFiles = memo(function DropFiles({children, className, style}) {
+const DropFiles = memo(function DropFiles({className, style}) {
     const addFiles = useAddFiles();
     
     useEffect(() => {
