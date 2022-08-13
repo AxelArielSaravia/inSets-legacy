@@ -247,20 +247,22 @@ const disconnect = (audioState) => {
     return false;
 }
 
-const stop = async (id, audioDispatcher) => {
+const stop = async (id, audioDispatcher = null) => {
     const AUDIO_STATE = GlobalState.AUDIO_LIST.get(id);
     if (AUDIO_STATE && AUDIO_STATE.isPlaying) {
         await fadeOut(AUDIO_STATE);
         disconnect(AUDIO_STATE);
-        audioDispatcher({
-            id: id,
-            type: "stop"
-        });
+
+        if (typeof audioDispatcher === "function") {
+            audioDispatcher({
+                id: id,
+                type: "stop"
+            });
+        }
         return true;
     }
     return false;
 }
-
 
 const setRandomStartPoint = (AUDIO_STATE, audioDispatcher) => {
     if (!AUDIO_STATE.randomStartPointIsDisable) {
@@ -304,7 +306,7 @@ const play = async (id, audioDispatcher) => {
             calculateEnd_ENGINE_audioBuffer(AUDIO_STATE, audioDispatcher);
         }
 
-        audioDispatcher({id: id, type: "play"});
+        await audioDispatcher({id: id, type: "play"});
         
         return true;
     }
@@ -322,13 +324,20 @@ const setAudioVolume = (id) => {
 
 const deleteAudio = async (id, globalDispatcher, audioDispatcher) => {
     await stop(id, audioDispatcher)
-    globalDispatcher({type: "DELETE_Audio", id: id});
+    await globalDispatcher({type: "DELETE_Audio", id: id});
+}
+
+const deleteAll = async (globalDispatcher) => {
+    const AUDIO_STATE = GlobalState.AUDIO_LIST;
+    for (const id of AUDIO_STATE.keys()) {
+        await stop(id)
+    }
+    await globalDispatcher({type: "CLEAR_Audio"});
 }
 
 /* -------------------------------------------------------------------------- */
 /*                            Generattive Algoritms                           */
 /* -------------------------------------------------------------------------- */
-
 const calculateTheLenghtOfSetExecution = () => {
     let sum = 0;
     const arrOfSums = [];
@@ -452,12 +461,12 @@ const stopApp = async (globalDispatcher, audioDispatcher) => {
     });
 }
 
-
 export {
     play,
     stop,
     setAudioVolume,
     deleteAudio,
+    deleteAll,
     startApp,
     stopApp
 }

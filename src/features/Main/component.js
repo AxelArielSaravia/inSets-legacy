@@ -1,6 +1,7 @@
 import { memo, useContext, useReducer, useEffect, useCallback } from "react";
 
 import { AudioCard, AudioLoadingCard } from "../AudioCard/index.js";
+import { deleteAll } from "../../services/Audio/index.js"
 
 import { GlobalContext } from "../../context/Global/index.js";
 import audioViewReducer from "../../reducer/Audio/reducer.js";
@@ -52,7 +53,7 @@ function Main() {
 
     useEffect(() => { audioDispatcher({type: "update"}); }, [audio_list]);
 
-    const handleClearOnClick = useCallback(() => { globalDispatcher({type: "CLEAR_Audio"}); }, [globalDispatcher])
+    const handleClearOnClick = useCallback(() => { deleteAll(globalDispatcher); }, [globalDispatcher])
 
     const handlePlayOnClick = useCallback(() => {
         if (!IS_STARTED) {

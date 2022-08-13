@@ -1,9 +1,9 @@
 import initState from "../../state/initState.json";
 
 const verifyAppVersion = () => {
-    if (localStorage.getItem('version') !== "v0.2.4") {
+    if (localStorage.getItem('version') !== "v0.2.5") {
         localStorage.clear();
-        localStorage.setItem("version", "v0.2.4");
+        localStorage.setItem("version", "v0.2.5");
     }
 }
 

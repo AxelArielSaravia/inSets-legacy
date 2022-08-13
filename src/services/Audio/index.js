@@ -3,6 +3,7 @@ export {
     stop,
     setAudioVolume,
     deleteAudio,
+    deleteAll,
     startApp,
     stopApp
 } from "./tools.js";
