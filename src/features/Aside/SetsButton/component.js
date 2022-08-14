@@ -1,5 +1,7 @@
 import { useState, useEffect, Fragment, useMemo } from "react";
 
+import { IconArrowRight, IconArrowDown } from "../../../icons/index.js";
+
 import AsideButton from "../AsideButton/component.js";
 import TouchButton from "../../../components/TouchButton/index.js";
 import ToolButton from "../../../components/ToolButton/index.js";
@@ -33,6 +35,8 @@ function GrupSetsButtons({setOf, clickReset, startIndex, add, subtract, arrOfPro
     const [hidden, setHidden] = useState(true);
     const n = setOf.length - 1 + startIndex;
     
+    const iconClassName = hidden ? "icon-hidden icon-m" : "icon-visible icon-m"; 
+
     useEffect(() => {
         if (!areAllValuesIqual) {
             setValue(() => 0);
@@ -47,7 +51,7 @@ function GrupSetsButtons({setOf, clickReset, startIndex, add, subtract, arrOfPro
         }
     }, [clickReset]);
 
-    const handleOnClick = () => setHidden(state => !state);
+    const handleOnClick = async () => setHidden(state => !state);
 
     const _add = (a) => {
         if (value < 50) {
@@ -82,11 +86,8 @@ function GrupSetsButtons({setOf, clickReset, startIndex, add, subtract, arrOfPro
                 { areAllValuesIqual ? percent(value, arrOfProbability) + '%' : '-' }
             </h4>
             { startIndex !== n ? (
-                <ToolButton onClick={handleOnClick} className="set-group">
-                    { hidden
-                        ? <i style={{padding: "0px"}} className="fs-text flex-column align-c justify-c bi bi-caret-right"></i>
-                        : <i style={{padding: "0px"}} className="fs-text flex-column align-c justify-c bi bi-caret-down"></i>
-                    }
+                <ToolButton onClick={handleOnClick} className="set-group flex-column align-c">
+                    <IconArrowRight className={iconClassName}/>
                 </ToolButton>
             ) : <div></div>}
             {!hidden &&  startIndex !== n && (

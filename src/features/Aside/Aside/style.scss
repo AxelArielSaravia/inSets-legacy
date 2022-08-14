@@ -65,10 +65,7 @@
                 transform: scaleY(0);
             }
         }
-        .panel.panel-invisible {
-            opacity: 0;
-            
-        }
+        .panel.panel-invisible { opacity: 0; }
         .panel {
             height: unset;
             position: absolute;

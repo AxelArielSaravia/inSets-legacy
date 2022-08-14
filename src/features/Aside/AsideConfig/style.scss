@@ -1,9 +1,8 @@
 .configs {
     position: absolute;    
-    top: 42px;
+    top: 45px;
 
     width: 100%;
-    height: max-content;
     max-height: calc(100vh - 130px);
     
     padding: 10px 0;
@@ -13,7 +12,6 @@
     
     border: 4px solid var(--c-transitive1);
     border-radius: 10px;
-    
     
     z-index: 4;
 
@@ -62,6 +60,14 @@
     .set-group {
         border: none;
         padding: 0 !important;
+        
+        .icon-hidden,
+        .icon-visible  {
+            transition: transform .2s ease-out;
+        }
+        .icon-visible {
+            transform: rotate(90deg);
+        }
     }
 }
 
