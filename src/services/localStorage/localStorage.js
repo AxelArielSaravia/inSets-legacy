@@ -1,20 +1,23 @@
 import initState from "../../state/initState.json";
 
-const verifyAppVersion = () => {
-    if (localStorage.getItem('version') !== "v0.2.5") {
+const verifyAppVersion = (version) => {
+    if (typeof version === "string" && localStorage.getItem("version") !== version) {
+        console.log("Call me")
         localStorage.clear();
-        localStorage.setItem("version", "v0.2.5");
+        localStorage.setItem("version", version);
+        return true;
     }
+    return false;
 }
 
 /**
  * @param {ElementsState} elementsState
  * @returns {ElementsState}
  */
-const handleInitState = () => {
-    verifyAppVersion();
+const handleInitState = (version) => {
+    const bool = verifyAppVersion(version);
     const keysOfElementsState = Object.keys(initState);
-    if (localStorage.getItem('version')) {
+    if (bool) {
         keysOfElementsState.forEach(key => {
             const el = initState[key];
             if (typeof el === "object" && el !== null) {
