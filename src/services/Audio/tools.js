@@ -83,7 +83,6 @@ const createPanner = async (audioCtx, audioPannerConfig) => {
     PANNER.positionY.value = audioPannerConfig.positionY;
     PANNER.positionZ.value = audioPannerConfig.positionZ;
     PANNER.refDistance = audioPannerConfig.refDistance;
-    console.log(audioPannerConfig.asd)
     return PANNER;
 }
 
