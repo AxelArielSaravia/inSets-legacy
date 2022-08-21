@@ -334,6 +334,28 @@ const deleteAll = async (globalDispatcher) => {
 /* -------------------------------------------------------------------------- */
 /*                            Generattive Algoritms                           */
 /* -------------------------------------------------------------------------- */
+
+function binarySearch(arr, target) {
+    let startI = 0;
+    let endI = arr.length-1;
+    
+    while (startI <= endI) {
+        const midI = Math.floor((startI + endI) / 2);
+      
+        if (arr[midI][1] < target) {
+            startI = midI + 1
+        } else {
+            if (!arr[midI-1] || arr[midI-1][1] < target) {
+                return arr[midI][0];
+            } else { 
+                endI = midI - 1;
+            }
+        }
+    }
+    //if the target did not found 
+    return 0;
+}
+
 const calculateTheLenghtOfSetExecution = () => {
     let sum = 0;
     const arrOfSums = [];
@@ -345,10 +367,13 @@ const calculateTheLenghtOfSetExecution = () => {
         }
     });
     const n = random(1, sum);
+    return binarySearch(arrOfSums, n);
+   /*  
     for (let i = 0; i < arrOfSums.length; i++) {
         if (n <= arrOfSums[i][1]) return arrOfSums[i][0]
-    }
+    } 
     return 0;
+    */
 }
 
 const AudioProbabilityArray = (AUDIO_LIST) => {
