@@ -108,14 +108,14 @@ function Main() {
                     <h4 className="fs-text">Clear</h4> 
                 </ToolButton>
             </div>
-            <div className="files-container flex-column">
+            <div className="files-container flex-column flex-grow-1">
                 {AUDIO_LIST_Length < 1 && filesLoading < 1 && (
-                    <div className="flex-column align-c justify-c" style={{height: "100%"}}>
+                    <div className="flex-column align-c justify-c flex-grow-1" style={{height: "100%"}}>
                         <IconMusicFile className="icon-drop o-5"/>
                         <p className="fs-text p-2">Add Sound Files</p>
                     </div>
                 )}
-                <div id="files" className="files flex-column">
+                <div id="files" className="files flex-column flex-grow-1">
                     <div className="flex-row flex-wrap justify-c">
                         { rendredAudioCards() }
                         { renderedAudioLoadings() }
