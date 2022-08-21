@@ -1,4 +1,4 @@
-import { memo, useContext, useReducer, useEffect, useCallback } from "react";
+import { memo, useContext, useReducer, useEffect, useCallback, useMemo } from "react";
 
 import { AudioCard, AudioLoadingCard } from "../AudioCard/index.js";
 import { deleteAll } from "../../services/Audio/index.js"
@@ -43,11 +43,13 @@ function Main() {
 
     const audio_list = globalState.AUDIO_LIST;
     const IS_STARTED = globalState.IS_STARTED;
+    const filesLoading = globalState.filesLoading;
     const delayAreAllDisable = globalState.delay.areAllDisable;
     const filterAreAllDisable = globalState.filter.areAllDisable;
     const pannerAreAllDisable = globalState.panner.areAllDisable;
     const playBackRateAreAllDisable = globalState.playBackRate.areAllDisable;
     const randomStartPointAreAllDisable = globalState.randomStartPoint;
+    const AUDIO_LIST_Length = useMemo(() => Object.keys(AUDIO_LIST).length, [AUDIO_LIST]);
 
     const totalAudioProbabilityPoints = Object.keys(AUDIO_LIST).reduce((acc, key) => acc + AUDIO_LIST[key].probability, 0);
 
@@ -80,12 +82,12 @@ function Main() {
         />
     ));
 
-    const renderedAudioLoadings = () => (new Array(globalState.filesLoading)).fill(0).map((_, i) => (
+    const renderedAudioLoadings = useCallback(() => (new Array(filesLoading)).fill(0).map((_, i) => (
         <AudioLoadingCard key={"loadingCard" + i}/>
-    ));
+    )), [filesLoading]);
 
     return (
-        <main className="main flex-column align-c">
+        <main className="main flex-column">
             <div className="file-buttons flex-row align-c justify-c">
                 <AddFilesButton/>
                 <ToolButton 
@@ -107,12 +109,18 @@ function Main() {
                 </ToolButton>
             </div>
             <div className="files-container flex-column">
+                {AUDIO_LIST_Length < 1 && filesLoading < 1 && (
+                    <div className="flex-column align-c justify-c" style={{height: "100%"}}>
+                        <IconMusicFile className="icon-drop o-5"/>
+                        <p className="fs-text p-2">Add Sound Files</p>
+                    </div>
+                )}
                 <div id="files" className="files flex-column">
                     <div className="flex-row flex-wrap justify-c">
                         { rendredAudioCards() }
                         { renderedAudioLoadings() }
                     </div>
-                </div>
+                </div>  
             </div>
         </main>
     );

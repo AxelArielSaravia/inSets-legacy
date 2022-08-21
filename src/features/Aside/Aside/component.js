@@ -2,7 +2,7 @@ import { memo, useReducer, useMemo, useCallback } from "react";
 
 import { useOnClickClose } from "../hook.js";
 
-import { IconChevronUp, IconChevronDown } from "../../../icons/index.js";
+import { IconChevronDown} from "../../../icons/index.js";
 
 import ToolButton from "../../../components/ToolButton/index.js";
 import AsideConfig from "../AsideConfig/component.js";
@@ -31,6 +31,7 @@ const reducer = (state = initReducerstate, action) => {
 
 export default memo(function Aside() {
     const [{switchActive, configActive, configName}, dispatch] = useReducer(reducer, initReducerstate); 
+    const IconClassName = useMemo(() => switchActive ? "icon active" : "icon", [switchActive]);
 
     const setsOnClick = useCallback(() => { dispatch({type: "configName/change",payload: "SETS"}) }, []);
     const timeOnClick = useCallback(() => { dispatch({type: "configName/change",payload: "TIME"}) }, []);
@@ -51,15 +52,12 @@ export default memo(function Aside() {
     ), [switchActive, configActive]);
     
     useOnClickClose(switchActive, ".aside *", switchOnClick);
-    
     return (
-        <aside className="aside flex-column">
+        <aside className="aside">
             <div className="tools-switch align-c justify-c"> 
-                <ToolButton className="flex-column align-c justify-c" onClick={switchOnClick} />
-                { switchActive 
-                    ? <IconChevronUp className="icon" />
-                    : <IconChevronDown className="icon"/>
-                }
+                <ToolButton className="flex-column align-c justify-c" onClick={switchOnClick}>
+                    <IconChevronDown className={IconClassName} />
+                </ToolButton>
             </div>
             <div className={_ClassName}>
                 <div className="flex-column">

@@ -40,6 +40,8 @@
     opacity: 50%;
     cursor:not-allowed !important;
 }
+/*OPACITY*/
+.o-5 { opacity: 50%; }
 /* ICONS */
 .icon-m { width: 15px; }
 .icon-l { width: 20px; }
