@@ -33,6 +33,7 @@ export default memo(function AudioCard({
     const isPlaying = audioState.isPlaying;
     const pannerIsDisable = audioState.pannerIsDisable;
     const playBackRateIsDisable = audioState.playBackRateIsDisable;
+    const playBackRate = audioState.playBackRate;
     const probability = audioState.probability
     const randomStartPointIsDisable = audioState.randomStartPointIsDisable;
     const startPoint = audioState.startPoint;
@@ -41,7 +42,7 @@ export default memo(function AudioCard({
     const volume = Math.floor(audioState.volume * 10);
 
     const style = APP_IS_STARTED && isPlaying && color ? {boxShadow:"0 0 2px 2px " +  color} : {};
-
+    
     const probabilityOperation = (type) => {
         if (type === "add") {
             audioDispatcher({id: _ID, type:"changeProbability", value: probability + 1});
@@ -136,6 +137,7 @@ export default memo(function AudioCard({
                         duration={duration} 
                         isPlaying={isPlaying}
                         startPoint={startPoint}
+                        playBackRate={playBackRate}
                         color={color}
                     />
                     <div className="audioCard-play flex-row align-center justify-c"> 

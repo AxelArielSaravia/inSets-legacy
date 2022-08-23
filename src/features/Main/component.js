@@ -37,6 +37,7 @@ const AddFilesButton = memo(function AddFilesButton() {
     );
 })
 
+
 function Main() {
     const [globalState, globalDispatcher] = useContext(GlobalContext);
     const [AUDIO_LIST, audioDispatcher] = useReducer(audioViewReducer, {});

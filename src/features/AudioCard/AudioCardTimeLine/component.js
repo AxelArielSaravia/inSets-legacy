@@ -9,7 +9,8 @@ export default function AudioCardTimeLine({
     endTime, 
     duration, 
     isPlaying, 
-    startPoint, 
+    startPoint,
+    playBackRate,
     color,
     APP_IS_STATERD
 }) {
@@ -19,10 +20,9 @@ export default function AudioCardTimeLine({
     const startTimeStyle = { left: `${calcPercent(duration, startTime) - 100}%`  };
     const endTimeStyle = { right: `-${calcPercent(duration, endTime)}%` };
     const currentTimeStyle = { 
-        left: duration === currentTime ? "-100%" :`${calcPercent(duration, currentTime) - 100}%`, 
+        left: endTime + 0.1 <= currentTime ? startTimeStyle.left :`${calcPercent(duration, currentTime) - 100}%`, 
         backgroundColor: APP_IS_STATERD && isPlaying ? color : "" 
     };
-    
 
     useEffect(() => {
         if (!isPlaying) {
@@ -45,7 +45,7 @@ export default function AudioCardTimeLine({
             }
             interval.current = setInterval(() => {
                 setCurrentTime(state => state + 0.2);
-            }, 200);
+            }, 200 / playBackRate);
         } else {
             if (interval.current) {
                 clearTimeout(interval.current);
@@ -54,7 +54,7 @@ export default function AudioCardTimeLine({
             setCurrentTime(() => startTime);
         }
 
-    }, [isPlaying, startPoint, color]);
+    }, [isPlaying, startPoint, playBackRate]);
 
     return (
         <div className="audioCard-timeLine">

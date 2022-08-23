@@ -219,7 +219,7 @@ const _audioViewReducer = (state, action, AUDIO_STATE) => {
             }
             case "play": {
                 AUDIO_STATE.isPlaying = true;
-                return { ...state, isPlaying: true };
+                return { ...state, isPlaying: true, playBackRate: AUDIO_STATE.playBackRate };
             }
             case "stop": {
                 AUDIO_STATE.isPlaying = false;

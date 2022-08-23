@@ -35,6 +35,7 @@ const createAudioState = (id, title, type, duration, GlobalState) => {
         outputGain: null,
         pannerIsDisable: GlobalState?.panner.areAllDisable.value || false,
         playBackRateIsDisable: GlobalState?.playBackRate.areAllDisable.value || false,
+        playBackRate: 1,
         probability: 1,
         randomStartPointIsDisable: GlobalState?.randomStartPoint.value || false,
         startPoint: 0,

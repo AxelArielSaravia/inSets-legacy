@@ -38,6 +38,7 @@ const createAudioViewState = (AudioState) => {
         isPlaying: AudioState.isPlaying,
         pannerIsDisable: AudioState.pannerIsDisable,
         playBackRateIsDisable: AudioState.playBackRateIsDisable,
+        playBackRate: AudioState.playBackRate,
         probability: AudioState.probability,
         randomStartPointIsDisable: AudioState.randomStartPointIsDisable,
         startPoint: AudioState.startPoint,

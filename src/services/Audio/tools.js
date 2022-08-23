@@ -135,12 +135,9 @@ const createAudioRandomChain = async (audioCtx, audioState) => {
  * @param {number} value
  */
  const changePlayBackRate = (audioState, value) => {
+    audioState.playBackRate = value;
     if (GlobalState.ENGINE_TYPE === "audioNode") {
-        if (randomDecide()) {
-            audioState.audioEngine.playbackRate = value;
-        } else {
-            audioState.audioEngine.playbackRate = 1;
-        }
+        audioState.audioEngine.playbackRate = value;
     } else if (GlobalState.ENGINE_TYPE  === "audioBuffer") {
         audioState.source.playbackRate.value = value;
     }
@@ -214,7 +211,7 @@ const play_ENGINE_audioBuffer = (AUDIO_STATE) => {
 const calculateEnd_ENGINE_audioBuffer = (AUDIO_STATE, audioDispatcher) => {
     AUDIO_STATE.change_START_ID();
     const START_ID =  AUDIO_STATE._START_ID;
-    const END_TIME = Math.floor((AUDIO_STATE.endTime - AUDIO_STATE.startPoint) * 1000);
+    const END_TIME = Math.floor((AUDIO_STATE.endTime - AUDIO_STATE.startPoint) * 1000 / AUDIO_STATE.playBackRate);
     wait(Math.floor(END_TIME))
     .then(() => {
         if (AUDIO_STATE._START_ID === START_ID && AUDIO_STATE.isPlaying) {
