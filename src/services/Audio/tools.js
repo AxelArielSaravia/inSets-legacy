@@ -179,7 +179,6 @@ const fadeOut = (AUDIO_STATE) => {
     return wait(fadeTime);
 }
 
-
 const fadeIn = (AUDIO_STATE) => {
     const fadeTime = GlobalState.fadeIn;
     AUDIO_STATE.outputGain.gain.exponentialRampToValueAtTime(AUDIO_STATE.volume, GlobalState.AUDIO_CONTEXT.currentTime + fadeTime / 1000);
@@ -196,7 +195,7 @@ const play_ENGINE_audioNode = (AUDIO_STATE) => {
 const calculateEnd_ENGINE_audioNode = (AUDIO_STATE, audioDispatcher) => {
     AUDIO_STATE.audioEngine.ontimeupdate = function(e) {
         if (e.target.currentTime >= AUDIO_STATE.endTime) {
-            return stop(AUDIO_STATE._ID, audioDispatcher);
+            return _stop(AUDIO_STATE, audioDispatcher);
         }
     }
 }
@@ -208,6 +207,7 @@ const play_ENGINE_audioBuffer = (AUDIO_STATE) => {
     AUDIO_STATE.source.start(0, AUDIO_STATE.startPoint);
 }
 
+
 const calculateEnd_ENGINE_audioBuffer = (AUDIO_STATE, audioDispatcher) => {
     AUDIO_STATE.change_START_ID();
     const START_ID =  AUDIO_STATE._START_ID;
@@ -215,9 +215,9 @@ const calculateEnd_ENGINE_audioBuffer = (AUDIO_STATE, audioDispatcher) => {
     wait(Math.floor(END_TIME))
     .then(() => {
         if (AUDIO_STATE._START_ID === START_ID && AUDIO_STATE.isPlaying) {
-            return stop(AUDIO_STATE._ID, audioDispatcher);
+            return _stop(AUDIO_STATE, audioDispatcher);
         }
-    });  
+    });
 }
 
 const disconnect = (audioState) => {
@@ -236,23 +236,6 @@ const disconnect = (audioState) => {
         }
         audioState.outputGain = null;
 
-        return true;
-    }
-    return false;
-}
-
-const stop = async (id, audioDispatcher = null) => {
-    const AUDIO_STATE = GlobalState.AUDIO_LIST.get(id);
-    if (AUDIO_STATE && AUDIO_STATE.isPlaying) {
-        await fadeOut(AUDIO_STATE);
-        disconnect(AUDIO_STATE);
-
-        if (typeof audioDispatcher === "function") {
-            audioDispatcher({
-                id: id,
-                type: "stop"
-            });
-        }
         return true;
     }
     return false;
@@ -281,10 +264,23 @@ const setRandomStartPoint = (AUDIO_STATE, audioDispatcher) => {
     }
 }
 
-const play = async (id, audioDispatcher) => {
-    const AUDIO_STATE = GlobalState.AUDIO_LIST.get(id);
+const _stop = async (AUDIO_STATE, audioDispatcher = null) => {
+    if (AUDIO_STATE != null && AUDIO_STATE.isPlaying) {
+        await fadeOut(AUDIO_STATE);
+        disconnect(AUDIO_STATE);
+
+        AUDIO_STATE.isPlaying = false;
+
+        if (typeof audioDispatcher === "function")
+            audioDispatcher({ id: AUDIO_STATE._ID, type: "stop" });
+
+        return true;
+    }
+    return false;
+}
+
+const _play = async (AUDIO_STATE, audioDispatcher) => {
     if (AUDIO_STATE != null) {
-        
         setRandomStartPoint(AUDIO_STATE, audioDispatcher);
 
         await setAudioConfiguration(AUDIO_STATE);
@@ -299,11 +295,22 @@ const play = async (id, audioDispatcher) => {
             play_ENGINE_audioBuffer(AUDIO_STATE);
             calculateEnd_ENGINE_audioBuffer(AUDIO_STATE, audioDispatcher);
         }
-        await audioDispatcher({id: id, type: "play"});
+        AUDIO_STATE.isPlaying = true;
+        await audioDispatcher({id: AUDIO_STATE._ID, type: "play"});
         
         return true;
     }
     return false;
+}
+
+const stop = (id, audioDispatcher) => {
+    const AUDIO_STATE = GlobalState.AUDIO_LIST.get(id);
+    return _stop(AUDIO_STATE, audioDispatcher);
+}
+
+const play = (id, audioDispatcher) => {
+    const AUDIO_STATE = GlobalState.AUDIO_LIST.get(id);
+    return _play(AUDIO_STATE, audioDispatcher);
 }
 
 const setAudioVolume = (id) => {
@@ -321,8 +328,8 @@ const deleteAudio = async (id, globalDispatcher, audioDispatcher) => {
 }
 
 const deleteAll = async (globalDispatcher) => {
-    const AUDIO_STATE = GlobalState.AUDIO_LIST;
-    for (const id of AUDIO_STATE.keys()) {
+    const AUDIO_LIST = GlobalState.AUDIO_LIST;
+    for (const id of AUDIO_LIST.keys()) {
         await stop(id)
     }
     await globalDispatcher({type: "CLEAR_Audio"});
@@ -331,7 +338,6 @@ const deleteAll = async (globalDispatcher) => {
 /* -------------------------------------------------------------------------- */
 /*                            Generattive Algoritms                           */
 /* -------------------------------------------------------------------------- */
-
 function binarySearch(arr, target) {
     let startI = 0;
     let endI = arr.length-1;
@@ -421,7 +427,7 @@ const randomSetsExecution = (audioDispatcher) => {
             const AUDIO_STATE = GlobalState.AUDIO_LIST.get(_ID);
             if (AUDIO_STATE.isPlaying) {
                 Promise.resolve()
-                .then(() => stop(_ID, audioDispatcher))
+                .then(() => _stop(AUDIO_STATE, audioDispatcher))
                 .then((bool) => {
                     if (bool && GlobalState.IS_STARTED) {
                         audioDispatcher({
@@ -430,7 +436,7 @@ const randomSetsExecution = (audioDispatcher) => {
                             type: "change", 
                             value: newColor
                         });
-                        return play(_ID, audioDispatcher);
+                        return _play(AUDIO_STATE, audioDispatcher);
                     }
                 })
                 .catch(err => console.error(err));
@@ -444,7 +450,7 @@ const randomSetsExecution = (audioDispatcher) => {
                             type: "change", 
                             value: newColor
                         });
-                        return play(_ID, audioDispatcher);
+                        return _play(AUDIO_STATE, audioDispatcher);
                     }
                 })
                 .catch(err => console.error(err));
@@ -472,12 +478,17 @@ const startApp = async (globalDispatcher, audioDispatcher) => {
 
 const stopApp = async (globalDispatcher, audioDispatcher) => {
    await globalDispatcher({type: "stop"});
-    GlobalState.AUDIO_LIST.forEach(({isPlaying}, key) => {
-        if (isPlaying) {
-            stop(key, audioDispatcher);
+    GlobalState.AUDIO_LIST.forEach((AUDIO_STATE) => {
+        if (AUDIO_STATE.isPlaying) {
+            _stop(AUDIO_STATE, audioDispatcher);
         }
     });
 }
+
+/* -------------------------------------------------------------------------- */
+/*                                 MiddleWares                                */
+/* -------------------------------------------------------------------------- */
+
 
 export {
     play,

@@ -4,7 +4,7 @@ import { AudioCard, AudioLoadingCard } from "../AudioCard/index.js";
 import { deleteAll } from "../../services/Audio/index.js"
 
 import { GlobalContext } from "../../context/Global/index.js";
-import audioViewReducer from "../../reducer/Audio/reducer.js";
+import audiosViewReducer from "../../reducer/Audio/reducer.js";
 import { startApp, stopApp } from "../../services/Audio/index.js";
 import useAddFiles from "../../hooks/useAddFiles/index";
 
@@ -40,7 +40,7 @@ const AddFilesButton = memo(function AddFilesButton() {
 
 function Main() {
     const [globalState, globalDispatcher] = useContext(GlobalContext);
-    const [AUDIO_LIST, audioDispatcher] = useReducer(audioViewReducer, {});
+    const [AUDIO_LIST, audioDispatcher] = useReducer(audiosViewReducer, {});
 
     const audio_list = globalState.AUDIO_LIST;
     const IS_STARTED = globalState.IS_STARTED;

@@ -206,7 +206,7 @@ const _audioViewReducer = (state, action, AUDIO_STATE) => {
             case "changeVolume": {
                 if (typeof action.value === "number"
                     && state.duration > 0.5
-                    ) {
+                 ) {
                     const volume = action.value < state._MIN_VOLUME
                         ? state._MIN_VOLUME
                         : action.value > state._MAX_VOLUME
@@ -217,20 +217,14 @@ const _audioViewReducer = (state, action, AUDIO_STATE) => {
                 }
                 return state;
             }
-            case "play": {
-                AUDIO_STATE.isPlaying = true;
-                return { ...state, isPlaying: true, playBackRate: AUDIO_STATE.playBackRate };
-            }
-            case "stop": {
-                AUDIO_STATE.isPlaying = false;
-                return { ...state, isPlaying: false };
-            }
+            case "play": return { ...state, isPlaying: true, playBackRate: AUDIO_STATE.playBackRate };
+            case "stop": return { ...state, isPlaying: false };
             default: return state;
         }
     }
 }
 
-const audioViewReducer = (state = {}, action) => {
+const audiosViewReducer = (state = {}, action) => {
     if (action.type === "update") {
         const newAudioView = {};
         GlobalState.AUDIO_LIST.forEach((audioState, key) => {
@@ -249,4 +243,4 @@ const audioViewReducer = (state = {}, action) => {
     return state;
 }
 
-export default audioViewReducer;
+export default audiosViewReducer;

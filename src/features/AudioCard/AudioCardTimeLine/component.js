@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef} from "react";
+import { useState, useEffect, useRef, useMemo} from "react";
 
 import { calcPercent } from "../../utils.js";
 
@@ -17,12 +17,12 @@ export default function AudioCardTimeLine({
     const [currentTime, setCurrentTime] = useState(startPoint);
     const interval = useRef(null);
     
-    const startTimeStyle = { left: `${calcPercent(duration, startTime) - 100}%`  };
-    const endTimeStyle = { right: `-${calcPercent(duration, endTime)}%` };
-    const currentTimeStyle = { 
-        left: endTime + 0.1 <= currentTime ? startTimeStyle.left :`${calcPercent(duration, currentTime) - 100}%`, 
+    const startTimeStyle = useMemo(() => ({ left: `${calcPercent(duration, startTime) - 100}%` }), [duration, startTime]);
+    const endTimeStyle = useMemo(() => ({ right: `-${calcPercent(duration, endTime)}%` }), [duration, endTime]);
+    const currentTimeStyle = useMemo(() => ({ 
+        left: duration + 0.1 <= currentTime ? startTimeStyle.left :`${calcPercent(duration, currentTime) - 100}%`, 
         backgroundColor: APP_IS_STATERD && isPlaying ? color : "" 
-    };
+    }), [duration, currentTime, isPlaying, color, startTimeStyle, APP_IS_STATERD]);
 
     useEffect(() => {
         if (!isPlaying) {
