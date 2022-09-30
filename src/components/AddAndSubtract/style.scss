@@ -1,0 +1,29 @@
+.addAndSubtract {
+    .addAndSubtract_button {
+        border: 1px solid var(--c-secondary);
+        color: var(--c-secondary);
+        margin: 0;
+        padding: 2px;
+        * { padding: 2px }
+    }
+    .addAndSubtract_text {
+        min-width: 40px;
+    }
+}
+
+@media (pointer: fine) and (hover: hover) {
+    .addAndSubtract {
+        .addAndSubtract_button{
+            opacity: 0;
+            transition: opacity 100ms ease-out;
+        }
+    }
+    .addAndSubtract:hover {
+        .addAndSubtract_button{
+            opacity: 1;
+        }
+    }
+    .addAndSubtract_button:focus-visible{
+        opacity: 1;
+    }
+}

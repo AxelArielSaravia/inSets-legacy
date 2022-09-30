@@ -1,1 +1,0 @@
-export { DragFiles, DropFiles } from "./component.js" 

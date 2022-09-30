@@ -1,19 +1,35 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import { GlobalProvider } from "./context/Global/index.js" 
-import InitScreen from './features/InitScreen.js';
+import { defaultGlobalState, initGlobalState } from './state/Global/index.js';
 
-import handleInitState from './services/localStorage/index.js';
+import { handleInitState } from './services/localStorage/service.js';
+import { hasAudioContext, initAudioContext } from "./services/AudioContext/service.js"
 
-import './index.css';
+import App from './features/App.js';
+import HasNotAudioContext from './features/App.js';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
 
-root.render(
-    <React.StrictMode>
-        <GlobalProvider state={handleInitState("v0.2.6")}>
-            <InitScreen />
-        </GlobalProvider>
-    </React.StrictMode>
-);
+import './index.scss';
+
+/* INIT STATE */
+initGlobalState(handleInitState("v0.3.0", defaultGlobalState));
+
+function startApp() {
+    if (hasAudioContext()) initAudioContext();
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(
+        <>
+            {hasAudioContext()
+                ?  <App/>
+                : <HasNotAudioContext/>
+            }
+        </>
+    );
+}
+
+{
+    const startButton = document.getElementById("startButton");
+    startButton.addEventListener("click", startApp,{once: true});
+}

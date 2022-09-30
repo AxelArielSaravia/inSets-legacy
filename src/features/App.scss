@@ -1,0 +1,34 @@
+.content-audio {
+    display: flex;
+    flex-direction: row-reverse;
+    width: 100%;
+    height: 100%;
+  
+    .content-audio_aside {
+      height: 100%;
+    }
+    
+    .content-audio_main {
+      width: 100%;
+      height: 100%;
+    }
+}
+  
+  
+.dropFile{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color:var(--c-primary);
+    color:var(--c-secondary);
+    opacity: 80%;
+    z-index: 10;
+}
+
+@media screen and (min-width: 768px) {
+    .content-audio {
+        flex-direction: row;
+    }
+}

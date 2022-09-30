@@ -1,4 +1,4 @@
-import { pannerListener,globalPannerStatic, globalDelayStatic } from "../../state/Global/index.js"
+import { pannerListener, globalDelayLimits } from "../../state/Global/index.js"
 import { random } from "../utils.js";
 
 /**
@@ -19,7 +19,7 @@ import { random } from "../utils.js";
 const createAudioDelayConfiguration = (GlobalDelay) => ({
     channelCountMode: "max",
     channelInterpretation: "speakers",
-    maxDelayTime: globalDelayStatic.TIME_MAX,
+    maxDelayTime: globalDelayLimits.TIME_MAX,
     delayTime: random(GlobalDelay.timeMin * 10, GlobalDelay.timeMax * 10) / 10,
     feedback: random(GlobalDelay.feedbackMin * 100, GlobalDelay.feedbackMax * 100) / 100
 });
@@ -87,7 +87,7 @@ const createAudioPannerConfiguration = (GlobalPanner) => ({
     orientationY: 0,
     orientationZ: 0,
     panningModel: "HRTF",
-    positionZ: random(GlobalPanner.zMin / 10, GlobalPanner.zMax /10) + Math.abs(globalPannerStatic.MIN / 10) + pannerListener.Z, 
+    positionZ: random(GlobalPanner.zMin / 10, GlobalPanner.zMax /10) + pannerListener.Z, 
     positionX: random(GlobalPanner.xMin / 10, GlobalPanner.xMax /10) + pannerListener.X,
     positionY: random(GlobalPanner.yMin / 10, GlobalPanner.yMax /10) + pannerListener.Y,
     refDistance: 1,
