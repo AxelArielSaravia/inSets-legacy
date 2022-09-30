@@ -33,12 +33,12 @@ function AudioContainer() {
                             </div>
                         ))}
                     </div>
-                        {loadedAudioListSize === 0 && (
-                        <div className="audioFiles_icon flex-column align-c justify-c flex-grow-1">
-                            <IconMusicFile className="icon-drop o-5"/>
-                            <p className="fs-text p-5">Add Sound Files</p>
-                        </div>
-                        )}
+                    {loadedAudioListSize === 0 && (
+                    <div className="audioFiles_icon flex-column align-c justify-c flex-grow-1">
+                        <IconMusicFile className="icon-drop o-5"/>
+                        <p className="fs-text p-5">No Audio Files</p>
+                    </div>
+                    )}
                 </div>
             </div>
         </main>

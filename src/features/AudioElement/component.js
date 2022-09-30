@@ -5,7 +5,7 @@ import { ViewAudioReducer, createViewAudioState } from "../../reducer/index.js";
 
 import { play, stop,setAudioVolume, deleteAudio, rePlay } from "../../services/Audio/service.js"; 
 
-import { calcPercent, durationToTime, durationToShortTime} from "../utils.js";
+import { durationToTime, durationToShortTime} from "../utils.js";
 
 import Button from "../../components/Button/component.js";
 import AddAndSubtract from "../../components/AddAndSubtract/component.js";
@@ -15,7 +15,10 @@ import Playback from "./Playback/component.js"
 
 import "./style.scss";
 
-
+const calcPercent = (val, sumOfAllEvents) => {
+    if (val <= 0) return '0';
+    return Math.floor(val / sumOfAllEvents * 100);
+};
 
 function DeleteButton({_id, events, audioDispatch}) {
     const [, audioListDispatch] = useContext(AudioListContext);
