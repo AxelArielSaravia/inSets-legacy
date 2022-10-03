@@ -31,7 +31,6 @@ const ViewAudioListReducer = (state = {}, action) => {
             };
         }
         case "clear": {
-            GlobalState._audio_list = new Map();
             GlobalState.eventsForEachSet = {arrOfEvents: [1], sumOfAllEvents: 1}
 
             const newLoadedAudioList = {...state.loadedAudioList};

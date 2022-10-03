@@ -290,14 +290,14 @@ const _play = async (audio_state, audioDispatcher) => {
     return false;
 }
 
-const stop = (id, audioDispatcher) => {
+const stop = async (id, audioDispatcher) => {
     const audio_state = GlobalState._audio_list.get(id);
-    return _stop(audio_state, audioDispatcher);
+    return await _stop(audio_state, audioDispatcher);
 }
 
-const play = (id, audioDispatcher) => {
+const play = async (id, audioDispatcher) => {
     const audio_state = GlobalState._audio_list.get(id);
-    return _play(audio_state, audioDispatcher);
+    return await _play(audio_state, audioDispatcher);
 }
 
 const rePlay = (id, audioDispatcher) => {
@@ -334,10 +334,11 @@ const deleteAudio = async (id, audioListDispatch, audioDispatch) => {
 
 const deleteAll = async (audioListDispatcher) => {
     const AUDIO_LIST = GlobalState._audio_list;
+    await audioListDispatcher({type: "clear"});
     for (const id of AUDIO_LIST.keys()) {
         await stop(id)
     }
-    await audioListDispatcher({type: "clear"});
+    GlobalState._audio_list = new Map();
 }
 
 /* -------------------------------------------------------------------------- */
