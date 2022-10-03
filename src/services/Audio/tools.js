@@ -312,7 +312,8 @@ const rePlay = (id, audioDispatcher) => {
     } else {
         wait(GlobalState.fadeOut)
         .then(() => {
-            if (GlobalState._is_started) return _play(audio_state, audioDispatcher);
+            if (GlobalState._is_started) 
+                return _play(audio_state, audioDispatcher);
         })
         .catch(err => console.error(err));
     }
@@ -336,7 +337,7 @@ const deleteAll = async (audioListDispatcher) => {
     const AUDIO_LIST = GlobalState._audio_list;
     await audioListDispatcher({type: "clear"});
     for (const id of AUDIO_LIST.keys()) {
-        await stop(id)
+        await stop(id);
     }
     GlobalState._audio_list = new Map();
 }
@@ -380,14 +381,12 @@ const calculateTheLenghtOfSetExecution = () => {
 
 const AudiosEventsArray = (audio_list) => {
     let arrOfAudiosEvents = [];
-    const objOfKeys = {};
     audio_list.forEach((element, key) => {
         const v = element.audioEvents;
         const arr = (new Array(v)).fill(key);
         arrOfAudiosEvents = arrOfAudiosEvents.concat(arr);
-        objOfKeys[key] = null;
     });
-    return [arrOfAudiosEvents, objOfKeys]
+    return arrOfAudiosEvents;
 }
 
 const createNewSetExecution = () => {
@@ -400,21 +399,12 @@ const createNewSetExecution = () => {
 
     /**@type {Object<string, null>}*/
     //selects elements for the set
-    let [arrOfAudiosEvents, objOfKeys] = AudiosEventsArray(AUDIO_LIST);
-    let executeSet = {};
-    if (AUDIO_LIST.size / 2 >= n) {
-        for (let i = 0; i < n; i++) {
-            const _KEY = arrOfAudiosEvents[random(0, arrOfAudiosEvents.length-1)];
-            executeSet[_KEY] = null;
-            arrOfAudiosEvents = arrOfAudiosEvents.filter(key => key !== _KEY);
-        }
-    } else {
-        for (let total = AUDIO_LIST.size - n; total > 0; total--) {
-            const _KEY = arrOfAudiosEvents[random(0, arrOfAudiosEvents.length-1)];
-            delete objOfKeys[_KEY];
-            arrOfAudiosEvents = arrOfAudiosEvents.filter(key => key !== _KEY);
-        }
-        executeSet = objOfKeys;
+    let arrOfAudiosEvents = AudiosEventsArray(AUDIO_LIST);
+    const executeSet = {};
+    for (let i = 0; i < n; i++) {
+        const _KEY = arrOfAudiosEvents[random(0, arrOfAudiosEvents.length-1)];
+        executeSet[_KEY] = null;
+        arrOfAudiosEvents = arrOfAudiosEvents.filter(key => key !== _KEY);
     }
     //console.log("executeSet", executeSet);//DEBUGGER
     return [n, executeSet];
