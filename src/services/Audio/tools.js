@@ -11,10 +11,6 @@ import createId from "../createId/service.js";
 
 import { random } from "../utils.js";
 
-/**
- * @returns {string}
- */
-const changeColor = () => `rgb(${random(32, 141)},${random(32, 141)},${random(32, 141)})`;
 
 const randomDecide = () => !!random(0,1);
 
@@ -389,17 +385,11 @@ const AudiosEventsArray = (audio_list) => {
     return arrOfAudiosEvents;
 }
 
-const createNewSetExecution = () => {
+const createNewSetExecution = (n) => {
     const AUDIO_LIST = GlobalState._audio_list;
-    //select set size
-    const n = calculateTheLenghtOfSetExecution();
-    console.log("set execution size: ",n);//DEBUGGER
-
-    if (n === 0) return [n, {}];
-
-    /**@type {Object<string, null>}*/
     //selects elements for the set
     let arrOfAudiosEvents = AudiosEventsArray(AUDIO_LIST);
+    /**@type {Object<string, null>}*/
     const executeSet = {};
     for (let i = 0; i < n; i++) {
         const _KEY = arrOfAudiosEvents[random(0, arrOfAudiosEvents.length-1)];
@@ -407,13 +397,15 @@ const createNewSetExecution = () => {
         arrOfAudiosEvents = arrOfAudiosEvents.filter(key => key !== _KEY);
     }
     //console.log("executeSet", executeSet);//DEBUGGER
-    return [n, executeSet];
+    return executeSet;
 }
 
-
 const randomSetsExecution = (appDispatcher) => {
-    const [n, executeSet] = createNewSetExecution();
-    if (n > 0) appDispatcher({type: "newAudiosSet", payload: executeSet});
+    const n = calculateTheLenghtOfSetExecution();
+    console.log("set execution size: ",n);//DEBUGGER
+    if (n === 0) return;
+    const executeSet = createNewSetExecution(n);
+    appDispatcher({type: "newAudiosSet", payload: executeSet});
 }
 
 

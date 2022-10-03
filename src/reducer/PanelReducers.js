@@ -403,7 +403,7 @@ const SetsReducer = (state, action) => {
             if (typeof action.payload === "number") {
                 if (state.arrOfEvents[action.payload] > 0 
                     && state.sumOfAllEvents === state.arrOfEvents[action.payload]
-                ) return;
+                ) return state;
                 const newArrOfEvents = [...state.arrOfEvents];
                 newArrOfEvents[action.payload] += 1;
                 const newState = { arrOfEvents: newArrOfEvents, sumOfAllEvents: state.sumOfAllEvents + 1 }
