@@ -3,7 +3,7 @@ import { createContext, useReducer, memo } from "react";
 import { ViewAppReducer } from "../reducer/index.js";
 import { createViewAppState } from "../state/Global/index.js";
 
-const AppContext = createContext(null); 
+const AppContext = createContext();
 
 const AppProvider = memo(function AppProvider({children}) {
     const value = useReducer(ViewAppReducer, createViewAppState());

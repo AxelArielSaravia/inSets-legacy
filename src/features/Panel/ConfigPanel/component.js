@@ -17,17 +17,26 @@ import "./style.scss";
 
 
 function ConfigPanelContent({itemName}) {
-    switch (itemName) {
-        case "DELAY":   return <Delay/>
-        case "FADES":   return <Fades/>
-        case "FILTER":  return <Filter/>
-        case "PANNER":  return <Panner/>;
-        case "RATE":    return <PlaybackRate/>;
-        case "REP":     return <RandomEndPoint/>;
-        case "RSP":     return <RandomStartPoint/>;
-        case "SETS":    return <Sets/>
-        case "TIME":    return <Time/>;
-        default:        return null;
+    if (itemName === "DELAY") {
+        return <Delay/>;
+    } else if (itemName === "FADES") {
+        return <Fades/>;
+    } else if (itemName === "FILTER") {
+        return <Filter/>;
+    } else if (itemName === "PANNER") {
+        return <Panner/>;
+    } else if (itemName === "RATE") {
+        return <PlaybackRate/>;
+    } else if (itemName === "REP") {
+        return <RandomEndPoint/>;
+    } else if (itemName === "RSP") {
+        return <RandomStartPoint/>;
+    } else if (itemName === "SETS") {
+        return <Sets/>;
+    } else if (itemName === "TIME") {
+        return <Time/>;
+    } else {
+        return;
     }
 }
 
@@ -56,76 +65,3 @@ function ConfigPanel({isActive, itemName, closeConfigPanel }) {
 }
 
 export default memo(ConfigPanel);
-
-
-/* 
-import { GlobalContext } from "../../../context/Global/index.js";
-
-
-import SetsButton from "../SetsButton/component.js";
-import TimeButton from "../TimeButton/component.js";
-import PannerButton from "../PannerButton/component.js";
-import FilterButton from "../FilterButton/component.js";
-import DelayButton from "../DelayButton/component.js";
-import FadeTimeButton from "../FadeTimeButton/component.js";
-import PlayBackRateButton from "../PlayBackRateButton/component.js";
-import RSPButton from "../RSPButton/component.js";
-
-
-
-function ConfigPanelContent({configName}) {
-    switch (configName) {
-        case "SETS": return (
-            <SetsButton
-                arrOfProbability={arrOfProbability}
-                audioListSize={audioListSize}
-                setDispatcher={setDispatcher}
-            />
-        );
-        case "TIME": return (
-            <TimeButton
-                setDispatcher={setDispatcher}
-                timeInterval={timeInterval}
-            /> 
-        );
-        case "FADETIME": return (
-            <FadeTimeButton
-                fadeIn={fadeIn}
-                fadeOut={fadeOut}
-                setDispatcher={setDispatcher}
-            /> 
-        );
-        case "PANNER": return (
-            <PannerButton 
-                panner={panner}
-                setDispatcher={setDispatcher}
-            /> 
-        );
-        case "FILTER": return (
-            <FilterButton
-                filter={filter}
-                setDispatcher={setDispatcher}
-            />
-        );
-        case "DELAY": return (
-            <DelayButton 
-                delay={delay}
-                setDispatcher={setDispatcher}
-            /> 
-        );
-        case "RATE": return (
-            <PlayBackRateButton
-                playBackRate={playBackRate}
-                setDispatcher={setDispatcher}
-            /> 
-        );
-        case "RSP": return (
-            <RSPButton
-                randomStartPoint={randomStartPoint}
-                setDispatcher={setDispatcher}
-            /> 
-        );
-        default: return null;
-    }
-}
- */

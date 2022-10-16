@@ -10,9 +10,14 @@ import ConfigPanelInterval from "../ConfigPanelInterval/component.js";
 
 function Delay() {
     const [{allDelaysAreDisabled}, generalDisableDispatcher] = useContext(GeneralDisableContext);
-    const [{timeMin, timeMax, feedbackMin, feedbackMax}, delayDispatch] = useReducer(DelayReducer, initDelayState());
+    const [{
+        timeMin,
+        timeMax,
+        feedbackMin,
+        feedbackMax
+    }, delayDispatch] = useReducer(DelayReducer, initDelayState());
     
-    const changeDisable = useCallback(() => {
+    const changeDisable = useCallback(function() {
         if (allDelaysAreDisabled.value) {
             generalDisableDispatcher({type: "enable/delay", payload: true})
         } else {
@@ -22,16 +27,16 @@ function Delay() {
 
     const reset = useCallback(() => {delayDispatch({type: "reset"})}, [delayDispatch]) 
 
-    const timeMaxOnChange = useCallback((val) => {
+    const timeMaxOnChange = useCallback(function (val) {
         delayDispatch({type: "time/changeMax", payload: (+val + 1) / 10});
     }, [delayDispatch]);
-    const timeMinOnChange = useCallback((val) => {
+    const timeMinOnChange = useCallback(function (val) {
         delayDispatch({type: "time/changeMin", payload: (+val + 1) / 10});
     }, [delayDispatch]);
-    const feedbackMaxOnChange = useCallback((val) => {
+    const feedbackMaxOnChange = useCallback(function (val) {
         delayDispatch({type: "feedback/changeMax", payload: (+val + 5) / 100});
     }, [delayDispatch]);
-    const feedbackMinOnChange = useCallback((val) => {
+    const feedbackMinOnChange = useCallback(function (val) {
         delayDispatch({type: "feedback/changeMin", payload: (+val + 5) / 100});
     }, [delayDispatch]);
 

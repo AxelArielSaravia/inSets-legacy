@@ -1,6 +1,11 @@
 import { memo } from "react";
 
-import { AudioListProvider, GeneralDisableProvider, AppProvider, SumOfAllAudiosEventsProvider } from "../context/index.js";
+import {
+    AudioListProvider,
+    GeneralDisableProvider,
+    AppProvider,
+    SumOfAllAudiosEventsProvider
+} from "../context/index.js";
 
 import { DropFiles, DragFiles } from "../components/DragAndDrop/component.js";
 import GeneralPanel from "./Panel/component.js";

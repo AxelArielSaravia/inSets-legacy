@@ -1,5 +1,10 @@
 import { random } from "../utils.js";
 
-const changeColor = () => `rgb(${random(32, 141)},${random(32, 141)},${random(32, 141)})`;
+/*-
+changeColor: undefined -> string
+*/
+function changeColor() {
+  return `rgb(${random(32, 141)},${random(32, 141)},${random(32, 141)})`;
+}
 
-export default changeColor;
+export default Object.freeze(changeColor);

@@ -6,13 +6,16 @@ import ConfigPanelContainer from "../ConfigPanelContainer/component.js"
 
 
 function RandomEndPoint() {
-    const [{allRandomEndPointsAreDisabled}, generalDisableDispatch] = useContext(GeneralDisableContext);
+    const [
+        {allRandomEndPointsAreDisabled},
+        generalDisableDispatch
+    ] = useContext(GeneralDisableContext);
     
-    const changeDisable = useCallback(() => {
+    const changeDisable = useCallback(function () {
         if (allRandomEndPointsAreDisabled.value) {
-            generalDisableDispatch({type: "enable/randomEndPoint", payload: true})
+            generalDisableDispatch({type: "enable/randomEndPoint", payload: true});
         } else {
-            generalDisableDispatch({type: "disable/randomEndPoint"})
+            generalDisableDispatch({type: "disable/randomEndPoint"});
         }
     },[allRandomEndPointsAreDisabled, generalDisableDispatch]);
 

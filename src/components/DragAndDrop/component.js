@@ -7,12 +7,14 @@ import { IconMusicFile } from "../icons/component.js";
 /**
  * @param {Event} e
  */
-const preventDefault = (e) => { e.preventDefault(); };
+function preventDefault(e) {
+    e.preventDefault();
+};
 
 
-const DropArea = () => {
+function DropArea() {
     return (
-        <> 
+        <>
             <div className="dragfile flex-row align-c justify-c">
                <IconMusicFile className="icon-drop"/>
             </div>
@@ -23,10 +25,7 @@ const DropArea = () => {
     )
 };
 
-/**
- * @param {{ children: Function, className?: string, style?: object}} props 
- * @returns 
- */
+
 const DropFiles = memo(function DropFiles({className, style}) {
     const addFiles = useAddFiles();
     
@@ -75,18 +74,19 @@ const DropFiles = memo(function DropFiles({className, style}) {
 const DragFiles = memo(function DragFiles({ className, style, children}) {
     const [isDragActive, setIsDragActive] = useState(false);
     let counter = 1;
-    const handleDragEnter = () => {
+    function handleDragEnter () {
         counter++;
         setIsDragActive(() => true);
     };
 
-    const handleDragLeave = () => {
+    function handleDragLeave () {
         counter--;
-        if (counter === 0) 
+        if (counter === 0) {
             setIsDragActive(() => false);
+        }
     };
 
-    const handleDrop = () => {
+    function handleDrop () {
         counter = 0;
         setIsDragActive(() => false);
     };
@@ -107,4 +107,4 @@ const DragFiles = memo(function DragFiles({ className, style, children}) {
 export {
     DragFiles,
     DropFiles
-}
+};

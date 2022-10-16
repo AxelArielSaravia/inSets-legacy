@@ -14,6 +14,7 @@ const initReducerState = {
     panelItem: ""
 };
 
+
 /**
  * @param {AudioButtonsSectionState} state 
  * @param {{
@@ -22,7 +23,7 @@ const initReducerState = {
  * }} action 
  * @returns 
  */
-const reducer = (state = initReducerState, action) => {
+function reducer(state = initReducerState, action) {
     switch (action.type) {
         case "panelItem/change": { 
             if (state.panelItem === action.payload && state.isConfigPanelVisible) 

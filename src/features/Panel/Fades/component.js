@@ -7,16 +7,18 @@ import ConfigPanelChild from "../ConfigPanelChild/component.js";
 import ConfigPanelRange from "../ConfigPanelRange/component.js";
 
 function Fades() {
-    const [ {fadeIn, fadeOut}, timeDispatch ] = useReducer(FadesReducer, initFadesState());
+    const [{fadeIn, fadeOut}, timeDispatch] = useReducer(FadesReducer, initFadesState());
  
-    const reset = useCallback(() => {timeDispatch({type: "reset"})}, [timeDispatch]);
+    const reset = useCallback(function () {
+        timeDispatch({type: "reset"});
+    }, [timeDispatch]);
     
-    const fadeInOnChange = useCallback((val) => {
-        timeDispatch({type:"fadeIn/change", payload: +val + 15});
+    const fadeInOnChange = useCallback(function (val) {
+        timeDispatch({type:"fadeIn/change", payload: ((+val) * 10) + 10});
     }, [timeDispatch]);
 
-    const fadeOutOnChange = useCallback((val) => {
-        timeDispatch({type:"fadeOut/change", payload: +val + 15});
+    const fadeOutOnChange = useCallback(function (val) {
+        timeDispatch({type:"fadeOut/change", payload: ((+val) * 10) + 10});
     }, [timeDispatch]);
 
     return (
@@ -28,8 +30,8 @@ function Fades() {
         >
             <ConfigPanelChild title="fadeIn">
                 <ConfigPanelRange
-                    max={485}
-                    value={fadeIn - 15}
+                    max={29}
+                    value={(fadeIn-10)/10}
                     valueText={fadeIn}
                     valueTextAdd="ms"
                     onChange={fadeInOnChange}
@@ -37,8 +39,8 @@ function Fades() {
             </ConfigPanelChild>
             <ConfigPanelChild title="fadeOut">
                 <ConfigPanelRange
-                    max={485}
-                    value={fadeOut - 15}
+                    max={29}
+                    value={(fadeOut-10)/10}
                     valueText={fadeOut}
                     valueTextAdd="ms"
                     onChange={fadeOutOnChange}

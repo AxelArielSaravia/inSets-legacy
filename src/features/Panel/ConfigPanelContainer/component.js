@@ -21,7 +21,7 @@ function ConfigPanelContainer({
                 {title}
             </h3>
             )}
-            {description != null && (
+            {description !== undefined && (
             <div className="flex-column align-c p-5">
                 <div className="config-panel_container--description">
                     <span className="fs-text">{description}</span>

@@ -1,7 +1,7 @@
 import "./style.scss";
 
 export default function ToolButton({
-    className = "", 
+    className = "",
     title,
     onClick,
     onPointerDown,
@@ -10,7 +10,6 @@ export default function ToolButton({
     onKeyDown,
     children
 }) {
- 
     return (
         <button
             title={title}

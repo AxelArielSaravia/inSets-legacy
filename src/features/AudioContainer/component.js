@@ -12,24 +12,39 @@ function AudioLoadingElement() {
         <div className="audio-loading-element flex-row align-c px-10">
             <h3 className="fs-text">Loading...</h3>
         </div>
-    )
+    );
 }
 
 function SelectAudioElement({bool, _id}) {
-    if (bool) return <AudioElement _id={_id}/>
-    return <AudioLoadingElement/>
+    if (bool) {
+        return <AudioElement _id={_id}/>;
+    }
+    return <AudioLoadingElement/>;
 }
 
 function AudioContainer() {
-    const [{ loadedAudioList, loadedAudioListSize, completedAudioList }] = useContext(AudioListContext);
+    const [{
+        loadedAudioList,
+        loadedAudioListSize,
+        completedAudioList
+    }] = useContext(AudioListContext);
+
     return (
         <main className="main flex-column p-5">
             <div className="main_sub">
                 <div className="audio-container flex-column">
                     <div className="audio-container_sub flex-column flex-grow-1">
                         {Object.keys(loadedAudioList).map(id => (
-                            <div key={id} className="audio-element--prev p-5" role="region" aria-live="polite">
-                                <SelectAudioElement bool={id in completedAudioList} _id={id}/>
+                            <div
+                                key={id}
+                                className="audio-element--prev p-5"
+                                role="region"
+                                aria-live="polite"
+                            >
+                                <SelectAudioElement
+                                    bool={id in completedAudioList}
+                                    _id={id}
+                                />
                             </div>
                         ))}
                     </div>
@@ -44,4 +59,4 @@ function AudioContainer() {
         </main>
     )
 }
-export default memo(AudioContainer); 
+export default memo(AudioContainer);

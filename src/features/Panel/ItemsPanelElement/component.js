@@ -1,6 +1,11 @@
 import Button from "../../../components/Button/component.js"
 
-const ItemsPanelElement = ({active = false, onClickHandler, text, title}) => {
+const ItemsPanelElement = ({
+    active = false,
+    onClickHandler,
+    text,
+    title
+}) => {
     return (
         <div className={"items-panel_button flex-row justify-c "}>
             <Button

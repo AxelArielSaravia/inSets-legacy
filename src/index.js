@@ -1,29 +1,30 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import React from "react";
+import ReactDOM from "react-dom/client";
 
-import { defaultGlobalState, initGlobalState } from './state/Global/index.js';
+import { handleInitState } from "./services/Global/service.js";
+import {
+    hasAudioContext,
+    initAudioContext
+} from "./services/AudioContext/service.js"
 
-import { handleInitState } from './services/localStorage/service.js';
-import { hasAudioContext, initAudioContext } from "./services/AudioContext/service.js"
-
-import App from './features/App.js';
-import HasNotAudioContext from './features/App.js';
+import App from "./features/App.js";
+import HasNotAudioContext from "./features/App.js";
 
 
-import './index.scss';
+import "./index.scss";
 
 /* INIT STATE */
-initGlobalState(handleInitState("v0.3.0", defaultGlobalState));
+handleInitState("v0.3.1");
 
 function startApp() {
     if (hasAudioContext()) initAudioContext();
 
-    const root = ReactDOM.createRoot(document.getElementById('root'));
+    const root = ReactDOM.createRoot(document.getElementById("root"));
     root.render(
         <>
             {hasAudioContext()
-                ?  <App/>
-                : <HasNotAudioContext/>
+                ? <App />
+                : <HasNotAudioContext />
             }
         </>
     );
@@ -31,5 +32,5 @@ function startApp() {
 
 {
     const startButton = document.getElementById("startButton");
-    startButton.addEventListener("click", startApp,{once: true});
+    startButton.addEventListener("click", startApp, { once: true });
 }

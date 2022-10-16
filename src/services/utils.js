@@ -1,24 +1,22 @@
-/**
-* create a random arbitrary number
-* @param {number} min the min number (real number) to the random interval
-* @param {number} max the max number (real number) to the random interval
-* @returns {number} a pseudo random integer number
+/*-
+-- create a random arbitrary number
+random: number, number -> number
 */
-function random(min, max){
+function random(min, max) {
     try {
-        if(typeof min !== 'number') throw new Error("min argument in random method must be a number");
-        if(typeof max !== 'number') throw new Error("max argument in random method must be a number");
-        
+        if(typeof min !== "number" || typeof max !== "number") {
+            new Error("the arguments in random function must be numbers");
+        }
         min = Math.ceil(min);
         max = Math.floor(max);
- 
+
         return Math.floor(Math.random() * (max - min + 1) + min);
-    } catch(err){
+    } catch(err) {
         console.error(err);
-        return err;
-    }    
+        return 0;
+    }
 }
 
 export {
     random
-}
+};

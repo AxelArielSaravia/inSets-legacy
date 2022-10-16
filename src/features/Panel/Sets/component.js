@@ -7,26 +7,31 @@ import { initSetsState, SetsReducer } from "../../../reducer/index.js";
 import AddAndSubtract from "../../../components/AddAndSubtract/component.js";
 import ConfigPanelContainer from "../ConfigPanelContainer/component.js"
 
+import { fixPercent } from "../../utils.js"; 
+
 import "./style.scss";
-
-const percent = (val, sumOfAllEvents) => {
-    if (val <= 0) return '0';
-    return (val / sumOfAllEvents * 100).toFixed(1);
-};
-
 
 function Sets() {
     const [{completedAudioListSize}] = useContext(AudioListContext);
-    const [{arrOfEvents, sumOfAllEvents}, setsDispatcher] = useReducer(SetsReducer, initSetsState());
-    
-    useEffect(() => {
+    const [{
+        arrOfEvents,
+        sumOfAllEvents
+    }, setsDispatcher] = useReducer(SetsReducer, initSetsState());
+
+    useEffect(function () {
         if (completedAudioListSize + 1 !== arrOfEvents.length)
             setsDispatcher({type: "update"});
     }, [completedAudioListSize, arrOfEvents])
-    
-    const reset = useCallback(() => {setsDispatcher({type: "reset"})}, []);
-    const addEvent = useCallback((i) => () => { setsDispatcher({type: "addEvent", payload: i}) }, []);
-    const removeEvent = useCallback((i) => () => { setsDispatcher({type: "removeEvent", payload: i}) }, []);
+
+    const reset = useCallback(function () {
+        setsDispatcher({type: "reset"})
+    }, []);
+    const addEvent = useCallback((i) => function () {
+        setsDispatcher({type: "addEvent", payload: i});
+    }, []);
+    const removeEvent = useCallback((i) => function () {
+        setsDispatcher({type: "removeEvent", payload: i});
+    }, []);
 
     return (
         <ConfigPanelContainer
@@ -56,7 +61,9 @@ function Sets() {
                             viewValue={val}
                             horizontal
                         />
-                        <p className="fs-text">{percent(val, sumOfAllEvents) + '%'}</p>
+                        <p className="fs-text">
+                            {fixPercent(sumOfAllEvents, val, 100, 1) + '%'}
+                        </p>
                     </div>
                 ))}
             </div>

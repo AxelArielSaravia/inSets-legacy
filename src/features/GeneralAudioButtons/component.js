@@ -69,7 +69,7 @@ function ClearButton() {
     const [, audioListDispatcher] = useContext(AudioListContext);
     const [, sumOfAllAudiosEventsDispatcher] = useContext(SumOfAllAudiosEventsContext);
 
-    const handleClearOnClick = useCallback(() => { 
+    const handleClearOnClick = useCallback(function () { 
         deleteAll(audioListDispatcher);
         sumOfAllAudiosEventsDispatcher({type: "clear"});
     }, [audioListDispatcher,sumOfAllAudiosEventsDispatcher]);

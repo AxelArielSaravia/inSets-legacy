@@ -1,36 +1,62 @@
-import { memo, useReducer, useEffect, useContext, useCallback, useMemo } from "react";
+import {
+    memo,
+    useReducer,
+    useEffect,
+    useContext,
+    useCallback,
+    useMemo
+} from "react";
 
-import { GeneralDisableContext, AppContext, AudioListContext, SumOfAllAudiosEventsContext } from "../../context/index.js";
+import {
+    GeneralDisableContext,
+    AppContext,
+    AudioListContext,
+    SumOfAllAudiosEventsContext
+} from "../../context/index.js";
+
 import { ViewAudioReducer, createViewAudioState } from "../../reducer/index.js";
 
-import { play, stop,setAudioVolume, deleteAudio, rePlay } from "../../services/Audio/service.js"; 
+import {
+    play,
+    stop,
+    setAudioVolume,
+    deleteAudio,
+    rePlay
+} from "../../services/Audio/service.js";
 
-import { durationToTime, durationToShortTime} from "../utils.js";
+import {
+    durationToTime,
+    durationToShortTime,
+    floorPercent
+} from "../utils.js";
 
 import Button from "../../components/Button/component.js";
 import AddAndSubtract from "../../components/AddAndSubtract/component.js";
 import Range from "../../components/Range/component.js";
-import { IconX, IconVolume, IconGear, IconPlay, IconPause } from "../../components/icons/component.js";
+import {
+    IconX,
+    IconVolume,
+    IconGear,
+    IconPlay,
+    IconPause
+} from "../../components/icons/component.js";
+
 import Playback from "./Playback/component.js"
 
 import "./style.scss";
 
-const calcPercent = (val, sumOfAllEvents) => {
-    if (val <= 0) return '0';
-    return Math.floor(val / sumOfAllEvents * 100);
-};
-
 function DeleteButton({_id, events, audioDispatch}) {
     const [, audioListDispatch] = useContext(AudioListContext);
     const [, sumOfAllEventsDispatch] = useContext(SumOfAllAudiosEventsContext);
-    const onClick = async () => {
+    async function onClick() {
         await deleteAudio(_id, audioListDispatch, audioDispatch);
-        sumOfAllEventsDispatch({type: "subtract", payload: events})
+        sumOfAllEventsDispatch({type: "subtract", payload: events});
     }
+
     return (
         <Button
-            className="audio-button delete-button flex-column align-c"
-            onClick={onClick}
+        className="audio-button delete-button flex-column align-c"
+        onClick={onClick}
         >
             <IconX className="icon-text-l"/>
         </Button>
@@ -38,9 +64,10 @@ function DeleteButton({_id, events, audioDispatch}) {
 }
 
 function ConfigButton({value, change}) {
+    const className = "audio-button config-button flex-column align-c";
     return (
         <Button
-            className={value ? "audio-button config-button active flex-column align-c" : "audio-button config-button flex-column align-c"}
+            className={value ? `${className} active` : className}
             onClick={change}
         >
             <IconGear className="icon-text-l"/>
@@ -93,133 +120,185 @@ function AudioElement({_id}) {
     const [{_is_started, playAudiosSet, playColor}] = useContext(AppContext);
     const [sumOfAllEvents, sumOfAllEventsdispatch] = useContext(SumOfAllAudiosEventsContext);
     const [{
-        allDelaysAreDisabled, allFiltersAreDisabled,
-        allPannersAreDisabled, allPlaybackRatesAreDisabled,
-        allRandomEndPointsAreDisabled, allRandomStartPointsAreDisabled,
+        allDelaysAreDisabled,
+        allFiltersAreDisabled,
+        allPannersAreDisabled,
+        allPlaybackRatesAreDisabled,
+        allRandomEndPointsAreDisabled,
+        allRandomStartPointsAreDisabled,
     }, generalDisableDispatch] = useContext(GeneralDisableContext);
     const [{
-        color, title, duration,
-        endPoint, startPoint, startTime, 
-        endTime, isPlaying, currentTime, 
-        volume, configurationIsOpen, audioEvents, 
-        delayIsDisable, filterIsDisable, pannerIsDisable,
-        playbackRateIsDisable, randomEndPointIsDisable, randomStartPointIsDisable
+        color,
+        title,
+        duration,
+        endPoint,
+        startPoint,
+        startTime,
+        endTime,
+        isPlaying,
+        currentTime,
+        volume,
+        configurationIsOpen,
+        audioEvents,
+        delayIsDisable,
+        filterIsDisable,
+        pannerIsDisable,
+        playbackRateIsDisable,
+        randomEndPointIsDisable,
+        randomStartPointIsDisable
     }, audioDispatch] = useReducer(ViewAudioReducer, createViewAudioState(_id));
 
-    useEffect(() => {
-        if (playAudiosSet.hasOwnProperty(_id)) {
+    useEffect(function () {
+        if (_id in playAudiosSet) {
             rePlay(_id, audioDispatch);
             audioDispatch({type: "color/change", payload: playColor});
         }
     }, [_id, playAudiosSet]);
 
-    useEffect(() => {
+    useEffect(function () {
         if (!_is_started) {
             stop(_id, audioDispatch);
             audioDispatch({type: "color/default"});
         }
     }, [_id, _is_started]);
 
-    useEffect(() => {
-        if (allDelaysAreDisabled.value) audioDispatch({type:"effect", payload:"delay/disable"});
-        else if (allDelaysAreDisabled.global) audioDispatch({type:"effect", payload:"delay/enable"});
+    useEffect(function () {
+        if (allDelaysAreDisabled.value) {
+            audioDispatch({type:"effect", payload:"delay/disable"});
+        } else if (allDelaysAreDisabled.global) {
+            audioDispatch({type:"effect", payload:"delay/enable"});
+        }
     }, [allDelaysAreDisabled]);
-    useEffect(() => {
-        if (allFiltersAreDisabled.value) audioDispatch({type:"effect", payload:"filter/disable"});
-        else if (allFiltersAreDisabled.global) audioDispatch({type:"effect", payload:"filter/enable"});
+    useEffect(function () {
+        if (allFiltersAreDisabled.value) {
+            audioDispatch({type:"effect", payload:"filter/disable"});
+        } else if (allFiltersAreDisabled.global) {
+            audioDispatch({type:"effect", payload:"filter/enable"});
+        }
     }, [allFiltersAreDisabled]);
-    useEffect(() => {
-        if (allPannersAreDisabled.value) audioDispatch({type:"effect", payload:"panner/disable"});
-        else if (allPannersAreDisabled.global) audioDispatch({type:"effect", payload:"panner/enable"});
+    useEffect(function () {
+        if (allPannersAreDisabled.value) {
+            audioDispatch({type:"effect", payload:"panner/disable"});
+        } else if (allPannersAreDisabled.global) {
+            audioDispatch({type:"effect", payload:"panner/enable"});
+        }
     }, [allPannersAreDisabled]);
-    useEffect(() => {
-        if (allPlaybackRatesAreDisabled.value) audioDispatch({type:"effect", payload:"playbackRate/disable"});
-        else if (allPlaybackRatesAreDisabled.global) audioDispatch({type:"effect", payload:"playbackRate/enable"});
+    useEffect(function () {
+        if (allPlaybackRatesAreDisabled.value) {
+            audioDispatch({type:"effect", payload:"playbackRate/disable"});
+        } else if (allPlaybackRatesAreDisabled.global) {
+            audioDispatch({type:"effect", payload:"playbackRate/enable"});
+        }
     }, [allPlaybackRatesAreDisabled]);
-    useEffect(() => {
-        if (allRandomEndPointsAreDisabled.value) audioDispatch({type:"effect", payload:"randomEndPoint/disable"});
-        else if (allRandomEndPointsAreDisabled.global) audioDispatch({type:"effect", payload:"randomEndPoint/enable"});
+    useEffect(function () {
+        if (allRandomEndPointsAreDisabled.value) {
+            audioDispatch({type:"effect", payload:"randomEndPoint/disable"});
+        } else if (allRandomEndPointsAreDisabled.global) {
+            audioDispatch({type:"effect", payload:"randomEndPoint/enable"});
+        }
     }, [allRandomEndPointsAreDisabled]);
-    useEffect(() => {
-        if (allRandomStartPointsAreDisabled.value) audioDispatch({type:"effect", payload:"randomStartPoint/disable"});
-        else if (allRandomStartPointsAreDisabled.global) audioDispatch({type:"effect", payload:"randomStartPoint/enable"});
+    useEffect(function () {
+        if (allRandomStartPointsAreDisabled.value) {
+            audioDispatch({type:"effect", payload:"randomStartPoint/disable"});
+        } else if (allRandomStartPointsAreDisabled.global) {
+            audioDispatch({type:"effect", payload:"randomStartPoint/enable"});
+        }
     }, [allRandomStartPointsAreDisabled]);
-    
-    const changeVolume = useCallback((val) => {
+
+    const changeVolume = useCallback(function (val) {
         audioDispatch({type: "volume/change", payload: +val})
         setAudioVolume(_id);
     }, [_id]);
-    const changeConfigurationsState = useCallback(() => {audioDispatch({type: "configuration/toggle"})}, []);
 
-    const changeDelay = useCallback(() => {
+    const changeConfigurationsState = useCallback(function () {
+        audioDispatch({type: "configuration/toggle"})
+    }, []);
+
+    const changeDelay = useCallback(function () {
         if (delayIsDisable) {
-            if (allDelaysAreDisabled.value) generalDisableDispatch({type: "enable/delay", payload:false});
+            if (allDelaysAreDisabled.value) {
+                generalDisableDispatch({type: "enable/delay", payload:false});
+            }
             audioDispatch({type:"effect", payload:"delay/enable"});
         } else {
             audioDispatch({type:"effect", payload:"delay/disable"});
         }
     },[ delayIsDisable, allDelaysAreDisabled, generalDisableDispatch]);
 
-    const changeFilter = useCallback(() => {
+    const changeFilter = useCallback(function () {
         if (filterIsDisable) {
-            if (allFiltersAreDisabled.value) generalDisableDispatch({type: "enable/filter", payload:false});
+            if (allFiltersAreDisabled.value) {
+                generalDisableDispatch({type: "enable/filter", payload:false});
+            }
             audioDispatch({type:"effect", payload:"filter/enable"});
         } else {
             audioDispatch({type:"effect", payload:"filter/disable"});
         }
     },[filterIsDisable, allFiltersAreDisabled, generalDisableDispatch]);
 
-    const changePanner = useCallback(() => {
+    const changePanner = useCallback(function () {
         if (pannerIsDisable) {
-            if (allPannersAreDisabled.value) generalDisableDispatch({type: "enable/panner", payload:false});
+            if (allPannersAreDisabled.value) {
+                generalDisableDispatch({type: "enable/panner", payload:false});
+            }
             audioDispatch({type:"effect", payload:"panner/enable"});
         } else {
             audioDispatch({type:"effect", payload:"panner/disable"});
         }
     },[pannerIsDisable, allPannersAreDisabled, generalDisableDispatch]);
 
-    const changePlaybackRate = useCallback(() => {
+    const changePlaybackRate = useCallback(function () {
         if (playbackRateIsDisable) {
-            if (allPlaybackRatesAreDisabled.value) generalDisableDispatch({type: "enable/playbackRate", payload:false});
+            if (allPlaybackRatesAreDisabled.value) {
+                generalDisableDispatch({type: "enable/playbackRate", payload:false});
+            }
             audioDispatch({type:"effect", payload:"playbackRate/enable"});
         } else {
             audioDispatch({type:"effect", payload:"playbackRate/disable"});
         }
     },[playbackRateIsDisable, allPlaybackRatesAreDisabled, generalDisableDispatch]);
 
-    const changeREP = useCallback(() => {
+    const changeREP = useCallback(function () {
         if (randomEndPointIsDisable) {
-            if (allRandomEndPointsAreDisabled.value) generalDisableDispatch({type: "enable/randomEndPoint", payload:false});
+            if (allRandomEndPointsAreDisabled.value) {
+                generalDisableDispatch({type: "enable/randomEndPoint", payload:false});
+            }
             audioDispatch({type:"effect", payload:"randomEndPoint/enable"});
         } else {
             audioDispatch({type:"effect", payload:"randomEndPoint/disable"});
         }
     },[randomEndPointIsDisable, allRandomEndPointsAreDisabled, generalDisableDispatch]);
 
-    const changeRSP= useCallback(() => {
+    const changeRSP= useCallback(function () {
         if (randomStartPointIsDisable) {
-            if (allRandomStartPointsAreDisabled.value) generalDisableDispatch({type: "enable/randomStartPoint", payload:false});
+            if (allRandomStartPointsAreDisabled.value) {
+                generalDisableDispatch({type: "enable/randomStartPoint", payload:false});
+            }
             audioDispatch({type:"effect", payload:"randomStartPoint/enable"});
         } else {
             audioDispatch({type:"effect", payload:"randomStartPoint/disable"});
         }
     },[randomStartPointIsDisable, allRandomStartPointsAreDisabled, generalDisableDispatch]);
 
-    const addEvent = () => {
-        if (audioEvents > 0 && sumOfAllEvents === audioEvents) return;
+    function addEvent() {
+        if (audioEvents > 0 && sumOfAllEvents === audioEvents) {
+            return;
+        }
         if (audioEvents < 50) {
             sumOfAllEventsdispatch({type: "add"});
             audioDispatch({type: "audioEvents/add"})
         }
     }
-    const subtractEvent = () => {
-        if (audioEvents === 1 && sumOfAllEvents === 1) return;
+    function subtractEvent() {
+        if (audioEvents === 1 && sumOfAllEvents === 1) {
+            return;
+        }
         if (audioEvents > 1) {
             sumOfAllEventsdispatch({type: "subtract", payload: 1});
             audioDispatch({type: "audioEvents/subtract"})
         }
     }
-    const playOnClick = useCallback(() => {
+    const playOnClick = useCallback(function() {
         if (isPlaying) {
             stop(_id, audioDispatch);
             audioDispatch({type: "color/default"});
@@ -228,7 +307,10 @@ function AudioElement({_id}) {
         }
     },[_id, isPlaying]);
     const isDurationShort = useMemo(() => duration < 2, [duration]);
-    const probabilityPrecent = useMemo(() => calcPercent(audioEvents, sumOfAllEvents), [audioEvents, sumOfAllEvents])
+    const probabilityPrecent = useMemo(
+        () => floorPercent(sumOfAllEvents, audioEvents, 100)
+        , [audioEvents, sumOfAllEvents]
+    );
 
     return (
         <div 
@@ -236,7 +318,7 @@ function AudioElement({_id}) {
             style={color ? {
                 "--audio-color": color,
                 outlineColor: color
-            } : null}
+            } : undefined}
         >
             <section className="audio-element_header flex-row align-c justify-sb p-2">
                 <PlayButton isPlaying={isPlaying} playOnClick={playOnClick}/>
@@ -260,8 +342,7 @@ function AudioElement({_id}) {
             <section className="audio-configuration flex-column">
                 <div className="audio-configuration_playback--prev flex-row align-c justify-c">
                     <div className="audio-configuration_playback p-5 flex-row align-c"
-                        style={isDurationShort ? {width: "80%"} : null}
-                    
+                        style={isDurationShort ? {width: "80%"} : undefined}
                     >
                         <div className="playback_time-text">
                             {isDurationShort
@@ -340,6 +421,5 @@ function AudioElement({_id}) {
         </div>
     )
 }
-
 
 export default memo(AudioElement);

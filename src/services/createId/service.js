@@ -1,6 +1,9 @@
 /**
 * @returns {string}
 */
+/*-
+createId: undefined -> string
+*/
 function createId() {
     const values = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_";
     let str = Date.now() + "";

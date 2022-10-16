@@ -58,9 +58,8 @@
       border: none;
       border-radius: 100px;
     }
-    
     .range_value::-webkit-progress-bar { background: var(--bar-bg-color); }
-    
+  
     .range_value::-webkit-progress-value { @include progress(); }
     .range_value::-moz-progress-bar { @include progress(); }
     

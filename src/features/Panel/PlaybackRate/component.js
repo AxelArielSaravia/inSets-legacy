@@ -13,14 +13,19 @@ import {
 } from "../utils.js";
 
 function PlaybackRate() {
-    const [{allPlaybackRatesAreDisabled}, generalDisableDispatch] = useContext(GeneralDisableContext);
-    const [ {min, max}, playbackRateDispatch ] = useReducer(PlaybackRateReducer, initPlaybackRateState());
-    
+    const [
+        {allPlaybackRatesAreDisabled},
+        generalDisableDispatch
+    ] = useContext(GeneralDisableContext);
+    const [
+        {min, max},
+        playbackRateDispatch
+    ] = useReducer(PlaybackRateReducer, initPlaybackRateState());
+
     const minVal = useMemo(() => playbackRateValueToRangeValue(min * 100), [min]);
     const maxVal = useMemo(() => playbackRateValueToRangeValue(max * 100), [max]);
 
-    
-    const changeDisable = useCallback(() => {
+    const changeDisable = useCallback(function () {
         if (allPlaybackRatesAreDisabled.value) {
             generalDisableDispatch({type: "enable/playbackRate", payload: true})
         } else {
@@ -28,13 +33,15 @@ function PlaybackRate() {
         }
     },[allPlaybackRatesAreDisabled, generalDisableDispatch]);
 
-    const reset = useCallback(() => {playbackRateDispatch({type: "reset"})}, [playbackRateDispatch]);
+    const reset = useCallback(function () {
+        playbackRateDispatch({type: "reset"});
+    }, [playbackRateDispatch]);
 
-    const minOnChange = useCallback((val) => {
+    const minOnChange = useCallback(function (val) {
         playbackRateDispatch({type:"min/change", payload: rangeValueToPlaybackRateValue(+val)/100});
     }, [playbackRateDispatch]);
 
-    const maxOnChange = useCallback((val) => {
+    const maxOnChange = useCallback(function (val) {
         playbackRateDispatch({type:"max/change", payload: rangeValueToPlaybackRateValue(+val)/100});
     }, [playbackRateDispatch]);
 

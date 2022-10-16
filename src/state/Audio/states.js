@@ -1,55 +1,72 @@
-/**@type {{min:1, max: 0.1}} */
-const audioVolumeLimits = {
-    max: 1,  //100%
-    min: 0.1 //10%
+/*-
+audioVolumeLimits: {
+    min:1,
+    max: 0.1
 }
+*/
+const audioVolumeLimits = Object.create(null);
+audioVolumeLimits.max = 1;  //100%
+audioVolumeLimits.min = 0.1; //10%
 Object.freeze(audioVolumeLimits);
 
-/**
- * @typedef {{
- *  _id: string,
- *  audioEvents: number,
- *  delayIsDisable: boolean, 
- *  duration: number,
- *  endPoint: number,
- *  endTime: number,
- *  filterIsDisable: boolean,
- *  isPlaying: boolean,
- *  pannerIsDisable: boolean,
- *  playbackRateIsDisable: boolean,
- *  randomEndPointIsDisable: boolean,
- *  randomStartPointIsDisable: boolean,
- *  startPoint: number,
- *  startTime: number,
- *  title: string,
- *  volume: number
- * }} AudioGeneralState
- */
+/*-
+@type AudioGeneralState: {
+    _id: string,
+    audioEvents: number,
+    delayIsDisable: boolean,
+    duration: number,
+    endPoint: number,
+    endTime: number,
+    filterIsDisable: boolean,
+    isPlaying: boolean,
+    pannerIsDisable: boolean,
+    playbackRateIsDisable: boolean,
+    randomEndPointIsDisable: boolean,
+    randomStartPointIsDisable: boolean,
+    startPoint: number,
+    startTime: number,
+    title: string,
+    volume: number
+}
+*/
 
 /* -------------------------------------------------------------------------- */
 /*                                   AUDIO STATE                              */
 /* -------------------------------------------------------------------------- */
-/**
- * @typedef {{
- *  audioEngine: HTMLAudioElement | null,
- *  outputGain: GainNode | null,
- *  source: MediaElementAudioSourceNode | null,
- *  type: string,
- * } & AudioGeneralState} AudioState
- */
+/*-
+@type AudioState: {
+    ...AudioGeneralState
+    audioEngine: HTMLAudioElement | undefined,
+    outputGain: GainNode | undefined,
+    source: MediaElementAudioSourceNode | undefined,
+    type: string,
+}
+*/
 
-/**
- * @param {string} id 
- * @param {string} title 
- * @param {string} type 
- * @param {number} duration 
- * @param {GlobalState} GlobalState 
- * @returns {AudioState}
- */
- const createAudioState = (id, title, type, duration, GlobalState) => {
-    const obj = {
+/*-
+createAudioState: {
+    id: string,
+    title: string.
+    type: string,
+    duration, string,
+    GlobalState: GlobalState
+} -> AudioState
+*/
+function createAudioState(spec) {
+    const {
+        GlobalState,
+        audioEngine,
+        duration,
+        id,
+        source,
+        title,
+        type
+    } = spec;
+
+    return Object.seal({
+        type,
         _id:  id,
-        audioEngine: null,
+        audioEngine,
         audioEvents: 1,
         delayIsDisable: GlobalState?.delay.areAllDisable || false,
         duration: duration || 0, //seconds
@@ -57,23 +74,19 @@ Object.freeze(audioVolumeLimits);
         endTime: duration || 0,  //duration seconds
         filterIsDisable: GlobalState?.filter.areAllDisable || false,
         isPlaying: false,
-        outputGain: null,
+        outputGain: undefined,
         pannerIsDisable: GlobalState?.panner.areAllDisable || false,
-        playbackRateIsDisable: GlobalState?.playbackRate.areAllDisable || false,
         playbackRate: 1,
+        playbackRateIsDisable: GlobalState?.playbackRate.areAllDisable || false,
         randomEndPointIsDisable: GlobalState?.randomEndPoint || false,
         randomStartPointIsDisable: GlobalState?.randomStartPoint || false,
+        source,
         startPoint: 0, //seconds
         startTime: 0,  //seconds
-        source: null,
         title: title.slice(0, title.lastIndexOf(".")),
-        type: type,
-        volume: 1, //_MAX_VOLUME_
-    }
-    Object.seal(obj);
-    return obj;
+        volume: 1 //MAX_VOLUME
+    });
 }
-
 
 /* -------------------------------------------------------------------------- */
 /*                                   EXPORTS                                  */

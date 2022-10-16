@@ -9,10 +9,17 @@ import ConfigPanelInterval from "../ConfigPanelInterval/component.js";
 
 function Panner() {
     const [{allPannersAreDisabled}, generalDisableDispatch] = useContext(GeneralDisableContext);
-    const [ {xMax, xMin, yMax, yMin, zMax, zMin}, pannerDispatch ] = useReducer(PannerReducer, initPannerState());
+    const [{
+        xMax,
+        xMin,
+        yMax,
+        yMin,
+        zMax,
+        zMin
+    }, pannerDispatch] = useReducer(PannerReducer, initPannerState());
 
 
-    const changeDisable = useCallback(() => {
+    const changeDisable = useCallback(function () {
         if (allPannersAreDisabled.value) {
             generalDisableDispatch({type: "enable/panner", payload: true})
         } else {
@@ -20,27 +27,29 @@ function Panner() {
         }
     },[allPannersAreDisabled, generalDisableDispatch]);
 
-    const reset = useCallback(() => {pannerDispatch({type: "reset"})}, []);
+    const reset = useCallback(function () {
+        pannerDispatch({type: "reset"});
+    }, []);
 
-    const xMinOnChange = useCallback((val) => {
+    const xMinOnChange = useCallback(function (val) {
         pannerDispatch({type:"x/changeMin", payload: +val - 50});
     }, [pannerDispatch]);
-    const xMaxOnChange = useCallback((val) => {
+    const xMaxOnChange = useCallback(function (val) {
         pannerDispatch({type:"x/changeMax", payload: +val - 50});
     }, [pannerDispatch]);
-    const yMinOnChange = useCallback((val) => {
+    const yMinOnChange = useCallback(function (val) {
         pannerDispatch({type:"y/changeMin", payload: +val - 50});
     }, [pannerDispatch]);
-    const yMaxOnChange = useCallback((val) => {
+    const yMaxOnChange = useCallback(function (val) {
         pannerDispatch({type:"y/changeMax", payload: +val - 50});
     }, [pannerDispatch]);
-    const zMinOnChange = useCallback((val) => {
+    const zMinOnChange = useCallback(function (val) {
         pannerDispatch({type:"z/changeMin", payload: +val});
     }, [pannerDispatch]);
-    const zMaxOnChange = useCallback((val) => {
+    const zMaxOnChange = useCallback(function (val) {
         pannerDispatch({type:"z/changeMax", payload: +val});
     }, [pannerDispatch]);
-    
+
     return (
         <ConfigPanelContainer
             title="Panner"

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 /**
  * @param {string} media the string must be a media query css  
@@ -10,7 +10,7 @@ import { useCallback, useEffect, useState } from "react";
     useEffect(() => {
         const MM = window.matchMedia(media);
         MM.onchange = (e) => setValue(() => e.matches);
-        return () => MM.onchange = null;
+        return () => MM.onchange = undefined;
     }, [media]);
     return value;
 }

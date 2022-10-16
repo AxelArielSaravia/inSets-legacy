@@ -1,6 +1,9 @@
 import { memo, useReducer, useCallback } from "react";
 
-import { initReducerState, reducer } from "./reducer.js";
+import {
+    createConfigPanelState,
+    configPanelReducer
+} from "../../reducer/ConfigPanelReducer.js";
 
 import { IconColumns, IconColumnsGap } from "../../components/icons/component.js";
 import ItemsPanel from "./ItemsPanel/component.js";
@@ -8,17 +11,16 @@ import ConfigPanel from "./ConfigPanel/component.js";
 
 import "./style.scss";
 
-
 function PanelSwitcher({switchOnClick, isPanelVisible}) {
     return (
         <div className="panel-switcher flex-column align-c justify-c">
-            <button 
+            <button
                 className="flex-row align-c"
                 type="button"
                 onClick={switchOnClick}
             >
                 <div></div>
-                { isPanelVisible 
+                {isPanelVisible
                     ? <IconColumnsGap className="icon-panel icon-text"/>
                     : <IconColumns className="icon-panel icon-text"/>
                 }
@@ -27,13 +29,21 @@ function PanelSwitcher({switchOnClick, isPanelVisible}) {
     );
 }
 
-
 function GeneralPanel() {
-    const [{isItemsPanelVisible, isConfigPanelVisible, isPanelVisible, panelItem}, dispatch] = useReducer(reducer, initReducerState); 
+    const [{
+        isItemsPanelVisible,
+        isConfigPanelVisible,
+        isPanelVisible,
+        panelItem
+    }, dispatch] = useReducer(configPanelReducer, createConfigPanelState());
 
-    const closeConfigPanel = useCallback(() => { dispatch({type: "configPanel/close"}); }, [])
-    
-    const switchOnClick = () => { dispatch({type: "panel/switch"}); }
+    const closeConfigPanel = useCallback(function () {
+        dispatch({type: "configPanel/close"});
+    }, []);
+
+    function switchOnClick() {
+        dispatch({type: "panel/switch"});
+    }
 
     return (
         <div className="generalPanel flex-column">

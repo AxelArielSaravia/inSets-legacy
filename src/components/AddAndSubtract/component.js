@@ -1,4 +1,9 @@
-import { IconChevronUp, IconChevronDown, IconChevronLeft, IconChevronRight } from "../icons/component.js";
+import {
+    IconChevronUp,
+    IconChevronDown,
+    IconChevronLeft,
+    IconChevronRight
+} from "../icons/component.js";
 import Button from "../Button/component.js";
 
 
@@ -12,11 +17,11 @@ function AddAndSubtract({
 }) {
     return (
         <div className={horizontal ? "addAndSubtract flex-row align-c" : "addAndSubtract flex-column"}>
-             <Button 
-                type="button" 
+             <Button
+                type="button"
                 className="addAndSubtract_button flex-column align-c justify-c"
                 onClick={horizontal ? subtractOnClick : addOnClick}
-            > 
+            >
                 {horizontal
                 ? <IconChevronLeft className="icon-text-s"/>
                 : <IconChevronUp className="icon-text-s"/>

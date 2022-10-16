@@ -3,29 +3,43 @@ import { GlobalState } from "../../state/Global/index.js";
 
 import createId  from "../../services/createId/service.js";
 
-/**
- * See if the type of the file have a valid audio type
- * @param {string} type 
- * @returns {boolean}
- */
+
+/*-
+@desc (
+    See if the type of the file have a valid audio type
+)
+isValidAudioType: string -> boolean
+*/
 const isValidAudioType = (type) => (/^audio\/\w+$/).test(type);
 
-/**
- * @param {HTMLAudioElement} HTMLAudio 
- * @param {string} mediaType 
- * @returns {"probably" | "maybe" | ""}
- */
-const canPlayType = (HTMLAudio, mediaType) => {
-    if (!HTMLAudio.canPlayType) throw new Error("HTMLAudioElement.prototype.canPlayType does not find");
-    return HTMLAudio.canPlayType(mediaType); 
+
+/*-
+canPlayType: HTMLAudioElement, string -> "probably" | "maybe" | ""
+*/
+function canPlayType(HTMLAudio, mediaType) {
+    if (!HTMLAudio.canPlayType) {
+        throw new Error("HTMLAudioElement.prototype.canPlayType does not find");
+    }
+    return HTMLAudio.canPlayType(mediaType);
 }
 
-const audioFromFile_AudioNode = async (file, audioListDispatcher, sumOfAllEventsDispatcher) => {
+/*-
+audioFromFile_AudioNode: (
+    File,
+    {id: string, type: string} -> undefined,
+    {type: string} -> udnefined
+) -> undefined
+*/
+async function audioFromFile_AudioNode(
+    file,
+    audioListDispatcher,
+    sumOfAllEventsDispatcher
+) {
     //ID of AudioState
     const id = createId();
     try {
         //available to use in view
-        audioListDispatcher({type: "addLoading", id: id});
+        audioListDispatcher({id, type: "addLoading"});
 
         const url = URL.createObjectURL(file);
         const htmlAudio = await new Audio(url);
@@ -34,63 +48,52 @@ const audioFromFile_AudioNode = async (file, audioListDispatcher, sumOfAllEvents
         }
 
         //presersPitch false in playbackrate
-        if ('preservesPitch' in htmlAudio) {
+        if (htmlAudio.preservesPitch !== undefined) {
             htmlAudio.preservesPitch = false;
         }
 
-        htmlAudio.addEventListener("error", () => {
-            console.warn("Delete "+file.name+" from list")
-            audioListDispatcher({type: "loadingError", id: id});
+        htmlAudio.addEventListener("error", function() {
+            console.warn(`Delete ${file.name} from list`);
+            audioListDispatcher({id, type: "loadingError"});
             throw new Error(`Error loading: ${file.name}`);
         }, {once: true});
 
-        htmlAudio.addEventListener("canplaythrough", () => {
-        /* the audio is now playable; play it if permissions allow */
+        htmlAudio.addEventListener("canplaythrough", function() {
+            /* the audio is now playable; play it if permissions allow */
             try {
-                let source = GlobalState._audio_context.createMediaElementSource(htmlAudio); 
-                let audioState = createAudioState(id, file.name, file.type, htmlAudio.duration, GlobalState);
-                audioState.audioEngine = htmlAudio;
-                audioState.source = source;
-    
+                let source = GlobalState._audio_context.createMediaElementSource(htmlAudio);
+                let audioState = createAudioState({
+                    GlobalState,
+                    audioEngine: htmlAudio,
+                    duration: htmlAudio.duration,
+                    id,
+                    source,
+                    title: file.name,
+                    type: file.type
+                });
+
                 //Add audioState to GlobalState
                 GlobalState._audio_list.set(id, audioState);
                 //available to use in view
-                audioListDispatcher({type: "addCompleted", id: id});
-                sumOfAllEventsDispatcher({type: "add"})
-    
-                audioState = source = null;
+                audioListDispatcher({id, type: "addCompleted"});
+                sumOfAllEventsDispatcher({type: "add"});
+
+                source = undefined;
+                audioState = undefined;
             } catch (err) {
                 console.error(err);
-                console.warn("The error was catching and delete " +file.name+ " from list")
-                audioListDispatcher({type: "loadingError", id: id});
+                console.warn(`The error was catching and delete ${file.name} from list`);
+                audioListDispatcher({id, type: "loadingError"});
             }
         },{once: true});
-
     } catch (err) {
         console.error(err);
-        console.warn("The error was catching and delete " +file.name+ " from list")
-        audioListDispatcher({type: "loadingError", id: id});
+        console.warn(`The error was catching and delete ${file.name} from list`);
+        audioListDispatcher({id, type: "loadingError"});
     }
 }
-/* 
-const audioStateFromFile_AudioBuffer = (file, dispatcher) => {
-    return Promise.resolve()
-    .then(() => file.arrayBuffer())
-    .then(data => GlobalState.AUDIO_CONTEXT.decodeAudioData(data))
-    .then(audioBuffer => {
-        const id = createId();
-        let audioState = createAudioState(id, file.name, file.type, audioBuffer.duration, GlobalState);
-        audioState.audioEngine = audioBuffer;
 
-        dispatcher({ type: "ADD_Audio", id: id, value: audioState });
-        dispatcher({ variable: "filesLoading", type: "subtract" });
-        
-        audioState = null;
-    })
-    .catch(err => console.error(err));
-}
-   */
 export {
-    isValidAudioType,
-    audioFromFile_AudioNode
-}
+    audioFromFile_AudioNode,
+    isValidAudioType
+};
