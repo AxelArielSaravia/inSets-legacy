@@ -12,15 +12,15 @@ import { audioVolumeLimits } from "../state/Audio/index.js";
 /*-
 createViewAudioState: string -> ViewAudioState
 */
-function createViewAudioState(_id) {
-    const audio_state = GlobalState._audio_list.get(_id);
-    if (!audio_state) {
+function createViewAudioState(id) {
+    const audio_state = GlobalState.audio_list.get(id);
+    if (audio_state === false) {
         throw new Error(
             "Error: can not create ViewGeneralAudioState, the audio is not in the regiter."
         );
     }
     return {
-        _id: audio_state._id,
+        id: audio_state.id,
         audioEvents: audio_state.audioEvents,
         color: "",
         configurationIsOpen: false,
@@ -67,7 +67,7 @@ ViewAudioDisableReducer: (
 ) -> ViewAudioState
 */
 function ViewAudioDisableReducer(state, type) {
-    const audio_state = GlobalState._audio_list.get(state._id);
+    const audio_state = GlobalState.audio_list.get(state.id);
 
     if (type === "delay/disable") {
         audio_state.delayIsDisable = true;
@@ -143,7 +143,7 @@ const ViewAudioReducer = (state, action) => {
     if (type === "audioEvents/add"
         && state.audioEvents < 50
     ) {
-        const audio_state = GlobalState._audio_list.get(state._id);
+        const audio_state = GlobalState.audio_list.get(state.id);
         audio_state.audioEvents += 1;
         return {
             ...state,
@@ -153,7 +153,7 @@ const ViewAudioReducer = (state, action) => {
     } else if (type === "audioEvents/subtract"
         && state.audioEvents > 1
     ) {
-        const audio_state = GlobalState._audio_list.get(state._id);
+        const audio_state = GlobalState.audio_list.get(state.id);
         audio_state.audioEvents -= 1;
         return {
             ...state,
@@ -179,7 +179,7 @@ const ViewAudioReducer = (state, action) => {
         && typeof payload === "number"
         && state.duration > 0.5
     ) {
-        const audio_state = GlobalState._audio_list.get(state._id);
+        const audio_state = GlobalState.audio_list.get(state.id);
         const endTime = (
             payload < state.startTime + 0.5
             ? state.startTime + 0.5
@@ -188,10 +188,10 @@ const ViewAudioReducer = (state, action) => {
             : payload
         );
         audio_state.endTime = endTime;
-        return { ...state, endTime };
+        return {...state, endTime};
 
     } else if (type === "play") {
-        return { ...state, isPlaying: true };
+        return {...state, isPlaying: true};
 
     } else if (type === "points/change") {
         return {
@@ -204,7 +204,7 @@ const ViewAudioReducer = (state, action) => {
         && typeof payload === "number"
         && state.duration > 0.5
     ) {
-        const audio_state = GlobalState._audio_list.get(state._id);
+        const audio_state = GlobalState.audio_list.get(state.id);
         const startTime = (
             payload > state.endTime - 0.5
             ? state.endTime - 0.5
@@ -213,7 +213,7 @@ const ViewAudioReducer = (state, action) => {
             : payload
         );
         audio_state.startTime = startTime;
-        return { ...state, startTime };
+        return {...state, startTime};
 
     } else if (type === "stop") {
         return {
@@ -227,7 +227,7 @@ const ViewAudioReducer = (state, action) => {
     } else if (type === "volume/change"
         && typeof payload === "number"
     ) {
-        const audio_state = GlobalState._audio_list.get(state._id);
+        const audio_state = GlobalState.audio_list.get(state.id);
         const volume = (
             payload < audioVolumeLimits.min
             ? audioVolumeLimits.min
@@ -236,7 +236,10 @@ const ViewAudioReducer = (state, action) => {
             : payload
         );
         audio_state.volume = volume;
-        return { ...state, volume };
+        return {
+            ...state,
+            volume
+        };
 
     } else if (type === "currentTime/update"
         && state.isPlaying

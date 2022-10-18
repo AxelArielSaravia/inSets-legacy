@@ -1,8 +1,9 @@
-import { memo } from "react";
+import {memo} from "react";
 
-import { useOnClickClose } from "../hook.js";
+import {useOnClickClose} from "../hook.js";
 
-import { IconChevronBarLeft } from "../../../components/icons/component.js";
+import {IconChevronBarLeft} from "../../../components/icons/component.js";
+
 import Delay from "../Delay/component.js";
 import Fades from "../Fades/component.js";
 import Filter from "../Filter/component.js";

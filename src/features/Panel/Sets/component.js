@@ -1,13 +1,18 @@
-import { memo, useReducer, useCallback, useContext, useEffect } from "react";
+import {memo,
+    useReducer,
+    useCallback,
+    useContext,
+    useEffect
+} from "react";
 
-import { AudioListContext } from "../../../context/index.js";
+import {AudioListContext} from "../../../context/index.js";
 
-import { initSetsState, SetsReducer } from "../../../reducer/index.js";
+import {initSetsState, SetsReducer} from "../../../reducer/index.js";
 
 import AddAndSubtract from "../../../components/AddAndSubtract/component.js";
 import ConfigPanelContainer from "../ConfigPanelContainer/component.js"
 
-import { fixPercent } from "../../utils.js"; 
+import {fixPercent} from "../../utils.js"; 
 
 import "./style.scss";
 

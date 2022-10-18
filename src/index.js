@@ -14,10 +14,12 @@ import HasNotAudioContext from "./features/App.js";
 import "./index.scss";
 
 /* INIT STATE */
-handleInitState("v0.3.1");
+handleInitState("v0.3.2");
 
 function startApp() {
-    if (hasAudioContext()) initAudioContext();
+    if (hasAudioContext()) {
+        initAudioContext();
+    }
 
     const root = ReactDOM.createRoot(document.getElementById("root"));
     root.render(

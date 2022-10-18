@@ -1,6 +1,6 @@
-import { memo, useReducer, useCallback, useMemo } from "react";
+import {memo, useReducer, useCallback, useMemo} from "react";
 
-import { initTimeState, TimeReducer } from "../../../reducer/index.js";
+import {initTimeState, TimeReducer} from "../../../reducer/index.js";
 
 import AddAndSubtract from "../../../components/AddAndSubtract/component.js";
 import ConfigPanelContainer from "../ConfigPanelContainer/component.js"
@@ -12,19 +12,19 @@ function Time() {
     const [{min, max}, timeDispatch] = useReducer(TimeReducer, initTimeState());
  
     const reset = useCallback(function () {
-        timeDispatch({type: "reset"})
-}, [timeDispatch]);
+        timeDispatch({type: "reset"});
+    }, [timeDispatch]);
 
-    const addToMin = (val) => () => {
+    const addToMin = (val) => function () {
         timeDispatch({type:"min/change", payload: +min + val});
     } 
-    const subtractToMin = (val) => () => {
+    const subtractToMin = (val) => function () {
         timeDispatch({type:"min/change", payload: +min - val});
     } 
-    const addToMax = (val) => () => {
+    const addToMax = (val) => function () {
         timeDispatch({type:"max/change", payload: +max + val});
     } 
-    const subtractToMax = (val) => () => {
+    const subtractToMax = (val) => function () {
         timeDispatch({type:"max/change", payload: +max - val});
     } 
 
@@ -55,19 +55,19 @@ function Time() {
             <ConfigPanelChild>
                 <div className="flex-row align-c justify-c py-2">
                     <p className="fs-text text-bold p-2">time max</p>
-                    <AddAndSubtract 
+                    <AddAndSubtract
                         addOnClick={addToMax(600)}
                         subtractOnClick={subtractToMax(600)}
                         viewValue={maxMinutes}
                     />
                     <p className="p-2 fs-text">:</p>
-                    <AddAndSubtract 
+                    <AddAndSubtract
                         addOnClick={addToMax(10)}
                         subtractOnClick={subtractToMax(10)}
                         viewValue={maxSeconds}
                     />
                     <p className="p-2 fs-text">.</p>
-                    <AddAndSubtract 
+                    <AddAndSubtract
                         addOnClick={addToMax(1)}
                         subtractOnClick={subtractToMax(1)}
                         viewValue={max % 10}
@@ -77,19 +77,19 @@ function Time() {
             <ConfigPanelChild>
                 <div className="flex-row align-c justify-c py-2">
                     <p className="fs-text text-bold p-2">time min</p>
-                    <AddAndSubtract 
+                    <AddAndSubtract
                         addOnClick={addToMin(600)}
                         subtractOnClick={subtractToMin(600)}
                         viewValue={minMinutes}
                     />
                     <p className="p-2 fs-text">:</p>
-                    <AddAndSubtract 
+                    <AddAndSubtract
                         addOnClick={addToMin(10)}
                         subtractOnClick={subtractToMin(10)}
                         viewValue={minSeconds}
                     />
                     <p className="p-2 fs-text">.</p>
-                    <AddAndSubtract 
+                    <AddAndSubtract
                         addOnClick={addToMin(1)}
                         subtractOnClick={subtractToMin(1)}
                         viewValue={min % 10}

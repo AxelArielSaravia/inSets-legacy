@@ -1,6 +1,6 @@
-import { memo, useContext, useCallback } from "react";
+import {memo, useContext, useCallback} from "react";
 
-import { GeneralDisableContext } from "../../../context/index.js";
+import {GeneralDisableContext} from "../../../context/index.js";
 
 import ConfigPanelContainer from "../ConfigPanelContainer/component.js"
 

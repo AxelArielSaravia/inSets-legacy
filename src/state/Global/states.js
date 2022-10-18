@@ -1,102 +1,12 @@
-import { isInsideInterval } from "../../services/interval/service.js";
-
-/* -------------------------------------------------------------------------- */
-/*                               LIMITS OBJECTS                               */
-/* -------------------------------------------------------------------------- */
-/*-
-globalPannerLimits: {
-    MAX: 50,
-    MIN: -50,
-    Z_MIN: 0
-}
-*/
-const globalPannerLimits = Object.create(null);
-globalPannerLimits.MAX = 50;
-globalPannerLimits.MIN = -50;
-globalPannerLimits.Z_MIN = 0;
-Object.freeze(globalPannerLimits);
-
-/*-
-globalFilterLimits: {
-    FREQ_MIN: 40,
-    FREQ_MAX:18000,
-    Q_MIN: 0.05,
-    Q_MAX: 5,
-    TYPES: ["lowpass", "highpass", "bandpass", "notch"]
-}
-*/
-const globalFilterLimits = Object.create(null);
-globalFilterLimits.FREQ_MAX = 18000; //hz
-globalFilterLimits.FREQ_MIN = 40;    //hz
-globalFilterLimits.Q_MAX = 10.00;
-globalFilterLimits.Q_MIN = 0.1;
-globalFilterLimits.TYPES = Object.freeze([
-    "lowpass", "highpass", "bandpass", "notch"
-]);
-Object.freeze(globalFilterLimits);
-
-/*-
-globalDelayLimits: {
-    FBACK_MAX: 0.9,
-    FBACK_MIN: 0.05,
-    TIME_MAX: 5,
-    TIME_MIN: 0.1
-}
-*/
-const globalDelayLimits = Object.create(null);
-globalDelayLimits.FBACK_MAX = 0.90; //gain values
-globalDelayLimits.FBACK_MIN = 0.05;
-globalDelayLimits.TIME_MAX = 5.0;   //seconds
-globalDelayLimits.TIME_MIN = 0.1;
-Object.freeze(globalDelayLimits);
-
-/*-
-globalPlaybackRateLimits: {
-    MIN: 0.5,
-    MAX: 2
-}
-*/
-const globalPlaybackRateLimits = Object.create(null);
-globalPlaybackRateLimits.MAX = 2.0;
-globalPlaybackRateLimits.MIN = 0.5;
-Object.freeze(globalPlaybackRateLimits);
-
-
-/*-
-globalTimeIntervalLimits: {
-    MIN: 4,
-    MAX: 18000
-}
-*/
-const globalTimeIntervalLimits = Object.create(null);
-globalTimeIntervalLimits.MAX = 18000; //handreads of miliseconds
-globalTimeIntervalLimits.MIN = 5;     //handreads of miliseconds
-Object.freeze(globalTimeIntervalLimits);
-
-
-/*-
-globalFadeLimits: {
-    MIN: 15,
-    MAX: 500
-}
-*/
-const globalFadeLimits = Object.create(null);
-globalFadeLimits.MAX = 300; //miliseconds
-globalFadeLimits.MIN = 10;  //miliseconds
-Object.freeze(globalFadeLimits);
-
-/*-
-pannerListener: {
-    X: 6,
-    Y: 6,
-    Z: 6
-}
-*/
-const pannerListener = Object.create(null);
-pannerListener.X = 6;
-pannerListener.Y = 6;
-pannerListener.Z = 1;
-Object.freeze(pannerListener);
+import { isInsideInterval } from "../../services/assert/service.js";
+import {
+    delayLimits,
+    fadeLimits,
+    filterLimits,
+    pannerLimits,
+    playbackRateLimits,
+    timeIntervalLimits
+} from "../../services/limits/service.js";
 
 /* -------------------------------------------------------------------------- */
 /*                            DEFAULT GLOBAL STATE                            */
@@ -121,35 +31,35 @@ defaultGlobalState: LocalStorageState
 */
 const defaultGlobalState = Object.freeze({
     delay: Object.freeze({
-      areAllDisable: false,
-      feedbackMax: 0.85,
-      feedbackMin: 0.25,
-      timeMax: 4,
-      timeMin: 0.4
+        areAllDisable: false,
+        feedbackMax: 16,
+        feedbackMin: 4,
+        timeMax: 39,
+        timeMin: 3
     }),
-    fadeIn: 80,
-    fadeOut: 200,
+    fadeIn: 7,
+    fadeOut:19,
     filter: Object.freeze({
-      areAllDisable: false,
-      frequencyMax: 10000,
-      frequencyMin: 80,
-      qMax: 10,
-      qMin: 0.1,
-      types: Object.freeze(["lowpass", "highpass", "bandpass", "notch"])
+        areAllDisable: false,
+        frequencyMax: 240,
+        frequencyMin: 40,
+        qMax: 36,
+        qMin: 0,
+        types: Object.freeze(["lowpass", "highpass", "bandpass", "notch"])
     }),
     panner: Object.freeze({
-      areAllDisable: false,
-      xMax: 30,
-      xMin: -30,
-      yMax: 30,
-      yMin: -30,
-      zMax: 50,
-      zMin: 0
+        areAllDisable: false,
+        xMax: 80,
+        xMin: 20,
+        yMax: 80,
+        yMin: 20,
+        zMax: 50,
+        zMin: 0
     }),
     playbackRate: Object.freeze({
         areAllDisable: false,
-        max: 1.5,
-        min: 0.75
+        max: 15,
+        min: 5
     }),
     randomEndPoint: false,
     randomStartPoint: false,
@@ -183,32 +93,49 @@ createGlobalDelay: MaybeDelay -> GlobalDelay
 function createGlobalDelay(spec) {
     const o = {};
     if (typeof spec === "object") {
+        const limits = delayLimits();
         o.areAllDisable = (
             spec.areAllDisable !== undefined
-            ? !!spec.areAllDisable
+            ? spec.areAllDisable
             : defaultGlobalState.delay.areAllDisable
         );
         o.timeMax = (
-            spec.timeMax !== undefined
-            && isInsideInterval(globalDelayLimits.TIME_MIN, globalDelayLimits.TIME_MAX, spec.timeMax)
+            (spec.timeMax !== undefined
+                && isInsideInterval(
+                    limits.TIME_MIN,
+                    limits.TIME_MAX,
+                    spec.timeMax
+                )
+            )
             ? spec.timeMax
             : defaultGlobalState.delay.timeMax
         );
         o.timeMin = (
-            spec.timeMin !== undefined
-            && isInsideInterval(globalDelayLimits.TIME_MIN, o.timeMax, spec.timeMin)
+            (spec.timeMin !== undefined
+                && isInsideInterval(limits.TIME_MIN, o.timeMax, spec.timeMin)
+            )
             ? spec.timeMin
             : defaultGlobalState.delay.timeMin
         );
         o.feedbackMax = (
-            spec.feedbackMax !== undefined
-            && isInsideInterval(globalDelayLimits.FBACK_MIN, globalDelayLimits.FBACK_MAX, spec.feedbackMax)
+            (spec.feedbackMax !== undefined
+                && isInsideInterval(
+                    limits.FBACK_MIN,
+                    limits.FBACK_MAX,
+                    spec.feedbackMax
+                )
+            )
             ? spec.feedbackMax
             : defaultGlobalState.delay.feedbackMax
         );
         o.feedbackMin = (
-            spec.feedbackMin !== undefined
-            && isInsideInterval(globalDelayLimits.FBACK_MIN, o.feedbackMax, spec.feedbackMin)
+            (spec.feedbackMin !== undefined
+                && isInsideInterval(
+                    limits.FBACK_MIN,
+                    o.feedbackMax,
+                    spec.feedbackMin
+                )
+            )
             ? spec.feedbackMin
             : defaultGlobalState.delay.feedbackMin
         );
@@ -242,38 +169,51 @@ createGlobalFilter: MaybeFilter -> GlobalFilter
 function createGlobalFilter(spec) {
     const o = {};
     if (typeof spec === "object") {
+        const limits = filterLimits();
         o.areAllDisable = (
             spec.areAllDisable !== undefined
-            ? !!spec.areAllDisable
+            ? spec.areAllDisable
             : defaultGlobalState.filter.areAllDisable
         );
         o.frequencyMax = (
-            spec.frequencyMax !== undefined
-            && isInsideInterval(globalFilterLimits.FREQ_MIN, globalFilterLimits.FREQ_MAX, spec.frequencyMax)
+            (spec.frequencyMax !== undefined
+                && isInsideInterval(
+                    limits.FREQ_MIN,
+                    limits.FREQ_MAX,
+                    spec.frequencyMax
+                )
+            )
             ? spec.frequencyMax
             : defaultGlobalState.filter.frequencyMax
         );
         o.frequencyMin = (
-            spec.frequencyMin !== undefined
-            && isInsideInterval(globalFilterLimits.FREQ_MIN, o.frequencyMax, spec.frequencyMin)
+            (spec.frequencyMin !== undefined
+                && isInsideInterval(
+                    limits.FREQ_MIN,
+                    o.frequencyMax,
+                    spec.frequencyMin
+                )
+            )
             ? spec.frequencyMin
             : defaultGlobalState.filter.frequencyMin
         );
         o.qMax = (
-            spec.qMax
-            && isInsideInterval(globalFilterLimits.Q_MIN, globalFilterLimits.Q_MAX, spec.qMax)
+            (spec.qMax
+                && isInsideInterval(limits.Q_MIN, limits.Q_MAX, spec.qMax)
+            )
             ? spec.qMax
             : defaultGlobalState.filter.qMax
         );
         o.qMin = (
-            spec.qMin !== undefined
-            && isInsideInterval(globalFilterLimits.Q_MIN, o.qMax, spec.qMin)
+            (spec.qMin !== undefined
+                && isInsideInterval(limits.Q_MIN, o.qMax, spec.qMin)
+            )
             ? spec.qMin
             : defaultGlobalState.filter.qMin
         );
         if (spec.types !== undefined && Array.isArray(spec.types)) {
-            const arr = spec.types.filter(el => /lowpass|highpass|bandpass|notch/.test(el));
-            o.types = arr.length === 0 ? globalFilterLimits.TYPES : arr;
+            const arr = spec.types.filter((el) => (/lowpass|highpass|bandpass|notch/).test(el));
+            o.types = (arr.length === 0 ? limits.TYPES : arr);
         } else {
             o.types = defaultGlobalState.filter.types;
         }
@@ -308,44 +248,51 @@ createGlobalPanner: MaybePanner -> GlobalPanner
 function createGlobalPanner(spec) {
     const o = {};
     if (typeof spec === "object") {
+        const limits = pannerLimits();
         o.areAllDisable = (
             spec.areAllDisable !== undefined
-            ? !!spec.areAllDisable
+            ? spec.areAllDisable
             : defaultGlobalState.panner.areAllDisable
         );
         o.xMax = (
-            spec.xMax !== undefined
-            && isInsideInterval(globalPannerLimits.MIN, globalPannerLimits.MAX, spec.xMax)
+            (spec.xMax !== undefined
+                && isInsideInterval(limits.MIN, limits.MAX, spec.xMax)
+            )
             ? spec.xMax
             : defaultGlobalState.panner.xMax
         );
         o.xMin = (
-            spec.xMin !== undefined
-            && isInsideInterval(globalPannerLimits.MIN, o.xMax, spec.xMin)
+            (spec.xMin !== undefined
+                && isInsideInterval(limits.MIN, o.xMax, spec.xMin)
+            )
             ? spec.xMin
             : defaultGlobalState.panner.xMin
         );
         o.yMax = (
-            spec.yMax !== undefined
-            && isInsideInterval(globalPannerLimits.MIN, globalPannerLimits.MAX, spec.yMax)
+            (spec.yMax !== undefined
+                && isInsideInterval(limits.MIN, limits.MAX, spec.yMax)
+            )
             ? spec.yMax
             : defaultGlobalState.panner.yMax
         );
         o.yMin = (
-            spec.yMin !== undefined
-            && isInsideInterval(globalPannerLimits.MIN, o.yMax, spec.yMin)
+            (spec.yMin !== undefined
+                && isInsideInterval(limits.MIN, o.yMax, spec.yMin)
+            )
             ? spec.yMin
             : defaultGlobalState.panner.yMin
         );
         o.zMax = (
-            spec.zMax !== undefined
-            && isInsideInterval(globalPannerLimits.Z_MIN, globalPannerLimits.MAX, spec.zMax)
+            (spec.zMax !== undefined
+                && isInsideInterval(limits.MIN, limits.Z_MAX, spec.zMax)
+            )
             ? spec.zMax
             : defaultGlobalState.panner.zMax
         );
         o.zMin =(
-            spec.zMin !== undefined
-            && isInsideInterval(globalPannerLimits.Z_MIN, o.zMax, spec.zMin)
+            (spec.zMin !== undefined
+                && isInsideInterval(limits.MIN, o.zMax, spec.zMin)
+            )
             ? spec.zMin
             : defaultGlobalState.panner.zMin
         );
@@ -378,20 +325,23 @@ createGlobalPlaybackRate: MaybePlaybackRate -> GlobalPlaybackRate
 function createGlobalPlaybackRate(spec) {
     const o = {};
     if (typeof spec === "object") {
+        const limits = playbackRateLimits();
         o.areAllDisable = (
             spec.areAllDisable !== undefined
-            ? !!spec.areAllDisable
+            ? spec.areAllDisable
             : defaultGlobalState.playbackRate.areAllDisable
         );
         o.max = (
-            spec.max !== undefined
-            && isInsideInterval(globalPlaybackRateLimits.MIN, globalPlaybackRateLimits.MAX, spec.max)
+            (spec.max !== undefined
+                && isInsideInterval(limits.MIN, limits.MAX, spec.max)
+            )
             ? spec.max
             : defaultGlobalState.playbackRate.max
         );
         o.min = (
-            spec.min !== undefined
-            && isInsideInterval(globalPlaybackRateLimits.MIN, o.max, spec.min)
+            (spec.min !== undefined
+                && isInsideInterval(limits.MIN, o.max, spec.min)
+            )
             ? spec.min
             : defaultGlobalState.playbackRate.min
         );
@@ -420,15 +370,18 @@ createGlobalTimeInteval: MaybeTimeInterval -> GlobalTimeInterval
 function createGlobalTimeInteval(spec) {
     const o = {};
     if (typeof spec === "object") {
+        const limits = timeIntervalLimits();
         o.min = (
-            spec.min !== undefined
-            && isInsideInterval(globalTimeIntervalLimits.MIN, globalTimeIntervalLimits.MAX,spec.min)
+            (spec.min !== undefined
+                && isInsideInterval(limits.MIN, limits.MAX,spec.min)
+            )
             ? spec.min
             : defaultGlobalState.timeInterval.min
         );
         o.max = (
-            spec.max !== undefined
-            && isInsideInterval(o.min, globalTimeIntervalLimits.MAX, spec.max)
+            (spec.max !== undefined
+                && isInsideInterval(o.min, limits.MAX, spec.max)
+            )
             ? spec.max
             : defaultGlobalState.timeInterval.max
         );
@@ -454,9 +407,11 @@ function createGlobalRandomPoint(bool) {
 createGlobalFadeValue: number -> number
 */
 function createGlobalFadeValue(num) {
+    const limits = fadeLimits();
     const fadeTime = (
-        Number.isInteger(num)
-        && isInsideInterval(globalFadeLimits.MIN, globalFadeLimits.MAX, num)
+        (Number.isInteger(num)
+            && isInsideInterval(limits.MIN, limits.MAX, num)
+        )
         ? num
         : 150//default
     );
@@ -498,10 +453,10 @@ createGlobalState: undefind -> GlobalState
 */
 function createGlobalState() {
     const c = Object.create(null);
-    c._audio_context = undefined;
-    c._audio_list = new Map();
-    c._started_id = "";
-    c._is_started = false; //default
+    c.audio_context = undefined;
+    c.audio_list = new Map();
+    c.started_id = "";
+    c.is_started = false; //default
     c.delay = createGlobalDelay();
     c.eventsForEachSet = createEventOfEachSet();
     c.fadeIn = createGlobalFadeValue();
@@ -542,16 +497,24 @@ function initGlobalState(localStorageState) {
         GlobalState.panner = createGlobalPanner(localStorageState.panner);
     }
     if (localStorageState.playbackRate !== undefined) {
-        GlobalState.playbackRate = createGlobalPlaybackRate(localStorageState.playbackRate);
+        GlobalState.playbackRate = (
+            createGlobalPlaybackRate(localStorageState.playbackRate)
+        );
     }
     if (localStorageState.randomEndPoint !== undefined) {
-        GlobalState.randomEndPoint = createGlobalRandomPoint(localStorageState.randomEndPoint);
+        GlobalState.randomEndPoint = (
+            createGlobalRandomPoint(localStorageState.randomEndPoint)
+        );
     }
     if (localStorageState.randomStartPoint !== undefined) {
-        GlobalState.randomStartPoint = createGlobalRandomPoint(localStorageState.randomStartPoint);
+        GlobalState.randomStartPoint = (
+            createGlobalRandomPoint(localStorageState.randomStartPoint)
+        );
     }
     if (localStorageState.timeInterval !== undefined) {
-        GlobalState.timeInterval = createGlobalTimeInteval(localStorageState.timeInterval);
+        GlobalState.timeInterval = (
+            createGlobalTimeInteval(localStorageState.timeInterval)
+        );
     }
 }
 
@@ -582,7 +545,7 @@ function createViewAudioListState() {
         completedAudioList: {},
         completedAudioListSize: 0,
         loadedAudioList: {},
-        loadedAudioListSize: 0,
+        loadedAudioListSize: 0
     };
 }
 
@@ -603,28 +566,28 @@ createViewGeneralDisableState: undefined -> ViewGeneralDisableState
 function createViewGeneralDisableState() {
     return {
         allDelaysAreDisabled: {
-            value: GlobalState.delay.areAllDisable,
-            global: true
+            global: true,
+            value: GlobalState.delay.areAllDisable
         },
         allFiltersAreDisabled: {
-            value: GlobalState.filter.areAllDisable,
-            global: true
+            global: true,
+            value: GlobalState.filter.areAllDisable
         },
         allPannersAreDisabled: {
-            value: GlobalState.panner.areAllDisable,
-            global: true
+            global: true,
+            value: GlobalState.panner.areAllDisable
         },
         allPlaybackRatesAreDisabled: {
-            value: GlobalState.playbackRate.areAllDisable,
-            global: true
+            global: true,
+            value: GlobalState.playbackRate.areAllDisable
         },
         allRandomEndPointsAreDisabled: {
-            value: GlobalState.randomEndPoint,
-            global: true
+            global: true,
+            value: GlobalState.randomEndPoint
         },
         allRandomStartPointsAreDisabled: {
-            value: GlobalState.randomStartPoint,
-            global: true
+            global: true,
+            value: GlobalState.randomStartPoint
         }
     };
 }
@@ -642,7 +605,7 @@ createViewAppState: undefined -> ViewAppState
 */
 function createViewAppState() {
     return {
-        _is_started: false,
+        is_started: false,
         playAudiosSet: {},
         playColor: ""
     };
@@ -656,13 +619,6 @@ export {
     createViewGeneralDisableState,
     createViewAppState,
     defaultGlobalState,
-    globalDelayLimits,
-    globalFadeLimits,
-    globalFilterLimits,
-    globalPannerLimits,
-    globalPlaybackRateLimits,
-    globalTimeIntervalLimits,
-    pannerListener,
     GlobalState,
     initGlobalState
 };

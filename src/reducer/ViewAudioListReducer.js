@@ -55,7 +55,7 @@ function ViewAudioListReducer(state, action) {
     } else if (type === "delete"
         && action.id in state.completedAudioList
     ) {
-        GlobalState._audio_list.delete(action.id);
+        GlobalState.audio_list.delete(action.id);
 
         if (state.completedAudioListSize < 16) {
             const events = GlobalState.eventsForEachSet.arrOfEvents.pop();
@@ -86,4 +86,6 @@ function ViewAudioListReducer(state, action) {
     return state;
 }
 
-export { ViewAudioListReducer };
+export {
+    ViewAudioListReducer
+};

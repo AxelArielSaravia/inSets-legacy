@@ -1,8 +1,17 @@
-import { memo, useReducer, useContext, useCallback } from "react";
+import {
+    memo,
+    useReducer,
+    useContext,
+    useCallback,
+    useMemo
+} from "react";
 
-import { initPannerState, PannerReducer } from "../../../reducer/index.js";
+import {initPannerState, PannerReducer} from "../../../reducer/index.js";
 
-import { GeneralDisableContext } from "../../../context/index.js";
+import {GeneralDisableContext} from "../../../context/index.js";
+
+import {pannerLimits} from "../../../services/limits/service.js";
+import {rToPanner} from "../../../services/convert/service.js";
 
 import ConfigPanelContainer from "../ConfigPanelContainer/component.js"
 import ConfigPanelInterval from "../ConfigPanelInterval/component.js";
@@ -18,6 +27,12 @@ function Panner() {
         zMin
     }, pannerDispatch] = useReducer(PannerReducer, initPannerState());
 
+    const {Z_MAX, MAX} = useMemo(() => pannerLimits(), []);
+
+    const viewXMax = useMemo(() => rToPanner(xMax), [xMax]);
+    const viewXMin = useMemo(() => rToPanner(xMin), [xMin]);
+    const viewYMax = useMemo(() => rToPanner(yMax), [yMax]);
+    const viewYMin = useMemo(() => rToPanner(yMin), [yMin]);
 
     const changeDisable = useCallback(function () {
         if (allPannersAreDisabled.value) {
@@ -31,23 +46,23 @@ function Panner() {
         pannerDispatch({type: "reset"});
     }, []);
 
-    const xMinOnChange = useCallback(function (val) {
-        pannerDispatch({type:"x/changeMin", payload: +val - 50});
-    }, [pannerDispatch]);
     const xMaxOnChange = useCallback(function (val) {
-        pannerDispatch({type:"x/changeMax", payload: +val - 50});
+        pannerDispatch({type:"x/changeMax", payload: Number(val)});
     }, [pannerDispatch]);
-    const yMinOnChange = useCallback(function (val) {
-        pannerDispatch({type:"y/changeMin", payload: +val - 50});
+    const xMinOnChange = useCallback(function (val) {
+        pannerDispatch({type:"x/changeMin", payload: Number(val)});
     }, [pannerDispatch]);
     const yMaxOnChange = useCallback(function (val) {
-        pannerDispatch({type:"y/changeMax", payload: +val - 50});
+        pannerDispatch({type:"y/changeMax", payload: Number(val)});
     }, [pannerDispatch]);
-    const zMinOnChange = useCallback(function (val) {
-        pannerDispatch({type:"z/changeMin", payload: +val});
+    const yMinOnChange = useCallback(function (val) {
+        pannerDispatch({type:"y/changeMin", payload: Number(val)});
     }, [pannerDispatch]);
     const zMaxOnChange = useCallback(function (val) {
-        pannerDispatch({type:"z/changeMax", payload: +val});
+        pannerDispatch({type:"z/changeMax", payload: Number(val)});
+    }, [pannerDispatch]);
+    const zMinOnChange = useCallback(function (val) {
+        pannerDispatch({type:"z/changeMin", payload: Number(val)});
     }, [pannerDispatch]);
 
     return (
@@ -63,31 +78,33 @@ function Panner() {
             <ConfigPanelInterval
                 title="X interval:"
                 valueText="%"
-                viewMin={xMin}
-                valueMin={xMin + 50}
-                viewMax={xMax}
-                valueMax={xMax + 50}
+                valueMax={xMax}
+                valueMin={xMin}
+                viewMax={viewXMax}
+                viewMin={viewXMin}
+                rangeMax={MAX}
                 onChangeMin={xMinOnChange}
                 onChangeMax={xMaxOnChange}
             />
             <ConfigPanelInterval
                 title="Y interval:"
                 valueText="%"
-                viewMin={yMin}
-                valueMin={yMin + 50}
-                viewMax={yMax}
-                valueMax={yMax + 50}
+                valueMax={yMax}
+                valueMin={yMin}
+                viewMax={viewYMax}
+                viewMin={viewYMin}
+                rangeMax={MAX}
                 onChangeMin={yMinOnChange}
                 onChangeMax={yMaxOnChange}
             />
             <ConfigPanelInterval
                 title="Z interval:"
                 valueText="%"
-                viewMin={zMin}
+                valueMax={zMax}
                 valueMin={zMin}
                 viewMax={zMax}
-                valueMax={zMax}
-                rangeMax={50}
+                viewMin={zMin}
+                rangeMax={Z_MAX}
                 onChangeMin={zMinOnChange}
                 onChangeMax={zMaxOnChange}
             />

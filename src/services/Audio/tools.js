@@ -5,17 +5,18 @@ import {
     createAudioPlayBackRateConfiguration
 } from "./configurations.js";
 
-import { GlobalState } from "../../state/Global/index.js";
+import {GlobalState} from "../../state/Global/index.js";
 
 import createId from "../createId/service.js";
+import {rToFade} from "../convert/service.js";
 
-import { random } from "../utils.js";
+import {random} from "../utils.js";
 
 /*-
 randomDecide: undefined -> number
 */
 function randomDecide() {
-    return !!random(0,1);
+    return random(0, 1) === 1;
 }
 
 /*-
@@ -98,10 +99,10 @@ async function createAudioRandomChain(audioCtx, audio_state) {
 
     //atenuate the general volume
     inputGain.gain.value = 0.8;
-    
+
     //set min gain value to create a fadeIn later
     outputGain.gain.value = 0.01;
-    
+
     input = inputGain; //our input is the GainNode
     //PANNER
     if (!audio_state.pannerIsDisable) {
@@ -113,12 +114,12 @@ async function createAudioRandomChain(audioCtx, audio_state) {
     //FILTER
     if (randomDecide() && !audio_state.filterIsDisable) {
         const audioFilterConfig = createAudioFilterConfiguration(GlobalState.filter);
-        const FILTER =  createFilter(audioCtx, audioFilterConfig);
+        const FILTER = createFilter(audioCtx, audioFilterConfig);
         await input.connect(FILTER);
-        input = FILTER; //input is a FilterNode 
+        input = FILTER; //input is a FilterNode
     }
     //DELAY
-    if (randomDecide()  && !audio_state.delayIsDisable) {
+    if (randomDecide() && !audio_state.delayIsDisable) {
         const audioDelayConfig = createAudioDelayConfiguration(GlobalState.delay);
         const DELAY = createDelay(audioCtx, audioDelayConfig);
         const feedbackGain = await audioCtx.createGain();
@@ -158,13 +159,13 @@ async function setAudioConfiguration(audio_state) {
     changePlaybackRate(audio_state);
 
     //CONNECTIONS
-    const {inputGain, outputGain} = await createAudioRandomChain(
-        GlobalState._audio_context,
+    const { inputGain, outputGain } = await createAudioRandomChain(
+        GlobalState.audio_context,
         audio_state
     );
 
     await audio_state.source.connect(inputGain);
-    await outputGain.connect(GlobalState._audio_context.destination);
+    await outputGain.connect(GlobalState.audio_context.destination);
 
     audio_state.outputGain = outputGain;
 }
@@ -177,8 +178,8 @@ async function setAudioConfiguration(audio_state) {
 createPlaybackInterval: AudioState -> number
 */
 function createPlaybackInterval(audio_state) {
-    const d =  Math.round(audio_state.duration * 10);
-    const p =  Math.round((audio_state.endTime - audio_state.endTime) * 10);
+    const d = Math.round(audio_state.duration * 10);
+    const p = Math.round((audio_state.endTime - audio_state.endTime) * 10);
     const min = 5; //500 miliseconds;
     const max = (p < 5 ? min : p > d ? d : p);
     return random(min, max) / 10;
@@ -219,10 +220,10 @@ function setRandomPoints(audio_state, audioDispatcher) {
 fadeOut: AudioState -> Promise
 */
 function fadeOut(audio_state) {
-    const fadeTime = GlobalState.fadeOut;
-    audio_state.outputGain.gain.exponentialRampToValueAtTime(
-        0.001,
-        GlobalState._audio_context.currentTime + fadeTime / 1000
+    const fadeTime = rToFade(GlobalState.fadeOut);
+    audio_state.outputGain.gain.linearRampToValueAtTime(
+        0,
+        GlobalState.audio_context.currentTime + fadeTime / 1000
     );
     return wait(fadeTime);
 }
@@ -231,10 +232,10 @@ function fadeOut(audio_state) {
 fadeIn: AudioState -> undefined
 */
 function fadeIn(audio_state) {
-    const fadeTime = GlobalState.fadeIn;
-    audio_state.outputGain.gain.exponentialRampToValueAtTime(
+    const fadeTime = rToFade(GlobalState.fadeIn);
+    audio_state.outputGain.gain.linearRampToValueAtTime(
         audio_state.volume,
-        GlobalState._audio_context.currentTime + fadeTime / 1000
+        GlobalState.audio_context.currentTime + fadeTime / 1000
     );
 }
 
@@ -251,13 +252,13 @@ calculateEnd_ENGINE_audioNode:
     (AudioState, audioDispatcher) -> _stop
 */
 function calculateEnd_ENGINE_audioNode(audio_state, audioDispatcher) {
-    audio_state.audioEngine.ontimeupdate = function(e) {
+    audio_state.audioEngine.ontimeupdate = function (e) {
         audioDispatcher({
             payload: e.target.currentTime,
             type: "currentTime/update"
         });
         if (e.target.currentTime >= audio_state.endPoint) {
-            audioDispatcher({type: "color/default"});
+            audioDispatcher({ type: "color/default" });
             return _stop(audio_state, audioDispatcher);
         }
     };
@@ -294,7 +295,7 @@ async function _stop(audio_state, audioDispatcher) {
     if (audio_state !== undefined && audio_state.isPlaying) {
         await fadeOut(audio_state);
         if (typeof audioDispatcher === "function") {
-            audioDispatcher({ type: "stop"});
+            audioDispatcher({ type: "stop" });
         }
         await disconnect(audio_state);
 
@@ -322,7 +323,7 @@ async function _play(audio_state, audioDispatcher) {
         audio_state.isPlaying = true;
 
         if (typeof audioDispatcher === "function") {
-            await audioDispatcher({type: "play"});
+            await audioDispatcher({ type: "play" });
         }
 
         return true;
@@ -334,7 +335,7 @@ async function _play(audio_state, audioDispatcher) {
 stop: (string, audioDispatcher) -> _stop
 */
 function stop(id, audioDispatcher) {
-    const audio_state = GlobalState._audio_list.get(id);
+    const audio_state = GlobalState.audio_list.get(id);
     return _stop(audio_state, audioDispatcher);
 }
 
@@ -342,7 +343,7 @@ function stop(id, audioDispatcher) {
 play: (string, audioDispatcher) -> _play
 */
 async function play(id, audioDispatcher) {
-    const audio_state = GlobalState._audio_list.get(id);
+    const audio_state = GlobalState.audio_list.get(id);
     return await _play(audio_state, audioDispatcher);
 }
 
@@ -350,20 +351,20 @@ async function play(id, audioDispatcher) {
 rePlay: (string, audioDispatcher) -> undefined
 */
 function rePlay(id, audioDispatcher) {
-    const audio_state = GlobalState._audio_list.get(id);
+    const audio_state = GlobalState.audio_list.get(id);
     if (audio_state.isPlaying) {
         Promise.resolve()
         .then(() => _stop(audio_state, audioDispatcher))
-        .then(function(bool) {
-            if (bool && GlobalState._is_started) {
+        .then(function (bool) {
+            if (bool && GlobalState.is_started) {
                 return _play(audio_state, audioDispatcher);
             }
         })
         .catch((err) => console.error(err));
     } else {
-        wait(GlobalState.fadeOut)
-        .then(function() {
-            if (GlobalState._is_started) {
+        wait(rToFade(GlobalState.fadeOut))
+        .then(function () {
+            if (GlobalState.is_started) {
                 return _play(audio_state, audioDispatcher);
             }
         })
@@ -375,7 +376,7 @@ function rePlay(id, audioDispatcher) {
 setAudioVolume: string -> undefined
 */
 function setAudioVolume(id) {
-    const audio_state = GlobalState._audio_list.get(id);
+    const audio_state = GlobalState.audio_list.get(id);
     if (audio_state && audio_state.isPlaying) {
         audio_state.outputGain.gain.value = audio_state.volume;
     }
@@ -397,12 +398,12 @@ async function deleteAudio(id, audioListDispatch, audioDispatch) {
 deleteAll: audioListDispatcher -> undefined;
 */
 async function deleteAll(audioListDispatcher) {
-    const AUDIO_LIST = GlobalState._audio_list;
+    const AUDIO_LIST = GlobalState.audio_list;
 
-    await audioListDispatcher({type: "clear"});
+    await audioListDispatcher({ type: "clear" });
     AUDIO_LIST.forEach((_, id) => stop(id));
 
-    GlobalState._audio_list = new Map();
+    GlobalState.audio_list = new Map();
 }
 
 /* -------------------------------------------------------------------------- */
@@ -414,7 +415,7 @@ binarySearch: (Array<number>, number) -> number
 */
 function binarySearch(arr, target) {
     let startI = 0;
-    let endI = arr.length-1;
+    let endI = arr.length - 1;
 
     while (startI <= endI) {
         const midI = Math.floor((startI + endI) / 2);
@@ -422,7 +423,7 @@ function binarySearch(arr, target) {
         if (arr[midI][1] < target) {
             startI = midI + 1;
         } else {
-            if (!arr[midI-1] || arr[midI-1][1] < target) {
+            if (!arr[midI - 1] || arr[midI - 1][1] < target) {
                 return arr[midI][0];
             }
             endI = midI - 1;
@@ -438,7 +439,7 @@ calculateTheLenghtOfSetExecution: undefined -> number
 function calculateTheLenghtOfSetExecution() {
     let sum = 0;
     const arrOfSums = [];
-    GlobalState.eventsForEachSet.arrOfEvents.forEach(function (v,i) {
+    GlobalState.eventsForEachSet.arrOfEvents.forEach(function (v, i) {
         if (v > 0) {
             sum += v;
             arrOfSums.push([i, sum]);
@@ -465,16 +466,15 @@ function AudiosEventsArray(audio_list) {
 createNewSetExecution: number -> Object<string, undefined>
 */
 function createNewSetExecution(n) {
-    const AUDIO_LIST = GlobalState._audio_list;
+    const AUDIO_LIST = GlobalState.audio_list;
     const executeSet = {};
     //selects elements for the set
     let arrOfAudiosEvents = AudiosEventsArray(AUDIO_LIST);
-    for (let i = 0; i < n; i++) {
-        const _KEY = arrOfAudiosEvents[random(0, arrOfAudiosEvents.length-1)];
+    for (let i = 0; i < n; i += 1) {
+        const _KEY = arrOfAudiosEvents[random(0, arrOfAudiosEvents.length - 1)];
         executeSet[_KEY] = undefined;
         arrOfAudiosEvents = arrOfAudiosEvents.filter(key => key !== _KEY);
     }
-    console.log("executeSet", executeSet);//DEBUGGER
     return executeSet;
 }
 
@@ -483,13 +483,12 @@ randomSetsExecution: appDispatcher -> undefined
 */
 function randomSetsExecution(appDispatcher) {
     const n = calculateTheLenghtOfSetExecution();
-    console.log("set execution size: ",n);//DEBUGGER
+    console.log("set execution size: ", n);//DEBUGGER
     if (n === 0) {
         return;
     }
-
     const executeSet = createNewSetExecution(n);
-    appDispatcher({type: "newAudiosSet", payload: executeSet});
+    appDispatcher({ type: "newAudiosSet", payload: executeSet });
 }
 
 
@@ -497,8 +496,8 @@ function randomSetsExecution(appDispatcher) {
 randomTimeExecution: (appDispatcher, string) -> undefined;
 */
 function randomTimeExecution(appDispatcher, STARTED_ID) {
-    if (GlobalState._is_started
-        && GlobalState._started_id === STARTED_ID
+    if (GlobalState.is_started
+        && GlobalState.started_id === STARTED_ID
     ) {
         randomSetsExecution(appDispatcher);
         const n = random(GlobalState.timeInterval.min, GlobalState.timeInterval.max) * 100;
@@ -513,15 +512,15 @@ function randomTimeExecution(appDispatcher, STARTED_ID) {
 startApp: appDispatcher -> undefined
 */
 function startApp(appDispatcher) {
-    GlobalState._started_id = createId();
-    randomTimeExecution(appDispatcher, GlobalState._started_id);
+    GlobalState.started_id = createId();
+    randomTimeExecution(appDispatcher, GlobalState.started_id);
 }
 
 /*-
 stopApp: audioDispatcher -> undefined
 */
 function stopApp(audioDispatcher) {
-    GlobalState._audio_list.forEach(function (audio_state) {
+    GlobalState.audio_list.forEach(function (audio_state) {
         if (audio_state.isPlaying) {
             _stop(audio_state, audioDispatcher);
         }

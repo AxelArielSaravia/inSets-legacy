@@ -1,16 +1,20 @@
-import { memo, useReducer, useContext, useCallback, useMemo } from "react";
+import {
+    memo,
+    useReducer,
+    useContext,
+    useCallback,
+    useMemo
+} from "react";
 
-import { initPlaybackRateState, PlaybackRateReducer } from "../../../reducer/index.js";
+import {initPlaybackRateState, PlaybackRateReducer} from "../../../reducer/index.js";
 
-import { GeneralDisableContext } from "../../../context/index.js";
+import {GeneralDisableContext} from "../../../context/index.js";
+
+import {playbackRateLimits} from "../../../services/limits/service.js";
+import {rToPlaybackRate} from "../../../services/convert/service.js";
 
 import ConfigPanelContainer from "../ConfigPanelContainer/component.js"
 import ConfigPanelInterval from "../ConfigPanelInterval/component.js";
-
-import {
-    rangeValueToPlaybackRateValue,
-    playbackRateValueToRangeValue
-} from "../utils.js";
 
 function PlaybackRate() {
     const [
@@ -22,8 +26,9 @@ function PlaybackRate() {
         playbackRateDispatch
     ] = useReducer(PlaybackRateReducer, initPlaybackRateState());
 
-    const minVal = useMemo(() => playbackRateValueToRangeValue(min * 100), [min]);
-    const maxVal = useMemo(() => playbackRateValueToRangeValue(max * 100), [max]);
+    const {MAX} = useMemo(() => playbackRateLimits(), []);
+    const viewMax = useMemo(() => rToPlaybackRate(max).toFixed(2), [max]);
+    const viewMin = useMemo(() => rToPlaybackRate(min).toFixed(2), [min]);
 
     const changeDisable = useCallback(function () {
         if (allPlaybackRatesAreDisabled.value) {
@@ -38,11 +43,17 @@ function PlaybackRate() {
     }, [playbackRateDispatch]);
 
     const minOnChange = useCallback(function (val) {
-        playbackRateDispatch({type:"min/change", payload: rangeValueToPlaybackRateValue(+val)/100});
+        playbackRateDispatch({
+            type:"min/change",
+            payload: Number(val)
+        });
     }, [playbackRateDispatch]);
 
     const maxOnChange = useCallback(function (val) {
-        playbackRateDispatch({type:"max/change", payload: rangeValueToPlaybackRateValue(+val)/100});
+        playbackRateDispatch({
+            type:"max/change",
+            payload: Number(val)
+        });
     }, [playbackRateDispatch]);
 
     return (
@@ -57,13 +68,13 @@ function PlaybackRate() {
         >
             <ConfigPanelInterval
                 title="interval:"
-                rangeMax={20}
-                valueMin={minVal}
-                valueMax={maxVal}
-                viewMin={min.toFixed(2)}
-                viewMax={max.toFixed(2)}
-                onChangeMin={minOnChange}
+                rangeMax={MAX}
+                valueMax={max}
+                valueMin={min}
+                viewMax={viewMax}
+                viewMin={viewMin}
                 onChangeMax={maxOnChange}
+                onChangeMin={minOnChange}
             />
         </ConfigPanelContainer>
     );

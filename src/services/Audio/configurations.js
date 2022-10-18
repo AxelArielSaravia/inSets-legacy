@@ -1,5 +1,17 @@
-import { pannerListener, globalDelayLimits } from "../../state/Global/index.js";
-import { random } from "../utils.js";
+import {
+    delayLimits,
+    pannerListener
+} from "../limits/service.js";
+import {
+    rToFeedback,
+    rToFrequency,
+    rToPanner,
+    rToPlaybackRate,
+    rToQ,
+    rToTime
+} from "../convert/service.js";
+
+import {random} from "../utils.js";
 
 /*-
 @type AudioDelay: {
@@ -15,12 +27,17 @@ import { random } from "../utils.js";
 createAudioDelayConfiguration: GlobalDelay -> AudioDelay
 */
 function createAudioDelayConfiguration(GlobalDelay) {
+    const {TIME_MAX} = delayLimits();
     return {
         channelCountMode: "max",
         channelInterpretation: "speakers",
-        delayTime: random(GlobalDelay.timeMin * 10, GlobalDelay.timeMax * 10) / 10,
-        feedback: random(GlobalDelay.feedbackMin * 100, GlobalDelay.feedbackMax * 100) / 100,
-        maxDelayTime: globalDelayLimits.TIME_MAX
+        delayTime: rToTime(
+            random(GlobalDelay.timeMin, GlobalDelay.timeMax)
+        ),
+        feedback: rToFeedback(
+            random(GlobalDelay.feedbackMin, GlobalDelay.feedbackMax)
+        ),
+        maxDelayTime: TIME_MAX
     };
 }
 
@@ -44,15 +61,19 @@ function createAudioFilterConfiguration(GlobalFilter) {
         channelCountMode: "max",
         channelInterpretation: "speakers",
         detune: 0,
-        frequency: random(GlobalFilter.frequencyMin, GlobalFilter.frequencyMax),
+        frequency: rToFrequency(
+            random(GlobalFilter.frequencyMin, GlobalFilter.frequencyMax)
+        ),
         gain: 1,
-        q: random(GlobalFilter.qMin * 10, GlobalFilter.qMax * 10) / 10,
+        q: rToQ(
+            random(GlobalFilter.qMin, GlobalFilter.qMax)
+        ),
         type: (
             GlobalFilter.types.length > 0
             ? GlobalFilter.types[random(0, GlobalFilter.types.length - 1)]
             : "allpass"
         )
-    }
+    };
 }
 
 /*-
@@ -78,6 +99,7 @@ function createAudioFilterConfiguration(GlobalFilter) {
 createAudioPannerConfiguration: GlobalPanner -> AudioPanner
 */
 function createAudioPannerConfiguration(GlobalPanner) {
+    const {X, Y, Z} = pannerListener();
     return {
         coneInnerAngle: 360,
         coneOuterAngle: 0,
@@ -87,11 +109,15 @@ function createAudioPannerConfiguration(GlobalPanner) {
         orientationX: 1,
         orientationY: 0,
         orientationZ: 0,
-        panningModel: "HRTF",
-        positionZ: random(GlobalPanner.zMin / 10, GlobalPanner.zMax /10) + pannerListener.Z,
-        positionX: random(GlobalPanner.xMin / 10, GlobalPanner.xMax /10) + pannerListener.X,
-        positionY: random(GlobalPanner.yMin / 10, GlobalPanner.yMax /10) + pannerListener.Y,
-        refDistance: 1,
+        panningModel: "equalpower",
+        positionX: (
+            rToPanner(random(GlobalPanner.xMin, GlobalPanner.xMax)) / 10 + X
+        ),
+        positionY: (
+            rToPanner(random(GlobalPanner.yMin, GlobalPanner.yMax)) / 10 + Y
+        ),
+        positionZ: random(GlobalPanner.zMin, GlobalPanner.zMax) / 10 + Z,
+        refDistance: 1
     };
 }
 
@@ -99,7 +125,9 @@ function createAudioPannerConfiguration(GlobalPanner) {
 createAudioPlayBackRateConfiguration: GlobalPlayBackRate -> number
 */
 function createAudioPlayBackRateConfiguration(GlobalPlayBackRate) {
-    return random(GlobalPlayBackRate.min * 10, GlobalPlayBackRate.max * 10) / 10;
+    return (
+        rToPlaybackRate(random(GlobalPlayBackRate.min, GlobalPlayBackRate.max))
+    );
 }
 
 export {
@@ -107,4 +135,4 @@ export {
     createAudioFilterConfiguration,
     createAudioPannerConfiguration,
     createAudioPlayBackRateConfiguration
-}
+};

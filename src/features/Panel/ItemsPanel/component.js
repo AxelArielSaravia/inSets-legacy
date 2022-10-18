@@ -1,4 +1,4 @@
-import { useCallback, memo } from "react";
+import {useCallback, memo} from "react";
 
 import ItemsPanelElement from "../ItemsPanelElement/component.js";
 

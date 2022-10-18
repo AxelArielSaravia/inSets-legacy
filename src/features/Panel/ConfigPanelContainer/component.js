@@ -1,4 +1,4 @@
-import { memo } from "react"; 
+import {memo} from "react"; 
 
 import Button from "../../../components/Button/component.js";
 

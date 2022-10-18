@@ -14,7 +14,7 @@ import {
     SumOfAllAudiosEventsContext
 } from "../../context/index.js";
 
-import { ViewAudioReducer, createViewAudioState } from "../../reducer/index.js";
+import {ViewAudioReducer, createViewAudioState} from "../../reducer/index.js";
 
 import {
     play,
@@ -45,11 +45,11 @@ import Playback from "./Playback/component.js"
 
 import "./style.scss";
 
-function DeleteButton({_id, events, audioDispatch}) {
+function DeleteButton({id, events, audioDispatch}) {
     const [, audioListDispatch] = useContext(AudioListContext);
     const [, sumOfAllEventsDispatch] = useContext(SumOfAllAudiosEventsContext);
     async function onClick() {
-        await deleteAudio(_id, audioListDispatch, audioDispatch);
+        await deleteAudio(id, audioListDispatch, audioDispatch);
         sumOfAllEventsDispatch({type: "subtract", payload: events});
     }
 
@@ -116,8 +116,8 @@ function PlayButton({isPlaying, playOnClick}) {
     );
 }
 
-function AudioElement({_id}) {
-    const [{_is_started, playAudiosSet, playColor}] = useContext(AppContext);
+function AudioElement({id}) {
+    const [{is_started, playAudiosSet, playColor}] = useContext(AppContext);
     const [sumOfAllEvents, sumOfAllEventsdispatch] = useContext(SumOfAllAudiosEventsContext);
     const [{
         allDelaysAreDisabled,
@@ -146,21 +146,21 @@ function AudioElement({_id}) {
         playbackRateIsDisable,
         randomEndPointIsDisable,
         randomStartPointIsDisable
-    }, audioDispatch] = useReducer(ViewAudioReducer, createViewAudioState(_id));
+    }, audioDispatch] = useReducer(ViewAudioReducer, createViewAudioState(id));
 
     useEffect(function () {
-        if (_id in playAudiosSet) {
-            rePlay(_id, audioDispatch);
+        if (id in playAudiosSet) {
+            rePlay(id, audioDispatch);
             audioDispatch({type: "color/change", payload: playColor});
         }
-    }, [_id, playAudiosSet]);
+    }, [id, playAudiosSet]);
 
     useEffect(function () {
-        if (!_is_started) {
-            stop(_id, audioDispatch);
+        if (!is_started) {
+            stop(id, audioDispatch);
             audioDispatch({type: "color/default"});
         }
-    }, [_id, _is_started]);
+    }, [id, is_started]);
 
     useEffect(function () {
         if (allDelaysAreDisabled.value) {
@@ -207,8 +207,8 @@ function AudioElement({_id}) {
 
     const changeVolume = useCallback(function (val) {
         audioDispatch({type: "volume/change", payload: +val})
-        setAudioVolume(_id);
-    }, [_id]);
+        setAudioVolume(id);
+    }, [id]);
 
     const changeConfigurationsState = useCallback(function () {
         audioDispatch({type: "configuration/toggle"})
@@ -300,12 +300,12 @@ function AudioElement({_id}) {
     }
     const playOnClick = useCallback(function() {
         if (isPlaying) {
-            stop(_id, audioDispatch);
+            stop(id, audioDispatch);
             audioDispatch({type: "color/default"});
         } else {
-            play(_id, audioDispatch);
+            play(id, audioDispatch);
         }
-    },[_id, isPlaying]);
+    },[id, isPlaying]);
     const isDurationShort = useMemo(() => duration < 2, [duration]);
     const probabilityPrecent = useMemo(
         () => floorPercent(sumOfAllEvents, audioEvents, 100)
@@ -333,7 +333,7 @@ function AudioElement({_id}) {
                     <ConfigButton value={configurationIsOpen} change={changeConfigurationsState}/>
                 </div>
                 <DeleteButton 
-                    _id={_id} 
+                    id={id} 
                     events={audioEvents}
                     audioDispatch={audioDispatch}
                 />

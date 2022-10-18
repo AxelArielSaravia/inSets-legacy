@@ -1,45 +1,49 @@
-import { memo, useReducer, useContext, useCallback, useMemo, useState, useEffect } from "react";
+import {
+    memo,
+    useReducer,
+    useContext,
+    useCallback,
+    useMemo,
+    useState,
+    useEffect
+} from "react";
 
-import { globalFilterLimits } from "../../../state/Global/index.js";
+import {filterLimits} from "../../../services/limits/service.js";
+import {rToFrequency, rToQ} from "../../../services/convert/service.js";
 
-import { initFilterState, FilterReducer } from "../../../reducer/index.js";
+import {initFilterState, FilterReducer} from "../../../reducer/index.js";
 
-import { GeneralDisableContext } from "../../../context/index.js";
+import {GeneralDisableContext} from "../../../context/index.js";
 
 import Button from "../../../components/Button/component.js";
-import ConfigPanelContainer from "../ConfigPanelContainer/component.js"
+import ConfigPanelContainer from "../ConfigPanelContainer/component.js";
 import ConfigPanelChild from "../ConfigPanelChild/component.js";
 import ConfigPanelInterval from "../ConfigPanelInterval/component.js";
-import { 
-    rangeValueToFrequency,
-    frequencyToRangeValue,
-    rangeValueToQ,
-    qToRangeValue
-} from "../utils.js";
 
-
-const FilterTypeButton = memo(function ({types, setTypes, value}) {
+const FilterTypeButton = memo(function ({setTypes, types, value}) {
     const index = types.indexOf(value);
     const [isDisable, setIsDisable] = useState(index === -1);
 
-    useEffect(() => {
-        const index = types.indexOf(value);
-        setIsDisable(() => index === -1);
+    useEffect(function () {
+        const i = types.indexOf(value);
+        setIsDisable(() => i === -1);
     }, [types, value]);
 
 
-    const handleOnClick = () => {
+    const handleOnClick = function () {
         const arr = [...types];
-        const index = types.indexOf(value);
+        const i = types.indexOf(value);
         if (isDisable) {
-            if (index === -1) arr.push(value);
+            if (i === -1) {
+                arr.push(value);
+            }
             setIsDisable(() => false);
-        } else if (arr.length > 1){
-            arr.splice(index, 1);
+        } else if (arr.length > 1) {
+            arr.splice(i, 1);
             setIsDisable(() => true);
         }
         setTypes(arr);
-    }
+    };
 
     return (
         <Button
@@ -52,47 +56,76 @@ const FilterTypeButton = memo(function ({types, setTypes, value}) {
 });
 
 function Filter() {
-    const [{allFiltersAreDisabled}, generalDisableDispatch] = useContext(GeneralDisableContext);
     const [{
-        frequencyMin,
+        allFiltersAreDisabled
+    }, generalDisableDispatch] = useContext(GeneralDisableContext);
+    const [{
         frequencyMax,
-        qMin,
+        frequencyMin,
         qMax,
+        qMin,
         types
-    }, filterDispatch] = useReducer(FilterReducer, initFilterState());
-    
-    const changeDisable = useCallback(function() {
+    },filterDispatch] = useReducer(FilterReducer, initFilterState());
+
+
+    const {TYPES, FREQ_MAX, Q_MAX} = useMemo(() => filterLimits(), []);
+
+    const viewFrequencyMax = useMemo(
+        () => rToFrequency(frequencyMax),
+        [frequencyMax]
+    );
+    const viewFrequencyMin = useMemo(
+        () => rToFrequency(frequencyMin),
+        [frequencyMin]
+    );
+    const viewQMax = useMemo(() => rToQ(qMax).toFixed(2), [qMax]);
+    const viewQMin = useMemo(() => rToQ(qMin).toFixed(2), [qMin]);
+
+    const changeDisable = useCallback(function () {
         if (allFiltersAreDisabled.value) {
-            generalDisableDispatch({type: "enable/filter", payload: true})
+            generalDisableDispatch({
+                type: "enable/filter",
+                payload: true
+            });
         } else {
-            generalDisableDispatch({type: "disable/filter"})
+            generalDisableDispatch({type: "disable/filter"});
         }
     },[allFiltersAreDisabled, generalDisableDispatch]);
 
-    const reset = useCallback(function() {
+    const reset = useCallback(function () {
         filterDispatch({type: "reset"});
-    }, [filterDispatch]) 
-
-    const rangeFreqMin = useMemo(() => frequencyToRangeValue(frequencyMin), [frequencyMin]);
-    const rangeFreqMax = useMemo(() => frequencyToRangeValue(frequencyMax), [frequencyMax]);
-    const rangeQMin = useMemo(() => qToRangeValue(qMin * 100), [qMin]);
-    const rangeQMax = useMemo(() => qToRangeValue(qMax * 100), [qMax]);
-
-    const frequencyMaxOnChange = useCallback(function(val) {
-        filterDispatch({type: "frequency/changeMax", payload: rangeValueToFrequency(+val + 40)});
-    }, [filterDispatch]);
-    const frequencyMinOnChange = useCallback(function(val) {
-        filterDispatch({type: "frequency/changeMin", payload: rangeValueToFrequency(+val + 40)});
-    }, [filterDispatch]);
-    const qMaxOnChange = useCallback(function(val) {
-        filterDispatch({type: "q/changeMax", payload: rangeValueToQ(+val + 2)/ 100});
-    }, [filterDispatch]);
-    const qMinOnChange = useCallback(function(val) {
-        filterDispatch({type: "q/changeMin", payload: rangeValueToQ(+val + 2)/100});
     }, [filterDispatch]);
 
-    const typesChange = useCallback(function(arr) {
-        filterDispatch({type: "types/change", payload: arr})
+    const frequencyMaxOnChange = useCallback(function (val) {
+        filterDispatch({
+            type: "frequency/changeMax",
+            payload: Number(val)
+        });
+    }, [filterDispatch]);
+    const frequencyMinOnChange = useCallback(function (val) {
+        filterDispatch({
+            type: "frequency/changeMin",
+            payload: Number(val)
+        });
+    }, [filterDispatch]);
+    const qMaxOnChange = useCallback(function (val) {
+        filterDispatch({
+            type: "q/changeMax",
+            payload: Number(val)
+        });
+    }, [filterDispatch]);
+    const qMinOnChange = useCallback(function (val) {
+        filterDispatch({
+            type: "q/changeMin",
+            payload: Number(val)
+        });
+    }, [filterDispatch]);
+
+    const typesChange = useCallback(function (arr) {
+        filterDispatch({
+            type: "types/change",
+            payload: arr
+        });
     }, [filterDispatch]);
 
     return (
@@ -108,29 +141,29 @@ function Filter() {
             <ConfigPanelInterval
                 title="frequency interval:"
                 valueText="hz"
-                rangeMax={248}
-                valueMin={rangeFreqMin - 40}
-                valueMax={rangeFreqMax - 40}
-                viewMin={frequencyMin}
-                viewMax={frequencyMax}
+                rangeMax={FREQ_MAX}
+                valueMax={frequencyMax}
+                valueMin={frequencyMin}
+                viewMax={viewFrequencyMax}
+                viewMin={viewFrequencyMin}
                 onChangeMin={frequencyMinOnChange}
                 onChangeMax={frequencyMaxOnChange}
             />
             <ConfigPanelInterval
                 title="q factor interval:"
-                rangeMax={36}
-                valueMin={rangeQMin - 2}
-                valueMax={rangeQMax - 2}
-                viewMin={qMin.toFixed(2)}
-                viewMax={qMax.toFixed(2)}
+                rangeMax={Q_MAX}
+                valueMax={qMax}
+                valueMin={qMin}
+                viewMax={viewQMax}
+                viewMin={viewQMin}
                 onChangeMin={qMinOnChange}
                 onChangeMax={qMaxOnChange}
             />
             <ConfigPanelChild title="filter types selected:">
                 <div className="flex-row flex-wrap justify- align-c">
-                    {globalFilterLimits.TYPES.map((el) => (
+                    {TYPES.map((el) => (
                     <div key={"filter_type-" + el} className="p-2">
-                        <FilterTypeButton 
+                        <FilterTypeButton
                             value={el}
                             types={types}
                             setTypes={typesChange}

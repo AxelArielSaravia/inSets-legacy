@@ -1,8 +1,8 @@
-import { memo, useContext} from "react";
+import {memo, useContext} from "react";
 
-import { AudioListContext } from "../../context/index.js";
+import {AudioListContext} from "../../context/index.js";
 
-import { IconMusicFile } from "../../components/icons/component.js";
+import {IconMusicFile} from "../../components/icons/component.js";
 import AudioElement from "../AudioElement/component.js";
 
 import "./style.scss";
@@ -15,9 +15,9 @@ function AudioLoadingElement() {
     );
 }
 
-function SelectAudioElement({bool, _id}) {
+function SelectAudioElement({bool, id}) {
     if (bool) {
-        return <AudioElement _id={_id}/>;
+        return <AudioElement id={id}/>;
     }
     return <AudioLoadingElement/>;
 }
@@ -43,7 +43,7 @@ function AudioContainer() {
                             >
                                 <SelectAudioElement
                                     bool={id in completedAudioList}
-                                    _id={id}
+                                    id={id}
                                 />
                             </div>
                         ))}

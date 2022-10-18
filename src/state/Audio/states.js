@@ -11,7 +11,7 @@ Object.freeze(audioVolumeLimits);
 
 /*-
 @type AudioGeneralState: {
-    _id: string,
+    id: string,
     audioEvents: number,
     delayIsDisable: boolean,
     duration: number,
@@ -64,8 +64,6 @@ function createAudioState(spec) {
     } = spec;
 
     return Object.seal({
-        type,
-        _id:  id,
         audioEngine,
         audioEvents: 1,
         delayIsDisable: GlobalState?.delay.areAllDisable || false,
@@ -73,6 +71,7 @@ function createAudioState(spec) {
         endPoint: duration || 0, //duration seconds
         endTime: duration || 0,  //duration seconds
         filterIsDisable: GlobalState?.filter.areAllDisable || false,
+        id,
         isPlaying: false,
         outputGain: undefined,
         pannerIsDisable: GlobalState?.panner.areAllDisable || false,
@@ -84,6 +83,7 @@ function createAudioState(spec) {
         startPoint: 0, //seconds
         startTime: 0,  //seconds
         title: title.slice(0, title.lastIndexOf(".")),
+        type,
         volume: 1 //MAX_VOLUME
     });
 }
@@ -91,7 +91,7 @@ function createAudioState(spec) {
 /* -------------------------------------------------------------------------- */
 /*                                   EXPORTS                                  */
 /* -------------------------------------------------------------------------- */
-export  {
+export {
     createAudioState,
     audioVolumeLimits
 };

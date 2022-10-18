@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo } from "react";
+import {memo, useCallback, useMemo} from "react";
 
 import "./style.scss";
 

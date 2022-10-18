@@ -61,7 +61,7 @@ async function audioFromFile_AudioNode(
         htmlAudio.addEventListener("canplaythrough", function() {
             /* the audio is now playable; play it if permissions allow */
             try {
-                let source = GlobalState._audio_context.createMediaElementSource(htmlAudio);
+                let source = GlobalState.audio_context.createMediaElementSource(htmlAudio);
                 let audioState = createAudioState({
                     GlobalState,
                     audioEngine: htmlAudio,
@@ -73,7 +73,7 @@ async function audioFromFile_AudioNode(
                 });
 
                 //Add audioState to GlobalState
-                GlobalState._audio_list.set(id, audioState);
+                GlobalState.audio_list.set(id, audioState);
                 //available to use in view
                 audioListDispatcher({id, type: "addCompleted"});
                 sumOfAllEventsDispatcher({type: "add"});

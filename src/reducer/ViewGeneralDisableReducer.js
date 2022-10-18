@@ -26,7 +26,7 @@ function ViewGeneralDisableReducer(state, action) {
         changeLocalStorageState("delay", true, "areAllDisable");
         return {
             ...state,
-            allDelaysAreDisabled: { value: true, global: true }
+            allDelaysAreDisabled: {value: true, global: true}
         };
     }
     if (type === "disable/filter") {
@@ -34,7 +34,7 @@ function ViewGeneralDisableReducer(state, action) {
         changeLocalStorageState("filter", true, "areAllDisable");
         return {
             ...state,
-            allFiltersAreDisabled: { value: true, global: true }
+            allFiltersAreDisabled: {value: true, global: true}
         };
     }
     if (type === "disable/panner") {
@@ -42,7 +42,7 @@ function ViewGeneralDisableReducer(state, action) {
         changeLocalStorageState("panner", true, "areAllDisable");
         return {
             ...state,
-            allPannersAreDisabled: { value: true, global: true }
+            allPannersAreDisabled: {value: true, global: true}
         };
     }
     if (type === "disable/playbackRate") {
@@ -50,7 +50,7 @@ function ViewGeneralDisableReducer(state, action) {
         changeLocalStorageState("playbackRate", true, "areAllDisable");
         return {
             ...state,
-            allPlaybackRatesAreDisabled: { value: true, global: true }
+            allPlaybackRatesAreDisabled: {value: true, global: true}
         };
     }
     if (type === "disable/randomEndPoint") {
@@ -58,7 +58,7 @@ function ViewGeneralDisableReducer(state, action) {
         changeLocalStorageState("randomEndPoint", true);
         return {
             ...state,
-            allRandomEndPointsAreDisabled: { value: true, global: true }
+            allRandomEndPointsAreDisabled: {value: true, global: true}
         };
     }
     if (type === "disable/randomStartPoint") {
@@ -66,7 +66,7 @@ function ViewGeneralDisableReducer(state, action) {
         changeLocalStorageState("randomStartPoint", true);
         return {
             ...state,
-            allRandomStartPointsAreDisabled: { value: true, global: true }
+            allRandomStartPointsAreDisabled: {value: true, global: true}
         };
     }
     if (type === "enable/delay") {
@@ -74,7 +74,7 @@ function ViewGeneralDisableReducer(state, action) {
         changeLocalStorageState("delay", false, "areAllDisable");
         return {
             ...state,
-            allDelaysAreDisabled: { value: false, global: payload }
+            allDelaysAreDisabled: {value: false, global: payload}
         };
     }
     if (type === "enable/filter") {
@@ -82,7 +82,7 @@ function ViewGeneralDisableReducer(state, action) {
         changeLocalStorageState("filter", false, "areAllDisable");
         return {
             ...state,
-            allFiltersAreDisabled: { value: false, global: payload }
+            allFiltersAreDisabled: {value: false, global: payload}
         };
     }
     if (type === "enable/panner") {
@@ -90,7 +90,7 @@ function ViewGeneralDisableReducer(state, action) {
         changeLocalStorageState("panner", false, "areAllDisable");
         return {
             ...state,
-            allPannersAreDisabled: { value: false, global: payload }
+            allPannersAreDisabled: {value: false, global: payload}
         };
     }
     if (type === "enable/playbackRate") {
@@ -98,7 +98,7 @@ function ViewGeneralDisableReducer(state, action) {
         changeLocalStorageState("playbackRate", false, "areAllDisable");
         return {
             ...state,
-            allPlaybackRatesAreDisabled: { value: false, global: payload }
+            allPlaybackRatesAreDisabled: {value: false, global: payload}
         };
     }
     if (type === "enable/randomEndPoint") {
@@ -106,7 +106,7 @@ function ViewGeneralDisableReducer(state, action) {
         changeLocalStorageState("randomEndPoint", false);
         return {
             ...state,
-            allRandomEndPointsAreDisabled: { value: false, global: payload }
+            allRandomEndPointsAreDisabled: {value: false, global: payload}
         };
     }
     if (type === "enable/randomStartPoint") {
@@ -114,7 +114,7 @@ function ViewGeneralDisableReducer(state, action) {
         changeLocalStorageState("randomStartPoint", false);
         return {
             ...state,
-            allRandomStartPointsAreDisable: { value: false, global: payload }
+            allRandomStartPointsAreDisable: {value: false, global: payload}
         };
     }
     return state;

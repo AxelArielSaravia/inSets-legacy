@@ -1,12 +1,22 @@
-import { useContext, useCallback } from "react";
+import {useContext, useCallback} from "react";
 
-import { startApp, deleteAll } from "../../services/Audio/service.js";
+import {startApp, deleteAll} from "../../services/Audio/service.js";
 
-import { AudioListContext, AppContext, SumOfAllAudiosEventsContext} from "../../context/index.js"
-import { useAddFiles } from "../../hooks/index.js";
+import {
+    AudioListContext,
+    AppContext,
+    SumOfAllAudiosEventsContext
+} from "../../context/index.js";
+
+import {useAddFiles} from "../../hooks/index.js";
 
 import Button from "../../components/Button/component.js";
-import { IconTrash, IconMusicFile, IconStop, IconStart } from "../../components/icons/component.js";
+import {
+    IconTrash,
+    IconMusicFile,
+    IconStop,
+    IconStart
+} from "../../components/icons/component.js";
 
 import "./style.scss";
 
@@ -39,28 +49,28 @@ function AddFilesButton() {
 }
 
 function StartButton() {
-    const [{_is_started}, appDispatcher] = useContext(AppContext);
+    const [{is_started}, appDispatcher] = useContext(AppContext);
     const handlePlayOnClick = useCallback(async () => {
-        if (!_is_started) {
+        if (!is_started) {
             await appDispatcher({type: "start"});
             startApp(appDispatcher)
         } else {
             appDispatcher({type: "stop"});
             //stopApp(generalAudioDispatcher)
         }
-    }, [_is_started, appDispatcher]);
+    }, [is_started, appDispatcher]);
 
     return (
         <Button
-            title={_is_started ? "stop runing" : "start runing"}
+            title={is_started ? "stop runing" : "start runing"}
             className="audioButtonsSection_start flex-row align-c justify-c"
             onClick={handlePlayOnClick}
             >
-            { _is_started
+            { is_started
             ? <IconStop className="icon-text-l"/>
             : <IconStart className="icon-text-l"/>
             }
-            <h4 className="fs-text-l">{_is_started ? "Stop" : "Start"}</h4>
+            <h4 className="fs-text-l">{is_started ? "Stop" : "Start"}</h4>
         </Button>
     ); 
 }
