@@ -122,6 +122,7 @@
 .fs-text-l { font-size: 1rem; }
 .fs-text { font-size: 0.8rem; }
 .fs-text-s { font-size: 0.6rem; }
+
 /* MEDIA QUERY - min-width */
 @media screen and (min-width: 368px) {
     .icon-text-l { width: 1.4rem; }
@@ -321,6 +322,9 @@ input:focus-visible {
 .init-content .init-message * { padding: 2px 0; }
 .init-content .init-message label { margin: 10px 5px; }
 
+.init-content .button-container *{
+    padding: 5px;
+}
 .init-content .startApp-button {
     padding: 4px 5px;
     border-radius: 5px;
