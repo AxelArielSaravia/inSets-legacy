@@ -23,7 +23,7 @@ function ViewGeneralDisableReducer(state, action) {
 
     if (type === "disable/delay") {
         GlobalState.delay.areAllDisable = true;
-        changeLocalStorageState("delay", true, "areAllDisable");
+        changeLocalStorageState("delay", GlobalState.delay);
         return {
             ...state,
             allDelaysAreDisabled: {value: true, global: true}
@@ -31,7 +31,7 @@ function ViewGeneralDisableReducer(state, action) {
     }
     if (type === "disable/filter") {
         GlobalState.filter.areAllDisable = true;
-        changeLocalStorageState("filter", true, "areAllDisable");
+        changeLocalStorageState("filter", GlobalState.filter);
         return {
             ...state,
             allFiltersAreDisabled: {value: true, global: true}
@@ -39,7 +39,7 @@ function ViewGeneralDisableReducer(state, action) {
     }
     if (type === "disable/panner") {
         GlobalState.panner.areAllDisable = true;
-        changeLocalStorageState("panner", true, "areAllDisable");
+        changeLocalStorageState("panner", GlobalState.filter);
         return {
             ...state,
             allPannersAreDisabled: {value: true, global: true}
@@ -47,7 +47,7 @@ function ViewGeneralDisableReducer(state, action) {
     }
     if (type === "disable/playbackRate") {
         GlobalState.playbackRate.areAllDisable = true;
-        changeLocalStorageState("playbackRate", true, "areAllDisable");
+        changeLocalStorageState("playbackRate", GlobalState.filter);
         return {
             ...state,
             allPlaybackRatesAreDisabled: {value: true, global: true}
@@ -71,7 +71,7 @@ function ViewGeneralDisableReducer(state, action) {
     }
     if (type === "enable/delay") {
         GlobalState.delay.areAllDisable = false;
-        changeLocalStorageState("delay", false, "areAllDisable");
+        changeLocalStorageState("delay", GlobalState.delay);
         return {
             ...state,
             allDelaysAreDisabled: {value: false, global: payload}
@@ -79,7 +79,7 @@ function ViewGeneralDisableReducer(state, action) {
     }
     if (type === "enable/filter") {
         GlobalState.filter.areAllDisable = false;
-        changeLocalStorageState("filter", false, "areAllDisable");
+        changeLocalStorageState("filter", GlobalState.filter);
         return {
             ...state,
             allFiltersAreDisabled: {value: false, global: payload}
@@ -87,7 +87,7 @@ function ViewGeneralDisableReducer(state, action) {
     }
     if (type === "enable/panner") {
         GlobalState.panner.areAllDisable = false;
-        changeLocalStorageState("panner", false, "areAllDisable");
+        changeLocalStorageState("panner",  GlobalState.panner);
         return {
             ...state,
             allPannersAreDisabled: {value: false, global: payload}
@@ -95,7 +95,7 @@ function ViewGeneralDisableReducer(state, action) {
     }
     if (type === "enable/playbackRate") {
         GlobalState.playbackRate.areAllDisable = false;
-        changeLocalStorageState("playbackRate", false, "areAllDisable");
+        changeLocalStorageState("playbackRate", GlobalState.playbackRate);
         return {
             ...state,
             allPlaybackRatesAreDisabled: {value: false, global: payload}

@@ -1,6 +1,7 @@
 import { defaultGlobalState, initGlobalState } from "../../state/Global/index.js";
+
 import {
-    getFromLocalStorageState,
+    initFromLocalStorageState,
     initLocalStorage,
     verifyAppVersion
 } from "../localStorage/service.js";
@@ -9,14 +10,14 @@ import {
 handleInitState: (string, LocalStorageState) -> LocalStorageState
 */
 function handleInitState(version) {
-    const isNotLocalStorage = verifyAppVersion(version);
+    const hasNotLocalStorage = verifyAppVersion(version);
     const keys = Object.keys(defaultGlobalState);
 
-    if (isNotLocalStorage) {
+    if (hasNotLocalStorage) {
         initLocalStorage(keys, defaultGlobalState);
         initGlobalState(defaultGlobalState);
     } else {
-        const store_state =  getFromLocalStorageState(keys);
+        const store_state = initFromLocalStorageState(keys, defaultGlobalState);
         initGlobalState(store_state);
     }
 }

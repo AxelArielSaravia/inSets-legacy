@@ -27,33 +27,40 @@ function initLocalStorage(keys, filter_state) {
 }
 
 /*-
-getFromLocalStorageState: string -> {...}
+initFromLocalStorageState: string, object -> {...}
 */
-function getFromLocalStorageState(keys) {
+function initFromLocalStorageState(keys, defaultValues) {
     const  obj = {};
     keys.forEach(function(key) {
-        obj[key] = JSON.parse(localStorage.getItem(key));
+        try {
+            const item = localStorage.getItem(key);
+            if (item === "null") {
+                throw new Error("null value is not allowed");
+            }
+            const val = JSON.parse(item);
+            obj[key] = val;
+        } catch (err) {
+            localStorage.setItem(
+                key, 
+                JSON.stringify(defaultValues[key])
+            );
+            obj[key] = defaultValues[key];
+        }
     });
     return obj;
 }
 
 /*-
-changeLocalStorageState: string, any -> string
+changeLocalStorageState: string -> string
 */
- function changeLocalStorageState(name, value, objKey) {
-    if (objKey !== undefined) {
-        const localStorageElement = JSON.parse(localStorage.getItem(name));
-        localStorageElement[objKey] = value;
-        localStorage.setItem(name, JSON.stringify(localStorageElement));
-    }  else {
-        localStorage.setItem(name, JSON.stringify(value));
-    }
+ function changeLocalStorageState(name, value) {
+    localStorage.setItem(name, JSON.stringify(value));
 }
 
 
 export {
     changeLocalStorageState,
-    getFromLocalStorageState,
+    initFromLocalStorageState,
     initLocalStorage,
     verifyAppVersion
 };

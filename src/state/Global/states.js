@@ -413,7 +413,7 @@ function createGlobalFadeValue(num) {
             && isInsideInterval(limits.MIN, limits.MAX, num)
         )
         ? num
-        : 150//default
+        : 15 //default
     );
     return fadeTime;
 }

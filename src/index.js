@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 
-import { handleInitState } from "./services/Global/service.js";
+import {handleInitState} from "./services/Global/service.js";
 import {
     hasAudioContext,
     initAudioContext
