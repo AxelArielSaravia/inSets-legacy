@@ -1,11 +1,114 @@
-import {memo, useCallback, useMemo} from "react";
+import {useCallback, useMemo} from "react";
 
 import "./style.scss";
 
 function persent(a, b, c) {
-    if (a <= 0) return 0;
+    if (a <= 0) {
+        return 0;
+    }
     return Math.round((Math.floor(b * 10) * Math.floor(c * 10)) / Math.floor(a * 10)) / 10;
-} 
+}
+
+function EndTimeValue({
+    audioDispatch,
+    duration,
+    endTime
+}) {
+    const endTimeValue = 100 - persent(duration, endTime, 100);
+
+    const onChangeEndTime = useCallback(function onChangeEndTime(e) {
+        audioDispatch({
+            type: "endTime/change",
+            payload: persent(100, 100 - e.target.value, duration)
+        });
+    },[audioDispatch, duration]);
+
+    return (
+        <div className="playback_time playback_end-time">
+            <input
+                className="playback_time_seak"
+                type="range"
+                step="0.1"
+                value={endTimeValue}
+                onChange={onChangeEndTime}
+            />
+            <progress
+                className="playback_time_value"
+                role="presentation"
+                max="100"
+                value={endTimeValue}
+            />
+        </div>
+    );
+}
+
+function StartTimeValue({
+    audioDispatch,
+    duration,
+    startTime
+}) {
+    const startTimeValue = persent(duration, startTime, 100);
+
+    const onChangeStartTime = useCallback(function onChangeStartTime(e) {
+        audioDispatch({
+            type: "startTime/change",
+            payload: persent(100, e.target.value, duration)
+        });
+    },[audioDispatch, duration]);
+
+    return (
+        <div className="playback_time playback_start-time">
+            <input
+                className="playback_time_seak"
+                type="range"
+                max="100"
+                step="0.1"
+                value={startTimeValue}
+                onChange={onChangeStartTime}
+            />
+            <progress
+                className="playback_time_value"
+                role="presentation"
+                max="100"
+                value={startTimeValue}
+            />
+        </div>
+    );
+}
+
+function StartPointValue({startPointValue}) {
+    return (
+        <progress
+            className="playback_point_line"
+            role="presentation"
+            max="100"
+            value={startPointValue}
+        />
+    );
+}
+
+function CurrentTimeValue({duration, currentTime}) {
+    const currentTimeValue = persent(duration, currentTime, 100);
+    return (
+        <progress
+            className="playback_current_time"
+            role="presentation"
+            max="100"
+            value={currentTimeValue}
+        />
+    );
+}
+
+function EndPointValue({endPointValue}) {
+    return (
+        <progress
+            className="playback_point_line playback_end_point_line"
+            role="presentation"
+            max="100"
+            value={100 - endPointValue}
+        />
+    );
+}
 
 function Playback({
     duration,
@@ -16,14 +119,7 @@ function Playback({
     currentTime = 0,
     audioDispatch
 }) {
-    const startTimeValue = useMemo(
-        () => persent(duration, startTime, 100),
-        [startTime, duration]
-    );
-    const endTimeValue = useMemo(
-        () => 100 - persent(duration, endTime, 100),
-        [endTime, duration]
-    );
+
     const startPointValue = useMemo(
         () => persent(duration, startPoint, 100),
         [startPoint, duration]
@@ -31,27 +127,6 @@ function Playback({
     const endPointValue = useMemo(
         () => persent(duration, endPoint, 100),
         [endPoint, duration]
-    );
-    const currentTimeValue = useMemo(
-        () => persent(duration, currentTime, 100),
-        [currentTime, duration]
-    );
-
-    const onChangeEndTime = useCallback(function (e) {
-            audioDispatch({
-                type: "endTime/change",
-                payload: persent(100, 100 - e.target.value, duration)
-            });
-        },
-        [audioDispatch, duration]
-    );
-    const onChangeStartTime = useCallback(function (e) {
-            audioDispatch({
-                type: "startTime/change",
-                payload: persent(100, e.target.value, duration)
-            });
-        },
-        [audioDispatch, duration]
     );
 
     return (
@@ -65,60 +140,24 @@ function Playback({
                     }}
                 >
                     <div className="playback_point playback_start_point"/>
-                    <progress
-                        className="playback_point_line"
-                        role="presentation"
-                        max="100"
-                        value={startPointValue}
-                    />
-                    <progress
-                        className="playback_point_line playback_end_point_line"
-                        role="presentation"
-                        max="100"
-                        value={100 -endPointValue}
-                    />
-                    <progress
-                        className="playback_current_time"
-                        role="presentation"
-                        max="100"
-                        value={currentTimeValue}
-                    />
+                    <StartPointValue startPointValue={startPointValue}/>
+                    <EndPointValue endPointValue={endPointValue}/>
+                    <CurrentTimeValue duration={duration} currentTime={currentTime}/>
                     <div className="playback_point playback_end_point"/>
                 </div>
-                <div className="playback_time playback_start-time">
-                    <input
-                        className="playback_time_seak" 
-                        type="range"
-                        max="100"
-                        step="0.1"
-                        value={startTimeValue}
-                        onChange={onChangeStartTime}
-                    />
-                    <progress
-                        className="playback_time_value"
-                        role="presentation"
-                        max="100"
-                        value={startTimeValue}
-                    />
-                </div>
-                <div className="playback_time playback_end-time">
-                    <input 
-                        className="playback_time_seak"
-                        type="range"
-                        step="0.1"
-                        value={endTimeValue}
-                        onChange={onChangeEndTime}
-                    />
-                    <progress 
-                        className="playback_time_value"
-                        role="presentation"
-                        max="100"
-                        value={endTimeValue}
-                    />
-                </div>
+                <StartTimeValue
+                    audioDispatch={audioDispatch}
+                    duration={duration}
+                    startTime={startTime}
+                />
+                <EndTimeValue
+                    audioDispatch={audioDispatch}
+                    duration={duration}
+                    endTime={endTime}
+                />
             </div>
         </div>
-    )
-} 
+    );
+}
 
-export default memo(Playback);
+export default Playback;

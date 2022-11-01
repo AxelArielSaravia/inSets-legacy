@@ -1,55 +1,44 @@
-import { memo, useState, useEffect, useCallback } from "react";
+import {memo, useState, useEffect, useCallback} from "react";
 
-import { useAddFiles } from "../../hooks/index.js";
+import {useAddFiles} from "../../hooks/index.js";
 
-import { IconMusicFile } from "../icons/component.js";
+import {IconMusicFile} from "../icons/component.js";
 
-/**
- * @param {Event} e
- */
 function preventDefault(e) {
     e.preventDefault();
-};
-
+}
 
 function DropArea() {
     return (
         <>
             <div className="dragfile flex-row align-c justify-c">
-               <IconMusicFile className="icon-drop"/>
+                <IconMusicFile className="icon-drop"/>
             </div>
             <div>
                 <p className="fs-text p-5">Drop files</p>
             </div>
         </>
-    )
-};
+    );
+}
 
+const handleDragOver = function(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "copy";
+};
 
 const DropFiles = memo(function DropFiles({className, style}) {
     const addFiles = useAddFiles();
-    
-    useEffect(() => {
-        window.addEventListener('dragover', preventDefault, false);
-        window.addEventListener('drop', preventDefault, false);
-        return () => {
-            window.removeEventListener('dragover', preventDefault, false);
-            window.removeEventListener('drop', preventDefault, false);
+
+    useEffect(function () {
+        window.addEventListener("dragover", preventDefault, false);
+        window.addEventListener("drop", preventDefault, false);
+        return function () {
+            window.removeEventListener("dragover", preventDefault, false);
+            window.removeEventListener("drop", preventDefault, false);
         };
     });
 
-    /**
-     * @param {DragEvent} e
-     */
-    const handleDragOver = useCallback((e) => {
-        e.preventDefault();
-        e.dataTransfer.dropEffect = 'copy';
-    }, []);
-
-    /**
-     * @param {DragEvent} e
-     */
-    const handleFileDrop = useCallback((e) => {
+    const handleFileDrop = useCallback(function(e) {
         e.preventDefault();
         addFiles(e.dataTransfer.files);
     },[addFiles]);
@@ -67,29 +56,25 @@ const DropFiles = memo(function DropFiles({className, style}) {
 });
 
 
-/**
- * @param {{ children: Function, render: Function, className?: string, style?: object}} props 
- * @returns 
- */
-const DragFiles = memo(function DragFiles({ className, style, children}) {
+const DragFiles = memo(function DragFiles({className, style, children}) {
     const [isDragActive, setIsDragActive] = useState(false);
     let counter = 1;
     function handleDragEnter () {
-        counter++;
+        counter += 1;
         setIsDragActive(() => true);
-    };
+    }
 
     function handleDragLeave () {
-        counter--;
+        counter -= 1;
         if (counter === 0) {
             setIsDragActive(() => false);
         }
-    };
+    }
 
     function handleDrop () {
         counter = 0;
         setIsDragActive(() => false);
-    };
+    }
 
     return (
         <div

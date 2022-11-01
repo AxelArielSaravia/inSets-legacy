@@ -1,9 +1,9 @@
 /*-
 -- Looks if a number exist in a close interval
-isInsideInterval: (number, number, number) -> boolean 
+isInsideInterval: (number, number, number) -> boolean
 */
 function isInsideInterval(min, max, val) {
-    if (typeof min !== "number" 
+    if (typeof min !== "number"
         || typeof max !== "number"
         || typeof val !== "number"
     ) {

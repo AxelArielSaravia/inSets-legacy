@@ -1,15 +1,15 @@
-import {memo, useContext, useCallback} from "react";
+import {useContext, useCallback} from "react";
 
 import {GeneralDisableContext} from "../../../context/index.js";
 
-import ConfigPanelContainer from "../ConfigPanelContainer/component.js"
+import ConfigPanelContainer from "../ConfigPanelContainer/component.js";
 
 function RandomStartPoint() {
     const [
         {allRandomStartPointsAreDisabled},
         generalDisableDispatch
     ] = useContext(GeneralDisableContext);
-    
+
     const changeDisable = useCallback(function () {
         if (allRandomStartPointsAreDisabled.value) {
             generalDisableDispatch({type: "enable/randomStartPoint", payload: true});
@@ -29,4 +29,4 @@ function RandomStartPoint() {
     );
 }
 
-export default memo(RandomStartPoint);
+export default RandomStartPoint;

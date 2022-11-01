@@ -1,6 +1,20 @@
-import Range from "../../../components/Range/component.js" 
+import Range from "../../../components/Range/component.js";
 
 import "./style.scss";
+
+function Text({text}) {
+    if (text === undefined) {
+        return;
+    }
+    return <p className="fs-text p-5">{text}</p>;
+}
+
+function ValueTextAdd({valueTextAdd}) {
+    if (valueTextAdd === undefined) {
+        return;
+    }
+    return <p className="fs-text p-5">{" " + valueTextAdd}</p>;
+}
 
 function ConfigPanelRange({
     step,
@@ -24,13 +38,9 @@ function ConfigPanelRange({
                 />
             </div>
             <div className="flex-row align-c">
-                {text && (
-                <p className="fs-text p-5">{text}</p>
-                )}
+                <Text text={text}/>
                 <p className="fs-text">{valueText}</p>
-                {valueTextAdd && (
-                <p className="fs-text p-5">{" " + valueTextAdd}</p>
-                )}
+                <ValueTextAdd valueTextAdd={valueTextAdd}/>
             </div>
         </div>
     );

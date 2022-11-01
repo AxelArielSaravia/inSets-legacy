@@ -1,8 +1,8 @@
-import {memo, useContext, useCallback} from "react";
+import {useContext, useCallback} from "react";
 
 import {GeneralDisableContext} from "../../../context/index.js";
 
-import ConfigPanelContainer from "../ConfigPanelContainer/component.js"
+import ConfigPanelContainer from "../ConfigPanelContainer/component.js";
 
 
 function RandomEndPoint() {
@@ -10,7 +10,7 @@ function RandomEndPoint() {
         {allRandomEndPointsAreDisabled},
         generalDisableDispatch
     ] = useContext(GeneralDisableContext);
-    
+
     const changeDisable = useCallback(function () {
         if (allRandomEndPointsAreDisabled.value) {
             generalDisableDispatch({type: "enable/randomEndPoint", payload: true});
@@ -31,4 +31,4 @@ function RandomEndPoint() {
     );
 }
 
-export default memo(RandomEndPoint);
+export default RandomEndPoint;

@@ -1,7 +1,7 @@
-import { createContext, useReducer, memo } from "react";
+import {createContext, useReducer, memo} from "react";
 
-import { ViewAppReducer } from "../reducer/index.js";
-import { createViewAppState } from "../state/Global/index.js";
+import {ViewAppReducer} from "../reducer/index.js";
+import {createViewAppState} from "../state/Global/index.js";
 
 const AppContext = createContext();
 

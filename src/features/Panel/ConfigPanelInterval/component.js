@@ -26,8 +26,8 @@ function ConfigPanelInterval({
                     text="min"
                     valueText={viewMin}
                     valueTextAdd={valueText}
-                /> 
-                 <ConfigPanelRange
+                />
+                <ConfigPanelRange
                     step={step}
                     max={rangeMax}
                     value={valueMax}
@@ -36,7 +36,7 @@ function ConfigPanelInterval({
                     valueText={viewMax}
                     valueTextAdd={valueText}
                     reverse
-                /> 
+                />
             </div>
         </ConfigPanelChild>
     );

@@ -1,4 +1,4 @@
-import { defaultGlobalState, initGlobalState } from "../../state/Global/index.js";
+import {defaultGlobalState, initGlobalState} from "../../state/Global/index.js";
 
 import {
     initFromLocalStorageState,

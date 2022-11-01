@@ -1,6 +1,6 @@
-import { createContext, useReducer, memo } from "react";
+import {createContext, useReducer, memo} from "react";
 
-import { SumOfAllAudiosEventsReducer } from "../reducer/index.js";
+import {SumOfAllAudiosEventsReducer} from "../reducer/index.js";
 
 const SumOfAllAudiosEventsContext = createContext();
 

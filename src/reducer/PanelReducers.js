@@ -12,8 +12,8 @@ import {
     timeIntervalLimits
 } from "../services/limits/service.js";
 
-import { changeLocalStorageState } from "../services/localStorage/service.js";
-import { isInsideInterval } from "../services/assert/service.js";
+import {changeLocalStorageState} from "../services/localStorage/service.js";
+import {isInsideInterval} from "../services/assert/service.js";
 
 
 /* -------------------------------------------------------------------------- */
@@ -255,7 +255,7 @@ function DelayReducer(state, action) {
         const defaultObj = {
             ...defaultGlobalState.delay,
             areAllDisable: state.areAllDisable
-        }
+        };
         GlobalState.delay = defaultObj;
         changeLocalStorageState("delay", defaultObj);
         return defaultObj;
@@ -400,7 +400,7 @@ function FadesReducer(state, action) {
 initSetsState: undefined -> EventsForEachSet
 */
 function initSetsState() {
-  return GlobalState.eventsForEachSet;
+    return GlobalState.eventsForEachSet;
 }
 
 /*-
@@ -479,4 +479,4 @@ export {
     FadesReducer,
     initSetsState,
     SetsReducer
-}
+};

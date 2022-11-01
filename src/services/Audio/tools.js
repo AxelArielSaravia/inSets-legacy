@@ -159,7 +159,7 @@ async function setAudioConfiguration(audio_state) {
     changePlaybackRate(audio_state);
 
     //CONNECTIONS
-    const { inputGain, outputGain } = await createAudioRandomChain(
+    const {inputGain, outputGain} = await createAudioRandomChain(
         GlobalState.audio_context,
         audio_state
     );
@@ -258,7 +258,7 @@ function calculateEnd_ENGINE_audioNode(audio_state, audioDispatcher) {
             type: "currentTime/update"
         });
         if (e.target.currentTime >= audio_state.endPoint) {
-            audioDispatcher({ type: "color/default" });
+            audioDispatcher({type: "color/default"});
             return _stop(audio_state, audioDispatcher);
         }
     };
@@ -295,7 +295,7 @@ async function _stop(audio_state, audioDispatcher) {
     if (audio_state !== undefined && audio_state.isPlaying) {
         await fadeOut(audio_state);
         if (typeof audioDispatcher === "function") {
-            audioDispatcher({ type: "stop" });
+            audioDispatcher({type: "stop"});
         }
         await disconnect(audio_state);
 
@@ -323,7 +323,7 @@ async function _play(audio_state, audioDispatcher) {
         audio_state.isPlaying = true;
 
         if (typeof audioDispatcher === "function") {
-            await audioDispatcher({ type: "play" });
+            await audioDispatcher({type: "play"});
         }
 
         return true;
@@ -400,7 +400,7 @@ deleteAll: audioListDispatcher -> undefined;
 async function deleteAll(audioListDispatcher) {
     const AUDIO_LIST = GlobalState.audio_list;
 
-    await audioListDispatcher({ type: "clear" });
+    await audioListDispatcher({type: "clear"});
     AUDIO_LIST.forEach((_, id) => stop(id));
 
     GlobalState.audio_list = new Map();
@@ -488,7 +488,7 @@ function randomSetsExecution(appDispatcher) {
         return;
     }
     const executeSet = createNewSetExecution(n);
-    appDispatcher({ type: "newAudiosSet", payload: executeSet });
+    appDispatcher({type: "newAudiosSet", payload: executeSet});
 }
 
 
@@ -539,4 +539,4 @@ export {
     deleteAll,
     startApp,
     stopApp
-}
+};

@@ -1,5 +1,4 @@
 import {
-    memo,
     useReducer,
     useContext,
     useCallback,
@@ -13,10 +12,10 @@ import {GeneralDisableContext} from "../../../context/index.js";
 import {pannerLimits} from "../../../services/limits/service.js";
 import {rToPanner} from "../../../services/convert/service.js";
 
-import ConfigPanelContainer from "../ConfigPanelContainer/component.js"
+import ConfigPanelContainer from "../ConfigPanelContainer/component.js";
 import ConfigPanelInterval from "../ConfigPanelInterval/component.js";
 
-function Panner() {
+function Panner({Z_MAX, MAX}) {
     const [{allPannersAreDisabled}, generalDisableDispatch] = useContext(GeneralDisableContext);
     const [{
         xMax,
@@ -27,8 +26,6 @@ function Panner() {
         zMin
     }, pannerDispatch] = useReducer(PannerReducer, initPannerState());
 
-    const {Z_MAX, MAX} = useMemo(() => pannerLimits(), []);
-
     const viewXMax = useMemo(() => rToPanner(xMax), [xMax]);
     const viewXMin = useMemo(() => rToPanner(xMin), [xMin]);
     const viewYMax = useMemo(() => rToPanner(yMax), [yMax]);
@@ -36,9 +33,9 @@ function Panner() {
 
     const changeDisable = useCallback(function () {
         if (allPannersAreDisabled.value) {
-            generalDisableDispatch({type: "enable/panner", payload: true})
+            generalDisableDispatch({type: "enable/panner", payload: true});
         } else {
-            generalDisableDispatch({type: "disable/panner"})
+            generalDisableDispatch({type: "disable/panner"});
         }
     },[allPannersAreDisabled, generalDisableDispatch]);
 
@@ -112,4 +109,15 @@ function Panner() {
     );
 }
 
-export default memo(Panner);
+function ContainPanner() {
+    const {Z_MAX, MAX} = pannerLimits();
+
+    return (
+        <Panner
+            Z_MAX={Z_MAX}
+            MAX={MAX}
+        />
+    );
+}
+
+export default ContainPanner;

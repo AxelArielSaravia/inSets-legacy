@@ -1,5 +1,5 @@
-import { createAudioState } from "../../state/Audio/index.js";
-import { GlobalState } from "../../state/Global/index.js";
+import {createAudioState} from "../../state/Audio/index.js";
+import {GlobalState} from "../../state/Global/index.js";
 
 import createId  from "../../services/createId/service.js";
 

@@ -1,10 +1,10 @@
 /*-
 verifyAppVersion: string -> boolean
 */
- function verifyAppVersion(version) {
+function verifyAppVersion(version) {
     if (typeof version === "string" &&
         localStorage.getItem("version") !== version
-     ) {
+    ) {
         localStorage.clear();
         localStorage.setItem("version", version);
         return true;
@@ -41,7 +41,7 @@ function initFromLocalStorageState(keys, defaultValues) {
             obj[key] = val;
         } catch (err) {
             localStorage.setItem(
-                key, 
+                key,
                 JSON.stringify(defaultValues[key])
             );
             obj[key] = defaultValues[key];
@@ -53,7 +53,7 @@ function initFromLocalStorageState(keys, defaultValues) {
 /*-
 changeLocalStorageState: string -> string
 */
- function changeLocalStorageState(name, value) {
+function changeLocalStorageState(name, value) {
     localStorage.setItem(name, JSON.stringify(value));
 }
 

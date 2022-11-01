@@ -1,4 +1,4 @@
-import { useAddFiles } from "./useAddFiles/hook.js";
+import {useAddFiles} from "./useAddFiles/hook.js";
 export {
     useAddFiles
 };

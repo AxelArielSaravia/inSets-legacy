@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 
-/**
- * @param {string} media the string must be a media query css  
- * @returns {boolean}
- */
- export function useMatchMedia(media) {
+
+/*-
+useMatchMedia: string -> boolean
+*/
+function useMatchMedia(media) {
     const _MM = window.matchMedia(media);
     const [value, setValue] = useState(_MM.matches);
-    useEffect(() => {
+    useEffect(function () {
         const MM = window.matchMedia(media);
         MM.onchange = (e) => setValue(() => e.matches);
         return () => MM.onchange = undefined;
@@ -15,24 +15,28 @@ import { useEffect, useState } from "react";
     return value;
 }
 
-const matchesElement = (matcher, callback) => (e) => {
-    if (!e.target.matches(matcher)) {
-        callback();
-    }
+function matchesElement(matcher, callback) {
+    return function (e) {
+        if (!e.target.matches(matcher)) {
+            callback();
+        }
+    };
 }
-const useOnClickClose = (elementActive, matcher, closeFunction) => {
-    const {matches} = window.matchMedia("(min-width: 768px)");    
-    useEffect(() => {
+
+function useOnClickClose(elementActive, matcher, closeFunction) {
+    const {matches} = window.matchMedia("(min-width: 768px)");
+    useEffect(function () {
         if (matches && elementActive) {
             const _matchesElement = matchesElement(matcher, closeFunction);
-            document.addEventListener('click', _matchesElement);
-            return () => {
-                document.removeEventListener('click', _matchesElement);
-            } 
+            document.addEventListener("click", _matchesElement);
+            return function () {
+                document.removeEventListener("click", _matchesElement);
+            };
         }
     }, [elementActive, matches, matcher, closeFunction]);
 }
 
 export {
+    useMatchMedia,
     useOnClickClose
-}
+};

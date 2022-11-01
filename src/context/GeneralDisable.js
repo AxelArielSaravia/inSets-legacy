@@ -1,7 +1,7 @@
-import { createContext, useReducer, memo } from "react";
+import {createContext, useReducer, memo} from "react";
 
-import { ViewGeneralDisableReducer } from "../reducer/index.js";
-import { createViewGeneralDisableState } from "../state/Global/index.js";
+import {ViewGeneralDisableReducer} from "../reducer/index.js";
+import {createViewGeneralDisableState} from "../state/Global/index.js";
 
 const GeneralDisableContext = createContext();
 

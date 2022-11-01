@@ -41,9 +41,10 @@ import {
     IconPause
 } from "../../components/icons/component.js";
 
-import Playback from "./Playback/component.js"
+import Playback from "./Playback/component.js";
 
 import "./style.scss";
+
 
 function DeleteButton({id, events, audioDispatch}) {
     const [, audioListDispatch] = useContext(AudioListContext);
@@ -55,8 +56,8 @@ function DeleteButton({id, events, audioDispatch}) {
 
     return (
         <Button
-        className="audio-button delete-button flex-column align-c"
-        onClick={onClick}
+            className="audio-button delete-button flex-column align-c"
+            onClick={onClick}
         >
             <IconX className="icon-text-l"/>
         </Button>
@@ -86,7 +87,7 @@ function Volume({changeVolume, volume}) {
                 onChange={changeVolume}
             />
         </div>
-    )
+    );
 }
 
 function EffectButton({text, onClick, isDisable}) {
@@ -118,15 +119,6 @@ function PlayButton({isPlaying, playOnClick}) {
 
 function AudioElement({id}) {
     const [{is_started, playAudiosSet, playColor}] = useContext(AppContext);
-    const [sumOfAllEvents, sumOfAllEventsdispatch] = useContext(SumOfAllAudiosEventsContext);
-    const [{
-        allDelaysAreDisabled,
-        allFiltersAreDisabled,
-        allPannersAreDisabled,
-        allPlaybackRatesAreDisabled,
-        allRandomEndPointsAreDisabled,
-        allRandomStartPointsAreDisabled,
-    }, generalDisableDispatch] = useContext(GeneralDisableContext);
     const [{
         color,
         title,
@@ -147,6 +139,15 @@ function AudioElement({id}) {
         randomEndPointIsDisable,
         randomStartPointIsDisable
     }, audioDispatch] = useReducer(ViewAudioReducer, createViewAudioState(id));
+    const [sumOfAllEvents, sumOfAllEventsdispatch] = useContext(SumOfAllAudiosEventsContext);
+    const [{
+        allDelaysAreDisabled,
+        allFiltersAreDisabled,
+        allPannersAreDisabled,
+        allPlaybackRatesAreDisabled,
+        allRandomEndPointsAreDisabled,
+        allRandomStartPointsAreDisabled,
+    }, generalDisableDispatch] = useContext(GeneralDisableContext);
 
     useEffect(function () {
         if (id in playAudiosSet) {
@@ -205,15 +206,6 @@ function AudioElement({id}) {
         }
     }, [allRandomStartPointsAreDisabled]);
 
-    const changeVolume = useCallback(function (val) {
-        audioDispatch({type: "volume/change", payload: +val})
-        setAudioVolume(id);
-    }, [id]);
-
-    const changeConfigurationsState = useCallback(function () {
-        audioDispatch({type: "configuration/toggle"})
-    }, []);
-
     const changeDelay = useCallback(function () {
         if (delayIsDisable) {
             if (allDelaysAreDisabled.value) {
@@ -223,7 +215,7 @@ function AudioElement({id}) {
         } else {
             audioDispatch({type:"effect", payload:"delay/disable"});
         }
-    },[ delayIsDisable, allDelaysAreDisabled, generalDisableDispatch]);
+    },[delayIsDisable, allDelaysAreDisabled, generalDisableDispatch]);
 
     const changeFilter = useCallback(function () {
         if (filterIsDisable) {
@@ -286,7 +278,7 @@ function AudioElement({id}) {
         }
         if (audioEvents < 50) {
             sumOfAllEventsdispatch({type: "add"});
-            audioDispatch({type: "audioEvents/add"})
+            audioDispatch({type: "audioEvents/add"});
         }
     }
     function subtractEvent() {
@@ -295,9 +287,26 @@ function AudioElement({id}) {
         }
         if (audioEvents > 1) {
             sumOfAllEventsdispatch({type: "subtract", payload: 1});
-            audioDispatch({type: "audioEvents/subtract"})
+            audioDispatch({type: "audioEvents/subtract"});
         }
     }
+
+    const isDurationShort = useMemo(() => duration < 2, [duration]);
+
+    const probabilityPrecent = useMemo(
+        () => floorPercent(sumOfAllEvents, audioEvents, 100),
+        [audioEvents, sumOfAllEvents]
+    );
+
+    const changeVolume = useCallback(function (val) {
+        audioDispatch({type: "volume/change", payload: +val});
+        setAudioVolume(id);
+    }, [id]);
+
+    const changeConfigurationsState = useCallback(function () {
+        audioDispatch({type: "configuration/toggle"});
+    }, []);
+
     const playOnClick = useCallback(function() {
         if (isPlaying) {
             stop(id, audioDispatch);
@@ -306,23 +315,23 @@ function AudioElement({id}) {
             play(id, audioDispatch);
         }
     },[id, isPlaying]);
-    const isDurationShort = useMemo(() => duration < 2, [duration]);
-    const probabilityPrecent = useMemo(
-        () => floorPercent(sumOfAllEvents, audioEvents, 100)
-        , [audioEvents, sumOfAllEvents]
-    );
+
 
     return (
-        <div 
-            className="audio-element flex-column p-5" 
-            style={color ? {
-                "--audio-color": color,
-                outlineColor: color
-            } : undefined}
+        <div
+            className="audio-element flex-column p-5"
+            style={(
+                color
+                ? {
+                    "--audio-color": color,
+                    outlineColor: color
+                }
+                : undefined
+            )}
         >
             <section className="audio-element_header flex-row align-c justify-sb p-2">
                 <PlayButton isPlaying={isPlaying} playOnClick={playOnClick}/>
-                <Button 
+                <Button
                     className="audio-element_title flex-row align-c ellipsis"
                     onClick={playOnClick}
                 >
@@ -332,24 +341,24 @@ function AudioElement({id}) {
                 <div className="px-10">
                     <ConfigButton value={configurationIsOpen} change={changeConfigurationsState}/>
                 </div>
-                <DeleteButton 
-                    id={id} 
+                <DeleteButton
+                    id={id}
                     events={audioEvents}
                     audioDispatch={audioDispatch}
                 />
             </section>
             {configurationIsOpen && (
-            <section className="audio-configuration flex-column">
-                <div className="audio-configuration_playback--prev flex-row align-c justify-c">
-                    <div className="audio-configuration_playback p-5 flex-row align-c"
-                        style={isDurationShort ? {width: "80%"} : undefined}
-                    >
-                        <div className="playback_time-text">
-                            {isDurationShort
-                            ? <p className="fs-text">{durationToShortTime(startTime)}</p>
-                            : <p className="fs-text">{durationToTime(startTime)}</p>
-                            }
-                        </div>
+                <section className="audio-configuration flex-column">
+                    <div className="audio-configuration_playback--prev flex-row align-c justify-c">
+                        <div className="audio-configuration_playback p-5 flex-row align-c"
+                            style={isDurationShort ? {width: "80%"} : undefined}
+                        >
+                            <div className="playback_time-text">
+                                {isDurationShort
+                                ? <p className="fs-text">{durationToShortTime(startTime)}</p>
+                                : <p className="fs-text">{durationToTime(startTime)}</p>
+                                }
+                            </div>
                             <Playback
                                 duration={duration}
                                 endPoint={endPoint}
@@ -359,67 +368,67 @@ function AudioElement({id}) {
                                 currentTime={currentTime}
                                 audioDispatch={audioDispatch}
                             />
-                        <div className="playback_time-text">
-                            {isDurationShort
-                            ? <p className="fs-text">{durationToShortTime(endTime)}</p>
-                            : <p className="fs-text">{durationToTime(endTime)}</p>
-                            }
+                            <div className="playback_time-text">
+                                {isDurationShort
+                                ? <p className="fs-text">{durationToShortTime(endTime)}</p>
+                                : <p className="fs-text">{durationToTime(endTime)}</p>
+                                }
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div className="flex-row flex-wrap">
-                    <div className="audio-configuration_probability flex-row align-c">
-                        <span className="fs-text">Probability:</span>
-                        <span className="percent fs-text text-bold text-center">{probabilityPrecent + "%"}</span>
-                        <div className="">
-                            <AddAndSubtract
-                                viewValue={audioEvents}
-                                subtractOnClick={subtractEvent}
-                                addOnClick={addEvent}
-                                horizontal
-                            />
+                    <div className="flex-row flex-wrap">
+                        <div className="audio-configuration_probability flex-row align-c">
+                            <span className="fs-text">Probability:</span>
+                            <span className="percent fs-text text-bold text-center">{probabilityPrecent + "%"}</span>
+                            <div className="">
+                                <AddAndSubtract
+                                    viewValue={audioEvents}
+                                    subtractOnClick={subtractEvent}
+                                    addOnClick={addEvent}
+                                    horizontal
+                                />
+                            </div>
+                        </div>
+                        <div className="audio-configuration_effects flex-row p-5">
+                            <span className="fs-text py-5">Enabled effects:</span>
+                            <div className="flex-row flex-wrap align-c">
+                                <EffectButton
+                                    isDisable={delayIsDisable}
+                                    text="delay"
+                                    onClick={changeDelay}
+                                />
+                                <EffectButton
+                                    isDisable={filterIsDisable}
+                                    text="filter"
+                                    onClick={changeFilter}
+                                />
+                                <EffectButton
+                                    isDisable={pannerIsDisable}
+                                    text="panner"
+                                    onClick={changePanner}
+                                />
+                                <EffectButton
+                                    isDisable={playbackRateIsDisable}
+                                    text="rate"
+                                    onClick={changePlaybackRate}
+                                />
+                                <EffectButton
+                                    isDisable={randomEndPointIsDisable}
+                                    text="REP"
+                                    onClick={changeREP}
+                                />
+                                <EffectButton
+                                    isDisable={randomStartPointIsDisable}
+                                    text="RSP"
+                                    onClick={changeRSP}
+                                />
+                            </div>
                         </div>
                     </div>
-                    <div className="audio-configuration_effects flex-row p-5">
-                        <span className="fs-text py-5">Enabled effects:</span>
-                        <div className="flex-row flex-wrap align-c">
-                            <EffectButton
-                                isDisable={delayIsDisable}
-                                text="delay"
-                                onClick={changeDelay}
-                            />
-                            <EffectButton
-                                isDisable={filterIsDisable}
-                                text="filter"
-                                onClick={changeFilter}
-                            />
-                            <EffectButton
-                                isDisable={pannerIsDisable}
-                                text="panner"
-                                onClick={changePanner}
-                            />
-                            <EffectButton
-                                isDisable={playbackRateIsDisable}
-                                text="rate"
-                                onClick={changePlaybackRate}
-                            />
-                            <EffectButton
-                                isDisable={randomEndPointIsDisable}
-                                text="REP"
-                                onClick={changeREP}
-                            />
-                            <EffectButton
-                                isDisable={randomStartPointIsDisable}
-                                text="RSP"
-                                onClick={changeRSP}
-                            />
-                        </div>
-                    </div>
-                </div>
-            </section>
+                </section>
             )}
         </div>
-    )
+    );
 }
 
 export default memo(AudioElement);

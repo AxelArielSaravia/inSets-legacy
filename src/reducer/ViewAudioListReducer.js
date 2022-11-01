@@ -1,4 +1,4 @@
-import { GlobalState } from "../state/Global/index.js";
+import {GlobalState} from "../state/Global/index.js";
 
 /*-
 ViewAudioListReducer: (ViewAudioListState, {
@@ -60,10 +60,10 @@ function ViewAudioListReducer(state, action) {
         if (state.completedAudioListSize < 16) {
             const events = GlobalState.eventsForEachSet.arrOfEvents.pop();
             GlobalState.eventsForEachSet.sumOfAllEvents -= events;
-        };
+        }
 
-        const newCompletedAudioList = { ...state.completedAudioList };
-        const newLoadedAudioList = { ...state.loadedAudioList };
+        const newCompletedAudioList = {...state.completedAudioList};
+        const newLoadedAudioList = {...state.loadedAudioList};
         delete newCompletedAudioList[action.id];
         delete newLoadedAudioList[action.id];
 
@@ -75,7 +75,7 @@ function ViewAudioListReducer(state, action) {
             loadedAudioListSize: state.loadedAudioListSize - 1
         };
     } else if (type === "loadingError") {
-        const newLoadedAudioList = { ...state.loadedAudioList };
+        const newLoadedAudioList = {...state.loadedAudioList};
         delete newLoadedAudioList[action.id];
         return {
             ...state,

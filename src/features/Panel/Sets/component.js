@@ -1,4 +1,4 @@
-import {memo,
+import {
     useReducer,
     useCallback,
     useContext,
@@ -10,9 +10,9 @@ import {AudioListContext} from "../../../context/index.js";
 import {initSetsState, SetsReducer} from "../../../reducer/index.js";
 
 import AddAndSubtract from "../../../components/AddAndSubtract/component.js";
-import ConfigPanelContainer from "../ConfigPanelContainer/component.js"
+import ConfigPanelContainer from "../ConfigPanelContainer/component.js";
 
-import {fixPercent} from "../../utils.js"; 
+import {fixPercent} from "../../utils.js";
 
 import "./style.scss";
 
@@ -24,13 +24,15 @@ function Sets() {
     }, setsDispatcher] = useReducer(SetsReducer, initSetsState());
 
     useEffect(function () {
-        if (completedAudioListSize + 1 !== arrOfEvents.length)
+        if (completedAudioListSize + 1 !== arrOfEvents.length) {
             setsDispatcher({type: "update"});
-    }, [completedAudioListSize, arrOfEvents])
+        }
+    }, [completedAudioListSize, arrOfEvents]);
 
     const reset = useCallback(function () {
-        setsDispatcher({type: "reset"})
+        setsDispatcher({type: "reset"});
     }, []);
+
     const addEvent = useCallback((i) => function () {
         setsDispatcher({type: "addEvent", payload: i});
     }, []);
@@ -45,36 +47,36 @@ function Sets() {
             addResetButton
             reset={reset}
         >
-            {arrOfEvents.length < 2 
+            {arrOfEvents.length < 2
             ? (
-            <div className="p-10">
-                <p className="fs-text text-center">No audio files</p>
-            </div>
-            ) : (
-            <div className="sets-container_grid-3 align-c">
-                <div className="set-container p-5">
-                    <h4 className="fs-text">Size</h4>
-                    <h4 className="fs-text">Value</h4>
-                    <h4 className="fs-text">Probability</h4>
+                <div className="p-10">
+                    <p className="fs-text text-center">No audio files</p>
                 </div>
-                {arrOfEvents.map((val, i) => (
-                    <div key={"set-" + i} className="set-container p-5">
-                        <h4 className="fs-text">{i}</h4>
-                        <AddAndSubtract
-                            addOnClick={addEvent(i)}
-                            subtractOnClick={removeEvent(i)}
-                            viewValue={val}
-                            horizontal
-                        />
-                        <p className="fs-text">
-                            {fixPercent(sumOfAllEvents, val, 100, 1) + '%'}
-                        </p>
+            ) : (
+                <div className="sets-container_grid-3 align-c">
+                    <div className="set-container p-5">
+                        <h4 className="fs-text">Size</h4>
+                        <h4 className="fs-text">Value</h4>
+                        <h4 className="fs-text">Probability</h4>
                     </div>
-                ))}
-            </div>
+                    {arrOfEvents.map((val, i) => (
+                        <div key={"set-" + i} className="set-container p-5">
+                            <h4 className="fs-text">{i}</h4>
+                            <AddAndSubtract
+                                addOnClick={addEvent(i)}
+                                subtractOnClick={removeEvent(i)}
+                                viewValue={val}
+                                horizontal
+                            />
+                            <p className="fs-text">
+                                {fixPercent(sumOfAllEvents, val, 100, 1) + "%"}
+                            </p>
+                        </div>
+                    ))}
+                </div>
             )}
         </ConfigPanelContainer>
     );
 }
 
-export default memo(Sets);
+export default Sets;

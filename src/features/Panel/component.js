@@ -1,15 +1,22 @@
-import { memo, useReducer, useCallback } from "react";
+import {useReducer, useCallback} from "react";
 
 import {
     createConfigPanelState,
     configPanelReducer
 } from "../../reducer/ConfigPanelReducer.js";
 
-import { IconColumns, IconColumnsGap } from "../../components/icons/component.js";
+import {IconColumns, IconColumnsGap} from "../../components/icons/component.js";
 import ItemsPanel from "./ItemsPanel/component.js";
 import ConfigPanel from "./ConfigPanel/component.js";
 
 import "./style.scss";
+
+function IsPanelVisible({isPanelVisible}) {
+    if (isPanelVisible) {
+        return <IconColumnsGap className="icon-panel icon-text"/>;
+    }
+    return <IconColumns className="icon-panel icon-text"/>;
+}
 
 function PanelSwitcher({switchOnClick, isPanelVisible}) {
     return (
@@ -20,10 +27,7 @@ function PanelSwitcher({switchOnClick, isPanelVisible}) {
                 onClick={switchOnClick}
             >
                 <div></div>
-                {isPanelVisible
-                    ? <IconColumnsGap className="icon-panel icon-text"/>
-                    : <IconColumns className="icon-panel icon-text"/>
-                }
+                <IsPanelVisible isPanelVisible={isPanelVisible}/>
             </button>
         </div>
     );
@@ -67,10 +71,10 @@ function GeneralPanel() {
                         isActive={isConfigPanelVisible}
                         itemName={panelItem}
                         closeConfigPanel={closeConfigPanel}
-                    /> 
+                    />
                 </div>
             </aside>
         </div>
     );
 }
-export default memo(GeneralPanel);
+export default GeneralPanel;

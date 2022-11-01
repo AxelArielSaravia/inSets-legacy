@@ -1,5 +1,3 @@
-import {memo} from "react";
-
 import {useOnClickClose} from "../hook.js";
 
 import {IconChevronBarLeft} from "../../../components/icons/component.js";
@@ -16,35 +14,45 @@ import Time from "../Time/component.js";
 
 import "./style.scss";
 
-
 function ConfigPanelContent({itemName}) {
     if (itemName === "DELAY") {
         return <Delay/>;
-    } else if (itemName === "FADES") {
-        return <Fades/>;
-    } else if (itemName === "FILTER") {
-        return <Filter/>;
-    } else if (itemName === "PANNER") {
-        return <Panner/>;
-    } else if (itemName === "RATE") {
-        return <PlaybackRate/>;
-    } else if (itemName === "REP") {
-        return <RandomEndPoint/>;
-    } else if (itemName === "RSP") {
-        return <RandomStartPoint/>;
-    } else if (itemName === "SETS") {
-        return <Sets/>;
-    } else if (itemName === "TIME") {
-        return <Time/>;
-    } else {
-        return;
     }
+    if (itemName === "FADES") {
+        return <Fades/>;
+    }
+    if (itemName === "FILTER") {
+        return <Filter/>;
+    }
+    if (itemName === "PANNER") {
+        return <Panner/>;
+    }
+    if (itemName === "RATE") {
+        return <PlaybackRate/>;
+    }
+    if (itemName === "REP") {
+        return <RandomEndPoint/>;
+    }
+    if (itemName === "RSP") {
+        return <RandomStartPoint/>;
+    }
+    if (itemName === "SETS") {
+        return <Sets/>;
+    }
+    if (itemName === "TIME") {
+        return <Time/>;
+    }
+    return;
 }
 
-const className = () => "panel config-panel flex-column";
+const ConfigPanel_className = "panel config-panel flex-column";
 
-function ConfigPanel({isActive, itemName, closeConfigPanel }) {
-    const _className = isActive ? className() : className() + " panel-hidden";
+function ConfigPanel({isActive, itemName, closeConfigPanel}) {
+    const _className = (
+        isActive
+        ? ConfigPanel_className
+        : ConfigPanel_className + " panel-hidden"
+    );
 
     useOnClickClose(isActive, ".generalPanel *", closeConfigPanel);
 
@@ -53,16 +61,16 @@ function ConfigPanel({isActive, itemName, closeConfigPanel }) {
             <div className="flex-row justify-end">
                 <button
                     title="close"
-                    type="button" 
+                    type="button"
                     className="configPanel-close flex-column align-c"
                     onClick={closeConfigPanel}
                 >
                     <IconChevronBarLeft className="icon-text-l"/>
                 </button>
             </div>
-            <ConfigPanelContent itemName={itemName}/> 
+            <ConfigPanelContent itemName={itemName}/>
         </div>
     );
 }
 
-export default memo(ConfigPanel);
+export default ConfigPanel;

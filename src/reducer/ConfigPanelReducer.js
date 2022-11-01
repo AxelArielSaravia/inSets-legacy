@@ -46,13 +46,11 @@ configPanelReducer: (ConfigPanelState, {
 function configPanelReducer(state, action) {
     const {payload, type} = action;
     if (type === "panelItem/change") {
-        if (state.panelItem === payload
-            && state.isConfigPanelVisible
-        ) {
+        if (state.panelItem === payload && state.isConfigPanelVisible) {
             return {
                 ...state,
                 isConfigPanelVisible: false,
-                isItemsPanelVisible:true,
+                isItemsPanelVisible: true,
                 panelItem: payload
             };
         }
@@ -65,23 +63,23 @@ function configPanelReducer(state, action) {
     } else if (type === "panel/switch") {
         if (state.isPanelVisible) {
             return {
-                isPanelVisible: false,
-                isItemsPanelVisible: false,
                 isConfigPanelVisible: false,
+                isItemsPanelVisible: false,
+                isPanelVisible: false,
                 panelItem: ""
             };
         }
         return {
-            isPanelVisible: true,
-            isItemsPanelVisible: true,
             isConfigPanelVisible: false,
+            isItemsPanelVisible: true,
+            isPanelVisible: true,
             panelItem: ""
         };
     } else if (type === "configPanel/close") {
         return {
             ...state,
-            isItemsPanelVisible: true,
             isConfigPanelVisible: false,
+            isItemsPanelVisible: true,
             panelItem: ""
         };
     } else {
@@ -92,4 +90,4 @@ function configPanelReducer(state, action) {
 export {
     createConfigPanelState,
     configPanelReducer
-}
+};

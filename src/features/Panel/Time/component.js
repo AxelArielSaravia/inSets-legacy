@@ -1,32 +1,32 @@
-import {memo, useReducer, useCallback, useMemo} from "react";
+import {useReducer, useCallback, useMemo} from "react";
 
 import {initTimeState, TimeReducer} from "../../../reducer/index.js";
 
 import AddAndSubtract from "../../../components/AddAndSubtract/component.js";
-import ConfigPanelContainer from "../ConfigPanelContainer/component.js"
+import ConfigPanelContainer from "../ConfigPanelContainer/component.js";
 import ConfigPanelChild from "../ConfigPanelChild/component.js";
 
-import {isMinorThanTen} from "../../utils.js"
+import {isMinorThanTen} from "../../utils.js";
 
 function Time() {
     const [{min, max}, timeDispatch] = useReducer(TimeReducer, initTimeState());
- 
+
     const reset = useCallback(function () {
         timeDispatch({type: "reset"});
     }, [timeDispatch]);
 
     const addToMin = (val) => function () {
         timeDispatch({type:"min/change", payload: +min + val});
-    } 
+    };
     const subtractToMin = (val) => function () {
         timeDispatch({type:"min/change", payload: +min - val});
-    } 
+    };
     const addToMax = (val) => function () {
         timeDispatch({type:"max/change", payload: +max + val});
-    } 
+    };
     const subtractToMax = (val) => function () {
         timeDispatch({type:"max/change", payload: +max - val});
-    } 
+    };
 
     const maxMinutes = useMemo(() => isMinorThanTen(Number.parseInt(max / 600) % 60), [max]);
     const maxSeconds = useMemo(() => isMinorThanTen(Number.parseInt(max / 10) % 60), [max]);
@@ -39,7 +39,7 @@ function Time() {
             description="This is an interval that represents the time to wait between executions of audios set."
             addResetButton
             reset={reset}
-        > 
+        >
             <div className="flex-column align-c p-10">
                 <div className="flex-row align-c">
                     <span className="fs-text p-5">{"value schema: "}</span>
@@ -100,4 +100,4 @@ function Time() {
     );
 }
 
-export default memo(Time);
+export default Time;

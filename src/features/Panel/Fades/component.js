@@ -1,4 +1,4 @@
-import {memo, useReducer, useCallback, useMemo} from "react";
+import {useReducer, useCallback, useMemo} from "react";
 
 import {initFadesState, FadesReducer} from "../../../reducer/index.js";
 
@@ -9,16 +9,15 @@ import ConfigPanelContainer from "../ConfigPanelContainer/component.js";
 import ConfigPanelChild from "../ConfigPanelChild/component.js";
 import ConfigPanelRange from "../ConfigPanelRange/component.js";
 
-function Fades() {
+function Fades({MAX}) {
     const [{fadeIn, fadeOut}, timeDispatch] = useReducer(FadesReducer, initFadesState());
-    const {MAX} = useMemo(() => fadeLimits(),[]);
     const viewFadeIn = useMemo(() => rToFade(fadeIn),[fadeIn]);
     const viewFadeOut = useMemo(() => rToFade(fadeOut),[fadeOut]);
 
     const reset = useCallback(function () {
         timeDispatch({type: "reset"});
     }, [timeDispatch]);
-    
+
     const fadeInOnChange = useCallback(function (val) {
         timeDispatch({type:"fadeIn/change", payload: Number(val)});
     }, [timeDispatch]);
@@ -56,4 +55,12 @@ function Fades() {
     );
 }
 
-export default memo(Fades);
+function ContainFades() {
+    const {MAX} = fadeLimits();
+
+    return (
+        <Fades MAX={MAX}/>
+    );
+}
+
+export default ContainFades;

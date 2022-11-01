@@ -1,5 +1,5 @@
-import { GlobalState } from "../state/Global/index.js";
-import { audioVolumeLimits } from "../state/Audio/index.js";
+import {GlobalState} from "../state/Global/index.js";
+import {audioVolumeLimits} from "../state/Audio/index.js";
 
 /*-
 @type ViewAudioState: {
@@ -47,7 +47,7 @@ function createViewAudioState(id) {
 /* -------------------------------------------------------------------------- */
 /*-
 @type ViewAudioDisableReducerTypes: (
-      "delay/disable"
+    "delay/disable"
     | "delay/enable"
     | "filter/disable"
     | "filter/enable"
@@ -71,51 +71,51 @@ function ViewAudioDisableReducer(state, type) {
 
     if (type === "delay/disable") {
         audio_state.delayIsDisable = true;
-        return { ...state, delayIsDisable: true };
+        return {...state, delayIsDisable: true};
 
     } else if (type === "delay/enable") {
         audio_state.delayIsDisable = false;
-        return { ...state, delayIsDisable: false };
+        return {...state, delayIsDisable: false};
 
     } else if (type === "filter/disable") {
-        audio_state.filterIsDisable = true
-        return { ...state, filterIsDisable: true };
+        audio_state.filterIsDisable = true;
+        return {...state, filterIsDisable: true};
 
     } else if (type === "filter/enable") {
-        audio_state.filterIsDisable = false
-        return { ...state, filterIsDisable: false };
+        audio_state.filterIsDisable = false;
+        return {...state, filterIsDisable: false};
 
     } else if (type === "panner/disable") {
         audio_state.pannerIsDisable = true;
-        return { ...state, pannerIsDisable: true };
+        return {...state, pannerIsDisable: true};
 
     } else if (type === "panner/enable") {
         audio_state.pannerIsDisable = false;
-        return { ...state, pannerIsDisable: false };
+        return {...state, pannerIsDisable: false};
 
     } else if (type === "playbackRate/disable") {
         audio_state.playbackRateIsDisable = true;
-        return { ...state, playbackRateIsDisable: true };
+        return {...state, playbackRateIsDisable: true};
 
     } else if (type === "playbackRate/enable") {
         audio_state.playbackRateIsDisable = false;
-        return { ...state, playbackRateIsDisable: false };
+        return {...state, playbackRateIsDisable: false};
 
     } else if (type === "randomEndPoint/disable") {
         audio_state.randomEndPointIsDisable = true;
-        return { ...state, randomEndPointIsDisable: true };
+        return {...state, randomEndPointIsDisable: true};
 
     } else if (type === "randomEndPoint/enable") {
-        audio_state.randomEndPointIsDisable = false
-        return { ...state, randomEndPointIsDisable: false };
+        audio_state.randomEndPointIsDisable = false;
+        return {...state, randomEndPointIsDisable: false};
 
     } else if (type === "randomStartPoint/disable") {
         audio_state.randomStartPointIsDisable = true;
-        return { ...state, randomStartPointIsDisable: true };
+        return {...state, randomStartPointIsDisable: true};
 
     } else if (type === "randomStartPoint/enable") {
         audio_state.randomStartPointIsDisable = false;
-        return { ...state, randomStartPointIsDisable: false };
+        return {...state, randomStartPointIsDisable: false};
     }
     return state;
 }
@@ -138,7 +138,7 @@ ViewAudioReducer: (ViewAudioState, {
     payload: undefined | string | ViewAudioDisableReducerTypes | number
 }) -> ViewAudioState
 */
-const ViewAudioReducer = (state, action) => {
+function ViewAudioReducer(state, action) {
     const {type, payload} = action;
     if (type === "audioEvents/add"
         && state.audioEvents < 50
@@ -222,7 +222,7 @@ const ViewAudioReducer = (state, action) => {
             currentTime: 0,
             endPoint:state.endTime,
             startPoint:state.startTime,
-        }
+        };
 
     } else if (type === "volume/change"
         && typeof payload === "number"

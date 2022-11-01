@@ -1,5 +1,5 @@
-import { GlobalState } from "../state/Global/index.js";
-import { changeLocalStorageState } from "../services/localStorage/service.js";
+import {GlobalState} from "../state/Global/index.js";
+import {changeLocalStorageState} from "../services/localStorage/service.js";
 
 /*-
 ViewGeneralDisableReducer: (ViewGeneralDisableState, {
@@ -120,4 +120,6 @@ function ViewGeneralDisableReducer(state, action) {
     return state;
 }
 
-export { ViewGeneralDisableReducer };
+export {
+    ViewGeneralDisableReducer
+};

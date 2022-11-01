@@ -1,10 +1,39 @@
-import {useCallback, memo} from "react";
+import {useCallback} from "react";
 
 import ItemsPanelElement from "../ItemsPanelElement/component.js";
 
 import "./style.scss";
 
-const className = "panel items-panel flex-column";
+let _dispatch = () => undefined;
+function setsOnClick() {
+    _dispatch({type: "panelItem/change",payload: "SETS"});
+}
+function timeOnClick() {
+    _dispatch({type: "panelItem/change",payload: "TIME"});
+}
+function fadeTimeOnClick() {
+    _dispatch({type: "panelItem/change",payload:"FADES"});
+}
+function pannerOnClick() {
+    _dispatch({type: "panelItem/change",payload: "PANNER"});
+}
+function filterOnClick() {
+    _dispatch({type: "panelItem/change",payload: "FILTER"});
+}
+function delayOnClick() {
+    _dispatch({type: "panelItem/change",payload: "DELAY"});
+}
+function playBackRateOnClick() {
+    _dispatch({type: "panelItem/change",payload: "RATE"});
+}
+function randomStartPointOnClick() {
+    _dispatch({type: "panelItem/change",payload: "RSP"});
+}
+function randomEndPointOnClick() {
+    _dispatch({type: "panelItem/change",payload: "REP"});
+}
+
+const ItemsPanel_className = "panel items-panel flex-column";
 
 function ItemsPanel({
     isItemsPanelVisible,
@@ -12,36 +41,13 @@ function ItemsPanel({
     panelItem,
     dispatch
 }) {
-    const setsOnClick = useCallback(function () {
-        dispatch({type: "panelItem/change",payload: "SETS"});
-    }, [dispatch]);
-    const timeOnClick = useCallback(function () {
-        dispatch({type: "panelItem/change",payload: "TIME"});
-    }, [dispatch]);
-    const fadeTimeOnClick = useCallback(function () {
-        dispatch({type: "panelItem/change",payload:"FADES"});
-    }, [dispatch]);
-    const pannerOnClick = useCallback(function () {
-        dispatch({type: "panelItem/change",payload: "PANNER"});
-    }, [dispatch]);
-    const filterOnClick = useCallback(function () {
-        dispatch({type: "panelItem/change",payload: "FILTER"});
-    }, [dispatch]);
-    const delayOnClick = useCallback(function () {
-        dispatch({type: "panelItem/change",payload: "DELAY"});
-    }, [dispatch]);
-    const playBackRateOnClick = useCallback(function () {
-        dispatch({type: "panelItem/change",payload: "RATE"});
-    }, [dispatch]);
-    const randomStartPointOnClick = useCallback(function () {
-        dispatch({type: "panelItem/change",payload: "RSP"});
-    }, [dispatch]);
-    const randomEndPointOnClick = useCallback(function () {
-        dispatch({type: "panelItem/change",payload: "REP"});
-    }, [dispatch]);
-    
+    _dispatch = dispatch;
     return (
-        <div className={!isItemsPanelVisible ? className + " panel-hidden" : className}>
+        <div className={(
+            !isItemsPanelVisible
+            ? ItemsPanel_className + " panel-hidden"
+            : ItemsPanel_className
+        )}>
             <div className="flex-column p-5">
                 <div className="items-panel_section flex-column align-c justify-c">
                     <ItemsPanelElement
@@ -111,4 +117,4 @@ function ItemsPanel({
 }
 
 
-export default memo(ItemsPanel);
+export default ItemsPanel;

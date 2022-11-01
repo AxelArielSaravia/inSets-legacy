@@ -1,4 +1,4 @@
-import { GlobalState } from "../state/Global/index.js";
+import {GlobalState} from "../state/Global/index.js";
 import changeColor from "../services/changeColor/service.js";
 
 /*-
@@ -15,21 +15,23 @@ function ViewAppReducer(state, action) {
             ...state,
             is_started: true
         };
-    } else if (type === "stop") {
+    }
+    if (type === "stop") {
         GlobalState.is_started = false;
         return {
-            playColor: "",
+            is_started: false,
             playAudiosSet: {},
-            is_started: false
+            playColor: ""
         };
-    } else if (type === "newAudiosSet" && state.is_started) {
+    }
+    if (type === "newAudiosSet" && state.is_started) {
         return {
             ...state,
-            playColor: changeColor(),
-            playAudiosSet: action.payload
-        }
+            playAudiosSet: action.payload,
+            playColor: changeColor()
+        };
     }
-    return state
+    return state;
 }
 
 export {

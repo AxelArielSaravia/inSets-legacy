@@ -5,7 +5,7 @@ function ConfigPanelChild({title, children}) {
                 <h3 className="fs-text text-bold">{title}</h3>
             </div>
             {children}
-         </div>
+        </div>
     );
 }
 

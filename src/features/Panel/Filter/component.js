@@ -1,5 +1,4 @@
 import {
-    memo,
     useReducer,
     useContext,
     useCallback,
@@ -20,7 +19,7 @@ import ConfigPanelContainer from "../ConfigPanelContainer/component.js";
 import ConfigPanelChild from "../ConfigPanelChild/component.js";
 import ConfigPanelInterval from "../ConfigPanelInterval/component.js";
 
-const FilterTypeButton = memo(function ({setTypes, types, value}) {
+function FilterTypeButton({setTypes, types, value}) {
     const index = types.indexOf(value);
     const [isDisable, setIsDisable] = useState(index === -1);
 
@@ -53,9 +52,27 @@ const FilterTypeButton = memo(function ({setTypes, types, value}) {
             <p className="fs-text">{value}</p>
         </Button>
     );
-});
+}
 
-function Filter() {
+function TypesList({TYPES, types, typesChange}) {
+    return (
+        TYPES.map((el) => (
+            <div key={"filter_type-" + el} className="p-2">
+                <FilterTypeButton
+                    value={el}
+                    types={types}
+                    setTypes={typesChange}
+                />
+            </div>
+        ))
+    );
+}
+
+function Filter({
+    FREQ_MAX,
+    Q_MAX,
+    TYPES
+}) {
     const [{
         allFiltersAreDisabled
     }, generalDisableDispatch] = useContext(GeneralDisableContext);
@@ -67,8 +84,6 @@ function Filter() {
         types
     },filterDispatch] = useReducer(FilterReducer, initFilterState());
 
-
-    const {TYPES, FREQ_MAX, Q_MAX} = useMemo(() => filterLimits(), []);
 
     const viewFrequencyMax = useMemo(
         () => rToFrequency(frequencyMax),
@@ -161,19 +176,26 @@ function Filter() {
             />
             <ConfigPanelChild title="filter types selected:">
                 <div className="flex-row flex-wrap justify- align-c">
-                    {TYPES.map((el) => (
-                    <div key={"filter_type-" + el} className="p-2">
-                        <FilterTypeButton
-                            value={el}
-                            types={types}
-                            setTypes={typesChange}
-                        />
-                    </div>
-                    ))}
+                    <TypesList
+                        types={types}
+                        typesChange={typesChange}
+                        TYPES={TYPES}
+                    />
                 </div>
             </ConfigPanelChild>
         </ConfigPanelContainer>
     );
 }
 
-export default memo(Filter);
+function ContainFilter() {
+    const {TYPES, FREQ_MAX, Q_MAX} = filterLimits();
+    return (
+        <Filter
+            TYPES={TYPES}
+            FREQ_MAX={FREQ_MAX}
+            Q_MAX={Q_MAX}
+        />
+    );
+}
+
+export default ContainFilter;

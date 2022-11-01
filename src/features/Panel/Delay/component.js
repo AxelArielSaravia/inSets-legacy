@@ -1,5 +1,4 @@
 import {
-    memo,
     useReducer,
     useContext,
     useCallback,
@@ -13,10 +12,13 @@ import {GeneralDisableContext} from "../../../context/index.js";
 import {delayLimits} from "../../../services/limits/service.js";
 import {rToFeedback, rToTime} from "../../../services/convert/service.js";
 
-import ConfigPanelContainer from "../ConfigPanelContainer/component.js"
+import ConfigPanelContainer from "../ConfigPanelContainer/component.js";
 import ConfigPanelInterval from "../ConfigPanelInterval/component.js";
 
-function Delay() {
+function Delay({
+    FBACK_MAX,
+    TIME_MAX
+}) {
     const [
         {allDelaysAreDisabled},
         generalDisableDispatcher
@@ -27,7 +29,6 @@ function Delay() {
         feedbackMin,
         feedbackMax
     }, delayDispatch] = useReducer(DelayReducer, initDelayState());
-    const {FBACK_MAX, TIME_MAX} = useMemo(() => delayLimits(), []);
 
     const viewTimeMax = useMemo(() => rToTime(timeMax).toFixed(1), [timeMax]);
     const viewTimeMin = useMemo(() => rToTime(timeMin).toFixed(1), [timeMin]);
@@ -36,9 +37,9 @@ function Delay() {
 
     const changeDisable = useCallback(function() {
         if (allDelaysAreDisabled.value) {
-            generalDisableDispatcher({type: "enable/delay", payload: true})
+            generalDisableDispatcher({type: "enable/delay", payload: true});
         } else {
-            generalDisableDispatcher({type: "disable/delay"})
+            generalDisableDispatcher({type: "disable/delay"});
         }
     },[allDelaysAreDisabled, generalDisableDispatcher]);
 
@@ -95,4 +96,12 @@ function Delay() {
     );
 }
 
-export default memo(Delay);
+function ContainDelay() {
+    const {FBACK_MAX, TIME_MAX} = delayLimits();
+
+    return (
+        <Delay FBACK_MAX={FBACK_MAX} TIME_MAX={TIME_MAX}/>
+    );
+}
+
+export default ContainDelay;

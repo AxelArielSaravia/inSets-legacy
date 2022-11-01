@@ -1,4 +1,4 @@
-import { isInsideInterval } from "../../services/assert/service.js";
+import {isInsideInterval} from "../../services/assert/service.js";
 import {
     delayLimits,
     fadeLimits,

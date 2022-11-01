@@ -13,10 +13,10 @@ import {GeneralDisableContext} from "../../../context/index.js";
 import {playbackRateLimits} from "../../../services/limits/service.js";
 import {rToPlaybackRate} from "../../../services/convert/service.js";
 
-import ConfigPanelContainer from "../ConfigPanelContainer/component.js"
+import ConfigPanelContainer from "../ConfigPanelContainer/component.js";
 import ConfigPanelInterval from "../ConfigPanelInterval/component.js";
 
-function PlaybackRate() {
+function PlaybackRate({MAX}) {
     const [
         {allPlaybackRatesAreDisabled},
         generalDisableDispatch
@@ -26,15 +26,14 @@ function PlaybackRate() {
         playbackRateDispatch
     ] = useReducer(PlaybackRateReducer, initPlaybackRateState());
 
-    const {MAX} = useMemo(() => playbackRateLimits(), []);
     const viewMax = useMemo(() => rToPlaybackRate(max).toFixed(2), [max]);
     const viewMin = useMemo(() => rToPlaybackRate(min).toFixed(2), [min]);
 
     const changeDisable = useCallback(function () {
         if (allPlaybackRatesAreDisabled.value) {
-            generalDisableDispatch({type: "enable/playbackRate", payload: true})
+            generalDisableDispatch({type: "enable/playbackRate", payload: true});
         } else {
-            generalDisableDispatch({type: "disable/playbackRate"})
+            generalDisableDispatch({type: "disable/playbackRate"});
         }
     },[allPlaybackRatesAreDisabled, generalDisableDispatch]);
 
@@ -80,4 +79,13 @@ function PlaybackRate() {
     );
 }
 
-export default memo(PlaybackRate);
+function ContainPlaybackRate() {
+    const {MAX} = playbackRateLimits();
+    return (
+        <PlaybackRate
+            MAX={MAX}
+        />
+    );
+}
+
+export default ContainPlaybackRate;
