@@ -473,7 +473,6 @@ function createGlobalState() {
 GlobalState: GlobalState
 */
 const GlobalState = createGlobalState();
-
 /*-
 initGlobalState: LocalStorageState -> undefined
 */

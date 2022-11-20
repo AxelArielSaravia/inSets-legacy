@@ -40,7 +40,6 @@ async function audioFromFile_AudioNode(
     try {
         //available to use in view
         audioListDispatcher({id, type: "addLoading"});
-
         const url = URL.createObjectURL(file);
         const htmlAudio = await new Audio(url);
         if (!canPlayType(htmlAudio, file.type)) {
@@ -51,7 +50,6 @@ async function audioFromFile_AudioNode(
         if (htmlAudio.preservesPitch !== undefined) {
             htmlAudio.preservesPitch = false;
         }
-
         htmlAudio.addEventListener("error", function() {
             console.warn(`Delete ${file.name} from list`);
             audioListDispatcher({id, type: "loadingError"});
@@ -61,8 +59,8 @@ async function audioFromFile_AudioNode(
         htmlAudio.addEventListener("canplaythrough", function() {
             /* the audio is now playable; play it if permissions allow */
             try {
-                let source = GlobalState.audio_context.createMediaElementSource(htmlAudio);
-                let audioState = createAudioState({
+                const source = GlobalState.audio_context.createMediaElementSource(htmlAudio);
+                const audioState = createAudioState({
                     GlobalState,
                     audioEngine: htmlAudio,
                     duration: htmlAudio.duration,
@@ -77,9 +75,6 @@ async function audioFromFile_AudioNode(
                 //available to use in view
                 audioListDispatcher({id, type: "addCompleted"});
                 sumOfAllEventsDispatcher({type: "add"});
-
-                source = undefined;
-                audioState = undefined;
             } catch (err) {
                 console.error(err);
                 console.warn(`The error was catching and delete ${file.name} from list`);

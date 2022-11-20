@@ -45,6 +45,7 @@ import Playback from "./Playback/component.js";
 
 import "./style.scss";
 
+const style = {width: "80%"};
 
 function DeleteButton({id, events, audioDispatch}) {
     const [, audioListDispatch] = useContext(AudioListContext);
@@ -117,6 +118,127 @@ function PlayButton({isPlaying, playOnClick}) {
     );
 }
 
+function PlayBackTimeText({
+    isDurationShort,
+    time
+}) {
+    return (
+        <div className="playback_time-text">
+            {isDurationShort
+            ? <p className="fs-text">{durationToShortTime(time)}</p>
+            : <p className="fs-text">{durationToTime(time)}</p>
+            }
+        </div>
+    );
+}
+function Configuration({
+    configurationIsOpen,
+    isDurationShort,
+    startPoint,
+    startTime,
+    duration,
+    endPoint,
+    endTime,
+    currentTime,
+    audioDispatch,
+    audioEvents,
+    subtractEvent,
+    addEvent,
+    delayIsDisable,
+    changeDelay,
+    filterIsDisable,
+    changeFilter,
+    pannerIsDisable,
+    changePanner,
+    playbackRateIsDisable,
+    changePlaybackRate,
+    randomEndPointIsDisable,
+    changeREP,
+    randomStartPointIsDisable,
+    changeRSP,
+    probabilityPrecent
+}) {
+    if (!configurationIsOpen) {
+        return;
+    }
+    return (
+        <section className="audio-configuration flex-column">
+            <div className="audio-configuration_playback--prev flex-row align-c justify-c">
+                <div className="audio-configuration_playback p-5 flex-row align-c"
+                    style={isDurationShort ? style : undefined}
+                >
+                    <PlayBackTimeText
+                        isDurationShort={isDurationShort}
+                        time={startTime}
+                    />
+                    <Playback
+                        duration={duration}
+                        endPoint={endPoint}
+                        startPoint={startPoint}
+                        startTime={startTime}
+                        endTime={endTime}
+                        currentTime={currentTime}
+                        audioDispatch={audioDispatch}
+                    />
+                    <PlayBackTimeText
+                        isDurationShort={isDurationShort}
+                        time={endTime}
+                    />
+                </div>
+            </div>
+            <div className="flex-row flex-wrap">
+                <div className="audio-configuration_probability flex-row align-c">
+                    <span className="fs-text">Probability:</span>
+                    <span className="percent fs-text text-bold text-center">{probabilityPrecent + "%"}</span>
+                    <div className="">
+                        <AddAndSubtract
+                            viewValue={audioEvents}
+                            subtractOnClick={subtractEvent}
+                            addOnClick={addEvent}
+                            horizontal
+                        />
+                    </div>
+                </div>
+                <div className="audio-configuration_effects flex-row p-5">
+                    <span className="fs-text py-5">Enabled effects:</span>
+                    <div className="flex-row flex-wrap align-c">
+                        <EffectButton
+                            isDisable={delayIsDisable}
+                            text="delay"
+                            onClick={changeDelay}
+                        />
+                        <EffectButton
+                            isDisable={filterIsDisable}
+                            text="filter"
+                            onClick={changeFilter}
+                        />
+                        <EffectButton
+                            isDisable={pannerIsDisable}
+                            text="panner"
+                            onClick={changePanner}
+                        />
+                        <EffectButton
+                            isDisable={playbackRateIsDisable}
+                            text="rate"
+                            onClick={changePlaybackRate}
+                        />
+                        <EffectButton
+                            isDisable={randomEndPointIsDisable}
+                            text="REP"
+                            onClick={changeREP}
+                        />
+                        <EffectButton
+                            isDisable={randomStartPointIsDisable}
+                            text="RSP"
+                            onClick={changeRSP}
+                        />
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+}
+
 function AudioElement({id}) {
     const [{is_started, playAudiosSet, playColor}] = useContext(AppContext);
     const [{
@@ -148,6 +270,13 @@ function AudioElement({id}) {
         allRandomEndPointsAreDisabled,
         allRandomStartPointsAreDisabled,
     }, generalDisableDispatch] = useContext(GeneralDisableContext);
+
+    const isDurationShort = useMemo(() => duration < 2, [duration]);
+
+    const probabilityPrecent = useMemo(
+        () => floorPercent(sumOfAllEvents, audioEvents, 100),
+        [audioEvents, sumOfAllEvents]
+    );
 
     useEffect(function () {
         if (id in playAudiosSet) {
@@ -291,15 +420,8 @@ function AudioElement({id}) {
         }
     }
 
-    const isDurationShort = useMemo(() => duration < 2, [duration]);
-
-    const probabilityPrecent = useMemo(
-        () => floorPercent(sumOfAllEvents, audioEvents, 100),
-        [audioEvents, sumOfAllEvents]
-    );
-
     const changeVolume = useCallback(function (val) {
-        audioDispatch({type: "volume/change", payload: +val});
+        audioDispatch({type: "volume/change", payload: Number(val)});
         setAudioVolume(id);
     }, [id]);
 
@@ -347,86 +469,34 @@ function AudioElement({id}) {
                     audioDispatch={audioDispatch}
                 />
             </section>
-            {configurationIsOpen && (
-                <section className="audio-configuration flex-column">
-                    <div className="audio-configuration_playback--prev flex-row align-c justify-c">
-                        <div className="audio-configuration_playback p-5 flex-row align-c"
-                            style={isDurationShort ? {width: "80%"} : undefined}
-                        >
-                            <div className="playback_time-text">
-                                {isDurationShort
-                                ? <p className="fs-text">{durationToShortTime(startTime)}</p>
-                                : <p className="fs-text">{durationToTime(startTime)}</p>
-                                }
-                            </div>
-                            <Playback
-                                duration={duration}
-                                endPoint={endPoint}
-                                startPoint={startPoint}
-                                startTime={startTime}
-                                endTime={endTime}
-                                currentTime={currentTime}
-                                audioDispatch={audioDispatch}
-                            />
-                            <div className="playback_time-text">
-                                {isDurationShort
-                                ? <p className="fs-text">{durationToShortTime(endTime)}</p>
-                                : <p className="fs-text">{durationToTime(endTime)}</p>
-                                }
-                            </div>
-                        </div>
-                    </div>
-                    <div className="flex-row flex-wrap">
-                        <div className="audio-configuration_probability flex-row align-c">
-                            <span className="fs-text">Probability:</span>
-                            <span className="percent fs-text text-bold text-center">{probabilityPrecent + "%"}</span>
-                            <div className="">
-                                <AddAndSubtract
-                                    viewValue={audioEvents}
-                                    subtractOnClick={subtractEvent}
-                                    addOnClick={addEvent}
-                                    horizontal
-                                />
-                            </div>
-                        </div>
-                        <div className="audio-configuration_effects flex-row p-5">
-                            <span className="fs-text py-5">Enabled effects:</span>
-                            <div className="flex-row flex-wrap align-c">
-                                <EffectButton
-                                    isDisable={delayIsDisable}
-                                    text="delay"
-                                    onClick={changeDelay}
-                                />
-                                <EffectButton
-                                    isDisable={filterIsDisable}
-                                    text="filter"
-                                    onClick={changeFilter}
-                                />
-                                <EffectButton
-                                    isDisable={pannerIsDisable}
-                                    text="panner"
-                                    onClick={changePanner}
-                                />
-                                <EffectButton
-                                    isDisable={playbackRateIsDisable}
-                                    text="rate"
-                                    onClick={changePlaybackRate}
-                                />
-                                <EffectButton
-                                    isDisable={randomEndPointIsDisable}
-                                    text="REP"
-                                    onClick={changeREP}
-                                />
-                                <EffectButton
-                                    isDisable={randomStartPointIsDisable}
-                                    text="RSP"
-                                    onClick={changeRSP}
-                                />
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            )}
+            <Configuration
+                configurationIsOpen={configurationIsOpen}
+                isDurationShort={isDurationShort}
+                startPoint={startPoint}
+                startTime={startTime}
+                duration={duration}
+                endPoint={endPoint}
+                endTime={endTime}
+                currentTime={currentTime}
+                audioDispatch={audioDispatch}
+                audioEvents={audioEvents}
+                sumOfAllEvents={sumOfAllEvents}
+                subtractEvent={subtractEvent}
+                addEvent={addEvent}
+                delayIsDisable={delayIsDisable}
+                changeDelay={changeDelay}
+                filterIsDisable={filterIsDisable}
+                changeFilter={changeFilter}
+                pannerIsDisable={pannerIsDisable}
+                changePanner={changePanner}
+                playbackRateIsDisable={playbackRateIsDisable}
+                changePlaybackRate={changePlaybackRate}
+                randomEndPointIsDisable={randomEndPointIsDisable}
+                changeREP={changeREP}
+                randomStartPointIsDisable={randomStartPointIsDisable}
+                changeRSP={changeRSP}
+                probabilityPrecent={probabilityPrecent}
+            />
         </div>
     );
 }

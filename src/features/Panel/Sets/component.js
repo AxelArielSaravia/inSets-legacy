@@ -24,7 +24,9 @@ function Sets() {
     }, setsDispatcher] = useReducer(SetsReducer, initSetsState());
 
     useEffect(function () {
-        if (completedAudioListSize + 1 !== arrOfEvents.length) {
+        if (arrOfEvents.length < 15
+            && completedAudioListSize + 1 !== arrOfEvents.length
+        ) {
             setsDispatcher({type: "update"});
         }
     }, [completedAudioListSize, arrOfEvents]);

@@ -104,6 +104,7 @@
 .icon-text-l { width: 1.5rem; }
 .icon-text { width: 1.3rem; }
 .icon-text-s { width: 0.8rem; }
+.icon-drop { width: 80px; }
 /* TEXTS */
 .ellipsis {
     text-overflow: ellipsis;
@@ -145,7 +146,6 @@
     .fs-text-l { font-size: 1.1rem; }
     .fs-text { font-size: 0.9rem; }
     .fs-text-s  { font-size: 0.7rem; }
-
 }
 @media screen and (min-width: 768px) {
     /* FONT SIZE */

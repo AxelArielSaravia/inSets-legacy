@@ -13,10 +13,10 @@ import {rToFade} from "../convert/service.js";
 import {random} from "../utils.js";
 
 /*-
-randomDecide: undefined -> number
+randomChance: undefined -> number
 */
-function randomDecide() {
-    return random(0, 1) === 1;
+function randomChance() {
+    return (random(0, 1) === 1);
 }
 
 /*-
@@ -25,7 +25,6 @@ wait: number -> Promise
 function wait(ms) {
     return new Promise((resolve) => setInterval(resolve, ms));
 }
-
 /* -------------------------------------------------------------------------- */
 /*                                Create Nodes                                */
 /* -------------------------------------------------------------------------- */
@@ -101,7 +100,7 @@ async function createAudioRandomChain(audioCtx, audio_state) {
     inputGain.gain.value = 0.8;
 
     //set min gain value to create a fadeIn later
-    outputGain.gain.value = 0.01;
+    outputGain.gain.value = 0.001;
 
     input = inputGain; //our input is the GainNode
     //PANNER
@@ -112,14 +111,14 @@ async function createAudioRandomChain(audioCtx, audio_state) {
         input = PANNER;
     }
     //FILTER
-    if (randomDecide() && !audio_state.filterIsDisable) {
+    if (randomChance() && !audio_state.filterIsDisable) {
         const audioFilterConfig = createAudioFilterConfiguration(GlobalState.filter);
         const FILTER = createFilter(audioCtx, audioFilterConfig);
         await input.connect(FILTER);
         input = FILTER; //input is a FilterNode
     }
     //DELAY
-    if (randomDecide() && !audio_state.delayIsDisable) {
+    if (randomChance() && !audio_state.delayIsDisable) {
         const audioDelayConfig = createAudioDelayConfiguration(GlobalState.delay);
         const DELAY = createDelay(audioCtx, audioDelayConfig);
         const feedbackGain = await audioCtx.createGain();
@@ -268,7 +267,7 @@ function calculateEnd_ENGINE_audioNode(audio_state, audioDispatcher) {
 disconnect: AudioState -> boolean
 */
 async function disconnect(audio_state) {
-    if (audio_state && audio_state.isPlaying) {
+    if (audio_state !== undefined && audio_state.isPlaying) {
         if (audio_state.audioEngine !== undefined
             && !audio_state.audioEngine.paused
         ) {
@@ -315,10 +314,10 @@ async function _play(audio_state, audioDispatcher) {
 
         await setAudioConfiguration(audio_state);
 
-        fadeIn(audio_state);
 
         await play_ENGINE_audioNode(audio_state);
         calculateEnd_ENGINE_audioNode(audio_state, audioDispatcher);
+        fadeIn(audio_state);
 
         audio_state.isPlaying = true;
 
@@ -377,8 +376,11 @@ setAudioVolume: string -> undefined
 */
 function setAudioVolume(id) {
     const audio_state = GlobalState.audio_list.get(id);
-    if (audio_state && audio_state.isPlaying) {
-        audio_state.outputGain.gain.value = audio_state.volume;
+    if (audio_state !== undefined && audio_state.isPlaying) {
+        audio_state.outputGain.gain.exponentialRampToValueAtTime(
+            audio_state.volume,
+            GlobalState.audio_context.currentTime + 0.3
+        );
     }
 }
 
@@ -473,7 +475,9 @@ function createNewSetExecution(n) {
     for (let i = 0; i < n; i += 1) {
         const _KEY = arrOfAudiosEvents[random(0, arrOfAudiosEvents.length - 1)];
         executeSet[_KEY] = undefined;
-        arrOfAudiosEvents = arrOfAudiosEvents.filter(key => key !== _KEY);
+        arrOfAudiosEvents = arrOfAudiosEvents.filter(function filter(key) {
+            return key !== _KEY;
+        });
     }
     return executeSet;
 }

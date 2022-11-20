@@ -12,7 +12,7 @@ function DropArea() {
     return (
         <>
             <div className="dragfile flex-row align-c justify-c">
-                <IconMusicFile className="icon-drop"/>
+                <IconMusicFile className="icon-drop o-5"/>
             </div>
             <div>
                 <p className="fs-text p-5">Drop files</p>

@@ -8,7 +8,6 @@ ViewAudioListReducer: (ViewAudioListState, {
 */
 function ViewAudioListReducer(state, action) {
     const {type} = action;
-
     if (type === "addLoading") {
         return {
             ...state,
@@ -18,12 +17,11 @@ function ViewAudioListReducer(state, action) {
             },
             loadedAudioListSize: state.loadedAudioListSize + 1,
         };
-    } else if (type === "addCompleted"
-        && state.completedAudioListSize < 15
-    ) {
-        GlobalState.eventsForEachSet.arrOfEvents.push(1);
-        GlobalState.eventsForEachSet.sumOfAllEvents += 1;
-
+    } else if (type === "addCompleted") {
+        if (state.completedAudioListSize < 15) {
+            GlobalState.eventsForEachSet.arrOfEvents.push(1);
+            GlobalState.eventsForEachSet.sumOfAllEvents += 1;
+        }
         return {
             ...state,
             completedAudioList: {

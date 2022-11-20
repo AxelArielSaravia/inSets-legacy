@@ -11,7 +11,7 @@
 @mixin playback_thumb() {
     -webkit-appearance: none;
     position: relative;
-    top: -10px;
+    top: -9px;
     height: var(--timeLine-height);
     width: 7px;
     background: var(--c-transitive2);
@@ -60,7 +60,7 @@
         position: relative;
         width: 100%;
         height: 0px;
-        top: 10px;
+        top: 9px;
         z-index: 3;
         display: block;
         margin: 0;
@@ -164,7 +164,9 @@
     .playback_end_point_line { transform: rotate(180deg); }
     .playback_point_line::-webkit-progress-bar { background: transparent; }
     .playback_point_line::-webkit-progress-value { @include playback_progress(); }
-    .playback_point_line::-webkit-progress-value { @include playback_progress(); }
+    .playback_point_line::-moz-progress-bar { 
+        @include playback_progress(); 
+    }
 
     .playback_current_time {
         -webkit-appearance: none;
