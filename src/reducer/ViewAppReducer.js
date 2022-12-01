@@ -11,10 +11,7 @@ function ViewAppReducer(state, action) {
     const {type} = action;
     if (type === "start") {
         GlobalState.is_started = true;
-        return {
-            ...state,
-            is_started: true
-        };
+        return Object.assign({}, state, {is_started: true});
     }
     if (type === "stop") {
         GlobalState.is_started = false;
@@ -25,11 +22,10 @@ function ViewAppReducer(state, action) {
         };
     }
     if (type === "newAudiosSet" && state.is_started) {
-        return {
-            ...state,
+        return Object.assign({}, state, {
             playAudiosSet: action.payload,
             playColor: changeColor()
-        };
+        });
     }
     return state;
 }

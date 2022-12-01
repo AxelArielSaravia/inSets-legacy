@@ -3,18 +3,19 @@
     flex-direction: row-reverse;
     width: 100%;
     height: 100%;
-  
+
     .content-audio_aside {
-      height: 100%;
+        position: relative;
+        height: 100%;
     }
-    
+
     .content-audio_main {
-      width: 100%;
-      height: 100%;
+        width: 100%;
+      //Error in pale moon browser
+      //height: 100%;
     }
 }
-  
-  
+
 .dropFile{
     width: 100%;
     height: 100%;

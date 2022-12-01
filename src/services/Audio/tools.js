@@ -89,18 +89,17 @@ async function createPanner(audioCtx, audioPannerConfig) {
 createAudioRandomChain: AudioContext, AudioState -> [GainNode, GainNode]
 */
 async function createAudioRandomChain(audioCtx, audio_state) {
+    //The variable that we use for the connections chain
+    let input;
     //main gains
     const inputGain = await audioCtx.createGain();
     const outputGain = await audioCtx.createGain();
-
-    //The variable that we use for the connections chain
-    let input;
-
     //atenuate the general volume
     inputGain.gain.value = 0.8;
 
     //set min gain value to create a fadeIn later
     outputGain.gain.value = 0.001;
+
 
     input = inputGain; //our input is the GainNode
     //PANNER
@@ -127,7 +126,9 @@ async function createAudioRandomChain(audioCtx, audio_state) {
         await DELAY.connect(feedbackGain);
         input = feedbackGain; //input is a GainNode
     }
+
     await input.connect(outputGain);
+
 
     return {
         inputGain,

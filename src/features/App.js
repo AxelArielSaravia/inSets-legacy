@@ -18,9 +18,9 @@ function App() {
             <GeneralDisableProvider>
                 <AppProvider>
                     <SumOfAllAudiosEventsProvider>
-                        <DragFiles style={{height:"100%", width: "100%"}}>
+                        <DragFiles className="content-audio">
                             {(isDragActive) => (
-                                <div className="content-audio">
+                                <>
                                     <section className="content-audio_aside flex-column">
                                         <GeneralPanel/>
                                     </section>
@@ -31,7 +31,7 @@ function App() {
                                     {isDragActive && (
                                         <DropFiles className="dropFile flex-column align-c justify-c"/>
                                     )}
-                                </div>
+                                </>
                             )}
                         </DragFiles>
                     </SumOfAllAudiosEventsProvider>

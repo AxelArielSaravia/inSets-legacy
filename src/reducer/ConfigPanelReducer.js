@@ -33,33 +33,31 @@ configPanelReducer: (ConfigPanelState, {
         | "panel/switch"
         | "configPanel/close",
     payload: "SETS"
-            | "TIME"
-            | "FADE_TIME"
-            | "PANNER"
-            | "FILTER"
-            | "DELAY"
-            | "RATE"
-            | "RSP"
-            | "REP"
+        | "TIME"
+        | "FADE_TIME"
+        | "PANNER"
+        | "FILTER"
+        | "DELAY"
+        | "RATE"
+        | "RSP"
+        | "REP"
 }) -> ConfigPanelState
 */
 function configPanelReducer(state, action) {
     const {payload, type} = action;
     if (type === "panelItem/change") {
         if (state.panelItem === payload && state.isConfigPanelVisible) {
-            return {
-                ...state,
+            return Object.assign({}, state, {
                 isConfigPanelVisible: false,
                 isItemsPanelVisible: true,
                 panelItem: payload
-            };
+            });
         }
-        return {
-            ...state,
+        return Object.assign({}, state,{
             isConfigPanelVisible: true,
             isItemsPanelVisible: false,
             panelItem: payload
-        };
+        });
     } else if (type === "panel/switch") {
         if (state.isPanelVisible) {
             return {
@@ -76,12 +74,11 @@ function configPanelReducer(state, action) {
             panelItem: ""
         };
     } else if (type === "configPanel/close") {
-        return {
-            ...state,
+        return Object.assign({}, state, {
             isConfigPanelVisible: false,
             isItemsPanelVisible: true,
             panelItem: ""
-        };
+        });
     } else {
         return state;
     }

@@ -54,7 +54,7 @@ function ConfigPanel({isActive, itemName, closeConfigPanel}) {
         : ConfigPanel_className + " panel-hidden"
     );
 
-    useOnClickClose(isActive, ".generalPanel *", closeConfigPanel);
+    useOnClickClose(isActive, ".content-audio_aside *", closeConfigPanel);
 
     return (
         <div id="configPanel" className={_className}>

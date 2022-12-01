@@ -1,60 +1,54 @@
 .main {
-  width: 100%;
-  height: 100%;
-
-  .main_sub{
     width: 100%;
     height: 100%;
+}
+.audio-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
     background-image: radial-gradient(circle, var(--c-transitive2) 1.5px, transparent 1.5px);
     background-size: 1rem 1rem;
     background-position: center;
-  }
-}
-.audio-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
 
-  overflow-x: hidden;
-  
-  .audio-container_sub {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-  }
-
-  .files {
+    overflow-x: hidden;
     
-    & > div {
-      width: 100%;
+    .audio-container_sub {
+        position: absolute;
+        width: 100%;
+        height: 100%;
     }
-  }
+
+    .files {
+        & > div {
+        width: 100%;
+        }
+    }
 }
 .audio-loading-element {
-  background-color: var(--c-transitive1);
-  max-width: 800px;
-  width: 100%;
-  height: 33px;
-  border-radius: 2px;
-  outline: 2px solid transparent;
+    background-color: var(--c-transitive1);
+    max-width: 800px;
+    width: 100%;
+    height: 33px;
+    border-radius: 2px;
+    outline: 2px solid transparent;
 }
 @media (pointer: fine) and (hover: hover){
-  .audio-container::-webkit-scrollbar-thumb {
-    background-color: transparent;
-  }
-  .audio-container:hover::-webkit-scrollbar-thumb {
-    background-color: var(--c-transitive2);
-  }
+    .audio-container::-webkit-scrollbar-thumb {
+        background-color: transparent;
+    }
+    .audio-container:hover::-webkit-scrollbar-thumb {
+        background-color: var(--c-transitive2);
+    }
 }
 
 @media screen and (min-width: 992px) {
-  .audio-container {
-    .audio-container_sub {
-      //position: relative;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-        height: unset;
+    .audio-container {
+        .audio-container_sub {
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+            height: unset;
+        }
     }
-  }
 }

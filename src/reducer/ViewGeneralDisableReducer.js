@@ -24,98 +24,86 @@ function ViewGeneralDisableReducer(state, action) {
     if (type === "disable/delay") {
         GlobalState.delay.areAllDisable = true;
         changeLocalStorageState("delay", GlobalState.delay);
-        return {
-            ...state,
-            allDelaysAreDisabled: {value: true, global: true}
-        };
+        return Object.assign({}, state, {
+            allDelaysAreDisabled: {global: true, value: true}
+        });
     }
     if (type === "disable/filter") {
         GlobalState.filter.areAllDisable = true;
         changeLocalStorageState("filter", GlobalState.filter);
-        return {
-            ...state,
-            allFiltersAreDisabled: {value: true, global: true}
-        };
+        return Object.assign({}, state, {
+            allFiltersAreDisabled: {global: true, value: true}
+        });
     }
     if (type === "disable/panner") {
         GlobalState.panner.areAllDisable = true;
         changeLocalStorageState("panner", GlobalState.filter);
-        return {
-            ...state,
-            allPannersAreDisabled: {value: true, global: true}
-        };
+        return Object.assign({}, state, {
+            allPannersAreDisabled: {global: true, value: true}
+        });
     }
     if (type === "disable/playbackRate") {
         GlobalState.playbackRate.areAllDisable = true;
         changeLocalStorageState("playbackRate", GlobalState.filter);
-        return {
-            ...state,
-            allPlaybackRatesAreDisabled: {value: true, global: true}
-        };
+        return Object.assign({}, state, {
+            allPlaybackRatesAreDisabled: {global: true, value: true}
+        });
     }
     if (type === "disable/randomEndPoint") {
         GlobalState.randomEndPoint = true;
         changeLocalStorageState("randomEndPoint", true);
-        return {
-            ...state,
-            allRandomEndPointsAreDisabled: {value: true, global: true}
-        };
+        return Object.assign({}, state, {
+            allRandomEndPointsAreDisabled: {global: true, value: true}
+        });
     }
     if (type === "disable/randomStartPoint") {
         GlobalState.randomStartPoint = true;
         changeLocalStorageState("randomStartPoint", true);
-        return {
-            ...state,
-            allRandomStartPointsAreDisabled: {value: true, global: true}
-        };
+        return Object.assign({}, state, {
+            allRandomStartPointsAreDisabled: {global: true, value: true}
+        });
     }
     if (type === "enable/delay") {
         GlobalState.delay.areAllDisable = false;
         changeLocalStorageState("delay", GlobalState.delay);
-        return {
-            ...state,
-            allDelaysAreDisabled: {value: false, global: payload}
-        };
+        return Object.assign({}, state, {
+            allDelaysAreDisabled: {global: payload, value: false}
+        });
     }
     if (type === "enable/filter") {
         GlobalState.filter.areAllDisable = false;
         changeLocalStorageState("filter", GlobalState.filter);
-        return {
-            ...state,
-            allFiltersAreDisabled: {value: false, global: payload}
-        };
+        return Object.assign({}, state, {
+            allFiltersAreDisabled: {global: payload, value: false}
+        });
     }
     if (type === "enable/panner") {
         GlobalState.panner.areAllDisable = false;
         changeLocalStorageState("panner",  GlobalState.panner);
-        return {
-            ...state,
-            allPannersAreDisabled: {value: false, global: payload}
-        };
+        return Object.assign({}, state, {
+            allPannersAreDisabled: {global: payload, value: false}
+        });
     }
     if (type === "enable/playbackRate") {
         GlobalState.playbackRate.areAllDisable = false;
         changeLocalStorageState("playbackRate", GlobalState.playbackRate);
-        return {
-            ...state,
-            allPlaybackRatesAreDisabled: {value: false, global: payload}
-        };
+        return Object.assign({}, state, {
+            allPlaybackRatesAreDisabled: {global: payload, value: false}
+        });
     }
     if (type === "enable/randomEndPoint") {
         GlobalState.randomEndPoint = false;
         changeLocalStorageState("randomEndPoint", false);
-        return {
-            ...state,
-            allRandomEndPointsAreDisabled: {value: false, global: payload}
-        };
+        return Object.assign({}, state, {
+            allRandomEndPointsAreDisabled: {global: payload, value: false}
+        });
     }
     if (type === "enable/randomStartPoint") {
         GlobalState.randomStartPoint = false;
         changeLocalStorageState("randomStartPoint", false);
-        return {
-            ...state,
-            allRandomStartPointsAreDisable: {value: false, global: payload}
-        };
+        return Object.assign({}, state, {
+            allRandomStartPointsAreDisable: {global: payload, value: false}
+        });
     }
     return state;
 }

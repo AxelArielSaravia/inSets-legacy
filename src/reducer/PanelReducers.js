@@ -43,61 +43,66 @@ function PannerReducer(state, action) {
     const {payload, type} = action;
     const Panner_Limits = pannerLimits();
     if (type === "reset") {
-        const defaultObj = {
-            ...defaultGlobalState.panner,
+        const defaultObj = Object.assign({}, defaultGlobalState.panner, {
             areAllDisable: state.areAllDisable
-        };
+        });
         GlobalState.panner = defaultObj;
         changeLocalStorageState("panner", defaultObj);
         return defaultObj;
 
-    } else if (type === "x/changeMax"
+    }
+    if (type === "x/changeMax"
         && typeof payload === "number"
         && isInsideInterval(state.xMin, Panner_Limits.MAX, payload)
     ) {
         GlobalState.panner.xMax = payload;
         changeLocalStorageState("panner", GlobalState.panner);
-        return {...state, xMax: payload};
+        return Object.assign({}, state, {xMax: payload});
 
-    } else if (type === "x/changeMin"
+    }
+    if (type === "x/changeMin"
         && typeof payload === "number"
         && isInsideInterval(Panner_Limits.MIN, state.xMax, payload)
     ) {
         GlobalState.panner.xMin = payload;
         changeLocalStorageState("panner", GlobalState.panner);
-        return {...state, xMin: payload};
+        return Object.assign({}, state, {xMin: payload});
 
-    } else if (type === "y/changeMax"
+    }
+    if (type === "y/changeMax"
         && typeof payload === "number"
         && isInsideInterval(state.yMin, Panner_Limits.MAX, payload)
     ) {
         GlobalState.panner.yMax = payload;
         changeLocalStorageState("panner", GlobalState.panner);
-        return {...state, yMax: payload};
+        return Object.assign({}, state, {yMax: payload});
 
-    } else if (type === "y/changeMin"
+    }
+    if (type === "y/changeMin"
         && typeof payload === "number"
         && isInsideInterval(Panner_Limits.MIN, state.yMax, payload)
     ) {
         GlobalState.panner.yMin = payload;
         changeLocalStorageState("panner", GlobalState.panner);
-        return {...state, yMin: payload};
+        return Object.assign({}, state, {yMin: payload});
 
-    } else if (type === "z/changeMax"
+    }
+    if (type === "z/changeMax"
         && typeof payload === "number"
         && isInsideInterval(state.zMin, Panner_Limits.Z_MAX, payload)
     ) {
         GlobalState.panner.zMax = payload;
         changeLocalStorageState("panner", GlobalState.panner);
-        return {...state, zMax: payload};
+        return Object.assign({}, state, {zMax: payload});
 
-    } else if (type === "z/changeMin"
+    }
+    if (type === "z/changeMin"
         && typeof payload === "number"
         && isInsideInterval(Panner_Limits.MIN, state.zMax, payload)
     ) {
         GlobalState.panner.zMin = payload;
         changeLocalStorageState("panner", GlobalState.panner);
-        return {...state, zMin: payload};
+        return Object.assign({}, state, {zMin: payload});
     }
     return state;
 }
@@ -125,15 +130,15 @@ function FilterReducer(state, action) {
     const Filter_Limits = filterLimits();
 
     if (type === "reset") {
-        const defaultObj = {
-            ...defaultGlobalState.filter,
+        const defaultObj = Object.assign({}, defaultGlobalState.filter,{
             areAllDisable: state.areAllDisable
-        };
+        });
         GlobalState.filter = defaultObj;
         changeLocalStorageState("filter", defaultObj);
         return defaultObj;
 
-    } else if (type === "frequency/changeMax"
+    }
+    if (type === "frequency/changeMax"
         && typeof payload === "number"
         && isInsideInterval(
             state.frequencyMin,
@@ -143,9 +148,10 @@ function FilterReducer(state, action) {
     ) {
         GlobalState.filter.frequencyMax = payload;
         changeLocalStorageState("filter", GlobalState.filter);
-        return {...state, frequencyMax: payload};
+        return Object.assign({}, state, {frequencyMax: payload});
 
-    } else if (type === "frequency/changeMin"
+    }
+    if (type === "frequency/changeMin"
         && typeof payload === "number"
         && isInsideInterval(
             Filter_Limits.FREQ_MIN,
@@ -155,36 +161,38 @@ function FilterReducer(state, action) {
     ) {
         GlobalState.filter.frequencyMin = payload;
         changeLocalStorageState("filter", GlobalState.filter);
-        return {...state, frequencyMin: payload};
+        return Object.assign({}, state, {frequencyMin: payload});
 
-    } else if (type === "q/changeMax"
+    }
+    if (type === "q/changeMax"
         && typeof payload === "number"
         && isInsideInterval(state.qMin, Filter_Limits.Q_MAX, payload)
     ) {
         GlobalState.filter.qMax = payload;
         changeLocalStorageState("filter", GlobalState.filter);
-        return {...state, qMax: payload};
+        return Object.assign({}, state, {qMax: payload});
 
-    } else if (type === "q/changeMin"
+    }
+    if (type === "q/changeMin"
         && typeof payload === "number"
         && isInsideInterval(Filter_Limits.Q_MIN, state.qMax, payload)
     ) {
         GlobalState.filter.qMin = payload;
         changeLocalStorageState("filter", GlobalState.filter);
-        return {...state, qMin: payload};
+        return Object.assign({}, state, {qMin: payload});
 
-    } else if (type === "types/change" && Array.isArray(payload)) {
+    }
+    if (type === "types/change" && Array.isArray(payload)) {
         const arr = payload.filter(function (el) {
             return (/lowpass|highpass|bandpass|peaking|notch/).test(el);
         });
         if (arr.length !== 0) {
             GlobalState.filter.types = arr;
             changeLocalStorageState("filter", GlobalState.filter);
-            return {...state, types: arr};
+            return Object.assign({}, state, {types: arr});
         }
-    } else {
-        return state;
     }
+    return state;
 }
 
 /*-
@@ -204,29 +212,30 @@ function PlaybackRateReducer(state, action) {
     const {payload, type} = action;
     const PlaybackRate_Limits = playbackRateLimits();
     if (type === "reset") {
-        const defaultObj = {
-            ...defaultGlobalState.playbackRate,
+        const defaultObj = Object.assign({}, defaultGlobalState.playbackRate, {
             areAllDisable: state.areAllDisable
-        };
+        });
         GlobalState.playbackRate = defaultObj;
         changeLocalStorageState("playbackRate", defaultObj);
         return defaultObj;
 
-    } else if (type === "max/change"
+    }
+    if (type === "max/change"
         && typeof payload === "number"
         && isInsideInterval(state.min, PlaybackRate_Limits.MAX, payload)
     ) {
         GlobalState.playbackRate.max = payload;
         changeLocalStorageState("playbackRate",  GlobalState.playbackRate);
-        return {...state, max: payload};
+        return Object.assign({}, state, {max: payload});
 
-    } else if (type === "min/change"
+    }
+    if (type === "min/change"
         && typeof payload === "number"
         && isInsideInterval(PlaybackRate_Limits.MIN, state.max, payload)
     ) {
         GlobalState.playbackRate.min = payload;
         changeLocalStorageState("playbackRate",  GlobalState.playbackRate);
-        return {...state, min: payload};
+        return Object.assign({}, state, {min: payload});
     }
     return state;
 }
@@ -252,31 +261,33 @@ function DelayReducer(state, action) {
     const {payload, type} = action;
     const Dealy_Limits = delayLimits();
     if (type === "reset") {
-        const defaultObj = {
-            ...defaultGlobalState.delay,
+        const defaultObj = Object.assign({}, defaultGlobalState.delay, {
             areAllDisable: state.areAllDisable
-        };
+        });
         GlobalState.delay = defaultObj;
         changeLocalStorageState("delay", defaultObj);
         return defaultObj;
 
-    } else if (type === "time/changeMax"
+    }
+    if (type === "time/changeMax"
         && typeof payload === "number"
         && isInsideInterval(state.timeMin, Dealy_Limits.TIME_MAX, payload)
     ) {
         GlobalState.delay.timeMax = payload;
         changeLocalStorageState("delay", GlobalState.delay);
-        return {...state, timeMax: payload};
+        return Object.assign({}, state, {timeMax: payload});
 
-    } else if (type === "time/changeMin"
+    }
+    if (type === "time/changeMin"
         && typeof payload === "number"
         && isInsideInterval(Dealy_Limits.TIME_MIN, state.timeMax, payload)
     ) {
         GlobalState.delay.timeMin = payload;
         changeLocalStorageState("delay", GlobalState.delay);
-        return {...state, timeMin: payload};
+        return Object.assign({}, state, {timeMin: payload});
 
-    } else if (type === "feedback/changeMax"
+    }
+    if (type === "feedback/changeMax"
         && typeof payload === "number"
         && isInsideInterval(
             state.feedbackMin,
@@ -285,9 +296,10 @@ function DelayReducer(state, action) {
     ) {
         GlobalState.delay.feedbackMax = payload;
         changeLocalStorageState("delay", GlobalState.delay);
-        return {...state, feedbackMax: payload};
+        return Object.assign({}, state, {feedbackMax: payload});
 
-    } else if (type === "feedback/changeMin"
+    }
+    if (type === "feedback/changeMin"
         && typeof payload === "number"
         && isInsideInterval(
             Dealy_Limits.FBACK_MIN,
@@ -296,7 +308,7 @@ function DelayReducer(state, action) {
     ) {
         GlobalState.delay.feedbackMin = payload;
         changeLocalStorageState("delay", GlobalState.delay);
-        return {...state, feedbackMin: payload};
+        return Object.assign({}, state, {feedbackMin: payload});
     }
     return state;
 }
@@ -318,26 +330,28 @@ function TimeReducer(state, action) {
     const {payload, type} = action;
     const Time_Limits = timeIntervalLimits();
     if (type === "reset") {
-        const defaultObj = {...defaultGlobalState.timeInterval};
+        const defaultObj = Object.assign({}, defaultGlobalState.timeInterval);
         GlobalState.timeInterval = defaultObj;
         changeLocalStorageState("timeInterval", defaultObj);
         return defaultObj;
 
-    } else if (type === "min/change"
+    }
+    if (type === "min/change"
         && typeof payload === "number"
         && isInsideInterval(Time_Limits.MIN, state.max, payload)
     ) {
         GlobalState.timeInterval.min = payload;
         changeLocalStorageState("timeInterval", GlobalState.timeInterval);
-        return {...state, min: payload};
+        return Object.assign({}, state, {min: payload});
 
-    } else if (type === "max/change"
+    }
+    if (type === "max/change"
         && typeof payload === "number"
         && isInsideInterval(state.min, Time_Limits.MAX, payload)
     ) {
         GlobalState.timeInterval.max = payload;
         changeLocalStorageState("timeInterval", GlobalState.timeInterval);
-        return {...state, max: payload};
+        return Object.assign({}, state, {max: payload});
     }
     return state;
 }
@@ -377,21 +391,23 @@ function FadesReducer(state, action) {
             fadeOut: defaultGlobalState.fadeOut
         };
 
-    } else if (type === "fadeIn/change"
+    }
+    if (type === "fadeIn/change"
         && typeof payload === "number"
         && isInsideInterval(Fades_Limits.MIN, Fades_Limits.MAX, payload)
     ) {
         GlobalState.fadeIn = payload;
         changeLocalStorageState("fadeIn", payload);
-        return {...state, fadeIn: payload};
+        return Object.assign({}, state, {fadeIn: payload});
 
-    } else if (type === "fadeOut/change"
+    }
+    if (type === "fadeOut/change"
         && typeof payload === "number"
         && isInsideInterval(Fades_Limits.MIN, Fades_Limits.MAX, payload)
     ) {
         GlobalState.fadeOut = payload;
         changeLocalStorageState("fadeOut", payload);
-        return {...state, fadeOut: payload};
+        return Object.assign({}, state, {fadeOut: payload});
     }
     return state;
 }
@@ -419,15 +435,16 @@ function SetsReducer(state, action) {
         };
         GlobalState.eventsForEachSet = newState;
         return newState;
-
-    } else if (type === "update") {
+    }
+    if (type === "update") {
         return GlobalState.eventsForEachSet;
 
-    } else if (type === "addEvent"
+    }
+    if (type === "addEvent"
         && typeof payload === "number"
     ) {
-        if (state.arrOfEvents[payload] > 0 &&
-            state.sumOfAllEvents === state.arrOfEvents[payload]
+        if (state.arrOfEvents[payload] > 0
+            && state.sumOfAllEvents === state.arrOfEvents[payload]
         ) {
             return state;
         }
@@ -442,10 +459,11 @@ function SetsReducer(state, action) {
         GlobalState.eventsForEachSet = newState;
         return newState;
 
-    } else if (type === "removeEvent"
-        && typeof payload === "number" &&
-            state.sumOfAllEvents > 1 &&
-            state.arrOfEvents[payload] > 0
+    }
+    if (type === "removeEvent"
+        && typeof payload === "number"
+        && state.sumOfAllEvents > 1
+        && state.arrOfEvents[payload] > 0
     ) {
         const newArrOfEvents = [...state.arrOfEvents];
 

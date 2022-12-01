@@ -1,18 +1,13 @@
-.generalPanel {
-    position: relative;
-    z-index: 6;
-    width: 100%;
-    height: 100%;
-}
-
-
 .panel-switcher {
     position: absolute;
     right: 10px;
     padding:9px 0;
+    z-index: 6;
+
     button {
         color: var(--c-secondary);
         padding:4px;
+
         div {
             position: absolute;
             right: 0;
@@ -20,9 +15,7 @@
             height: 100%;
         }
     }
-    
 }
-
 
 .panel {
     position: absolute;
@@ -31,8 +24,7 @@
     transition: opacity 200ms ease-out;
 }
 
-
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 767px) {
     .panel-switcher {
         .icon-panel{
             width: 1.5rem;
@@ -41,15 +33,13 @@
 
     .panelContainer {
         position: absolute;
-        min-height: calc(100% - 55px);
+        min-height: calc(100% - 50px);
         width: 100vw;
-        top: 55px;
+        top: 50px;
         right: 0;
         z-index: 4;
         background:var(--c-primary);
-        
         opacity: 98%;
-    
         transition: opacity 200ms ease-out;
     }
 
@@ -78,26 +68,21 @@
         right: unset;
         top: unset;
         pointer-events: none;
-
-        padding: 11px 10px;
     }
 
     .panelContainer {
         position: relative;
-        width: 100%;
         height: 100%;
-
         opacity: 1;
-    
+
         .panel_title { display: none; }
     }
 
     .items-panel {
         position: relative;
         z-index: 5;
-        
+
         .items-panel_button { width: 100%; }
     }
     .panel-section { height: 100%; }
-    
 }

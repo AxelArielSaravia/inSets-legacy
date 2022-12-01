@@ -1,4 +1,4 @@
-import {defaultGlobalState, initGlobalState} from "../../state/Global/index.js";
+import {defaultGlobalState, initGlobalState, GlobalState} from "../../state/Global/index.js";
 
 import {
     initFromLocalStorageState,
@@ -15,10 +15,10 @@ function handleInitState(version) {
 
     if (hasNotLocalStorage) {
         initLocalStorage(keys, defaultGlobalState);
-        initGlobalState(defaultGlobalState);
+        initGlobalState(defaultGlobalState, GlobalState);
     } else {
         const store_state = initFromLocalStorageState(keys, defaultGlobalState);
-        initGlobalState(store_state);
+        initGlobalState(store_state, GlobalState);
     }
 }
 

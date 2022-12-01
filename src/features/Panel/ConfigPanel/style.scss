@@ -4,8 +4,6 @@
 
     .configPanel-close {
         position: relative;
-        /* top: 8px;
-        right: 8px; */
     }
 }
 
@@ -16,12 +14,10 @@
         overflow: auto;
         top: 0;
         left: 100%;
-
         padding: 10px;
         opacity: 95%;
-
-        transition: 
-        left 100ms ease-out;
+        z-index: 4;
+        transition: left 100ms ease-out;
     }
 
     .config-panel.panel-hidden { 

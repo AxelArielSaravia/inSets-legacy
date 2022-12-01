@@ -20,7 +20,6 @@ function createViewAudioState(id) {
         );
     }
     return {
-        id: audio_state.id,
         audioEvents: audio_state.audioEvents,
         color: "",
         configurationIsOpen: false,
@@ -30,6 +29,7 @@ function createViewAudioState(id) {
         endPoint: audio_state.endPoint,
         endTime: audio_state.endTime,
         filterIsDisable: audio_state.filterIsDisable,
+        id: audio_state.id,
         isPlaying: audio_state.isPlaying,
         pannerIsDisable: audio_state.pannerIsDisable,
         playbackRateIsDisable: audio_state.playbackRateIsDisable,
@@ -71,51 +71,51 @@ function ViewAudioDisableReducer(state, type) {
 
     if (type === "delay/disable") {
         audio_state.delayIsDisable = true;
-        return {...state, delayIsDisable: true};
-
-    } else if (type === "delay/enable") {
+        return Object.assign({}, state, {delayIsDisable: true});
+    }
+    if (type === "delay/enable") {
         audio_state.delayIsDisable = false;
-        return {...state, delayIsDisable: false};
-
-    } else if (type === "filter/disable") {
+        return Object.assign({}, state, {delayIsDisable: false});
+    }
+    if (type === "filter/disable") {
         audio_state.filterIsDisable = true;
-        return {...state, filterIsDisable: true};
-
-    } else if (type === "filter/enable") {
+        return Object.assign({}, state, {filterIsDisable: true});
+    }
+    if (type === "filter/enable") {
         audio_state.filterIsDisable = false;
-        return {...state, filterIsDisable: false};
-
-    } else if (type === "panner/disable") {
+        return Object.assign({}, state, {filterIsDisable: false});
+    }
+    if (type === "panner/disable") {
         audio_state.pannerIsDisable = true;
-        return {...state, pannerIsDisable: true};
-
-    } else if (type === "panner/enable") {
+        return Object.assign({}, state, {pannerIsDisable: true});
+    }
+    if (type === "panner/enable") {
         audio_state.pannerIsDisable = false;
-        return {...state, pannerIsDisable: false};
-
-    } else if (type === "playbackRate/disable") {
+        return Object.assign({}, state, {pannerIsDisable: false});
+    }
+    if (type === "playbackRate/disable") {
         audio_state.playbackRateIsDisable = true;
-        return {...state, playbackRateIsDisable: true};
-
-    } else if (type === "playbackRate/enable") {
+        return Object.assign({}, state, {playbackRateIsDisable: true});
+    }
+    if (type === "playbackRate/enable") {
         audio_state.playbackRateIsDisable = false;
-        return {...state, playbackRateIsDisable: false};
-
-    } else if (type === "randomEndPoint/disable") {
+        return Object.assign({}, state, {playbackRateIsDisable: false});
+    }
+    if (type === "randomEndPoint/disable") {
         audio_state.randomEndPointIsDisable = true;
-        return {...state, randomEndPointIsDisable: true};
-
-    } else if (type === "randomEndPoint/enable") {
+        return Object.assign({}, state, {randomEndPointIsDisable: true});
+    }
+    if (type === "randomEndPoint/enable") {
         audio_state.randomEndPointIsDisable = false;
-        return {...state, randomEndPointIsDisable: false};
-
-    } else if (type === "randomStartPoint/disable") {
+        return Object.assign({}, state, {randomEndPointIsDisable: false});
+    }
+    if (type === "randomStartPoint/disable") {
         audio_state.randomStartPointIsDisable = true;
-        return {...state, randomStartPointIsDisable: true};
-
-    } else if (type === "randomStartPoint/enable") {
+        return Object.assign({}, state, {randomStartPointIsDisable: true});
+    }
+    if (type === "randomStartPoint/enable") {
         audio_state.randomStartPointIsDisable = false;
-        return {...state, randomStartPointIsDisable: false};
+        return Object.assign({}, state, {randomStartPointIsDisable: false});
     }
     return state;
 }
@@ -139,43 +139,40 @@ ViewAudioReducer: (ViewAudioState, {
 }) -> ViewAudioState
 */
 function ViewAudioReducer(state, action) {
-    const {type, payload} = action;
+    const {payload, type} = action;
     if (type === "audioEvents/add"
         && state.audioEvents < 50
     ) {
         const audio_state = GlobalState.audio_list.get(state.id);
         audio_state.audioEvents += 1;
-        return {
-            ...state,
+        return Object.assign({}, state, {
             audioEvents: state.audioEvents + 1
-        };
-
-    } else if (type === "audioEvents/subtract"
+        });
+    }
+    if (type === "audioEvents/subtract"
         && state.audioEvents > 1
     ) {
         const audio_state = GlobalState.audio_list.get(state.id);
         audio_state.audioEvents -= 1;
-        return {
-            ...state,
+        return Object.assign({}, state, {
             audioEvents: state.audioEvents - 1
-        };
-
-    } else if (type === "color/change") {
-        return {...state, color: payload};
-
-    } else if (type === "color/default") {
-        return {...state, color: ""};
-
-    } else if (type === "configuration/toggle") {
-        return {
-            ...state,
+        });
+    }
+    if (type === "color/change") {
+        return Object.assign({}, state, {color: payload});
+    }
+    if (type === "color/default") {
+        return Object.assign({}, state, {color: ""});
+    }
+    if (type === "configuration/toggle") {
+        return Object.assign({}, state, {
             configurationIsOpen: !state.configurationIsOpen
-        };
-
-    } else if (type === "effect") {
+        });
+    }
+    if (type === "effect") {
         return ViewAudioDisableReducer(state, payload);
-
-    } else if (type === "endTime/change"
+    }
+    if (type === "endTime/change"
         && typeof payload === "number"
         && state.duration > 0.5
     ) {
@@ -188,19 +185,18 @@ function ViewAudioReducer(state, action) {
             : payload
         );
         audio_state.endTime = endTime;
-        return {...state, endTime};
-
-    } else if (type === "play") {
-        return {...state, isPlaying: true};
-
-    } else if (type === "points/change") {
-        return {
-            ...state,
+        return Object.assign({}, state, {endTime});
+    }
+    if (type === "play") {
+        return Object.assign({}, state, {isPlaying: true});
+    }
+    if (type === "points/change") {
+        return Object.assign({}, state, {
             endPoint: payload[1],
             startPoint: payload[0]
-        };
-
-    } else if (type === "startTime/change"
+        });
+    }
+    if (type === "startTime/change"
         && typeof payload === "number"
         && state.duration > 0.5
     ) {
@@ -213,18 +209,17 @@ function ViewAudioReducer(state, action) {
             : payload
         );
         audio_state.startTime = startTime;
-        return {...state, startTime};
-
-    } else if (type === "stop") {
-        return {
-            ...state,
-            isPlaying: false,
+        return Object.assign({}, state, {startTime});
+    }
+    if (type === "stop") {
+        return Object.assign({}, state, {
             currentTime: 0,
-            endPoint:state.endTime,
-            startPoint:state.startTime,
-        };
-
-    } else if (type === "volume/change"
+            endPoint: state.endTime,
+            isPlaying: false,
+            startPoint: state.startTime
+        });
+    }
+    if (type === "volume/change"
         && typeof payload === "number"
     ) {
         const audio_state = GlobalState.audio_list.get(state.id);
@@ -236,22 +231,18 @@ function ViewAudioReducer(state, action) {
             : payload
         );
         audio_state.volume = volume;
-        return {
-            ...state,
-            volume
-        };
-
-    } else if (type === "currentTime/update"
+        return Object.assign({}, state, {volume});
+    }
+    if (type === "currentTime/update"
         && state.isPlaying
     ) {
-        return {
-            ...state,
+        return Object.assign({}, state, {
             currentTime: payload
-        };
+        });
     }
+    console.log(state);
     return state;
 }
-
 
 export {
     ViewAudioReducer,

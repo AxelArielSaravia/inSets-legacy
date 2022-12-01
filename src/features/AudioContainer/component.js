@@ -34,30 +34,28 @@ function AudioContainer() {
 
     return (
         <main className="main flex-column p-5">
-            <div className="main_sub">
-                <div className="audio-container flex-column">
-                    <div className="audio-container_sub flex-column flex-grow-1">
-                        {Object.keys(loadedAudioList).map((id) => (
-                            <div
-                                key={id}
-                                className="audio-element--prev p-5"
-                                role="region"
-                                aria-live="polite"
-                            >
-                                <SelectAudioElement
-                                    bool={id in completedAudioList}
-                                    id={id}
-                                />
-                            </div>
-                        ))}
-                    </div>
-                    <Show is={loadedAudioListSize === 0}>
-                        <div className="audioFiles_icon flex-column align-c justify-c flex-grow-1">
-                            <IconMusicFile className="icon-drop o-5"/>
-                            <p className="fs-text p-5">No Audio Files</p>
+            <div className="audio-container flex-column">
+                <div className="audio-container_sub flex-column flex-grow-1">
+                    {Object.keys(loadedAudioList).map((id) => (
+                        <div
+                            key={id}
+                            className="audio-element--prev p-5"
+                            role="region"
+                            aria-live="polite"
+                        >
+                            <SelectAudioElement
+                                bool={id in completedAudioList}
+                                id={id}
+                            />
                         </div>
-                    </Show>
+                    ))}
                 </div>
+                <Show is={loadedAudioListSize === 0}>
+                    <div className="audioFiles_icon flex-column align-c justify-c flex-grow-1">
+                        <IconMusicFile className="icon-drop o-5"/>
+                        <p className="fs-text p-5">No Audio Files</p>
+                    </div>
+                </Show>
             </div>
         </main>
     );
