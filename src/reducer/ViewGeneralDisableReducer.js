@@ -37,14 +37,14 @@ function ViewGeneralDisableReducer(state, action) {
     }
     if (type === "disable/panner") {
         GlobalState.panner.areAllDisable = true;
-        changeLocalStorageState("panner", GlobalState.filter);
+        changeLocalStorageState("panner", GlobalState.panner);
         return Object.assign({}, state, {
             allPannersAreDisabled: {global: true, value: true}
         });
     }
     if (type === "disable/playbackRate") {
         GlobalState.playbackRate.areAllDisable = true;
-        changeLocalStorageState("playbackRate", GlobalState.filter);
+        changeLocalStorageState("playbackRate", GlobalState.playbackRate);
         return Object.assign({}, state, {
             allPlaybackRatesAreDisabled: {global: true, value: true}
         });
