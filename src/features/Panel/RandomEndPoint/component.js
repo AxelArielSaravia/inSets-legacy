@@ -4,7 +4,6 @@ import {GeneralDisableContext} from "../../../context/index.js";
 
 import ConfigPanelContainer from "../ConfigPanelContainer/component.js";
 
-
 function RandomEndPoint() {
     const [
         {allRandomEndPointsAreDisabled},
@@ -18,7 +17,6 @@ function RandomEndPoint() {
             generalDisableDispatch({type: "disable/randomEndPoint"});
         }
     },[allRandomEndPointsAreDisabled, generalDisableDispatch]);
-
 
     return (
         <ConfigPanelContainer

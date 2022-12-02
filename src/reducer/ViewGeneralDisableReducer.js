@@ -102,7 +102,7 @@ function ViewGeneralDisableReducer(state, action) {
         GlobalState.randomStartPoint = false;
         changeLocalStorageState("randomStartPoint", false);
         return Object.assign({}, state, {
-            allRandomStartPointsAreDisable: {global: payload, value: false}
+            allRandomStartPointsAreDisabled: {global: payload, value: false}
         });
     }
     return state;

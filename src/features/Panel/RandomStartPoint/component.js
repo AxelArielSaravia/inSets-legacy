@@ -9,7 +9,6 @@ function RandomStartPoint() {
         {allRandomStartPointsAreDisabled},
         generalDisableDispatch
     ] = useContext(GeneralDisableContext);
-
     const changeDisable = useCallback(function () {
         if (allRandomStartPointsAreDisabled.value) {
             generalDisableDispatch({type: "enable/randomStartPoint", payload: true});
