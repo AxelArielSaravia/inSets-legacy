@@ -63,29 +63,30 @@ function createAudioState(spec) {
         type
     } = spec;
 
-    return Object.seal({
-        audioEngine,
-        audioEvents: 1,
-        delayIsDisable: GlobalState?.delay.areAllDisable || false,
-        duration: duration || 0, //seconds
-        endPoint: duration || 0, //duration seconds
-        endTime: duration || 0,  //duration seconds
-        filterIsDisable: GlobalState?.filter.areAllDisable || false,
-        id,
-        isPlaying: false,
-        outputGain: undefined,
-        pannerIsDisable: GlobalState?.panner.areAllDisable || false,
-        playbackRate: 1,
-        playbackRateIsDisable: GlobalState?.playbackRate.areAllDisable || false,
-        randomEndPointIsDisable: GlobalState?.randomEndPoint || false,
-        randomStartPointIsDisable: GlobalState?.randomStartPoint || false,
-        source,
-        startPoint: 0, //seconds
-        startTime: 0,  //seconds
-        title: title.slice(0, title.lastIndexOf(".")),
-        type,
-        volume: 1 //MAX_VOLUME
-    });
+    return (function ret(o) {
+        o.audioEngine = audioEngine;
+        o.audioEvents = 1;
+        o.delayIsDisable = GlobalState?.delay.areAllDisable || false;
+        o.duration = duration || 0; //seconds
+        o.endPoint = duration || 0; //duration seconds
+        o.endTime = duration || 0;  //duration seconds
+        o.filterIsDisable = GlobalState?.filter.areAllDisable || false;
+        o.id = id;
+        o.isPlaying = false;
+        o.outputGain = undefined;
+        o.pannerIsDisable = GlobalState?.panner.areAllDisable || false;
+        o.playbackRate = 1;
+        o.playbackRateIsDisable = GlobalState?.playbackRate.areAllDisable || false;
+        o.randomEndPointIsDisable = GlobalState?.randomEndPoint || false;
+        o.randomStartPointIsDisable = GlobalState?.randomStartPoint || false;
+        o.source = source;
+        o.startPoint = 0; //seconds
+        o.startTime = 0;  //seconds
+        o.title = title.slice(0, title.lastIndexOf("."));
+        o.type = type;
+        o.volume = 1; //MAX_VOLUME
+        return Object.seal(o);
+    }(Object.create(null)));
 }
 
 /* -------------------------------------------------------------------------- */

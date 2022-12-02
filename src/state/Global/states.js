@@ -361,7 +361,7 @@ function createGlobalPlaybackRate(spec) {
             o.min = defaultGlobalState.playbackRate.min;
             o.max = defaultGlobalState.playbackRate.max;
         }
-        return Object.freeze(o);
+        return Object.seal(o);
     }(Object.create(null)));
 }
 
