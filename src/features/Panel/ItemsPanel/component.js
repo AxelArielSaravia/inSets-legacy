@@ -1,5 +1,3 @@
-import {useCallback} from "react";
-
 import ItemsPanelElement from "../ItemsPanelElement/component.js";
 
 import "./style.scss";

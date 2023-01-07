@@ -27,7 +27,7 @@ window.addEventListener("DOMContentLoaded", function () {
         const startButton = document.createElement("button");
         startButton.type = "button";
         startButton.className = "startApp-button fs-text-l text-bold";
-        startButton.textContent = "START";
+        startButton.textContent = "OPEN";
 
         startButton.addEventListener("click", startApp, {once: true});
 
