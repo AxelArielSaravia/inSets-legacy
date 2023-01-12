@@ -16,7 +16,7 @@ inSets no genera sonido mediante síntesis y no utiliza un banco de sonidos alma
 ***Todo archivo de audio que sea reconocible por un navegador web está permitido***
 
 Esto incluye por ejemplo los formatos mp4, wav, flac, aac, ogg, webm, entre otros.
-Esta idea está impulsada específicamente para generar cierta familiaridad. El resultado musical del sistema es experimental, es decir, no refiere a lo que un público general acostumbra (no utiliza un sistema métrico de distribución del tiempo, las agrupaciones son arbitrarias por lo que no generar melodías, entre otros), entonces esta medida intenta que por lo menos que exista algún nivel de reconocimiento por parte del usuario (claramente si el usuario decide ingresar audios que no conoce ya es una decisión personal).
+Esta idea está impulsada específicamente para generar cierta familiaridad. El resultado musical del sistema es experimental, es decir, no refiere a lo que un público general acostumbra a escuchar (no utiliza un sistema métrico de distribución del tiempo, las agrupaciones son arbitrarias por lo que no generar melodías, entre otros), entonces esta medida intenta que por lo menos exista algún nivel de reconocimiento por parte del usuario (claramente si el usuario decide ingresar audios que no conoce ya es una decisión personal).
 
 Teóricamente la aplicación puede funcionar sin tener ningún archivo de audio, pero claramente no va a generar ninguna respuesta audible.
 
