@@ -614,7 +614,9 @@ function startApp(appDispatcher) {
     GlobalState.started_id = createId();
     //First play
     const executeSet = randomSetsExecution(appDispatcher);
-    appDispatcher({type: "newAudiosSet", payload: executeSet});
+    if (executeSet !== undefined) {
+        appDispatcher({type: "newAudiosSet", payload: executeSet});
+    }
     //recursive call
     randomTimeExecution(appDispatcher, GlobalState.started_id);
 }
