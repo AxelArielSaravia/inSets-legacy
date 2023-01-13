@@ -353,8 +353,9 @@ rePlay: (string, audioDispatcher) -> undefined
 function rePlay(id, audioDispatcher) {
     const audio_state = GlobalState.audio_list.get(id);
     if (audio_state.isPlaying) {
-        Promise.resolve()
-        .then(() => _stop(audio_state, audioDispatcher))
+        new Promise(function (resolve) {
+            resolve(_stop(audio_state, audioDispatcher));
+        })
         .then(function (bool) {
             if (bool && GlobalState.is_started) {
                 return _play(audio_state, audioDispatcher);
@@ -422,78 +423,160 @@ function binarySearch(arr, target) {
 
     while (startI <= endI) {
         const midI = Math.floor((startI + endI) / 2);
-
         if (arr[midI][1] < target) {
             startI = midI + 1;
         } else {
-            if (!arr[midI - 1] || arr[midI - 1][1] < target) {
-                return arr[midI][0];
+            if (arr[midI - 1] === undefined || arr[midI - 1][1] < target) {
+                return {
+                    i: midI,
+                    value: arr[midI][0]
+                };
             }
             endI = midI - 1;
         }
     }
     //if the target did not found
-    return 0;
+    return;
 }
-
 /*-
 calculateTheLenghtOfSetExecution: undefined -> number
+its use Vose's Alias Method algorithm
 */
 function calculateTheLenghtOfSetExecution() {
-    let sum = 0;
-    const arrOfSums = [];
-    GlobalState.eventsForEachSet.arrOfEvents.forEach(function (v, i) {
-        if (v > 0) {
-            sum += v;
-            arrOfSums.push([i, sum]);
+    //Initialize
+    const length = GlobalState.eventsForEachSet.arrOfEvents.length;
+    const rand_i = random(0, length - 1);
+    const alias = Array(length);
+    const prob = Array(length);
+    const small = [];
+    const large = [];
+    const p = GlobalState.eventsForEachSet.arrOfEvents.map(function m(value, i) {
+        const res = value * length;
+        if (res < 1) {
+            small.push(i);
+        } else {
+            large.push(i);
         }
+        return res;
     });
-    const n = random(1, sum);
-    return binarySearch(arrOfSums, n);
+    while (small.length !== 0 && large.length !== 0) {
+        const l = small.pop();
+        const g = large.pop();
+        prob[l] = p[l];
+        alias[l] = g;
+
+        p[g] = (p[g] + p[l]) - 1;
+
+        if (p[g] < 1) {
+            small.push(g);
+        } else {
+            large.push(g);
+        }
+    }
+    while (small.length !== 0) {
+        prob[small.pop()] = 1;
+    }
+    while (large.length !== 0) {
+        prob[large.pop()] = 1;
+    }
+    //generate
+    return (
+        Math.random() < prob[rand_i]
+        ? rand_i
+        : alias[rand_i]
+    );
 }
 
 /*-
-AudiosEventsArray: AudioState -> Array<string>
-*/
-function AudiosEventsArray(audio_list) {
-    let arrOfAudiosEvents = [];
-    audio_list.forEach(function (element, key) {
-        const v = element.audioEvents;
-        const arr = (new Array(v)).fill(key);
-        arrOfAudiosEvents = arrOfAudiosEvents.concat(arr);
-    });
-    return arrOfAudiosEvents;
-}
-
-/*-
-createNewSetExecution: number -> Object<string, undefined>
+createNewSetExecution: number -> Object<string, true>
 */
 function createNewSetExecution(n) {
     const AUDIO_LIST = GlobalState.audio_list;
     const executeSet = {};
-    //selects elements for the set
-    let arrOfAudiosEvents = AudiosEventsArray(AUDIO_LIST);
-    for (let i = 0; i < n; i += 1) {
-        const _KEY = arrOfAudiosEvents[random(0, arrOfAudiosEvents.length - 1)];
-        executeSet[_KEY] = undefined;
-        arrOfAudiosEvents = arrOfAudiosEvents.filter(function filter(key) {
-            return key !== _KEY;
+
+    const arrOfSums = [];
+    let sum = 0;
+
+    if (n <= Math.floor(AUDIO_LIST.size / 2)) {
+        //INITIALIZE
+        AUDIO_LIST.forEach(function fe(el, key) {
+            const audioEvents = el.audioEvents;
+            sum += audioEvents;
+            arrOfSums.push([key, sum, audioEvents]);
+        });
+        for (let i = 0; i < n; i += 1) {
+            const arrOfSums_length = arrOfSums.length - 1;
+            const element = binarySearch(arrOfSums, random(0, sum));
+            executeSet[element.value] = true;
+
+            if (i < n-1) {
+                sum = (
+                    element.i !== 0
+                    ? arrOfSums[element.i - 1][1]
+                    : 0
+                );
+                for (let j = element.i; j < arrOfSums_length; j += 1) {
+                    sum += arrOfSums[element.i + 1][2];
+                    arrOfSums[element.i+1][1] = sum;
+                }
+                arrOfSums.pop();
+            }
+        }
+    } else {
+        const excludeKey = new Set();
+        //INITIALIZE
+        AUDIO_LIST.forEach(function fe(el, key) {
+            const audioEvents = GlobalState.sumOfAllAudiosEvents - el.audioEvents;
+            sum += audioEvents;
+            arrOfSums.push([key, sum, audioEvents]);
+        });
+        for (let i = AUDIO_LIST.size; i > n; i -= 1) {
+            const arrOfSums_length = arrOfSums.length - 1;
+            const element = binarySearch(arrOfSums, random(0, sum));
+            excludeKey.add(element.value);
+
+            if (i > n+1) {
+                sum = (
+                    element.i !== 0
+                    ? arrOfSums[element.i - 1][1]
+                    : 0
+                );
+                for (let j = element.i; j < arrOfSums_length; j += 1) {
+                    sum += arrOfSums[element.i + 1][2];
+                    arrOfSums[element.i+1][1] = sum;
+                }
+                arrOfSums.pop();
+            }
+        }
+        AUDIO_LIST.forEach(function fe(el, key) {
+            if (!excludeKey.has(key)) {
+                executeSet[key] = true;
+            }
         });
     }
     return executeSet;
 }
 
 /*-
-randomSetsExecution: appDispatcher -> undefined
+randomSetsExecution: undefined -> Object<string, true>
 */
-function randomSetsExecution(appDispatcher) {
+function randomSetsExecution() {
     const n = calculateTheLenghtOfSetExecution();
     console.log("set execution size: ", n);//DEBUGGER
-    if (n === 0) {
+    if (n <= 0) {
+    //do not select any sound
         return;
     }
-    const executeSet = createNewSetExecution(n);
-    appDispatcher({type: "newAudiosSet", payload: executeSet});
+    if (n === GlobalState.audio_list.size) {
+    //Select all audios to execute
+        const executeSet = {};
+        GlobalState.audio_list.forEach(function fe(_, key) {
+            executeSet[key] = true;
+        });
+        return executeSet;
+    }
+    //executeSet
+    return createNewSetExecution(n);
 }
 
 
@@ -504,10 +587,21 @@ function randomTimeExecution(appDispatcher, STARTED_ID) {
     if (GlobalState.is_started
         && GlobalState.started_id === STARTED_ID
     ) {
-        randomSetsExecution(appDispatcher);
         const n = random(GlobalState.timeInterval.min, GlobalState.timeInterval.max) * 100;
-        console.log("next execution: ", n + " ms");//DEBUGGER
-        return wait(n).then(() => randomTimeExecution(appDispatcher, STARTED_ID));
+        console.log("next execution:", n + " ms");//DEBUGGER
+        return Promise.all([
+            wait(random(GlobalState.timeInterval.min, GlobalState.timeInterval.max) * 100),
+            new Promise(function (resolve) {
+                resolve(randomSetsExecution());
+            })
+        ])
+        .then(function p(values) {
+            //values[1] is the execution set of audios
+            if (values[1] !== undefined) {
+                appDispatcher({type: "newAudiosSet", payload: values[1]});
+            }
+            return randomTimeExecution(appDispatcher, STARTED_ID);
+        });
     } else {
         console.log("END");
     }
@@ -518,6 +612,10 @@ startApp: appDispatcher -> undefined
 */
 function startApp(appDispatcher) {
     GlobalState.started_id = createId();
+    //First play
+    const executeSet = randomSetsExecution(appDispatcher);
+    appDispatcher({type: "newAudiosSet", payload: executeSet});
+    //recursive call
     randomTimeExecution(appDispatcher, GlobalState.started_id);
 }
 

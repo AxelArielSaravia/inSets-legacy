@@ -480,6 +480,7 @@ function createGlobalState() {
         o.playbackRate = createGlobalPlaybackRate();
         o.randomEndPoint = createGlobalRandomPoint();
         o.randomStartPoint = createGlobalRandomPoint();
+        o.sumOfAllAudiosEvents = 0;
         o.timeInterval = createGlobalTimeInteval();
         return Object.seal(o);
     }(Object.create(null)));

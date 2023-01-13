@@ -21,7 +21,7 @@ window.addEventListener("DOMContentLoaded", function () {
     const buttonContainer = document.getElementById("button-container");
 
     /* INIT STATE */
-    handleInitState("v0.3.2");
+    handleInitState("v0.3.3");
 
     if (hasAudioContext()) {
         const startButton = document.createElement("button");
