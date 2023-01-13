@@ -12,7 +12,7 @@ import {isInsideInterval} from "../assert/service.js";
 rToFrequency: number -> number
 */
 function rToFrequency(x) {
-    const {FREQ_MAX, FREQ_MIN} = filterLimits();
+    const {FREQ_MAX, FREQ_MIN} = filterLimits;
     if (typeof x !== "number" || !isInsideInterval(FREQ_MIN, FREQ_MAX, x)) {
         throw new Error("The argument is invalid");
     }
@@ -31,7 +31,7 @@ function rToFrequency(x) {
 rToQ: number -> number
 */
 function rToQ(x) {
-    const {Q_MAX, Q_MIN} = filterLimits();
+    const {Q_MAX, Q_MIN} = filterLimits;
     if (typeof x !== "number" || !isInsideInterval(Q_MIN, Q_MAX, x)) {
         throw new Error("The argument is invalid");
     }
@@ -48,7 +48,7 @@ function rToQ(x) {
 rToPlaybackRate: number -> number
 */
 function rToPlaybackRate(x) {
-    const {MAX, MIN} = playbackRateLimits();
+    const {MAX, MIN} = playbackRateLimits;
     if (typeof x !== "number" || !isInsideInterval(MIN, MAX, x)) {
         throw new Error("The argument is invalid");
     }
@@ -63,7 +63,7 @@ function rToPlaybackRate(x) {
 rToFeedback: number -> number
 */
 function rToFeedback(x) {
-    const {FBACK_MAX, FBACK_MIN} = delayLimits();
+    const {FBACK_MAX, FBACK_MIN} = delayLimits;
     if (typeof x !== "number" || !isInsideInterval(FBACK_MIN, FBACK_MAX, x)) {
         throw new Error("The argument is invalid");
     }
@@ -74,7 +74,7 @@ function rToFeedback(x) {
 rToTime: number -> number
 */
 function rToTime(x) {
-    const {TIME_MAX, TIME_MIN} = delayLimits();
+    const {TIME_MAX, TIME_MIN} = delayLimits;
     if (typeof x !== "number" || !isInsideInterval(TIME_MIN, TIME_MAX, x)) {
         throw new Error("The argument is invalid");
     }
@@ -85,7 +85,7 @@ function rToTime(x) {
 rToPanner: number -> number
 */
 function rToPanner(x) {
-    const {MAX, MIN} = pannerLimits();
+    const {MAX, MIN} = pannerLimits;
     if (typeof x !== "number" || !isInsideInterval(MIN, MAX, x)) {
         throw new Error("The argument is invalid");
     }
@@ -96,7 +96,7 @@ function rToPanner(x) {
 rToPanner: number -> number
 */
 function rToFade(x) {
-    const {MAX, MIN} = fadeLimits();
+    const {MAX, MIN} = fadeLimits;
     if (typeof x !== "number" || !isInsideInterval(MIN, MAX, x)) {
         throw new Error("The argument is invalid");
     }

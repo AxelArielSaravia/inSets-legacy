@@ -41,7 +41,7 @@ PannerReducer: (GlobalPanner, {
 */
 function PannerReducer(state, action) {
     const {payload, type} = action;
-    const Panner_Limits = pannerLimits();
+    const Panner_Limits = pannerLimits;
     if (type === "reset") {
         const defaultObj = Object.assign({}, defaultGlobalState.panner, {
             areAllDisable: state.areAllDisable
@@ -127,7 +127,7 @@ FilterReducer: (GlobalFilter,{
 */
 function FilterReducer(state, action) {
     const {payload, type} = action;
-    const Filter_Limits = filterLimits();
+    const Filter_Limits = filterLimits;
 
     if (type === "reset") {
         const defaultObj = Object.assign({}, defaultGlobalState.filter,{
@@ -210,7 +210,7 @@ PlaybackRateReducer: (GlobalPlaybackRate, {
 */
 function PlaybackRateReducer(state, action) {
     const {payload, type} = action;
-    const PlaybackRate_Limits = playbackRateLimits();
+    const PlaybackRate_Limits = playbackRateLimits;
     if (type === "reset") {
         const defaultObj = Object.assign({}, defaultGlobalState.playbackRate, {
             areAllDisable: state.areAllDisable
@@ -259,7 +259,7 @@ DelayReducer: (GlobalDelay, {
 */
 function DelayReducer(state, action) {
     const {payload, type} = action;
-    const Dealy_Limits = delayLimits();
+    const Dealy_Limits = delayLimits;
     if (type === "reset") {
         const defaultObj = Object.assign({}, defaultGlobalState.delay, {
             areAllDisable: state.areAllDisable
@@ -328,7 +328,7 @@ TimeReducer: (GlobalTimeInterval, {
 */
 function TimeReducer(state, action) {
     const {payload, type} = action;
-    const Time_Limits = timeIntervalLimits();
+    const Time_Limits = timeIntervalLimits;
     if (type === "reset") {
         const defaultObj = Object.assign({}, defaultGlobalState.timeInterval);
         GlobalState.timeInterval = defaultObj;
@@ -380,7 +380,7 @@ FadesReducer: (FadesState, {
 */
 function FadesReducer(state, action) {
     const {payload, type} = action;
-    const Fades_Limits = fadeLimits();
+    const Fades_Limits = fadeLimits;
     if (type === "reset") {
         GlobalState.fadeIn = defaultGlobalState.fadeIn;
         GlobalState.fadeOut = defaultGlobalState.fadeOut;

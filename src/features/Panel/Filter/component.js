@@ -188,7 +188,7 @@ function Filter({
 }
 
 function ContainFilter() {
-    const {TYPES, FREQ_MAX, Q_MAX} = filterLimits();
+    const {TYPES, FREQ_MAX, Q_MAX} = filterLimits;
     return (
         <Filter
             TYPES={TYPES}

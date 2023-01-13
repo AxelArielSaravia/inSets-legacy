@@ -1,6 +1,3 @@
-/**
-* @returns {string}
-*/
 /*-
 createId: undefined -> string
 */

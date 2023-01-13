@@ -27,7 +27,7 @@ import {random} from "../utils.js";
 createAudioDelayConfiguration: GlobalDelay -> AudioDelay
 */
 function createAudioDelayConfiguration(GlobalDelay) {
-    const {TIME_MAX} = delayLimits();
+    const {TIME_MAX} = delayLimits;
     return {
         channelCountMode: "max",
         channelInterpretation: "speakers",
@@ -99,7 +99,7 @@ function createAudioFilterConfiguration(GlobalFilter) {
 createAudioPannerConfiguration: GlobalPanner -> AudioPanner
 */
 function createAudioPannerConfiguration(GlobalPanner) {
-    const {X, Y, Z} = pannerListener();
+    const {X, Y, Z} = pannerListener;
     return {
         coneInnerAngle: 360,
         coneOuterAngle: 0,

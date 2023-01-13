@@ -110,7 +110,7 @@ function Panner({Z_MAX, MAX}) {
 }
 
 function ContainPanner() {
-    const {Z_MAX, MAX} = pannerLimits();
+    const {Z_MAX, MAX} = pannerLimits;
 
     return (
         <Panner

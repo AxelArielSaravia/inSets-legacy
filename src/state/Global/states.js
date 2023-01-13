@@ -49,8 +49,6 @@ const defaultGlobalState = (function (o) {
         filter.types = Object.freeze(["lowpass", "highpass", "bandpass", "notch"]);
         return Object.freeze(filter);
     }(Object.create(null)));
-    Object.freeze({
-    });
     o.panner = (function (panner) {
         panner.areAllDisable = false;
         panner.xMax = 80;
@@ -101,7 +99,7 @@ createGlobalDelay: MaybeDelay -> GlobalDelay
 function createGlobalDelay(spec) {
     return (function (o) {
         if (typeof spec === "object") {
-            const limits = delayLimits();
+            const limits = delayLimits;
             o.areAllDisable = (
                 spec.areAllDisable !== undefined
                 ? spec.areAllDisable
@@ -178,7 +176,7 @@ createGlobalFilter: MaybeFilter -> GlobalFilter
 function createGlobalFilter(spec) {
     return (function (o) {
         if (typeof spec === "object") {
-            const limits = filterLimits();
+            const limits = filterLimits;
             o.areAllDisable = (
                 spec.areAllDisable !== undefined
                 ? spec.areAllDisable
@@ -258,7 +256,7 @@ createGlobalPanner: MaybePanner -> GlobalPanner
 function createGlobalPanner(spec) {
     return (function (o) {
         if (typeof spec === "object") {
-            const limits = pannerLimits();
+            const limits = pannerLimits;
             o.areAllDisable = (
                 spec.areAllDisable !== undefined
                 ? spec.areAllDisable
@@ -336,7 +334,7 @@ createGlobalPlaybackRate: MaybePlaybackRate -> GlobalPlaybackRate
 function createGlobalPlaybackRate(spec) {
     return (function (o) {
         if (typeof spec === "object") {
-            const limits = playbackRateLimits();
+            const limits = playbackRateLimits;
             o.areAllDisable = (
                 spec.areAllDisable !== undefined
                 ? spec.areAllDisable
@@ -382,7 +380,7 @@ createGlobalTimeInteval: MaybeTimeInterval -> GlobalTimeInterval
 function createGlobalTimeInteval(spec) {
     return (function (o) {
         if (typeof spec === "object") {
-            const limits = timeIntervalLimits();
+            const limits = timeIntervalLimits;
             o.min = (
                 (spec.min !== undefined
                     && isInsideInterval(limits.MIN, limits.MAX,spec.min)
@@ -420,7 +418,7 @@ function createGlobalRandomPoint(bool) {
 createGlobalFadeValue: number -> number
 */
 function createGlobalFadeValue(num) {
-    const limits = fadeLimits();
+    const limits = fadeLimits;
     const fadeTime = (
         (Number.isInteger(num)
             && isInsideInterval(limits.MIN, limits.MAX, num)

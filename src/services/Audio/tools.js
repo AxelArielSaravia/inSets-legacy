@@ -510,6 +510,7 @@ function createNewSetExecution(n) {
             executeSet[element.value] = true;
 
             if (i < n-1) {
+            //RE INITIALIZATE
                 sum = (
                     element.i !== 0
                     ? arrOfSums[element.i - 1][1]
@@ -536,6 +537,7 @@ function createNewSetExecution(n) {
             excludeKey.add(element.value);
 
             if (i > n+1) {
+            //RE INITIALIZATE
                 sum = (
                     element.i !== 0
                     ? arrOfSums[element.i - 1][1]

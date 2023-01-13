@@ -97,7 +97,7 @@ function Delay({
 }
 
 function ContainDelay() {
-    const {FBACK_MAX, TIME_MAX} = delayLimits();
+    const {FBACK_MAX, TIME_MAX} = delayLimits;
 
     return (
         <Delay FBACK_MAX={FBACK_MAX} TIME_MAX={TIME_MAX}/>

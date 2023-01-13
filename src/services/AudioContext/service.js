@@ -18,8 +18,11 @@ initAudioContext: undefined -> undefined
 */
 function initAudioContext() {
     const AudioContextObject = window.AudioContext || window.webkitAudioContext;
-    const {X, Y, Z} = pannerListener();
-    GlobalState.audio_context = new AudioContextObject();
+    const {X, Y, Z} = pannerListener;
+    GlobalState.audio_context = new AudioContextObject({
+        latencyHint: "playback",
+        sampleRate: 44100
+    });
     let audioCtx = GlobalState.audio_context;
     //listener position
     if (audioCtx.listener.positionX) {

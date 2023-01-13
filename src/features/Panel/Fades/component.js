@@ -56,7 +56,7 @@ function Fades({MAX}) {
 }
 
 function ContainFades() {
-    const {MAX} = fadeLimits();
+    const {MAX} = fadeLimits;
 
     return (
         <Fades MAX={MAX}/>

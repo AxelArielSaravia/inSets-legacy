@@ -79,7 +79,7 @@ function PlaybackRate({MAX}) {
 }
 
 function ContainPlaybackRate() {
-    const {MAX} = playbackRateLimits();
+    const {MAX} = playbackRateLimits;
     return (
         <PlaybackRate
             MAX={MAX}
