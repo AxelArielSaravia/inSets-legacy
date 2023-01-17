@@ -25,6 +25,35 @@ function SelectAudioElement({bool, id}) {
 
 
 
+function LoadedAudioList({list, completed}) {
+    const state = list.map(function m(id) {
+        return (
+            <div
+                key={id}
+                className="audio-element--prev p-5 flex-column align-c"
+                role="region"
+                aria-live="polite"
+            >
+                <SelectAudioElement
+                    bool={id in completed}
+                    id={id}
+                />
+            </div>
+
+        );
+    });
+    return (
+        <>
+            <div className="audio-container_column">
+                {state.filter(function (_, i) { return i % 2 === 0; })}
+            </div>
+            <div className="audio-container_column">
+                {state.filter(function (_, i) { return i % 2 !== 0; })}
+            </div>
+        </>
+    );
+}
+
 function AudioContainer() {
     const [{
         loadedAudioList,
@@ -35,20 +64,11 @@ function AudioContainer() {
     return (
         <main className="main flex-column p-5">
             <div className="audio-container flex-column">
-                <div className="audio-container_sub flex-column flex-grow-1">
-                    {Object.keys(loadedAudioList).map((id) => (
-                        <div
-                            key={id}
-                            className="audio-element--prev p-5"
-                            role="region"
-                            aria-live="polite"
-                        >
-                            <SelectAudioElement
-                                bool={id in completedAudioList}
-                                id={id}
-                            />
-                        </div>
-                    ))}
+                <div className="audio-container_sub">
+                    <LoadedAudioList
+                        list={Object.keys(loadedAudioList)}
+                        completed={completedAudioList}
+                    />
                 </div>
                 <Show is={loadedAudioListSize === 0}>
                     <div className="audioFiles_icon flex-column align-c justify-c flex-grow-1">

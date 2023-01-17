@@ -438,7 +438,6 @@ function AudioElement({id}) {
         }
     },[id, isPlaying]);
 
-
     return (
         <div
             className="audio-element flex-column p-5"

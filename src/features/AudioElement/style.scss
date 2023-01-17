@@ -32,7 +32,6 @@
 
     .audio-element_main {
         width: 100%;
-        //min-height: 108px;
     }
 
     .audio-configuration {
@@ -72,11 +71,5 @@
             height: 100%;
         }
     
-    }
-}
-
-@media screen and (min-width: 992px) {
-    .audio-element--prev {
-        width: 810px;
     }
 }
