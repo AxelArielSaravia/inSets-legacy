@@ -562,9 +562,9 @@ function createNewSetExecution(n) {
 /*-
 randomSetsExecution: undefined -> Object<string, true>
 */
-function randomSetsExecution() {
+function randomSetsExecution(resolve) {
     const n = calculateTheLenghtOfSetExecution();
-    console.log("set execution size: ", n);//DEBUGGER
+    console.log("next set execution size: ", n);//DEBUGGER
     if (n <= 0) {
     //do not select any sound
         return;
@@ -581,7 +581,6 @@ function randomSetsExecution() {
     return createNewSetExecution(n);
 }
 
-
 /*-
 randomTimeExecution: (appDispatcher, string) -> undefined;
 */
@@ -591,19 +590,13 @@ function randomTimeExecution(appDispatcher, STARTED_ID) {
     ) {
         const n = random(GlobalState.timeInterval.min, GlobalState.timeInterval.max) * 100;
         console.log("next execution:", n + " ms");//DEBUGGER
-        return Promise.all([
-            wait(random(GlobalState.timeInterval.min, GlobalState.timeInterval.max) * 100),
-            new Promise(function (resolve) {
-                resolve(randomSetsExecution());
-            })
-        ])
-        .then(function p(values) {
-            //values[1] is the execution set of audios
-            if (values[1] !== undefined) {
-                appDispatcher({type: "newAudiosSet", payload: values[1]});
+        const sets = randomSetsExecution();
+        setTimeout(function a() {
+            if (sets !== undefined) {
+                appDispatcher({type: "newAudiosSet", payload: sets});
             }
             return randomTimeExecution(appDispatcher, STARTED_ID);
-        });
+        }, n);
     } else {
         console.log("END");
     }
@@ -615,9 +608,9 @@ startApp: appDispatcher -> undefined
 function startApp(appDispatcher) {
     GlobalState.started_id = createId();
     //First play
-    const executeSet = randomSetsExecution(appDispatcher);
-    if (executeSet !== undefined) {
-        appDispatcher({type: "newAudiosSet", payload: executeSet});
+    const sets = randomSetsExecution();
+    if (sets !== undefined) {
+        appDispatcher({type: "newAudiosSet", payload: sets});
     }
     //recursive call
     randomTimeExecution(appDispatcher, GlobalState.started_id);
