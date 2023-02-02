@@ -1,8 +1,6 @@
 /*jslint browser*/
 import {GlobalState} from "../../state/Global/index.js";
 
-import {pannerListener} from "../limits/service.js";
-
 /*-
 hasAudioContext: undefined -> AudioContex | undefined;
 */
@@ -18,22 +16,22 @@ initAudioContext: undefined -> undefined
 */
 function initAudioContext() {
     const AudioContextObject = window.AudioContext || window.webkitAudioContext;
-    const {X, Y, Z} = pannerListener;
     GlobalState.audio_context = new AudioContextObject({
         latencyHint: "playback",
         sampleRate: 44100
     });
-    let audioCtx = GlobalState.audio_context;
+    const audioCtx = GlobalState.audio_context;
     //listener position
     if (audioCtx.listener.positionX) {
-        audioCtx.listener.positionX.value = X;
-        audioCtx.listener.positionY.value = Y;
-        audioCtx.listener.positionZ.value = Z;
+        audioCtx.listener.positionX.value = 0;
+        audioCtx.listener.positionY.value = 0;
+        audioCtx.listener.positionZ.value = 1;
+        audioCtx.listener.forwardZ.value = -5;
     } else {
-        audioCtx.listener.setPosition(X, Y, Z);
+        audioCtx.listener.setPosition(0, 0, 1);
+        audioCtx.listener.setOrientation(0, 0, -5, 0 ,1, 0);
     }
-    audioCtx = undefined;
-
+    console.log(audioCtx.listener);
     GlobalState.audio_context.resume();
 }
 

@@ -4,26 +4,27 @@ import {
     IconChevronLeft,
     IconChevronRight
 } from "../icons/component.js";
+
 import Button from "../Button/component.js";
 
-
 import "./style.scss";
-
 
 function ButtonLeftUp({
     horizontal,
     subtractOnClick,
     addOnClick,
+    value
 }) {
     return (
         <Button
             type="button"
             className="addAndSubtract_button flex-column align-c justify-c"
             onClick={horizontal ? subtractOnClick : addOnClick}
+            value={value}
         >
             {horizontal
-            ? <IconChevronLeft className="icon-text-s"/>
-            : <IconChevronUp className="icon-text-s"/>
+                ? <IconChevronLeft className="icon-text-s"/>
+                : <IconChevronUp className="icon-text-s"/>
             }
         </Button>
     );
@@ -32,17 +33,19 @@ function ButtonLeftUp({
 function ButtonRightDown({
     horizontal,
     addOnClick,
-    subtractOnClick
+    subtractOnClick,
+    value
 }) {
     return (
         <Button
             type="button"
             className="addAndSubtract_button flex-column align-c justify-c"
             onClick={horizontal ? addOnClick : subtractOnClick}
+            value={value}
         >
             {horizontal
-            ? <IconChevronRight className="icon-text-s"/>
-            : <IconChevronDown className="icon-text-s"/>
+                ? <IconChevronRight className="icon-text-s"/>
+                : <IconChevronDown className="icon-text-s"/>
             }
         </Button>
     );
@@ -52,6 +55,7 @@ function AddAndSubtract({
     addOnClick,
     subtractOnClick,
     viewValue,
+    value,
     horizontal
 }) {
     return (
@@ -60,6 +64,7 @@ function AddAndSubtract({
                 addOnClick={addOnClick}
                 horizontal={horizontal}
                 subtractOnClick={subtractOnClick}
+                value={value}
             />
             <div className={horizontal ? "addAndSubtract_text" : "addAndSubtract_text p-5"}>
                 <p className="fs-text-l text-center">{viewValue}</p>
@@ -68,6 +73,7 @@ function AddAndSubtract({
                 addOnClick={addOnClick}
                 horizontal={horizontal}
                 subtractOnClick={subtractOnClick}
+                value={value}
             />
         </div>
     );

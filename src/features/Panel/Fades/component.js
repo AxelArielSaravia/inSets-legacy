@@ -1,30 +1,31 @@
-import {useReducer, useCallback, useMemo} from "react";
+import {useReducer} from "react";
 
 import {initFadesState, FadesReducer} from "../../../reducer/index.js";
 
 import {fadeLimits} from "../../../services/limits/service.js";
 import {rToFade} from "../../../services/convert/service.js";
 
+import {undefinedFunction} from "../../utils.js";
+
 import ConfigPanelContainer from "../ConfigPanelContainer/component.js";
 import ConfigPanelChild from "../ConfigPanelChild/component.js";
 import ConfigPanelRange from "../ConfigPanelRange/component.js";
 
+let _timeDispatch = undefinedFunction;
+function reset() {
+    _timeDispatch({type: "reset"});
+}
+function fadeInOnChange(val) {
+    _timeDispatch({type:"fadeIn/change", payload: Number(val)});
+}
+function fadeOutOnChange(val) {
+    _timeDispatch({type:"fadeOut/change", payload: Number(val)});
+}
+
+
 function Fades({MAX}) {
     const [{fadeIn, fadeOut}, timeDispatch] = useReducer(FadesReducer, initFadesState());
-    const viewFadeIn = useMemo(() => rToFade(fadeIn),[fadeIn]);
-    const viewFadeOut = useMemo(() => rToFade(fadeOut),[fadeOut]);
-
-    const reset = useCallback(function () {
-        timeDispatch({type: "reset"});
-    }, [timeDispatch]);
-
-    const fadeInOnChange = useCallback(function (val) {
-        timeDispatch({type:"fadeIn/change", payload: Number(val)});
-    }, [timeDispatch]);
-
-    const fadeOutOnChange = useCallback(function (val) {
-        timeDispatch({type:"fadeOut/change", payload: Number(val)});
-    }, [timeDispatch]);
+    _timeDispatch = timeDispatch;
 
     return (
         <ConfigPanelContainer
@@ -37,7 +38,7 @@ function Fades({MAX}) {
                 <ConfigPanelRange
                     max={MAX}
                     value={fadeIn}
-                    valueText={viewFadeIn}
+                    valueText={rToFade(fadeIn)}
                     valueTextAdd="ms"
                     onChange={fadeInOnChange}
                 />
@@ -46,7 +47,7 @@ function Fades({MAX}) {
                 <ConfigPanelRange
                     max={MAX}
                     value={fadeOut}
-                    valueText={viewFadeOut}
+                    valueText={rToFade(fadeOut)}
                     valueTextAdd="ms"
                     onChange={fadeOutOnChange}
                 />

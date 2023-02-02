@@ -1,8 +1,6 @@
 import {
     useReducer,
     useContext,
-    useCallback,
-    useMemo,
     useState,
     useEffect
 } from "react";
@@ -13,6 +11,8 @@ import {rToFrequency, rToQ} from "../../../services/convert/service.js";
 import {initFilterState, FilterReducer} from "../../../reducer/index.js";
 
 import {GeneralDisableContext} from "../../../context/index.js";
+
+import {undefinedFunction} from "../../utils.js";
 
 import Button from "../../../components/Button/component.js";
 import ConfigPanelContainer from "../ConfigPanelContainer/component.js";
@@ -68,6 +68,54 @@ function TypesList({TYPES, types, typesChange}) {
     );
 }
 
+let _generalDisableDispatch = undefinedFunction;
+let _filterDispatch = undefinedFunction;
+
+function changeDisable(value) {
+    if (value) {
+        _generalDisableDispatch({
+            type: "enable/filter",
+            payload: true
+        });
+    } else {
+        _generalDisableDispatch({type: "disable/filter"});
+    }
+}
+
+function reset() {
+    _filterDispatch({type: "reset"});
+}
+function frequencyMaxOnChange(val) {
+    _filterDispatch({
+        type: "frequency/changeMax",
+        payload: Number(val)
+    });
+}
+function frequencyMinOnChange(val) {
+    _filterDispatch({
+        type: "frequency/changeMin",
+        payload: Number(val)
+    });
+}
+function qMaxOnChange(val) {
+    _filterDispatch({
+        type: "q/changeMax",
+        payload: Number(val)
+    });
+}
+function qMinOnChange(val) {
+    _filterDispatch({
+        type: "q/changeMin",
+        payload: Number(val)
+    });
+}
+function typesChange(arr) {
+    _filterDispatch({
+        type: "types/change",
+        payload: arr
+    });
+}
+
 function Filter({
     FREQ_MAX,
     Q_MAX,
@@ -84,64 +132,8 @@ function Filter({
         types
     },filterDispatch] = useReducer(FilterReducer, initFilterState());
 
-
-    const viewFrequencyMax = useMemo(
-        () => rToFrequency(frequencyMax),
-        [frequencyMax]
-    );
-    const viewFrequencyMin = useMemo(
-        () => rToFrequency(frequencyMin),
-        [frequencyMin]
-    );
-    const viewQMax = useMemo(() => rToQ(qMax).toFixed(2), [qMax]);
-    const viewQMin = useMemo(() => rToQ(qMin).toFixed(2), [qMin]);
-
-    const changeDisable = useCallback(function () {
-        if (allFiltersAreDisabled.value) {
-            generalDisableDispatch({
-                type: "enable/filter",
-                payload: true
-            });
-        } else {
-            generalDisableDispatch({type: "disable/filter"});
-        }
-    },[allFiltersAreDisabled, generalDisableDispatch]);
-
-    const reset = useCallback(function () {
-        filterDispatch({type: "reset"});
-    }, [filterDispatch]);
-
-    const frequencyMaxOnChange = useCallback(function (val) {
-        filterDispatch({
-            type: "frequency/changeMax",
-            payload: Number(val)
-        });
-    }, [filterDispatch]);
-    const frequencyMinOnChange = useCallback(function (val) {
-        filterDispatch({
-            type: "frequency/changeMin",
-            payload: Number(val)
-        });
-    }, [filterDispatch]);
-    const qMaxOnChange = useCallback(function (val) {
-        filterDispatch({
-            type: "q/changeMax",
-            payload: Number(val)
-        });
-    }, [filterDispatch]);
-    const qMinOnChange = useCallback(function (val) {
-        filterDispatch({
-            type: "q/changeMin",
-            payload: Number(val)
-        });
-    }, [filterDispatch]);
-
-    const typesChange = useCallback(function (arr) {
-        filterDispatch({
-            type: "types/change",
-            payload: arr
-        });
-    }, [filterDispatch]);
+    _filterDispatch = filterDispatch;
+    _generalDisableDispatch = generalDisableDispatch;
 
     return (
         <ConfigPanelContainer
@@ -159,8 +151,8 @@ function Filter({
                 rangeMax={FREQ_MAX}
                 valueMax={frequencyMax}
                 valueMin={frequencyMin}
-                viewMax={viewFrequencyMax}
-                viewMin={viewFrequencyMin}
+                viewMax={rToFrequency(frequencyMax)}
+                viewMin={rToFrequency(frequencyMin)}
                 onChangeMin={frequencyMinOnChange}
                 onChangeMax={frequencyMaxOnChange}
             />
@@ -169,8 +161,8 @@ function Filter({
                 rangeMax={Q_MAX}
                 valueMax={qMax}
                 valueMin={qMin}
-                viewMax={viewQMax}
-                viewMin={viewQMin}
+                viewMax={rToQ(qMax).toFixed(2)}
+                viewMin={rToQ(qMin).toFixed(2)}
                 onChangeMin={qMinOnChange}
                 onChangeMax={qMaxOnChange}
             />

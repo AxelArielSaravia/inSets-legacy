@@ -9,12 +9,26 @@ import {AudioListContext} from "../../../context/index.js";
 
 import {initSetsState, SetsReducer} from "../../../reducer/index.js";
 
+import {fixPercent, undefinedFunction} from "../../utils.js";
+
 import AddAndSubtract from "../../../components/AddAndSubtract/component.js";
 import ConfigPanelContainer from "../ConfigPanelContainer/component.js";
 
-import {fixPercent} from "../../utils.js";
 
 import "./style.scss";
+
+let _setsDispatcher = undefinedFunction;
+
+
+function reset() {
+    _setsDispatcher({type: "reset"});
+}
+function addEvent(i) {
+    _setsDispatcher({type: "addEvent", payload: i});
+}
+function removeEvent(i) {
+    _setsDispatcher({type: "removeEvent", payload: i});
+}
 
 function Sets() {
     const [{completedAudioListSize}] = useContext(AudioListContext);
@@ -22,7 +36,7 @@ function Sets() {
         arrOfEvents,
         sumOfAllEvents
     }, setsDispatcher] = useReducer(SetsReducer, initSetsState());
-
+    _setsDispatcher = setsDispatcher;
     useEffect(function () {
         if (arrOfEvents.length < 15
             && completedAudioListSize + 1 !== arrOfEvents.length
@@ -31,16 +45,7 @@ function Sets() {
         }
     }, [completedAudioListSize, arrOfEvents]);
 
-    const reset = useCallback(function () {
-        setsDispatcher({type: "reset"});
-    }, []);
 
-    const addEvent = useCallback((i) => function () {
-        setsDispatcher({type: "addEvent", payload: i});
-    }, []);
-    const removeEvent = useCallback((i) => function () {
-        setsDispatcher({type: "removeEvent", payload: i});
-    }, []);
 
     return (
         <ConfigPanelContainer
@@ -65,8 +70,9 @@ function Sets() {
                         <div key={"set-" + i} className="set-container p-5">
                             <h4 className="fs-text">{i}</h4>
                             <AddAndSubtract
-                                addOnClick={addEvent(i)}
-                                subtractOnClick={removeEvent(i)}
+                                addOnClick={addEvent}
+                                subtractOnClick={removeEvent}
+                                value={i}
                                 viewValue={val}
                                 horizontal
                             />

@@ -5,7 +5,7 @@ import {
     SumOfAllAudiosEventsProvider
 } from "../context/index.js";
 
-import {DropFiles, DragFiles} from "../components/DragAndDrop/component.js";
+import {DragFiles} from "../components/DragAndDrop/component.js";
 import GeneralPanel from "./Panel/component.js";
 import AudioContainer from "./AudioContainer/component.js";
 import GeneralAudioButtons from "./GeneralAudioButtons/component.js";
@@ -19,20 +19,13 @@ function App() {
                 <AppProvider>
                     <SumOfAllAudiosEventsProvider>
                         <DragFiles className="content-audio">
-                            {(isDragActive) => (
-                                <>
-                                    <section className="content-audio_aside flex-column">
-                                        <GeneralPanel/>
-                                    </section>
-                                    <section className="content-audio_main flex-column">
-                                        <GeneralAudioButtons/>
-                                        <AudioContainer/>
-                                    </section>
-                                    {isDragActive && (
-                                        <DropFiles className="dropFile flex-column align-c justify-c"/>
-                                    )}
-                                </>
-                            )}
+                            <section className="content-audio_aside flex-column">
+                                <GeneralPanel/>
+                            </section>
+                            <section className="content-audio_main flex-column">
+                                <GeneralAudioButtons/>
+                                <AudioContainer/>
+                            </section>
                         </DragFiles>
                     </SumOfAllAudiosEventsProvider>
                 </AppProvider>

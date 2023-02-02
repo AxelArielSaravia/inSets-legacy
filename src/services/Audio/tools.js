@@ -121,8 +121,8 @@ fadeOut: AudioState -> Promise
 */
 function fadeOut(audio_state) {
     const fadeTime = rToFade(GlobalState.fadeOut);
-    audio_state.outputGain.gain.linearRampToValueAtTime(
-        0,
+    audio_state.outputGain.gain.exponentialRampToValueAtTime(
+        0.0001,
         GlobalState.audio_context.currentTime + fadeTime / 1000
     );
     return wait(fadeTime);

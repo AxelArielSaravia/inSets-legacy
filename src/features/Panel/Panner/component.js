@@ -1,8 +1,6 @@
 import {
     useReducer,
-    useContext,
-    useCallback,
-    useMemo
+    useContext
 } from "react";
 
 import {initPannerState, PannerReducer} from "../../../reducer/index.js";
@@ -15,6 +13,41 @@ import {rToPanner} from "../../../services/convert/service.js";
 import ConfigPanelContainer from "../ConfigPanelContainer/component.js";
 import ConfigPanelInterval from "../ConfigPanelInterval/component.js";
 
+import {undefinedFunction} from "../../utils.js";
+
+let _pannerDispatch = undefinedFunction;
+let _generalDisableDispatch = undefinedFunction;
+
+function reset() {
+    _pannerDispatch({type: "reset"});
+}
+function xMaxOnChange(val) {
+    _pannerDispatch({type:"x/changeMax", payload: Number(val)});
+}
+function xMinOnChange(val) {
+    _pannerDispatch({type:"x/changeMin", payload: Number(val)});
+}
+function yMaxOnChange(val) {
+    _pannerDispatch({type:"y/changeMax", payload: Number(val)});
+}
+function yMinOnChange(val) {
+    _pannerDispatch({type:"y/changeMin", payload: Number(val)});
+}
+function zMaxOnChange(val) {
+    _pannerDispatch({type:"z/changeMax", payload: Number(val)});
+}
+function zMinOnChange(val) {
+    _pannerDispatch({type:"z/changeMin", payload: Number(val)});
+}
+
+function changeDisable(value) {
+    if (value) {
+        _generalDisableDispatch({type: "enable/panner", payload: true});
+    } else {
+        _generalDisableDispatch({type: "disable/panner"});
+    }
+}
+
 function Panner({Z_MAX, MAX}) {
     const [{allPannersAreDisabled}, generalDisableDispatch] = useContext(GeneralDisableContext);
     const [{
@@ -26,41 +59,8 @@ function Panner({Z_MAX, MAX}) {
         zMin
     }, pannerDispatch] = useReducer(PannerReducer, initPannerState());
 
-    const viewXMax = useMemo(() => rToPanner(xMax), [xMax]);
-    const viewXMin = useMemo(() => rToPanner(xMin), [xMin]);
-    const viewYMax = useMemo(() => rToPanner(yMax), [yMax]);
-    const viewYMin = useMemo(() => rToPanner(yMin), [yMin]);
-
-    const changeDisable = useCallback(function () {
-        if (allPannersAreDisabled.value) {
-            generalDisableDispatch({type: "enable/panner", payload: true});
-        } else {
-            generalDisableDispatch({type: "disable/panner"});
-        }
-    },[allPannersAreDisabled, generalDisableDispatch]);
-
-    const reset = useCallback(function () {
-        pannerDispatch({type: "reset"});
-    }, []);
-
-    const xMaxOnChange = useCallback(function (val) {
-        pannerDispatch({type:"x/changeMax", payload: Number(val)});
-    }, [pannerDispatch]);
-    const xMinOnChange = useCallback(function (val) {
-        pannerDispatch({type:"x/changeMin", payload: Number(val)});
-    }, [pannerDispatch]);
-    const yMaxOnChange = useCallback(function (val) {
-        pannerDispatch({type:"y/changeMax", payload: Number(val)});
-    }, [pannerDispatch]);
-    const yMinOnChange = useCallback(function (val) {
-        pannerDispatch({type:"y/changeMin", payload: Number(val)});
-    }, [pannerDispatch]);
-    const zMaxOnChange = useCallback(function (val) {
-        pannerDispatch({type:"z/changeMax", payload: Number(val)});
-    }, [pannerDispatch]);
-    const zMinOnChange = useCallback(function (val) {
-        pannerDispatch({type:"z/changeMin", payload: Number(val)});
-    }, [pannerDispatch]);
+    _pannerDispatch = pannerDispatch;
+    _generalDisableDispatch = generalDisableDispatch;
 
     return (
         <ConfigPanelContainer
@@ -77,8 +77,8 @@ function Panner({Z_MAX, MAX}) {
                 valueText="%"
                 valueMax={xMax}
                 valueMin={xMin}
-                viewMax={viewXMax}
-                viewMin={viewXMin}
+                viewMax={rToPanner(xMax)}
+                viewMin={rToPanner(xMin)}
                 rangeMax={MAX}
                 onChangeMin={xMinOnChange}
                 onChangeMax={xMaxOnChange}
@@ -88,8 +88,8 @@ function Panner({Z_MAX, MAX}) {
                 valueText="%"
                 valueMax={yMax}
                 valueMin={yMin}
-                viewMax={viewYMax}
-                viewMin={viewYMin}
+                viewMax={rToPanner(yMax)}
+                viewMin={rToPanner(yMin)}
                 rangeMax={MAX}
                 onChangeMin={yMinOnChange}
                 onChangeMax={yMaxOnChange}

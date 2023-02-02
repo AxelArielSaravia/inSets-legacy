@@ -1,4 +1,4 @@
-import {useReducer, useCallback} from "react";
+import {useReducer} from "react";
 
 import {
     createConfigPanelState,
@@ -10,6 +10,8 @@ import ConfigPanel from "./ConfigPanel/component.js";
 
 import "./style.scss";
 
+
+//COMPONENT: PaneSwitcher
 function PanelSwitcher({switchOnClick, isPanelVisible}) {
     return (
         <div className="panel-switcher flex-column align-c justify-c">
@@ -36,6 +38,18 @@ function PanelSwitcher({switchOnClick, isPanelVisible}) {
     );
 }
 
+
+//COMPONENT: GeneralPanel
+
+let _dispatch = () => undefined;
+
+function closeConfigPanel() {
+    _dispatch({type: "configPanel/close"});
+}
+function switchOnClick() {
+    _dispatch({type: "panel/switch"});
+}
+
 function GeneralPanel() {
     const [{
         isItemsPanelVisible,
@@ -43,14 +57,7 @@ function GeneralPanel() {
         isPanelVisible,
         panelItem
     }, dispatch] = useReducer(configPanelReducer, createConfigPanelState());
-
-    const closeConfigPanel = useCallback(function () {
-        dispatch({type: "configPanel/close"});
-    }, []);
-
-    function switchOnClick() {
-        dispatch({type: "panel/switch"});
-    }
+    _dispatch = dispatch;
 
     return (
         <>

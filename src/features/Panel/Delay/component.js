@@ -1,8 +1,6 @@
 import {
     useReducer,
-    useContext,
-    useCallback,
-    useMemo
+    useContext
 } from "react";
 
 import {DelayReducer, initDelayState} from "../../../reducer/index.js";
@@ -12,8 +10,39 @@ import {GeneralDisableContext} from "../../../context/index.js";
 import {delayLimits} from "../../../services/limits/service.js";
 import {rToFeedback, rToTime} from "../../../services/convert/service.js";
 
+import {undefinedFunction} from "../../utils.js";
+
 import ConfigPanelContainer from "../ConfigPanelContainer/component.js";
 import ConfigPanelInterval from "../ConfigPanelInterval/component.js";
+
+
+let _delayDispatch = undefinedFunction;
+let _generalDisableDispatcher = undefinedFunction;
+
+const changeDisable = function(value) {
+    if (value) {
+        _generalDisableDispatcher({type: "enable/delay", payload: true});
+    } else {
+        _generalDisableDispatcher({type: "disable/delay"});
+    }
+};
+
+function reset() {
+    _delayDispatch({type: "reset"});
+}
+function timeMaxOnChange(val) {
+    _delayDispatch({type: "time/changeMax", payload: Number(val)});
+}
+function timeMinOnChange(val) {
+    _delayDispatch({type: "time/changeMin", payload: Number(val)});
+}
+function feedbackMaxOnChange(val) {
+    _delayDispatch({type: "feedback/changeMax", payload: Number(val)});
+}
+function feedbackMinOnChange(val) {
+    _delayDispatch({type: "feedback/changeMin", payload: Number(val)});
+}
+
 
 function Delay({
     FBACK_MAX,
@@ -30,35 +59,8 @@ function Delay({
         feedbackMax
     }, delayDispatch] = useReducer(DelayReducer, initDelayState());
 
-    const viewTimeMax = useMemo(() => rToTime(timeMax).toFixed(1), [timeMax]);
-    const viewTimeMin = useMemo(() => rToTime(timeMin).toFixed(1), [timeMin]);
-    const viewFeedbackMax = useMemo(() => rToFeedback(feedbackMax).toFixed(2), [feedbackMax]);
-    const viewFeedbackMin = useMemo(() => rToFeedback(feedbackMin).toFixed(2), [feedbackMin]);
-
-    const changeDisable = useCallback(function() {
-        if (allDelaysAreDisabled.value) {
-            generalDisableDispatcher({type: "enable/delay", payload: true});
-        } else {
-            generalDisableDispatcher({type: "disable/delay"});
-        }
-    },[allDelaysAreDisabled, generalDisableDispatcher]);
-
-    const reset = useCallback(function () {
-        delayDispatch({type: "reset"});
-    }, [delayDispatch]);
-
-    const timeMaxOnChange = useCallback(function (val) {
-        delayDispatch({type: "time/changeMax", payload: Number(val)});
-    }, [delayDispatch]);
-    const timeMinOnChange = useCallback(function (val) {
-        delayDispatch({type: "time/changeMin", payload: Number(val)});
-    }, [delayDispatch]);
-    const feedbackMaxOnChange = useCallback(function (val) {
-        delayDispatch({type: "feedback/changeMax", payload: Number(val)});
-    }, [delayDispatch]);
-    const feedbackMinOnChange = useCallback(function (val) {
-        delayDispatch({type: "feedback/changeMin", payload: Number(val)});
-    }, [delayDispatch]);
+    _generalDisableDispatcher = generalDisableDispatcher;
+    _delayDispatch = delayDispatch;
 
     return (
         <ConfigPanelContainer
@@ -76,8 +78,8 @@ function Delay({
                 rangeMax={TIME_MAX}
                 valueMax={timeMax}
                 valueMin={timeMin}
-                viewMax={viewTimeMax}
-                viewMin={viewTimeMin}
+                viewMax={rToTime(timeMax).toFixed(1)}
+                viewMin={rToTime(timeMin).toFixed(1)}
                 onChangeMax={timeMaxOnChange}
                 onChangeMin={timeMinOnChange}
             />
@@ -87,8 +89,8 @@ function Delay({
                 rangeMax={FBACK_MAX}
                 valueMax={feedbackMax}
                 valueMin={feedbackMin}
-                viewMax={viewFeedbackMax}
-                viewMin={viewFeedbackMin}
+                viewMax={rToFeedback(feedbackMax).toFixed(2)}
+                viewMin={rToFeedback(feedbackMin).toFixed(2)}
                 onChangeMax={feedbackMaxOnChange}
                 onChangeMin={feedbackMinOnChange}
             />

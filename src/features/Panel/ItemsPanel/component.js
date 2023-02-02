@@ -2,6 +2,8 @@ import ItemsPanelElement from "../ItemsPanelElement/component.js";
 
 import "./style.scss";
 
+const ItemsPanel_className = "panel items-panel flex-column";
+
 let _dispatch = () => undefined;
 function setsOnClick() {
     _dispatch({type: "panelItem/change",payload: "SETS"});
@@ -30,8 +32,6 @@ function randomStartPointOnClick() {
 function randomEndPointOnClick() {
     _dispatch({type: "panelItem/change",payload: "REP"});
 }
-
-const ItemsPanel_className = "panel items-panel flex-column";
 
 function ItemsPanel({
     isItemsPanelVisible,

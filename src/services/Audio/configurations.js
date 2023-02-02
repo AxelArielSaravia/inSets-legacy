@@ -1,6 +1,5 @@
 import {
-    delayLimits,
-    pannerListener
+    delayLimits
 } from "../limits/service.js";
 import {
     rToFeedback,
@@ -37,7 +36,7 @@ function createAudioDelayConfiguration(GlobalDelay) {
         feedback: rToFeedback(
             random(GlobalDelay.feedbackMin, GlobalDelay.feedbackMax)
         ),
-        maxDelayTime: TIME_MAX
+        maxDelayTime: rToTime(TIME_MAX)
     };
 }
 
@@ -99,24 +98,23 @@ function createAudioFilterConfiguration(GlobalFilter) {
 createAudioPannerConfiguration: GlobalPanner -> AudioPanner
 */
 function createAudioPannerConfiguration(GlobalPanner) {
-    const {X, Y, Z} = pannerListener;
     return {
         coneInnerAngle: 360,
         coneOuterAngle: 0,
         coneOuterGain: 0,
         distanceModel: "inverse",
         maxDistance: 10000,
-        orientationX: 1,
-        orientationY: 0,
+        orientationX: 0,
+        orientationY: 1,
         orientationZ: 0,
         panningModel: "equalpower",
         positionX: (
-            rToPanner(random(GlobalPanner.xMin, GlobalPanner.xMax)) / 10 + X
+            rToPanner(random(GlobalPanner.xMin, GlobalPanner.xMax)) / 10
         ),
         positionY: (
-            rToPanner(random(GlobalPanner.yMin, GlobalPanner.yMax)) / 10 + Y
+            (rToPanner(random(GlobalPanner.yMin, GlobalPanner.yMax)) / 10)
         ),
-        positionZ: random(GlobalPanner.zMin, GlobalPanner.zMax) / 10 + Z,
+        positionZ: -(random(GlobalPanner.zMin, GlobalPanner.zMax) / 10),
         refDistance: 1
     };
 }

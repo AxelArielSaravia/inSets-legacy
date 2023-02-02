@@ -29,12 +29,6 @@ const pannerLimits = Object.freeze({
     Z_MAX: 50
 });
 
-const pannerListener = Object.freeze({
-    X: 6,
-    Y: 6,
-    Z: 1
-});
-
 const playbackRateLimits = Object.freeze({
     MAX: 20,
     MIN: 0
@@ -50,7 +44,6 @@ export {
     fadeLimits,
     filterLimits,
     pannerLimits,
-    pannerListener,
     playbackRateLimits,
     timeIntervalLimits,
 };

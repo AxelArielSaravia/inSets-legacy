@@ -51,11 +51,15 @@ function durationToShortTime(val) {
     return "0" + sec + "." + miliseconds;
 }
 
+
+function undefinedFunction() {}
+
 export {
     percent,
     fixPercent,
     floorPercent,
     isMinorThanTen,
     durationToTime,
-    durationToShortTime
+    durationToShortTime,
+    undefinedFunction
 };

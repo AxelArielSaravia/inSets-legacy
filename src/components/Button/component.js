@@ -2,6 +2,7 @@ import "./style.scss";
 
 export default function ToolButton({
     className = "",
+    value,
     title,
     onClick,
     onPointerDown,
@@ -15,7 +16,7 @@ export default function ToolButton({
             title={title}
             className={"t-button " + className}
             type="button"
-            onClick={onClick}
+            onClick={() => onClick(value)}
             onPointerDown={onPointerDown}
             onPointerUp={onPointerUp}
             onPointerLeave={onPointerLeave}

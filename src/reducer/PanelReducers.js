@@ -334,7 +334,6 @@ function TimeReducer(state, action) {
         GlobalState.timeInterval = defaultObj;
         changeLocalStorageState("timeInterval", defaultObj);
         return defaultObj;
-
     }
     if (type === "min/change"
         && typeof payload === "number"
@@ -343,7 +342,6 @@ function TimeReducer(state, action) {
         GlobalState.timeInterval.min = payload;
         changeLocalStorageState("timeInterval", GlobalState.timeInterval);
         return Object.assign({}, state, {min: payload});
-
     }
     if (type === "max/change"
         && typeof payload === "number"

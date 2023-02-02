@@ -23,7 +23,8 @@ module.exports = {
         "eqeqeq": "warn",
         "indent": ["warn", 4, {
             "ignoredNodes": ["ConditionalExpression"],
-            "MemberExpression": 0
+            "MemberExpression": 0,
+            "ignoreComments": true
         }],
         "linebreak-style": ["error", "unix"],
         "no-caller": "error",

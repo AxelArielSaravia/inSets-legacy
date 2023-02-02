@@ -1,21 +1,28 @@
-import {useContext, useCallback} from "react";
+import {useContext} from "react";
 
 import {GeneralDisableContext} from "../../../context/index.js";
 
+import {undefinedFunction} from "../../utils.js";
+
 import ConfigPanelContainer from "../ConfigPanelContainer/component.js";
+
+let _generalDisableDispatch = undefinedFunction;
+
+function changeDisable(value) {
+    if (value) {
+        _generalDisableDispatch({type: "enable/randomStartPoint", payload: true});
+    } else {
+        _generalDisableDispatch({type: "disable/randomStartPoint"});
+    }
+}
 
 function RandomStartPoint() {
     const [
         {allRandomStartPointsAreDisabled},
         generalDisableDispatch
     ] = useContext(GeneralDisableContext);
-    const changeDisable = useCallback(function () {
-        if (allRandomStartPointsAreDisabled.value) {
-            generalDisableDispatch({type: "enable/randomStartPoint", payload: true});
-        } else {
-            generalDisableDispatch({type: "disable/randomStartPoint"});
-        }
-    },[allRandomStartPointsAreDisabled, generalDisableDispatch]);
+
+    _generalDisableDispatch = generalDisableDispatch;
 
     return (
         <ConfigPanelContainer

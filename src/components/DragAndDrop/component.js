@@ -1,4 +1,4 @@
-import {memo, useState, useEffect, useCallback} from "react";
+import {useState, useEffect, useCallback} from "react";
 
 import {useAddFiles} from "../../hooks/index.js";
 
@@ -21,12 +21,12 @@ function DropArea() {
     );
 }
 
-const handleDragOver = function(e) {
+function handleDragOver(e) {
     e.preventDefault();
     e.dataTransfer.dropEffect = "copy";
-};
+}
 
-const DropFiles = memo(function DropFiles({className, style}) {
+function DropFiles({className, isDragActive}) {
     const addFiles = useAddFiles();
 
     useEffect(function () {
@@ -45,7 +45,6 @@ const DropFiles = memo(function DropFiles({className, style}) {
 
     return (
         <div
-            style={style}
             onDragOver={handleDragOver}
             onDrop={handleFileDrop}
             className={className}
@@ -53,10 +52,17 @@ const DropFiles = memo(function DropFiles({className, style}) {
             <DropArea />
         </div>
     );
-});
+}
 
+function DropComponent({isDragActive}) {
+    if (isDragActive) {
+        return (
+            <DropFiles className="dropFile flex-column align-c justify-c"/>
+        );
+    }
+}
 
-const DragFiles = memo(function DragFiles({className, style, children}) {
+function DragFiles({className, style, children}) {
     const [isDragActive, setIsDragActive] = useState(false);
     let counter = 1;
     function handleDragEnter () {
@@ -84,10 +90,11 @@ const DragFiles = memo(function DragFiles({className, style, children}) {
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
         >
-            { children(isDragActive) }
+            {children}
+            <DropComponent isDragActive={isDragActive}/>
         </div>
     );
-});
+}
 
 export {
     DragFiles,
