@@ -460,29 +460,6 @@ function createEventOfEachSet() {
 }
 */
 
-/*-
-createGlobalState: undefind -> GlobalState
-*/
-function createGlobalState() {
-    return (function (o) {
-        o.audio_context = undefined;
-        o.audio_list = new Map();
-        o.started_id = "";
-        o.is_started = false; //default
-        o.delay = createGlobalDelay();
-        o.eventsForEachSet = createEventOfEachSet();
-        o.fadeIn = createGlobalFadeValue();
-        o.fadeOut = createGlobalFadeValue();
-        o.filter = createGlobalFilter();
-        o.panner = createGlobalPanner();
-        o.playbackRate = createGlobalPlaybackRate();
-        o.randomEndPoint = createGlobalRandomPoint();
-        o.randomStartPoint = createGlobalRandomPoint();
-        o.sumOfAllAudiosEvents = 0;
-        o.timeInterval = createGlobalTimeInteval();
-        return Object.seal(o);
-    }(Object.create(null)));
-}
 
 /*-
 initGlobalState: LocalStorageState -> undefined
@@ -531,7 +508,25 @@ function initGlobalState(localStorageState, globalState) {
 /*-
 GlobalState: GlobalState
 */
-const GlobalState = createGlobalState();
+const GlobalState = (function (o) {
+    o.audio_context = undefined;
+    o.audio_list = new Map();
+    o.started_id = "";
+    o.is_started = false; //default
+    o.delay = createGlobalDelay();
+    o.eventsForEachSet = createEventOfEachSet();
+    o.fadeIn = createGlobalFadeValue();
+    o.fadeOut = createGlobalFadeValue();
+    o.filter = createGlobalFilter();
+    o.panner = createGlobalPanner();
+    o.playbackRate = createGlobalPlaybackRate();
+    o.randomEndPoint = createGlobalRandomPoint();
+    o.randomStartPoint = createGlobalRandomPoint();
+    o.sumOfAllAudiosEvents = 0;
+    o.timeInterval = createGlobalTimeInteval();
+    return Object.seal(o);
+}(Object.create(null)));
+
 
 /* -------------------------------------------------------------------------- */
 /*                                   EXPORTS                                  */

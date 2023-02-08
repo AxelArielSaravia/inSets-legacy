@@ -387,9 +387,14 @@ function binarySearch(arr, target) {
 randomSetsExecution: undefined -> Object<string, true>
 */
 function randomSetsExecution() {
-//Calculate the lenght of set execution
-//its use Vose's Alias Method
-    let setExecutionLength = 0;
+//Do not select any sound
+    if (GlobalState.eventsForEachSet.arrOfEvents.length < 2) {
+        return;
+    }
+//Calculate the cardinal of set execution
+//its use practical Vose's Alias Method
+//from https://keithschwarz.com/darts-dice-coins
+    let cardinal = 0;
     {
         //Initialize
         const length = GlobalState.eventsForEachSet.arrOfEvents.length;
@@ -398,8 +403,9 @@ function randomSetsExecution() {
         const prob = Array(length);
         const small = [];
         const large = [];
+        const sumOfAllEvents = GlobalState.eventsForEachSet.sumOfAllEvents;
         const p = GlobalState.eventsForEachSet.arrOfEvents.map(function m(value, i) {
-            const res = value * length;
+            const res = (value / sumOfAllEvents) * length;
             if (res < 1) {
                 small.push(i);
             } else {
@@ -428,22 +434,22 @@ function randomSetsExecution() {
             prob[large.pop()] = 1;
         }
         //generate
-        setExecutionLength = (
+        cardinal = (
             Math.random() < prob[rand_i]
             ? rand_i
             : alias[rand_i]
         );
     }
 
-    console.log("next set execution size: ", setExecutionLength);//DEBUGGER
+    console.log("next set execution size: ", cardinal);//DEBUGGER
 
 //Do not select any sound
-    if (setExecutionLength <= 0) {
+    if (cardinal <= 0) {
         return;
     }
 
 //Select all audios to execute
-    if (setExecutionLength === GlobalState.audio_list.size) {
+    if (cardinal === GlobalState.audio_list.size) {
         const executeSet = {};
         GlobalState.audio_list.forEach(function fe(_, key) {
             executeSet[key] = true;
@@ -451,18 +457,18 @@ function randomSetsExecution() {
         return executeSet;
     }
 
-//Create a new set execution
     {
+//Create a new set execution
         const AUDIO_LIST = GlobalState.audio_list;
         const executeSet = {};
         const arrOfSums = [];
-        let n = setExecutionLength;
+        let n = cardinal;
         let sum = 0;
 
         if (n <= Math.floor(AUDIO_LIST.size / 2)) {
     //initialize
-            AUDIO_LIST.forEach(function fe(el, key) {
-                const audioEvents = el.audioEvents;
+            AUDIO_LIST.forEach(function fe(audio, key) {
+                const audioEvents = audio.audioEvents;
                 sum += audioEvents;
                 arrOfSums.push([key, sum, audioEvents]);
             });
