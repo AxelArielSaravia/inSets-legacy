@@ -31,7 +31,6 @@ function initAudioContext() {
         audioCtx.listener.setPosition(0, 0, 1);
         audioCtx.listener.setOrientation(0, 0, -5, 0 ,1, 0);
     }
-    console.log(audioCtx.listener);
     GlobalState.audio_context.resume();
 }
 

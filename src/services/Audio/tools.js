@@ -456,29 +456,53 @@ function randomSetsExecution() {
         });
         return executeSet;
     }
+    /*
+    {
+        const audio_list = GlobalState.audio_list;
+        const executeSet = {};
+        const P = [];
+        let init_mass = 1;
+        const sumOfEvents = GlobalState.sumOfAllAudiosEvents
 
+        audio_list.forEach(function (audio, key) {
+            let events = audio.audioEvents;
+            if (events > 0) {
+                P.push([events/sumOfEvents, key])
+            }
+        });
+        for (let c = cardinal; c > 0; c -= 1) {
+            let mass = init_mass;
+            for (let i = 0, n = P.length; i < n; i += 1) {
+                if (Math.random() < (P[i][0]/mass)) {
+                    executedSet[P[i][1]] = true;
+                    init_mass -= P[i][0];
+                    break;
+                }
+                mass -= P[i][0];
+            }
+        }
+    }
+    */
     {
 //Create a new set execution
         const AUDIO_LIST = GlobalState.audio_list;
         const executeSet = {};
         const arrOfSums = [];
-        let n = cardinal;
         let sum = 0;
 
-        if (n <= Math.floor(AUDIO_LIST.size / 2)) {
+        if (cardinal <= Math.floor(AUDIO_LIST.size / 2)) {
     //initialize
             AUDIO_LIST.forEach(function fe(audio, key) {
                 const audioEvents = audio.audioEvents;
                 sum += audioEvents;
                 arrOfSums.push([key, sum, audioEvents]);
             });
-            for (let i = 0; i < n; i += 1) {
+            for (let i = 0; i < cardinal; i += 1) {
     //select an element
                 const arrOfSums_length = arrOfSums.length - 1;
                 const element = binarySearch(arrOfSums, random(0, sum));
                 executeSet[element.value] = true;
-
-                if (i < n-1) {
+                if (i < cardinal-1) {
     //re initialize
                     sum = (
                         element.i !== 0
@@ -486,27 +510,28 @@ function randomSetsExecution() {
                         : 0
                     );
                     for (let j = element.i; j < arrOfSums_length; j += 1) {
-                        sum += arrOfSums[element.i + 1][2];
-                        arrOfSums[element.i+1][1] = sum;
+                        sum += arrOfSums[j + 1][2];
+                        arrOfSums[j][1] = sum;
+                        arrOfSums[j][0] = arrOfSums[j+1][0];
                     }
                     arrOfSums.pop();
                 }
             }
         } else {
-            const excludeKey = new Set();
+            const excludeKeys = new Set();
     //initialize
             AUDIO_LIST.forEach(function fe(el, key) {
                 const audioEvents = GlobalState.sumOfAllAudiosEvents - el.audioEvents;
                 sum += audioEvents;
                 arrOfSums.push([key, sum, audioEvents]);
             });
-            for (let i = AUDIO_LIST.size; i > n; i -= 1) {
+            for (let i = AUDIO_LIST.size; i > cardinal; i -= 1) {
     //select an exclude element
                 const arrOfSums_length = arrOfSums.length - 1;
                 const element = binarySearch(arrOfSums, random(0, sum));
-                excludeKey.add(element.value);
+                excludeKeys.add(element.value);
 
-                if (i > n+1) {
+                if (i > cardinal+1) {
     //re initialize
                     sum = (
                         element.i !== 0
@@ -514,15 +539,16 @@ function randomSetsExecution() {
                         : 0
                     );
                     for (let j = element.i; j < arrOfSums_length; j += 1) {
-                        sum += arrOfSums[element.i + 1][2];
-                        arrOfSums[element.i+1][1] = sum;
+                        sum += arrOfSums[j + 1][2];
+                        arrOfSums[j][1] = sum;
+                        arrOfSums[j][0] = arrOfSums[j+1][0];
                     }
                     arrOfSums.pop();
                 }
             }
     //select the elements
             AUDIO_LIST.forEach(function fe(_, key) {
-                if (!excludeKey.has(key)) {
+                if (!excludeKeys.has(key)) {
                     executeSet[key] = true;
                 }
             });
