@@ -358,10 +358,10 @@ async function deleteAll(audioListDispatcher) {
 /*                            Generattive Algoritms                           */
 /* -------------------------------------------------------------------------- */
 
-function chooseAudios(arrOfKeys, arrOfSums, sum, i, n) {
+function chooseAudios(arrOfKeys, arrOfSums, sum, i, w) {
     const set = {};
     let arrOfSums_length = arrOfSums.length;
-    while (i < n) {
+    while (i < w) {
         arrOfSums_length -= 1;
         let index = 0;
         {
@@ -386,7 +386,7 @@ function chooseAudios(arrOfKeys, arrOfSums, sum, i, n) {
         }
         set[arrOfKeys[arrOfSums[index][0]]] = true;
 
-        if (i < n-1) {
+        if (i < w-1) {
     //re initialize
             sum = (
                 index !== 0
@@ -475,7 +475,10 @@ function randomSetsExecution() {
         GlobalState.audio_list.forEach(function fe(_, key) {
             executeSet[key] = true;
         });
-        return executeSet;
+        return {
+            state: true,
+            audios: executeSet
+        };
     }
 
     {
@@ -487,30 +490,34 @@ function randomSetsExecution() {
         let i_key = -1;
 
         if (cardinal <= Math.floor(audio_list.size / 2)) {
-    //initialize
+            //initialize
             audio_list.forEach(function fe(audio, key) {
                 arrOfKeys.push(key);
                 arrOfSums.push([i_key += 1, sum += audio.audioEvents]);
             });
-            return chooseAudios(arrOfKeys, arrOfSums, sum, 0, cardinal);
-
+            return {
+                state: true, //include
+                audios: chooseAudios(arrOfKeys, arrOfSums, sum, 0, cardinal)
+            };
         } else {
+            //initialize
             const sumOfAllAudiosEvents = GlobalState.sumOfAllAudiosEvents;
             const size = audio_list.size;
-            const executeSet = {};
-    //initialize
             audio_list.forEach(function fe(el, key) {
                 arrOfKeys.push(key);
                 arrOfSums.push([i_key += 1, sum += sumOfAllAudiosEvents - el.audioEvents]);
             });
-            const exclude = chooseAudios(arrOfKeys, arrOfSums, sum, cardinal, size);
-    //select the elements
+            return {
+                state: false, //exclude
+                audios: chooseAudios(arrOfKeys, arrOfSums, sum, cardinal, size)
+            };/*
             arrOfKeys.forEach(function fe(audio, i) {
                 if (exclude[audio] === undefined) {
                     executeSet[audio] = true;
                 }
             });
             return executeSet;
+            */
         }
     }
 }

@@ -240,7 +240,7 @@ function Configuration({
 }
 
 function AudioElement({id}) {
-    const [{is_started, playAudiosSet, playColor}] = useContext(AppContext);
+    const [{is_started, playAudiosSet, playColor, state}] = useContext(AppContext);
     const [{
         color,
         title,
@@ -279,11 +279,13 @@ function AudioElement({id}) {
     );
 
     useEffect(function () {
-        if (id in playAudiosSet) {
+        if ((state && id in playAudiosSet)
+            || (!state && !(id in playAudiosSet))
+        ) {
             rePlay(id, audioDispatch);
             audioDispatch({type: "color/change", payload: playColor});
         }
-    }, [id, playAudiosSet]);
+    }, [id, playAudiosSet, state]);
 
     useEffect(function () {
         if (!is_started) {

@@ -18,13 +18,15 @@ function ViewAppReducer(state, action) {
         return {
             is_started: false,
             playAudiosSet: {},
-            playColor: ""
+            playColor: "",
+            state: true
         };
     }
     if (type === "newAudiosSet" && state.is_started) {
         return Object.assign({}, state, {
-            playAudiosSet: action.payload,
-            playColor: changeColor()
+            playAudiosSet: action.payload.audios,
+            playColor: changeColor(),
+            state: action.payload.state
         });
     }
     return state;
