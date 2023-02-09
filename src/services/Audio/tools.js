@@ -371,10 +371,7 @@ function binarySearch(arr, target) {
             startI = midI + 1;
         } else {
             if (arr[midI - 1] === undefined || arr[midI - 1][1] < target) {
-                return {
-                    i: midI,
-                    value: arr[midI][0]
-                };
+                return midI;
             }
             endI = midI - 1;
         }
@@ -456,100 +453,75 @@ function randomSetsExecution() {
         });
         return executeSet;
     }
-    /*
-    {
-        const audio_list = GlobalState.audio_list;
-        const executeSet = {};
-        const P = [];
-        let init_mass = 1;
-        const sumOfEvents = GlobalState.sumOfAllAudiosEvents
 
-        audio_list.forEach(function (audio, key) {
-            let events = audio.audioEvents;
-            if (events > 0) {
-                P.push([events/sumOfEvents, key])
-            }
-        });
-        for (let c = cardinal; c > 0; c -= 1) {
-            let mass = init_mass;
-            for (let i = 0, n = P.length; i < n; i += 1) {
-                if (Math.random() < (P[i][0]/mass)) {
-                    executedSet[P[i][1]] = true;
-                    init_mass -= P[i][0];
-                    break;
-                }
-                mass -= P[i][0];
-            }
-        }
-    }
-    */
     {
 //Create a new set execution
-        const AUDIO_LIST = GlobalState.audio_list;
+        const audio_list = GlobalState.audio_list;
         const executeSet = {};
+        const arrOfKeys = [];
         const arrOfSums = [];
         let sum = 0;
+        let i_key = -1;
 
-        if (cardinal <= Math.floor(AUDIO_LIST.size / 2)) {
+        if (cardinal <= Math.floor(audio_list.size / 2)) {
     //initialize
-            AUDIO_LIST.forEach(function fe(audio, key) {
-                const audioEvents = audio.audioEvents;
-                sum += audioEvents;
-                arrOfSums.push([key, sum, audioEvents]);
+            audio_list.forEach(function fe(audio, key) {
+                arrOfKeys.push(key);
+                arrOfSums.push([i_key += 1, sum += audio.audioEvents]);
             });
             for (let i = 0; i < cardinal; i += 1) {
     //select an element
                 const arrOfSums_length = arrOfSums.length - 1;
-                const element = binarySearch(arrOfSums, random(0, sum));
-                executeSet[element.value] = true;
+                const index = binarySearch(arrOfSums, random(0, sum));
+
+                executeSet[arrOfKeys[arrOfSums[index][0]]] = true;
+
                 if (i < cardinal-1) {
     //re initialize
                     sum = (
-                        element.i !== 0
-                        ? arrOfSums[element.i - 1][1]
+                        index !== 0
+                        ? arrOfSums[index - 1][1]
                         : 0
                     );
-                    for (let j = element.i; j < arrOfSums_length; j += 1) {
-                        sum += arrOfSums[j + 1][2];
+                    for (let j = index; j < arrOfSums_length; j += 1) {
+                        sum += arrOfSums[j + 1][1] - arrOfSums[j][1];
                         arrOfSums[j][1] = sum;
-                        arrOfSums[j][0] = arrOfSums[j+1][0];
                     }
                     arrOfSums.pop();
                 }
             }
         } else {
             const excludeKeys = new Set();
+            const sumOfAllAudiosEvents = GlobalState.sumOfAllAudiosEvents;
     //initialize
-            AUDIO_LIST.forEach(function fe(el, key) {
-                const audioEvents = GlobalState.sumOfAllAudiosEvents - el.audioEvents;
-                sum += audioEvents;
-                arrOfSums.push([key, sum, audioEvents]);
+            audio_list.forEach(function fe(el, key) {
+                arrOfKeys.push(key);
+                arrOfSums.push([i_key += 1, sum += sumOfAllAudiosEvents - el.audioEvents]);
             });
-            for (let i = AUDIO_LIST.size; i > cardinal; i -= 1) {
+            for (let i = audio_list.size; i > cardinal; i -= 1) {
     //select an exclude element
                 const arrOfSums_length = arrOfSums.length - 1;
-                const element = binarySearch(arrOfSums, random(0, sum));
-                excludeKeys.add(element.value);
+                const index = binarySearch(arrOfSums, random(0, sum));
+                excludeKeys.add(arrOfSums[index][0]);
 
                 if (i > cardinal+1) {
     //re initialize
                     sum = (
-                        element.i !== 0
-                        ? arrOfSums[element.i - 1][1]
+                        index !== 0
+                        ? arrOfSums[index - 1][1]
                         : 0
                     );
-                    for (let j = element.i; j < arrOfSums_length; j += 1) {
-                        sum += arrOfSums[j + 1][2];
+                    for (let j = index; j < arrOfSums_length; j += 1) {
+                        sum += arrOfSums[j + 1][1] - arrOfSums[j][1];
                         arrOfSums[j][1] = sum;
-                        arrOfSums[j][0] = arrOfSums[j+1][0];
                     }
                     arrOfSums.pop();
                 }
             }
     //select the elements
-            AUDIO_LIST.forEach(function fe(_, key) {
-                if (!excludeKeys.has(key)) {
-                    executeSet[key] = true;
+            arrOfKeys.forEach(function fe(audio, i) {
+                if (!excludeKeys.has(i)) {
+                    executeSet[audio] = true;
                 }
             });
         }
