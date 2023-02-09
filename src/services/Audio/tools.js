@@ -358,26 +358,50 @@ async function deleteAll(audioListDispatcher) {
 /*                            Generattive Algoritms                           */
 /* -------------------------------------------------------------------------- */
 
-/*-
-binarySearch: (Array<number>, number) -> number
-*/
-function binarySearch(arr, target) {
-    let startI = 0;
-    let endI = arr.length - 1;
+function chooseAudios(arrOfKeys, arrOfSums, sum, i, n) {
+    const set = {};
+    let arrOfSums_length = arrOfSums.length;
+    while (i < n) {
+        arrOfSums_length -= 1;
+        let index = 0;
+        {
+        //binarySearch
+            const target = random(0, sum);
+            let startI = 0;
+            let endI = arrOfSums_length;
 
-    while (startI <= endI) {
-        const midI = Math.floor((startI + endI) / 2);
-        if (arr[midI][1] < target) {
-            startI = midI + 1;
-        } else {
-            if (arr[midI - 1] === undefined || arr[midI - 1][1] < target) {
-                return midI;
+            while (startI <= endI) {
+                const midI = Math.floor((startI + endI) / 2);
+                if (arrOfSums[midI][1] < target) {
+                    startI = midI + 1;
+                } else {
+                    if (arrOfSums[midI - 1] === undefined || arrOfSums[midI - 1][1] < target) {
+                        //select an element
+                        index = midI;
+                        break;
+                    }
+                    endI = midI - 1;
+                }
             }
-            endI = midI - 1;
         }
+        set[arrOfKeys[arrOfSums[index][0]]] = true;
+
+        if (i < n-1) {
+    //re initialize
+            sum = (
+                index !== 0
+                ? arrOfSums[index - 1][1]
+                : 0
+            );
+            for (let j = index; j < arrOfSums_length; j += 1) {
+                sum += arrOfSums[j+1][1] - arrOfSums[j][1];
+                arrOfSums[j][1] = sum;
+                arrOfSums[j][0] =  arrOfSums[j+1][0];
+            }
+        }
+        i += 1;
     }
-    //if the target did not found
-    return;
+    return set;
 }
 
 /*-
@@ -457,7 +481,6 @@ function randomSetsExecution() {
     {
 //Create a new set execution
         const audio_list = GlobalState.audio_list;
-        const executeSet = {};
         const arrOfKeys = [];
         const arrOfSums = [];
         let sum = 0;
@@ -469,63 +492,26 @@ function randomSetsExecution() {
                 arrOfKeys.push(key);
                 arrOfSums.push([i_key += 1, sum += audio.audioEvents]);
             });
-            for (let i = 0; i < cardinal; i += 1) {
-    //select an element
-                const arrOfSums_length = arrOfSums.length - 1;
-                const index = binarySearch(arrOfSums, random(0, sum));
+            return chooseAudios(arrOfKeys, arrOfSums, sum, 0, cardinal);
 
-                executeSet[arrOfKeys[arrOfSums[index][0]]] = true;
-
-                if (i < cardinal-1) {
-    //re initialize
-                    sum = (
-                        index !== 0
-                        ? arrOfSums[index - 1][1]
-                        : 0
-                    );
-                    for (let j = index; j < arrOfSums_length; j += 1) {
-                        sum += arrOfSums[j + 1][1] - arrOfSums[j][1];
-                        arrOfSums[j][1] = sum;
-                    }
-                    arrOfSums.pop();
-                }
-            }
         } else {
-            const excludeKeys = new Set();
             const sumOfAllAudiosEvents = GlobalState.sumOfAllAudiosEvents;
+            const size = audio_list.size;
+            const executeSet = {};
     //initialize
             audio_list.forEach(function fe(el, key) {
                 arrOfKeys.push(key);
                 arrOfSums.push([i_key += 1, sum += sumOfAllAudiosEvents - el.audioEvents]);
             });
-            for (let i = audio_list.size; i > cardinal; i -= 1) {
-    //select an exclude element
-                const arrOfSums_length = arrOfSums.length - 1;
-                const index = binarySearch(arrOfSums, random(0, sum));
-                excludeKeys.add(arrOfSums[index][0]);
-
-                if (i > cardinal+1) {
-    //re initialize
-                    sum = (
-                        index !== 0
-                        ? arrOfSums[index - 1][1]
-                        : 0
-                    );
-                    for (let j = index; j < arrOfSums_length; j += 1) {
-                        sum += arrOfSums[j + 1][1] - arrOfSums[j][1];
-                        arrOfSums[j][1] = sum;
-                    }
-                    arrOfSums.pop();
-                }
-            }
+            const exclude = chooseAudios(arrOfKeys, arrOfSums, sum, cardinal, size);
     //select the elements
             arrOfKeys.forEach(function fe(audio, i) {
-                if (!excludeKeys.has(i)) {
+                if (exclude[audio] === undefined) {
                     executeSet[audio] = true;
                 }
             });
+            return executeSet;
         }
-        return executeSet;
     }
 }
 
