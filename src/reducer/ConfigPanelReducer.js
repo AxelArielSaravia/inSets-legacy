@@ -46,33 +46,35 @@ configPanelReducer: (ConfigPanelState, {
 function configPanelReducer(state, action) {
     const {payload, type} = action;
     if (type === "panelItem/change") {
-        if (state.panelItem === payload && state.isConfigPanelVisible) {
-            return Object.assign({}, state, {
+        return (
+            (state.panelItem === payload && state.isConfigPanelVisible)
+            ? Object.assign({}, state, {
                 isConfigPanelVisible: false,
                 isItemsPanelVisible: true,
                 panelItem: payload
-            });
-        }
-        return Object.assign({}, state,{
-            isConfigPanelVisible: true,
-            isItemsPanelVisible: false,
-            panelItem: payload
-        });
+            })
+            : Object.assign({}, state,{
+                isConfigPanelVisible: true,
+                isItemsPanelVisible: false,
+                panelItem: payload
+            })
+        );
     } else if (type === "panel/switch") {
-        if (state.isPanelVisible) {
-            return {
+        return (
+            state.isPanelVisible
+            ? {
                 isConfigPanelVisible: false,
                 isItemsPanelVisible: false,
                 isPanelVisible: false,
                 panelItem: ""
-            };
-        }
-        return {
-            isConfigPanelVisible: false,
-            isItemsPanelVisible: true,
-            isPanelVisible: true,
-            panelItem: ""
-        };
+            }
+            : {
+                isConfigPanelVisible: false,
+                isItemsPanelVisible: true,
+                isPanelVisible: true,
+                panelItem: ""
+            }
+        );
     } else if (type === "configPanel/close") {
         return Object.assign({}, state, {
             isConfigPanelVisible: false,

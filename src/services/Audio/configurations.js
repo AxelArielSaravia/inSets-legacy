@@ -56,6 +56,11 @@ function createAudioDelayConfiguration(GlobalDelay) {
 createAudioFilterConfiguration: GlobalFilter -> AudioFilter
 */
 function createAudioFilterConfiguration(GlobalFilter) {
+    const type = (
+        GlobalFilter.types.length > 0
+        ? GlobalFilter.types[random(0, GlobalFilter.types.length - 1)]
+        : "allpass"
+    );
     return {
         channelCountMode: "max",
         channelInterpretation: "speakers",
@@ -64,14 +69,12 @@ function createAudioFilterConfiguration(GlobalFilter) {
             random(GlobalFilter.frequencyMin, GlobalFilter.frequencyMax)
         ),
         gain: 1,
-        q: rToQ(
-            random(GlobalFilter.qMin, GlobalFilter.qMax)
+        q: (
+            type !== "lowpass" || type !== "highpass"
+            ? rToQ(random(GlobalFilter.qMin, GlobalFilter.qMax))
+            : 1
         ),
-        type: (
-            GlobalFilter.types.length > 0
-            ? GlobalFilter.types[random(0, GlobalFilter.types.length - 1)]
-            : "allpass"
-        )
+        type
     };
 }
 

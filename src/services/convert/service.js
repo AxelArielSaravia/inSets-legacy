@@ -16,15 +16,19 @@ function rToFrequency(x) {
     if (typeof x !== "number" || !isInsideInterval(FREQ_MIN, FREQ_MAX, x)) {
         throw new Error("The argument is invalid");
     }
-    if (x < 60) {
-        return x + 40;
-    } else if (x < 150) {
-        return (x - 50) * 10;
-    } else if (x < 240) {
-        return (x - 140) * 100;
-    } else {
-        return (x - 230) * 1000;
-    }
+    return (
+        x < 60
+        ? x + 40
+        : (
+            x < 150
+            ? (x - 50) * 10
+            : (
+                x < 240
+                ? (x - 140) * 100
+                : (x - 230) * 1000
+            )
+        )
+    );
 }
 
 /*-
@@ -35,13 +39,15 @@ function rToQ(x) {
     if (typeof x !== "number" || !isInsideInterval(Q_MIN, Q_MAX, x)) {
         throw new Error("The argument is invalid");
     }
-    if (x < 18) {
-        return (x + 2) / 20;
-    } else if (x < 28) {
-        return (x - 8) / 10;
-    } else {
-        return x - 26;
-    }
+    return (
+        x < 18
+        ? (x + 2) / 20
+        : (
+            x < 28
+            ? (x - 8) / 10
+            : x - 26
+        )
+    );
 }
 
 /*-
@@ -52,11 +58,11 @@ function rToPlaybackRate(x) {
     if (typeof x !== "number" || !isInsideInterval(MIN, MAX, x)) {
         throw new Error("The argument is invalid");
     }
-    if (x < 10) {
-        return (x + 10) / 20;
-    } else {
-        return x / 10;
-    }
+    return (
+        x < 10
+        ? (x + 10) / 20
+        : x / 10
+    );
 }
 
 /*-

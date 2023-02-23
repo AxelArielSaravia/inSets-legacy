@@ -15,8 +15,7 @@ function ViewAudioListReducer(state, action) {
             }),
             loadedAudioListSize: state.loadedAudioListSize + 1
         });
-    }
-    if (type === "addCompleted") {
+    } else if (type === "addCompleted") {
         if (state.completedAudioListSize < 15) {
             GlobalState.eventsForEachSet.arrOfEvents.push(1);
             GlobalState.eventsForEachSet.sumOfAllEvents += 1;
@@ -27,8 +26,7 @@ function ViewAudioListReducer(state, action) {
             }),
             completedAudioListSize: state.completedAudioListSize + 1
         });
-    }
-    if (type === "clear") {
+    } else if (type === "clear") {
         GlobalState.eventsForEachSet = {
             arrOfEvents: [1],
             sumOfAllEvents: 1
@@ -49,8 +47,14 @@ function ViewAudioListReducer(state, action) {
                 state.loadedAudioListSize - completedKeys.length
             )
         });
-    }
-    if (type === "delete"
+    } else if (type === "loadingError") {
+        const newLoadedAudioList = Object.assign({}, state.loadedAudioList);
+        delete newLoadedAudioList[action.id];
+        return Object.assign({}, state, {
+            loadedAudioList: newLoadedAudioList,
+            loadedAudioListSize: state.loadedAudioListSize - 1
+        });
+    } else if (type === "delete"
         && action.id in state.completedAudioList
     ) {
         GlobalState.audio_list.delete(action.id);
@@ -71,16 +75,9 @@ function ViewAudioListReducer(state, action) {
             loadedAudioList: newLoadedAudioList,
             loadedAudioListSize: state.loadedAudioListSize - 1
         });
+    } else {
+        return state;
     }
-    if (type === "loadingError") {
-        const newLoadedAudioList = Object.assign({}, state.loadedAudioList);
-        delete newLoadedAudioList[action.id];
-        return Object.assign({}, state, {
-            loadedAudioList: newLoadedAudioList,
-            loadedAudioListSize: state.loadedAudioListSize - 1
-        });
-    }
-    return state;
 }
 
 export {

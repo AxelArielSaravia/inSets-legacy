@@ -16,10 +16,10 @@ import {random} from "../utils.js";
 /*                               util functions                               */
 /* -------------------------------------------------------------------------- */
 /*-
-randomChance: undefined -> number
+flipCoin: undefined -> number
 */
-function randomChance() {
-    return (random(0, 1) === 1);
+function flipCoin() {
+    return (Math.random() < 0.5);
 }
 
 /*-
@@ -37,7 +37,7 @@ createAudioRandomChain: AudioContext, AudioState -> [GainNode, GainNode]
 */
 async function createAudioRandomChain(audioCtx, audio_state) {
     //The variable that we use for the connections chain
-    let input;
+    let prev;
     //main gains
     const inputGain = await audioCtx.createGain();
     const outputGain = await audioCtx.createGain();
@@ -48,7 +48,7 @@ async function createAudioRandomChain(audioCtx, audio_state) {
     outputGain.gain.value = 0.001;
 
 
-    input = inputGain; //our input is the GainNode
+    prev = inputGain; //our input is the GainNode
     //PANNER
     if (!audio_state.pannerIsDisable) {
         const audioPannerConfig = createAudioPannerConfiguration(GlobalState.panner);
@@ -66,11 +66,11 @@ async function createAudioRandomChain(audioCtx, audio_state) {
         PANNER.positionY.value = audioPannerConfig.positionY;
         PANNER.positionZ.value = audioPannerConfig.positionZ;
         PANNER.refDistance = audioPannerConfig.refDistance;
-        await input.connect(PANNER); //input is PannerNode
-        input = PANNER;
+        await prev.connect(PANNER); //input is PannerNode
+        prev = PANNER;
     }
     //FILTER
-    if (randomChance() && !audio_state.filterIsDisable) {
+    if (flipCoin() && !audio_state.filterIsDisable) {
         const audioFilterConfig = createAudioFilterConfiguration(GlobalState.filter);
         const FILTER = audioCtx.createBiquadFilter();
         FILTER.channelCountMode = audioFilterConfig.channelCountMode;
@@ -80,11 +80,11 @@ async function createAudioRandomChain(audioCtx, audio_state) {
         FILTER.frequency.value = audioFilterConfig.frequency;
         FILTER.Q.value = audioFilterConfig.q;
         FILTER.type = audioFilterConfig.type;
-        await input.connect(FILTER);
-        input = FILTER; //input is a FilterNode
+        await prev.connect(FILTER);
+        prev = FILTER; //input is a FilterNode
     }
     //DELAY
-    if (randomChance() && !audio_state.delayIsDisable) {
+    if (flipCoin() && !audio_state.delayIsDisable) {
         const audioDelayConfig = createAudioDelayConfiguration(GlobalState.delay);
         const DELAY = audioCtx.createDelay(audioDelayConfig.maxDelayTime);
         const feedback = audioCtx.createGain();
@@ -96,14 +96,14 @@ async function createAudioRandomChain(audioCtx, audio_state) {
 
         await DELAY.connect(feedback);
         await feedback.connect(DELAY);
-        await input.connect(DELAY);
-        await input.connect(gain);
+        await prev.connect(DELAY);
+        await prev.connect(gain);
         await feedback.connect(gain);
 
-        input = gain; //input is a GainNode
+        prev = gain; //input is a GainNode
     }
 
-    await input.connect(outputGain);
+    await prev.connect(outputGain);
 
 
     return {
@@ -198,7 +198,7 @@ async function _play(audio_state, audioDispatcher) {
                 ) {
                     //create interval
                     const d = Math.round(audio_state.duration * 10);
-                    const p = Math.round((audio_state.endTime - audio_state.endTime) * 10);
+                    const p = Math.round((rep - rsp) * 10);
                     const min = 5; //500 miliseconds;
                     const max = (p < 5 ? min : p > d ? d : p);
                     interval = random(min, max) / 10;
@@ -220,7 +220,7 @@ async function _play(audio_state, audioDispatcher) {
             });
         }
 
-//Set Audio Configuration
+    //Set Audio Configuration
         {
             //PLAYBACK RATE
             if (!audio_state.playbackRateIsDisable) {
@@ -426,8 +426,8 @@ function randomSetsExecution() {
         const large = [];
         const sumOfAllEvents = GlobalState.eventsForEachSet.sumOfAllEvents;
         const p = GlobalState.eventsForEachSet.arrOfEvents.map(function m(value, i) {
-            const res = (value / sumOfAllEvents) * length;
-            if (res < 1) {
+            const res = value * length;
+            if (res < sumOfAllEvents) {
                 small.push(i);
             } else {
                 large.push(i);
@@ -440,23 +440,23 @@ function randomSetsExecution() {
             prob[l] = p[l];
             alias[l] = g;
 
-            p[g] = (p[g] + p[l]) - 1;
+            p[g] = (p[g] + p[l]) - sumOfAllEvents;
 
-            if (p[g] < 1) {
+            if (p[g] < sumOfAllEvents) {
                 small.push(g);
             } else {
                 large.push(g);
             }
         }
         while (small.length !== 0) {
-            prob[small.pop()] = 1;
+            prob[small.pop()] = sumOfAllEvents;
         }
         while (large.length !== 0) {
-            prob[large.pop()] = 1;
+            prob[large.pop()] = sumOfAllEvents;
         }
         //generate
         cardinal = (
-            Math.random() < prob[rand_i]
+            random(0, sumOfAllEvents-1) < prob[rand_i]
             ? rand_i
             : alias[rand_i]
         );
@@ -476,7 +476,7 @@ function randomSetsExecution() {
             executeSet[key] = true;
         });
         return {
-            state: true,
+            state: true, //include
             audios: executeSet
         };
     }
@@ -484,12 +484,13 @@ function randomSetsExecution() {
     {
 //Create a new set execution
         const audio_list = GlobalState.audio_list;
+        const size = audio_list.size;
         const arrOfKeys = [];
         const arrOfSums = [];
         let sum = 0;
         let i_key = -1;
 
-        if (cardinal <= Math.floor(audio_list.size / 2)) {
+        if (cardinal <= Math.floor(size / 2)) {
             //initialize
             audio_list.forEach(function fe(audio, key) {
                 arrOfKeys.push(key);
@@ -502,25 +503,19 @@ function randomSetsExecution() {
         } else {
             //initialize
             const sumOfAllAudiosEvents = GlobalState.sumOfAllAudiosEvents;
-            const size = audio_list.size;
             audio_list.forEach(function fe(el, key) {
                 arrOfKeys.push(key);
                 arrOfSums.push([i_key += 1, sum += sumOfAllAudiosEvents - el.audioEvents]);
             });
+
             return {
                 state: false, //exclude
                 audios: chooseAudios(arrOfKeys, arrOfSums, sum, cardinal, size)
-            };/*
-            arrOfKeys.forEach(function fe(audio, i) {
-                if (exclude[audio] === undefined) {
-                    executeSet[audio] = true;
-                }
-            });
-            return executeSet;
-            */
+            };
         }
     }
 }
+
 
 /*-
 randomTimeExecution: (appDispatcher, string) -> undefined;

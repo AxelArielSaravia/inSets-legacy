@@ -191,10 +191,15 @@ function ViewAudioReducer(state, action) {
         return Object.assign({}, state, {isPlaying: true});
     }
     if (type === "points/change") {
-        return Object.assign({}, state, {
-            endPoint: payload[1],
-            startPoint: payload[0]
-        });
+        if (payload[1] !== state.endPoint
+            && payload[0] !== state.startPoint
+        ) {
+            return Object.assign({}, state, {
+                endPoint: payload[1],
+                startPoint: payload[0]
+            });
+        }
+        return state;
     }
     if (type === "startTime/change"
         && typeof payload === "number"
@@ -240,7 +245,6 @@ function ViewAudioReducer(state, action) {
             currentTime: payload
         });
     }
-    console.log(state);
     return state;
 }
 

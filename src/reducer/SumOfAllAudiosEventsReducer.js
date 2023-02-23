@@ -11,16 +11,15 @@ function SumOfAllAudiosEventsReducer(state, action) {
     if (type === "add") {
         GlobalState.sumOfAllAudiosEvents += 1;
         return state + 1;
-    }
-    if (type === "clear") {
+    } else if (type === "clear") {
         GlobalState.sumOfAllAudiosEvents = 0;
         return 0;
-    }
-    if (type === "subtract") {
+    } else if (type === "subtract") {
         GlobalState.sumOfAllAudiosEvents -= action.payload;
         return state - action.payload;
+    } else {
+        return state;
     }
-    return state;
 }
 
 export {
