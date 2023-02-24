@@ -9,7 +9,7 @@ const delayLimits = Object.freeze({
 });
 
 const fadeLimits = Object.freeze({
-    MAX: 19,
+    MAX: 8,
     MIN: 0
 });
 

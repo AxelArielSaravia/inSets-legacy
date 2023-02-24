@@ -127,7 +127,7 @@ function fadeOut(audio_state) {
     const fadeTime = rToFade(GlobalState.fadeOut);
     audio_state.outputGain.gain.linearRampToValueAtTime(
         GAIN_0,
-        GlobalState.audio_context.currentTime + fadeTime / 1000
+        GlobalState.audio_context.currentTime + (fadeTime / 1000)
     );
     return wait(fadeTime);
 }
@@ -139,7 +139,7 @@ function fadeIn(audio_state) {
     const fadeTime = rToFade(GlobalState.fadeIn);
     audio_state.outputGain.gain.exponentialRampToValueAtTime(
         audio_state.volume,
-        GlobalState.audio_context.currentTime + fadeTime / 1000
+        GlobalState.audio_context.currentTime + (fadeTime / 1000)
     );
 }
 

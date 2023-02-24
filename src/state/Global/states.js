@@ -38,8 +38,8 @@ const defaultGlobalState = (function (o) {
         delay.timeMin = 3;
         return Object.freeze(delay);
     }(Object.create(null)));
-    o.fadeIn = 9;
-    o.fadeOut = 14;
+    o.fadeIn = 2;
+    o.fadeOut = 5;
     o.filter = (function (filter) {
         filter.areAllDisable = false;
         filter.frequencyMax = 240;

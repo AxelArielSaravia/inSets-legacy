@@ -106,7 +106,11 @@ function rToFade(x) {
     if (typeof x !== "number" || !isInsideInterval(MIN, MAX, x)) {
         throw new Error("The argument is invalid");
     }
-    return (x + 1) * 10;
+    return (
+        x === 0
+        ? 0
+        : (20 * x) + 60
+    );
 }
 
 export {
