@@ -38,8 +38,8 @@ const defaultGlobalState = (function (o) {
         delay.timeMin = 3;
         return Object.freeze(delay);
     }(Object.create(null)));
-    o.fadeIn = 7;
-    o.fadeOut = 19;
+    o.fadeIn = 9;
+    o.fadeOut = 14;
     o.filter = (function (filter) {
         filter.areAllDisable = false;
         filter.frequencyMax = 240;
@@ -419,14 +419,11 @@ createGlobalFadeValue: number -> number
 */
 function createGlobalFadeValue(num) {
     const limits = fadeLimits;
-    const fadeTime = (
-        (Number.isInteger(num)
-            && isInsideInterval(limits.MIN, limits.MAX, num)
-        )
+    return (
+        isInsideInterval(limits.MIN, limits.MAX, num)
         ? num
-        : 15 //default
+        : undefined //default
     );
-    return fadeTime;
 }
 
 /*-
@@ -472,10 +469,20 @@ function initGlobalState(localStorageState, globalState) {
         globalState.delay = createGlobalDelay(localStorageState.delay);
     }
     if (localStorageState.fadeIn !== undefined) {
-        globalState.fadeIn = createGlobalFadeValue(localStorageState.fadeIn);
+        const v = createGlobalFadeValue(localStorageState.fadeIn);
+        globalState.fadeIn = (
+            v !== undefined
+            ? v
+            : globalState.fadeIn
+        );
     }
     if (localStorageState.fadeOut !== undefined) {
-        globalState.fadeOut = createGlobalFadeValue(localStorageState.fadeOut);
+        const v = createGlobalFadeValue(localStorageState.fadeOut);
+        globalState.fadeOut = (
+            v !== undefined
+            ? v
+            : globalState.fadeOut
+        );
     }
     if (localStorageState.filter !== undefined) {
         globalState.filter = createGlobalFilter(localStorageState.filter);
@@ -515,13 +522,13 @@ const GlobalState = (function (o) {
     o.is_started = false; //default
     o.delay = createGlobalDelay();
     o.eventsForEachSet = createEventOfEachSet();
-    o.fadeIn = createGlobalFadeValue();
-    o.fadeOut = createGlobalFadeValue();
+    o.fadeIn = defaultGlobalState.fadeIn;
+    o.fadeOut = defaultGlobalState.fadeOut;
     o.filter = createGlobalFilter();
     o.panner = createGlobalPanner();
     o.playbackRate = createGlobalPlaybackRate();
-    o.randomEndPoint = createGlobalRandomPoint();
-    o.randomStartPoint = createGlobalRandomPoint();
+    o.randomEndPoint = defaultGlobalState.randomEndPoint;
+    o.randomStartPoint = defaultGlobalState.randomStartPoint;
     o.sumOfAllAudiosEvents = 0;
     o.timeInterval = createGlobalTimeInteval();
     return Object.seal(o);
