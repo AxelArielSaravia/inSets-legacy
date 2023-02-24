@@ -1,4 +1,4 @@
-# [inSets](https://insets-music.web.app/) v0.3.4
+# [inSets](https://insets-music.web.app/) v0.3.5
 [¿Cómo se utiliza la aplicación?](https://github.com/AxelArielSaravia/inSets/blob/main/README.md#c%C3%B3mo-se-utiliza-la-aplicaci%C3%B3n)
 
 Basada en [Web Audio API] y HTML Audio tag

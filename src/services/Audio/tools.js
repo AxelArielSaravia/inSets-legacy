@@ -129,7 +129,7 @@ function fadeOut(audio_state) {
         GAIN_0,
         GlobalState.audio_context.currentTime + (fadeTime / 1000)
     );
-    return wait(fadeTime);
+    return wait(fadeTime + 50);
 }
 
 /*-
@@ -312,7 +312,7 @@ function rePlay(id, audioDispatcher) {
         })
         .catch((err) => console.error(err));
     } else {
-        wait(rToFade(GlobalState.fadeOut))
+        wait(rToFade(GlobalState.fadeOut) + 50)
         .then(function () {
             if (GlobalState.is_started) {
                 return _play(audio_state, audioDispatcher);
