@@ -192,7 +192,7 @@ function ViewAudioReducer(state, action) {
     }
     if (type === "points/change") {
         if (payload[1] !== state.endPoint
-            && payload[0] !== state.startPoint
+            || payload[0] !== state.startPoint
         ) {
             return Object.assign({}, state, {
                 endPoint: payload[1],

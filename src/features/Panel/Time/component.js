@@ -26,6 +26,7 @@ function TimeTitle() {
 }
 
 function TimeChild({
+    name,
     addTo,
     subtractTo,
     minutes,
@@ -35,7 +36,7 @@ function TimeChild({
     return (
         <ConfigPanelChild>
             <div className="flex-row align-c justify-c py-2">
-                <p className="fs-text text-bold p-2">time max</p>
+                <p className="fs-text text-bold p-2">time {name}</p>
                 <AddAndSubtract
                     addOnClick={addTo}
                     subtractOnClick={subtractTo}
@@ -78,6 +79,7 @@ function MaxTime({
 
     return (
         <TimeChild
+            name="max"
             addTo={addToMax}
             subtractTo={subtractToMax}
             minutes={minutes}
@@ -104,6 +106,7 @@ function MinTime({
 
     return (
         <TimeChild
+            name="min"
             addTo={addToMin}
             subtractTo={subtractToMin}
             minutes={minutes}
