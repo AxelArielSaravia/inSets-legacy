@@ -21,31 +21,18 @@ function DropArea() {
     );
 }
 
-function handleDragOver(e) {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = "copy";
-}
-
-function DropFiles({className, isDragActive}) {
+function DropFiles({className}) {
     const addFiles = useAddFiles();
-
-    useEffect(function () {
-        window.addEventListener("dragover", preventDefault, false);
-        window.addEventListener("drop", preventDefault, false);
-        return function () {
-            window.removeEventListener("dragover", preventDefault, false);
-            window.removeEventListener("drop", preventDefault, false);
-        };
-    });
 
     const handleFileDrop = useCallback(function(e) {
         e.preventDefault();
+        e.dataTransfer.dropEffect = "copy";
         addFiles(e.dataTransfer.files);
     },[addFiles]);
 
     return (
         <div
-            onDragOver={handleDragOver}
+            onDragOver={preventDefault}
             onDrop={handleFileDrop}
             className={className}
         >
@@ -62,9 +49,10 @@ function DropComponent({isDragActive}) {
     }
 }
 
+let counter = 0;
+
 function DragFiles({className, style, children}) {
     const [isDragActive, setIsDragActive] = useState(false);
-    let counter = 1;
     function handleDragEnter () {
         counter += 1;
         setIsDragActive(() => true);
