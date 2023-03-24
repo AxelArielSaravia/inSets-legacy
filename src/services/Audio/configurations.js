@@ -110,7 +110,7 @@ function createAudioPannerConfiguration(GlobalPanner) {
         orientationX: 0,
         orientationY: 1,
         orientationZ: 0,
-        panningModel: "equalpower",
+        panningModel: "HRTF",
         positionX: (
             rToPanner(random(GlobalPanner.xMin, GlobalPanner.xMax)) / 10
         ),
