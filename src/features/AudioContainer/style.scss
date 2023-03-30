@@ -2,6 +2,7 @@
     width: 100%;
     height: 100%;
 }
+
 .audio-container {
     position: relative;
     width: 100%;
@@ -14,15 +15,15 @@
     overflow-x: hidden;
     
     .audio-container_sub {
-        display: inline-block;
         position: absolute;
         width: 100%;
-        height: 100%;
+        display: grid;
+        gap: 5px;
     }
 
     .files {
         & > div {
-        width: 100%;
+            width: 100%;
         }
     }
 }
@@ -45,19 +46,7 @@
 }
 
 @media screen and (min-width: 992px) {
-    .audio-container {
-        .audio-container_sub {
-            display: flex;
-        }
-        .audio-container_column {
-            width: 50%;
-        }
-    }
 }
+
 @media screen and (max-width: 992px) {
-    .audio-container {
-        .audio-element--prev {
-            align-items: center;
-        }
-    }
 }

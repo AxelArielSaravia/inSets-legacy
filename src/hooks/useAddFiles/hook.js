@@ -5,7 +5,7 @@ import {
     SumOfAllAudiosEventsContext
 } from "../../context/index.js";
 
-import {isValidAudioType, audioFromFile_AudioNode} from "./utils.js";
+import {isValidAudioType, audioFromFile} from "./utils.js";
 
 
 function useAddFiles() {
@@ -13,9 +13,18 @@ function useAddFiles() {
     const [, sumOfAllEventsDispatcher] = useContext(SumOfAllAudiosEventsContext);
 
     const addFiles = useCallback(function(files) {
+        console.log(files);
         Object.values(files).forEach(function(file) {
+            console.log(isValidAudioType(file.type));
             if (isValidAudioType(file.type)) {
-                audioFromFile_AudioNode(file, audioListDispatcher, sumOfAllEventsDispatcher);
+                new Promise(function (resolve) {
+                    audioFromFile(
+                        file,
+                        audioListDispatcher,
+                        sumOfAllEventsDispatcher
+                    );
+                    resolve();
+                });
             }
         });
     }, [audioListDispatcher, sumOfAllEventsDispatcher]);

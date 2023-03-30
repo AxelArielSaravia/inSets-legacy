@@ -2,8 +2,8 @@
 .audio-element {
     --audio-color: var(--c-secondary);
     background-color: var(--c-transitive1);
-    max-width: 800px;
-    width: 100%;
+    height: min-content;
+    //width: 100%;
     border-radius: 2px;
     outline: 2px solid transparent;
     * { border-color: var(--audio-color)!important; }
@@ -20,6 +20,7 @@
         padding: 0;
         * {padding: 0;}
     }
+
     .config-button {
         * {padding: 3px;}
     }

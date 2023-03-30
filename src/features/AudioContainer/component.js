@@ -26,33 +26,17 @@ function SelectAudioElement({bool, id}) {
 
 
 function LoadedAudioList({list, completed}) {
-    const state = list.map(function m(id) {
+    return list.map(function m(id) {
         return (
-            <div
+            <SelectAudioElement
                 key={id}
-                className="audio-element--prev p-5 flex-column align-c"
-                role="region"
-                aria-live="polite"
-            >
-                <SelectAudioElement
-                    bool={id in completed}
-                    id={id}
-                />
-            </div>
-
+                bool={id in completed}
+                id={id}
+            />
         );
     });
-    return (
-        <>
-            <div className="audio-container_column">
-                {state.filter(function (_, i) { return i % 2 === 0; })}
-            </div>
-            <div className="audio-container_column">
-                {state.filter(function (_, i) { return i % 2 !== 0; })}
-            </div>
-        </>
-    );
 }
+
 
 function AudioContainer() {
     const [{
@@ -61,10 +45,16 @@ function AudioContainer() {
         completedAudioList
     }] = useContext(AudioListContext);
 
+    const asd = (
+        window.matchMedia("(min-width: 1000px)").matches
+        ? {gridTemplateColumns: "repeat(2, 50%)"}
+        : null
+    );
+
     return (
         <main className="main flex-column p-5">
             <div className="audio-container flex-column">
-                <div className="audio-container_sub">
+                <div className="audio-container_sub" style={asd}>
                     <LoadedAudioList
                         list={Object.keys(loadedAudioList)}
                         completed={completedAudioList}
