@@ -18,14 +18,24 @@ module.exports = {
     "rules": {
         "arrow-body-style": ["warn", "never"],
         "arrow-parens": "warn",
-        "arrow-spacing": ["warn", {"before": true, "after": true}],
+        "arrow-spacing": [
+            "warn",
+            {
+                "before": true,
+                "after": true
+            }
+        ],
         "curly": ["error", "all"],
         "eqeqeq": "warn",
-        "indent": ["warn", 4, {
-            "ignoredNodes": ["ConditionalExpression"],
-            "MemberExpression": 0,
-            "ignoreComments": true
-        }],
+        "indent": [
+            "warn",
+            4,
+            {
+                "ignoredNodes": ["ConditionalExpression"],
+                "MemberExpression": 0,
+                "ignoreComments": true
+            }
+        ],
         "linebreak-style": ["error", "unix"],
         "no-caller": "error",
         "no-case-declarations": "error",

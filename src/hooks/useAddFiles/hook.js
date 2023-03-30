@@ -8,14 +8,13 @@ import {
 import {isValidAudioType, audioFromFile} from "./utils.js";
 
 
+
 function useAddFiles() {
     const [, audioListDispatcher] = useContext(AudioListContext);
     const [, sumOfAllEventsDispatcher] = useContext(SumOfAllAudiosEventsContext);
 
-    const addFiles = useCallback(function(files) {
-        console.log(files);
-        Object.values(files).forEach(function(file) {
-            console.log(isValidAudioType(file.type));
+    const addFiles = useCallback(function (files) {
+        Object.values(files).forEach(function (file) {
             if (isValidAudioType(file.type)) {
                 new Promise(function (resolve) {
                     audioFromFile(

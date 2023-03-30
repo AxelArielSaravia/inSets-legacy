@@ -2,11 +2,14 @@
 .audio-element {
     --audio-color: var(--c-secondary);
     background-color: var(--c-transitive1);
-    height: min-content;
-    //width: 100%;
+    max-width: 800px;
+    width: 100%;
     border-radius: 2px;
     outline: 2px solid transparent;
-    * { border-color: var(--audio-color)!important; }
+
+    * {
+        border-color: var(--audio-color)!important;
+    }
 
     .audio-element_title {
         width: 100%;
@@ -18,11 +21,15 @@
     .audio-button {
         margin: 0;
         padding: 0;
-        * {padding: 0;}
+        * {
+            padding: 0;
+        }
     }
 
     .config-button {
-        * {padding: 3px;}
+        * {
+            padding: 3px;
+        }
     }
     
     .volume {
@@ -42,7 +49,9 @@
     
     .audio-configuration_probability {
         padding: 10px 5px;
-        .percent { width: 70px; }
+        .percent {
+            width: 70px;
+        }
     }
     .audio-configuration_playback--prev,
     .audio-configuration_playback {
@@ -57,12 +66,16 @@
 
 @media screen and (min-width: 368px) {
     .audio-element {
-        .effect-button { padding: 2px; }
+        .effect-button {
+            padding: 2px;
+        }
     }
 }
 @media screen and (min-width: 576px) {
     .audio-element {
-        .audio-configuration_effects { align-items: center; }
+        .audio-configuration_effects {
+            align-items: center;
+        }
     }
 }
 @media screen and (min-width: 768px) {

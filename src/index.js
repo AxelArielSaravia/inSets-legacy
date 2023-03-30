@@ -1,4 +1,3 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 
 import {handleInitState} from "./services/Global/service.js";
@@ -38,7 +37,7 @@ window.addEventListener("DOMContentLoaded", function () {
         /**
          * If the browser does not have the AudioContext send an error
          */
-        buttonContainer.innerHTML = `
+        buttonContainer.innerHTML = /*html*/`
             <div class="init-content flex-column align-c justify-c">
                 <h1 class="fs-text-l text-center py-20">
                     ERROR: Sorry we have a problem
