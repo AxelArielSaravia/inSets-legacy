@@ -1,0 +1,22 @@
+.panel-config-range {
+    display: grid;
+    grid-template-columns: 60% 40%;
+    grid-template-rows: 1fr;
+}
+
+@media screen and (min-width: 368px) {
+    .panel-config-range {
+        grid-template-columns: 70% 30%;
+    }
+}
+@media screen and (min-width: 576px) {
+    .panel-config-range {
+        grid-template-columns: 78% 22%;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .panel-config-range{
+        grid-template-columns: 66% 34%;
+    }
+}

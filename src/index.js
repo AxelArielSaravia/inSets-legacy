@@ -1,18 +1,26 @@
 import ReactDOM from "react-dom/client";
 
-import {handleInitState} from "./services/Global/service.js";
 import {
-    hasAudioContext,
-    initAudioContext
-} from "./services/AudioContext/service.js";
+    handleStateInitializers,
+    setInitialAudioContext
+} from "./stateInitializer.js";
 
-import App from "./features/App.js";
+import App from "./components/App.js";
 
 import "./index.scss";
 
+/*-
+hasAudioContext :: undefined -> boolean */
+function hasAudioContext() {
+    return (
+        window.AudioContext !== undefined
+        || window.webkitAudioContext !== undefined
+    );
+}
+
 function startApp() {
     const root = ReactDOM.createRoot(document.getElementById("root"));
-    initAudioContext();
+    setInitialAudioContext();
     root.render(<App />);
 }
 
@@ -20,7 +28,7 @@ window.addEventListener("DOMContentLoaded", function () {
     const buttonContainer = document.getElementById("button-container");
 
     /* INIT STATE */
-    handleInitState("v0.3.5");
+    handleStateInitializers("v0.3.6");
 
     if (hasAudioContext()) {
         const startButton = document.createElement("button");
@@ -32,7 +40,6 @@ window.addEventListener("DOMContentLoaded", function () {
 
         buttonContainer.removeChild(buttonContainer.firstElementChild);
         buttonContainer.appendChild(startButton);
-
     } else {
         /**
          * If the browser does not have the AudioContext send an error

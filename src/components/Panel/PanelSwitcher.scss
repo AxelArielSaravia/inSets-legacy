@@ -1,0 +1,35 @@
+.panel-switcher {
+    position: absolute;
+    right: 10px;
+    padding:9px 0;
+    z-index: 6;
+
+    button {
+        color: var(--c-secondary);
+        padding:4px;
+
+        div {
+            position: absolute;
+            right: 0;
+            width: 100%;
+            height: 100%;
+        }
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .panel-switcher {
+        .icon-panel{
+            width: 1.5rem;
+        }
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .panel-switcher {
+        position: relative;
+        right: unset;
+        top: unset;
+        pointer-events: none;
+    }
+}
