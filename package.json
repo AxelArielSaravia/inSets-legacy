@@ -1,6 +1,6 @@
 {
     "name": "insets",
-    "version": "0.3.3",
+    "version": "0.3.6",
     "private": true,
     "dependencies": {
         "react": "^18.0.0",

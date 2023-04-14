@@ -41,11 +41,11 @@ function listMapFn(id) {
 }
 
 function filterTopList(_, i) {
-    return i <= this-1;
+    return i <= (this - 1);
 }
 
 function filterBottomList(_, i) {
-    return i > this-1 ;
+    return i > (this - 1);
 }
 
 function AudioElementList() {

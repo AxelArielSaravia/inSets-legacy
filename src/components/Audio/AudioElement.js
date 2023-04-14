@@ -289,6 +289,10 @@ function AudioElement({id}) {
         [audioEvents, sumOfAllEvents]
     );
 
+    console.log("id", id);
+    console.log("audioEvents", audioEvents);
+    console.log("sumOfAllEvents", sumOfAllEvents);
+
     useEffect(function () {
         if ((state && id in playAudiosSet)
             || (!state && !(id in playAudiosSet))
@@ -437,7 +441,7 @@ function AudioElement({id}) {
         }
         if (audioEvents > 1) {
             sumOfAllEventsdispatch(sumOfAllAudiosEventsActions.subtractOne());
-            audioDispatch(audioActions.subtractAudioEvents);
+            audioDispatch(audioActions.subtractAudioEvents(id));
         }
     }
 
