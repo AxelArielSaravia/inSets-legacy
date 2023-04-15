@@ -289,10 +289,6 @@ function AudioElement({id}) {
         [audioEvents, sumOfAllEvents]
     );
 
-    console.log("id", id);
-    console.log("audioEvents", audioEvents);
-    console.log("sumOfAllEvents", sumOfAllEvents);
-
     useEffect(function () {
         if ((state && id in playAudiosSet)
             || (!state && !(id in playAudiosSet))

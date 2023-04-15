@@ -30,6 +30,7 @@
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/apple-touch-icon.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <link href="%PUBLIC_URL%/style.css" rel="stylesheet" />
+    <script defer src="%PUBLIC_URL%/theme.js"></script>
 </head>
 
 <body>
@@ -72,8 +73,11 @@
                         </svg>
                     </a>
                 </div>
-                <button id="change-theme_button" class="change-theme_button flex-column justify-c" type="button"
-                    onclick="changeTheme()">
+                <button 
+                    id="change-theme_button"
+                    class="change-theme_button flex-column justify-c"
+                    type="button"
+                >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="hidden icon-text-l"
                         viewBox="0 0 16 16">
                         <path
@@ -85,48 +89,6 @@
                             d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z" />
                     </svg>
                 </button>
-                <script>
-                    function changeTheme() {
-                        const btn = document.getElementById("change-theme_button");
-                        const currTheme = document.body.className;
-                        let theme = "";
-                        if (currTheme !== "dark") {
-                            theme = "dark";
-                            btn.title = "light theme";
-                            btn.firstElementChild.classList.remove("hidden");
-                            btn.lastElementChild.classList.add("hidden");
-                        } else {
-                            theme = "light";
-                            btn.title = "dark theme";
-                            btn.firstElementChild.classList.add("hidden");
-                            btn.lastElementChild.classList.remove("hidden");
-                        }
-                        document.body.className = theme;
-                        localStorage.setItem('theme', theme);
-                    }
-                    (function () {
-                        const btn = document.getElementById("change-theme_button");
-                        let theme = (
-                            localStorage.getItem("theme") !== null
-                                ? localStorage.getItem("theme")
-                                : ((
-                                    window.matchMedia !== undefined
-                                    && window.matchMedia('(prefers-color-scheme: dark)').matches
-                                )
-                                    ? "dark"
-                                    : "light"
-                                )
-                        );
-                        document.body.className = theme;
-                        if (theme === "dark") {
-                            btn.title = "light theme";
-                            btn.firstElementChild.classList.remove("hidden");
-                        } else {
-                            btn.title = "dark theme";
-                            btn.lastElementChild.classList.remove("hidden");
-                        }
-                    }());
-                </script>
             </div>
         </header>
         <section id="root" class="content-section" data-value="false">

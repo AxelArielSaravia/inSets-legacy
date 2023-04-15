@@ -24,16 +24,16 @@
     <meta property="og:description" content="inSets music composition app.">
     <meta property="og:type" content="profile"/>
     <meta property="og:url" content="https://insets-music.web.app/">
-    <meta property="og:image" content="%PUBLIC_URL%/android-chrome-192x192.png"/>
-    <meta property="og:image:secure_url" content="%PUBLIC_URL%/android-chrome-192x19.png" />
+    <meta property="og:image" content="https://insets-music.web.app/android-chrome-192x192.png"/>
+    <meta property="og:image:secure_url" content="https://insets-music.web.app/android-chrome-192x19.png" />
     <meta property="og:image:alt" content="inset app"/>
     <meta name="twitter:card" content="summary_large_image"/>
     <!--  Title and Icon-->
     <title>inSets</title>
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/apple-touch-icon.png"/>
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <link href="%PUBLIC_URL%/style.css" rel="stylesheet" />
+    <link rel="icon" href="https://insets-music.web.app/favicon.ico" />
+    <link rel="apple-touch-icon" href="https://insets-music.web.app/apple-touch-icon.png"/>
+    <link rel="manifest" href="https://insets-music.web.app/manifest.json" />
+    <link href="https://insets-music.web.app/style.css" rel="stylesheet" />
     <style media="screen">
         #message { width: 90%; background: var(--c-secondary); color: var(--c-primary);  max-width: 360px; margin: 100px auto 16px; padding: 32px 24px 16px; border-radius: 3px; }
         #message h3 { font-weight: normal; font-size: 16px; margin: 16px 0 12px; }
@@ -41,6 +41,7 @@
         #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
         @media screen and (max-width: 370px) {#message { margin:100px 5px 0;}}
     </style>
+    <script defer src="https://insets-music.web.app/theme.js"></script>
   </head>
   <body>
     <div class="app flex-column">
@@ -84,10 +85,10 @@
                       </svg>
                     </a>
                 </div>
-                <button id="change-theme_button"
+                <button
+                    id="change-theme_button"
                     class="change-theme_button flex-column justify-c"
                     type="button"
-                    onclick="changeTheme()"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="hidden icon-text-l" viewBox="0 0 16 16">
                        <path d="M12 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z" />
@@ -96,48 +97,6 @@
                         <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z" />
                     </svg>
                 </button>
-                <script>
-                    function changeTheme() {
-                        const btn = document.getElementById("change-theme_button");
-                        const currTheme = document.body.className;
-                        let theme = "";
-                        if (currTheme !== "dark") {
-                            theme = "dark"
-                            btn.title = "light theme";
-                            btn.firstElementChild.classList.remove("hidden");
-                            btn.lastElementChild.classList.add("hidden");
-                        } else {
-                            theme = "light";
-                            btn.title = "dark theme";
-                            btn.firstElementChild.classList.add("hidden");
-                            btn.lastElementChild.classList.remove("hidden");
-                        }
-                        document.body.className = theme;
-                        localStorage.setItem('theme', theme);
-                    }
-                    (function () {
-                        const btn = document.getElementById("change-theme_button");
-                        let theme = (
-                            localStorage.getItem("theme") !== null
-                            ? localStorage.getItem("theme")
-                            : ((
-                                window.matchMedia !== undefined
-                                && window.matchMedia('(prefers-color-scheme: dark)').matches
-                            )
-                                ? "dark"
-                                : "light"
-                            )
-                        );
-                        document.body.className = theme;
-                        if (theme === "dark") {
-                            btn.title = "light theme";
-                            btn.firstElementChild.classList.remove("hidden");
-                        } else {
-                            btn.title = "dark theme";
-                            btn.lastElementChild.classList.remove("hidden");
-                        }
-                    }());
-                </script>
             </div>
         </header>
         <main id="message">
@@ -146,5 +105,5 @@
             <p>The specified file was not found on this website. Please check the URL for mistakes and try again.</p>
           </main>
     </div>
-  </body>
+</body>
 </html>
