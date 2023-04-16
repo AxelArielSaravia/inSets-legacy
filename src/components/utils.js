@@ -49,7 +49,7 @@ function durationToShortTime(val) {
     const _val = Math.floor(val * 10);
     const miliseconds = _val % 10;
     const sec = Number.parseInt(_val / 10) % 60;
-    return "0" + sec + "." + miliseconds;
+    return (sec < 10 ? "0" : "") + sec + "." + miliseconds;
 }
 
 function undefinedFunction() {}

@@ -169,31 +169,33 @@ function Configuration({
     }
     return (
         <section className="audio-configuration flex-column">
-            <div className="audio-configuration_playback--prev flex-row align-c justify-c">
-                <div
-                    className="audio-configuration_playback p-5 flex-row align-c"
-                    style={isDurationShort ? playbackStyle : undefined}
-                >
-                    <PlayBackTimeText
-                        isDurationShort={isDurationShort}
-                        time={startTime}
-                    />
-                    <AudioPlayback
-                        id={id}
-                        duration={duration}
-                        endPoint={endPoint}
-                        startPoint={startPoint}
-                        startTime={startTime}
-                        endTime={endTime}
-                        currentTime={currentTime}
-                        audioDispatch={audioDispatch}
-                    />
-                    <PlayBackTimeText
-                        isDurationShort={isDurationShort}
-                        time={endTime}
-                    />
+            { duration > 0.5 && (
+                <div className="audio-configuration_playback--prev flex-row align-c justify-c">
+                    <div
+                        className="audio-configuration_playback p-5 flex-row align-c"
+                        style={isDurationShort ? playbackStyle : undefined}
+                    >
+                        <PlayBackTimeText
+                            isDurationShort={isDurationShort}
+                            time={startTime}
+                        />
+                        <AudioPlayback
+                            id={id}
+                            duration={duration}
+                            endPoint={endPoint}
+                            startPoint={startPoint}
+                            startTime={startTime}
+                            endTime={endTime}
+                            currentTime={currentTime}
+                            audioDispatch={audioDispatch}
+                        />
+                        <PlayBackTimeText
+                            isDurationShort={isDurationShort}
+                            time={endTime}
+                        />
+                    </div>
                 </div>
-            </div>
+            )}
             <div className="flex-row flex-wrap">
                 <div className="audio-configuration_probability flex-row align-c">
                     <span className="fs-text">Probability:</span>
@@ -230,16 +232,20 @@ function Configuration({
                             text="rate"
                             onClick={changePlaybackRate}
                         />
-                        <EffectButton
-                            isDisable={randomEndPointIsDisable}
-                            text="REP"
-                            onClick={changeREP}
-                        />
-                        <EffectButton
-                            isDisable={randomStartPointIsDisable}
-                            text="RSP"
-                            onClick={changeRSP}
-                        />
+                        {duration > 0.5 && (
+                            <>
+                                <EffectButton
+                                    isDisable={randomEndPointIsDisable}
+                                    text="REP"
+                                    onClick={changeREP}
+                                />
+                                <EffectButton
+                                    isDisable={randomStartPointIsDisable}
+                                    text="RSP"
+                                    onClick={changeRSP}
+                                />
+                            </>
+                        )}
                     </div>
                 </div>
             </div>

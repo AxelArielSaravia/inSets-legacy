@@ -1,8 +1,8 @@
 import {useContext} from "react";
 
 import {AudioListContext} from "../contexts/AudioList.js";
+import useMatchMedia from "../hooks/useMatchMedia.js";
 
-import {IconMusicFile} from "../icons.js";
 import AudioElement from "./AudioElement.js";
 import Show from "../Show.js";
 
@@ -40,12 +40,39 @@ function listMapFn(id) {
     );
 }
 
-function filterTopList(_, i) {
-    return i <= (this - 1);
+function AudioContainerColumns({left, right}) {
+    return (
+        <>
+            <div className="audio-container_column">
+                {left}
+            </div>
+            <div className="audio-container_column">
+                {right}
+            </div>
+        </>
+    );
 }
+let left = [];
+let right = [];
+function AudioElementList2() {
+    const [{
+        loadedAudioList,
+        completedAudioList
+    }] = useContext(AudioListContext);
+    const list = Object.keys(loadedAudioList);
+    const mid = Math.round(list.length / 2);
 
-function filterBottomList(_, i) {
-    return i > (this - 1);
+    left = Array(mid);
+    right = Array(mid);
+
+    for (let i = 0; i < list.length; i += 1) {
+        if (i < mid) {
+            left.push(listMapFn.call(completedAudioList, list[i]));
+        } else {
+            right.push(listMapFn.call(completedAudioList, list[i]));
+        }
+    }
+    return <AudioContainerColumns left={left} right={right}/>;
 }
 
 function AudioElementList() {
@@ -54,19 +81,17 @@ function AudioElementList() {
         completedAudioList
     }] = useContext(AudioListContext);
 
-    const list = Object.keys(loadedAudioList);
-    const midListLenght = Math.round(list.length / 2);
-    const state = list.map(listMapFn, completedAudioList);
+    return Object.keys(loadedAudioList).map(listMapFn, completedAudioList);
+}
 
+const minWidth_1160 = "(min-width: 1160px)";
+
+function Media() {
+    const value = useMatchMedia(minWidth_1160);
     return (
-        <>
-            <div className="audio-container_column">
-                {state.filter(filterTopList, midListLenght)}
-            </div>
-            <div className="audio-container_column">
-                {state.filter(filterBottomList, midListLenght)}
-            </div>
-        </>
+        value
+        ? <AudioElementList2/>
+        : <AudioElementList/>
     );
 }
 
@@ -75,8 +100,7 @@ function NoAudioFile() {
     return (
         <Show is={loadedAudioListSize === 0}>
             <div className="audioFiles_icon flex-column align-c justify-c flex-grow-1">
-                <IconMusicFile className="icon-drop o-5"/>
-                <p className="fs-text p-5">No Audio Files</p>
+                <p className="fs-text-l p-5">No Audio Files</p>
             </div>
         </Show>
     );
@@ -87,7 +111,7 @@ function AudioContainer() {
         <main className="main flex-column p-5">
             <div className="audio-container flex-column">
                 <div className="audio-container_sub">
-                    <AudioElementList/>
+                    <Media/>
                 </div>
                 <NoAudioFile/>
             </div>

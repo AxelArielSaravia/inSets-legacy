@@ -43,7 +43,9 @@
         height: 100%;
         opacity: 1;
 
-        .panel_title { display: none; }
+        .panel_title {
+            display: none;
+        }
     }
 
     .panel-buttons {
@@ -55,5 +57,7 @@
         }
     }
 
-    .panel-section { height: 100%; }
+    .panel-section {
+        height: 100%;
+    }
 }
