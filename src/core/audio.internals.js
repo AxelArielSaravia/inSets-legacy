@@ -1,15 +1,17 @@
-import {
-    createAudioDelayConfiguration,
-    createAudioFilterConfiguration,
-    createAudioPannerConfiguration,
-    createAudioPlayBackRateConfiguration
-} from "./configurations.js";
-
 import globalState from "../state/globalState.js";
+import {delayLimits, filterLimits} from "../state/limits.js";
 
 import {rToFade} from "./maps.js";
 import {flipCoin, wait} from "./utils.js";
 import {random} from "../utils.js";
+import {
+    rToFeedback,
+    rToFrequency,
+    rToPanner,
+    rToPlaybackRate,
+    rToQ,
+    rToTime
+} from "./maps.js";
 
 import {audioActions} from "../slices/audio.js";
 
@@ -17,65 +19,91 @@ const GAIN_0 = 0.0001;
 
 /*-
 createAudioRandomChain :: (AudioContext, AudioState) -> [GainNode, GainNode] */
-function createAudioRandomChain(audioCtx, audioState) {
-    //The variable that we use for the connections chain
-    let prev;
-
+function createAudioRandomChain(audioState) {
+    const audioContext = globalState.audioContext;
     //main gains
-    const inputGain = audioCtx.createGain();
-    const outputGain = audioCtx.createGain();
-
+    const inputGain = audioContext.createGain();
+    const outputGain = audioContext.createGain();
     //atenuate the general volume
     inputGain.gain.value = 0.8;
 
     //set min gain value to create a fadeIn later
     outputGain.gain.value = GAIN_0;
 
-    prev = inputGain; //our input is the GainNode
+    //The variable that we use for the connections chain
+    let prev = inputGain;
     //PANNER
     if (!audioState.pannerIsDisable) {
-        const audioPannerConfig = createAudioPannerConfiguration(globalState.panner);
-        const PANNER = audioCtx.createPanner();
-        PANNER.coneInnerAngle = audioPannerConfig.coneInnerAngle;
-        PANNER.coneOuterAngle = audioPannerConfig.coneOuterAngle;
-        PANNER.coneOuterGain = audioPannerConfig.coneOuterGain;
-        PANNER.distanceModel = audioPannerConfig.distanceModel;
-        PANNER.maxDistance = audioPannerConfig.maxDistance;
-        PANNER.orientationX.value = audioPannerConfig.orientationX;
-        PANNER.orientationY.value = audioPannerConfig.orientationY;
-        PANNER.orientationZ.value = audioPannerConfig.orientationZ;
-        PANNER.panningModel = audioPannerConfig.panningModel;
-        PANNER.positionX.value = audioPannerConfig.positionX;
-        PANNER.positionY.value = audioPannerConfig.positionY;
-        PANNER.positionZ.value = audioPannerConfig.positionZ;
-        PANNER.refDistance = audioPannerConfig.refDistance;
+        const PANNER = audioContext.createPanner();
+        PANNER.coneInnerAngle = 360;
+        PANNER.coneOuterAngle = 0;
+        PANNER.coneOuterGain = 0;
+        PANNER.distanceModel = "inverse";
+        PANNER.maxDistance = 10000;
+        PANNER.orientationX.value = 0;
+        PANNER.orientationY.value = 1;
+        PANNER.orientationZ.value = 0;
+        PANNER.panningModel = "HRTF";
+        PANNER.refDistance = 1;
+        PANNER.positionX.value = (
+            rToPanner(random(globalState.panner.xMin, globalState.panner.xMax)) / 10
+        );
+        PANNER.positionY.value = (
+            rToPanner(random(globalState.panner.yMin, globalState.panner.yMax)) / 10
+        );
+        PANNER.positionZ.value = (
+            -(random(globalState.panner.zMin, globalState.panner.zMax) / 10)
+        );
         prev.connect(PANNER); //input is PannerNode
         prev = PANNER;
     }
     //FILTER
     if (flipCoin() && !audioState.filterIsDisable) {
-        const audioFilterConfig = createAudioFilterConfiguration(globalState.filter);
-        const FILTER = audioCtx.createBiquadFilter();
-        FILTER.channelCountMode = audioFilterConfig.channelCountMode;
-        FILTER.channelInterpretation = audioFilterConfig.channelInterpretation;
-        FILTER.detune.value = audioFilterConfig.detune;
-        FILTER.gain.value = audioFilterConfig.gain;
-        FILTER.frequency.value = audioFilterConfig.frequency;
-        FILTER.Q.value = audioFilterConfig.q;
-        FILTER.type = audioFilterConfig.type;
+        const FILTER = audioContext.createBiquadFilter();
+        const filterTypes = filterLimits.TYPES;
+        //set the array "filter.types" with the true effects
+        let n = 0;
+        for (let i = 0; i < filterTypes.length; i += 1) {
+            if (!globalState.filter[filterTypes[i]]) {
+                globalState.filter.types[n] = filterTypes[i];
+                n += 1;
+            }
+        }
+
+        FILTER.channelCountMode = "max";
+        FILTER.channelInterpretation = "speakers";
+        FILTER.detune.value = 0;
+        FILTER.gain.value = 1;
+        FILTER.frequency.value = rToFrequency(
+            random(globalState.filter.frequencyMin, globalState.filter.frequencyMax)
+        );
+        FILTER.type = (
+            n === 1
+            ? globalState.filter.types[0]
+            : globalState.filter.types[random(0, n - 1)]
+        );
+        FILTER.Q.value = (
+            FILTER.type !== "lowpass" || FILTER.type !== "highpass"
+            ? rToQ(random(globalState.filter.qMin, globalState.filter.qMax))
+            : 1
+        );
         prev.connect(FILTER);
         prev = FILTER; //input is a FilterNode
     }
     //DELAY
     if (flipCoin() && !audioState.delayIsDisable) {
-        const audioDelayConfig = createAudioDelayConfiguration(globalState.delay);
-        const DELAY = audioCtx.createDelay(audioDelayConfig.maxDelayTime);
-        const feedback = audioCtx.createGain();
-        const gain = audioCtx.createGain();
-        DELAY.channelCountMode = audioDelayConfig.channelCountMode;
-        DELAY.channelInterpretation = audioDelayConfig.channelInterpretation;
-        DELAY.delayTime.value = audioDelayConfig.delayTime;
-        feedback.gain.value = audioDelayConfig.feedback;
+        const DELAY = audioContext.createDelay(rToTime(delayLimits.TIME_MAX));
+        const feedback = audioContext.createGain();
+        const gain = audioContext.createGain();
+
+        DELAY.channelCountMode = "max";
+        DELAY.channelInterpretation = "speakers";
+        DELAY.delayTime.value = rToTime(
+            random(globalState.delay.timeMin, globalState.delay.timeMax)
+        );
+        feedback.gain.value =  rToFeedback(
+            random(globalState.delay.feedbackMin, globalState.delay.feedbackMax)
+        );
 
         DELAY.connect(feedback);
         feedback.connect(DELAY);
@@ -89,10 +117,12 @@ function createAudioRandomChain(audioCtx, audioState) {
     prev.connect(outputGain);
 
 
-    return {
-        inputGain,
-        outputGain
-    };
+    prev.connect(outputGain);
+
+    audioState.source.connect(inputGain);
+    outputGain.connect(globalState.audioContext.destination);
+
+    audioState.outputGain = outputGain;
 }
 
 /*-
@@ -189,29 +219,18 @@ function _play(audioState, audioDispatcher) {
         }
 
 //Set Audio Configuration
-        {
-            //PLAYBACK RATE
-            if (!audioState.playbackRateIsDisable) {
-                const value = createAudioPlayBackRateConfiguration(globalState.playbackRate);
-                audioState.playbackRate = value;
-                audioState.audioEngine.playbackRate = value;
-            } else {
-                audioState.playbackRate = 1;
-                audioState.audioEngine.playbackRate = 1;
-            }
-
-            //CONNECTIONS
-            const {inputGain, outputGain} = createAudioRandomChain(
-                globalState.audioContext,
-                audioState
-            );
-
-            audioState.source.connect(inputGain);
-            outputGain.connect(globalState.audioContext.destination);
-
-            audioState.outputGain = outputGain;
+        //PLAYBACK RATE
+        if (!audioState.playbackRateIsDisable) {
+            const value = rToPlaybackRate(random(globalState.playbackRate.min, globalState.playbackRate.max));
+            audioState.playbackRate = value;
+            audioState.audioEngine.playbackRate = value;
+        } else {
+            audioState.playbackRate = 1;
+            audioState.audioEngine.playbackRate = 1;
         }
 
+        //CONNECTIONS
+        createAudioRandomChain(audioState);
 
 //Set currentTime
         audioState.audioEngine.currentTime = audioState.startPoint;

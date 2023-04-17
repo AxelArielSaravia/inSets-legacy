@@ -30,16 +30,13 @@ function changeMax(number, add) {
     );
     if (isInsideInterval(globalState.timeInterval.min, timeIntervalLimits.MAX, value)) {
         globalState.timeInterval.max = value;
-        localStorage.setItem(
-            "timeInterval",
-            JSON.stringify(globalState.timeInterval)
-        );
+        localStorage.setItem("timeInterval.max", globalState.timeInterval.max);
         return {type: "max/change", payload: Object.assign({}, globalState.timeInterval)};
     }
 }
 
 /*-
-changeMin :: (number, boolean) -> {type: string, payload: GlobalTimeInterval}*/
+changeMin :: (number, boolean) -> {type: string, payload: GlobalTimeInterval} */
 function changeMin(number, add) {
     const value = (
         add !== undefined
@@ -48,10 +45,7 @@ function changeMin(number, add) {
     );
     if (isInsideInterval(timeIntervalLimits.MIN, globalState.timeInterval.max, value)) {
         globalState.timeInterval.min = value;
-        localStorage.setItem(
-            "timeInterval",
-            JSON.stringify(globalState.timeInterval)
-        );
+        localStorage.setItem("timeInterval.min", globalState.timeInterval.min);
         return {type: "min/change", payload: Object.assign({}, globalState.timeInterval)};
     }
 }
@@ -60,7 +54,8 @@ const timeActions = Object.freeze({
     reset() {
         const defaultObj = Object.assign({}, globalDefault.timeInterval);
         globalState.timeInterval = defaultObj;
-        localStorage.setItem("timeInterval", JSON.stringify(defaultObj));
+        localStorage.setItem("timeInterval.max", globalState.timeInterval.max);
+        localStorage.setItem("timeInterval.min", globalState.timeInterval.min);
         return {type: "reset", payload: defaultObj};
     },
     addToMax(number) {

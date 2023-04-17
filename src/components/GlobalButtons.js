@@ -23,16 +23,22 @@ import {
 
 import "./GlobalButtons.scss";
 
-function handelClick (e) {
-    e.currentTarget.value = "";
-}
 
 let _addFiles = undefinedFunction;
 let _audioListDispatcher = undefinedFunction;
 let _sumOfAllAudiosEventsDispatcher = undefinedFunction;
 
-function handelOnInput(e) {
+function handelAddFilesClick (e) {
+    e.currentTarget.value = "";
+}
+
+function handelAddFilesInput(e) {
     _addFiles(e.currentTarget.files);
+}
+
+function handelAddFilesButton(e) {
+    const input = e.currentTarget.firstElementChild;
+    input.click();
 }
 
 function handleClearOnClick() {
@@ -43,25 +49,26 @@ function handleClearOnClick() {
 function AddFilesButton() {
     _addFiles = useAddFiles();
     return (
-        <label
-            className="t-button fileInput-contain flex-row align-c justify-c"
-            role="button"
-            aria-pressed="false"
+        <button
             title="add audio files"
+            className="t-button fileInput-contain flex-row align-c justify-c"
+            type="button"
+            onClick={handelAddFilesButton}
         >
-            <input className="fileInput"
+            <input
+                className="display-none"
                 type="file"
-                onInput={handelOnInput}
-                onClick={handelClick}
-                name="file"
                 accept="audio/*"
+                onClick={handelAddFilesClick}
+                onInput={handelAddFilesInput}
                 multiple
             />
             <div className="fileInput-view flex-row align-c justify-c">
                 <IconMusicFile className="icon-text flex-row align-c justify-c"/>
                 <h4 className="fs-text">Add</h4>
             </div>
-        </label>
+
+        </button>
     );
 }
 

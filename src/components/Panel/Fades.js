@@ -36,7 +36,7 @@ function Fades({MAX}) {
     return (
         <PanelConfigContainer
             title="Fades"
-            description="Set the fadeIn and fadeOut values for all audios."
+            description="Change the fadeIn and fadeOut values for all audios."
             ResetButtonEnabled
             reset={reset}
         >

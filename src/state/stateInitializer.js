@@ -1,4 +1,10 @@
-import {globalDefault} from "./globalDefault.js";
+import globalState from "./globalState.js";
+import {
+    globalDefault,
+    globalDefaultKeys,
+    globalDefaultObjectsKeys
+} from "./globalDefault.js";
+
 import {isInsideInterval} from "../utils.js";
 import {
     delayLimits,
@@ -10,13 +16,18 @@ import {
 } from "./limits.js";
 
 /*-
-MaybeDelay :: Maybe<GlobalDelay>
+SomeDelay :: some<GlobalDelay>
+SomeFilter :: some<GlobalFilter>
+SomePanner :: some<GlobalPanner>
+SomePlaybackRate :: Maybe<GlobalPlaybackRate>
+SomeRandomPoint :: some<GlobalRandomPoint>
+SomeTimeInterval :: some<GlobalTimeInterval>
 */
+
+// Time values are in seconds
+// Feedback is a gain value
 /*-
--- Time values are in seconds
--- Feedback is a gain value
-createGlobalDelay :: (MaybeDelay | undefined) -> GlobalDelay
-*/
+createGlobalDelay :: (maybe<SomeDelay>) -> GlobalDelay */
 function createGlobalDelay(spec) {
     if (typeof spec === "object") {
         const limits = delayLimits;
@@ -63,23 +74,36 @@ function createGlobalDelay(spec) {
     }
 }
 
+
 /*-
-MaybeFilter :: Maybe<GlobalFilter>
-*/
-/*-
-createGlobalFilter :: (MaybeFilter | undefined) -> GlobalFilter
-*/
+createGlobalFilter :: (maybe<SomeFilter>) -> GlobalFilter */
 function createGlobalFilter(spec) {
     if (typeof spec === "object") {
         const limits = filterLimits;
-        let arr = [];
-        if (Array.isArray(spec?.types)) {
-            arr = spec.types.filter((el) => (/lowpass|highpass|bandpass|notch/).test(el));
-        }
         const areAllDisable = (
             spec?.areAllDisable !== undefined
             ? spec.areAllDisable
             : globalDefault.filter.areAllDisable
+        );
+        const bandpass = (
+            spec?.bandpass !== undefined
+            ? spec.bandpass
+            : globalDefault.filter.bandpass
+        );
+        const highpass = (
+            spec?.highpass !== undefined
+            ? spec.highpass
+            : globalDefault.filter.highpass
+        );
+        const lowpass = (
+            spec?.lowpass !== undefined
+            ? spec.lowpass
+            : globalDefault.filter.lowpass
+        );
+        const notch = (
+            spec?.notch !== undefined
+            ? spec.notch
+            : globalDefault.filter.notch
         );
         const frequencyMax = (
             isInsideInterval(limits.FREQ_MIN, limits.FREQ_MAX, spec?.frequencyMax)
@@ -101,37 +125,36 @@ function createGlobalFilter(spec) {
             ? spec.qMin
             : globalDefault.filter.qMin
         );
-        const types = (
-            arr.length === 0
-            ? globalDefault.filter.types
-            : arr
-        );
         return Object.seal({
             areAllDisable,
+            bandpass,
             frequencyMax,
             frequencyMin,
+            highpass,
+            lowpass,
+            notch,
             qMax,
             qMin,
-            types
+            types: Array(4)
         });
     } else {
         return Object.seal({
             areAllDisable: globalDefault.filter.areAllDisable,
+            bandpass: globalDefault.filter.bandpass,
             frequencyMin: globalDefault.filter.frequencyMin,
             frequencyMax: globalDefault.filter.frequencyMax,
+            highpass: globalDefault.filter.highpass,
+            lowpass: globalDefault.filter.lowpass,
+            notch: globalDefault.filter.notch,
             qMin: globalDefault.filter.qMin,
             qMax: globalDefault.filter.qMax,
-            types: globalDefault.filter.types
+            types: Array(4)
         });
     }
 }
 
 /*-
-MaybePanner :: Maybe<GlobalPanner>
-*/
-/*-
-createGlobalPanner :: (MaybePanner | undefined) -> GlobalPanner
-*/
+createGlobalPanner :: (maybe<SomePanner>) -> GlobalPanner */
 function createGlobalPanner(spec) {
     if (typeof spec === "object") {
         const limits = pannerLimits;
@@ -192,12 +215,9 @@ function createGlobalPanner(spec) {
     }
 }
 
+
 /*-
-MaybePlaybackRate :: Maybe<GlobalPlaybackRate>
-*/
-/*-
-createGlobalPlaybackRate :: (MaybePlaybackRate | undefined) -> GlobalPlaybackRate
-*/
+createGlobalPlaybackRate :: (maybe<SomePlaybackRate>) -> GlobalPlaybackRate */
 function createGlobalPlaybackRate(spec) {
     if (typeof spec === "object") {
         const limits = playbackRateLimits;
@@ -230,14 +250,9 @@ function createGlobalPlaybackRate(spec) {
     }
 }
 
-
+// Values are in miliseconds
 /*-
-MaybeTimeInterval :: Maybe<GlobalTimeInterval>
-*/
-/*-
--- Values are in miliseconds
-createGlobalTimeInteval :: (MaybeTimeInterval | undefined) -> GlobalTimeInterval
-*/
+createGlobalTimeInteval :: (maybe<SomeTimeInterval>) -> GlobalTimeInterval */
 function createGlobalTimeInteval(spec) {
     if (typeof spec === "object") {
         const limits = timeIntervalLimits;
@@ -263,23 +278,21 @@ function createGlobalTimeInteval(spec) {
     }
 }
 
+
 /*-
-MaybeGlobalRandomPoint :: Maybe<GlobalRandomPoint>
-*/
-/*-
-createGlobalRandomPoint :: (boolean | undefined) -> boolean
-*/
+createGlobalRandomPoint :: ({areAllDisable: boolean}, boolean) -> boolean */
 function createGlobalRandomPoint(spec, defaultVal) {
-    return (
-        typeof spec === "object"
-        ? spec
-        : defaultVal
-    );
+    return {
+        areAllDisable: (
+            spec?.areAllDisable !== undefined
+            ? spec.areAllDisable
+            : defaultVal
+        )
+    };
 }
 
 /*-
-createGlobalFadeValue :: (number | undefined) -> number
-*/
+createGlobalFadeValue :: (maybe<number>) -> number */
 function createGlobalFadeValue(num, defaultNum) {
     const limits = fadeLimits;
     return (
@@ -290,9 +303,8 @@ function createGlobalFadeValue(num, defaultNum) {
 }
 
 /*-
-initializeGlobalState :: (GlobalState, LocalStorageState) -> undefined
-*/
-function initializeGlobalState(globalState, localStorageState) {
+initializeGlobalState :: (GlobalState, LocalStorageState) -> undefined */
+function initializeGlobalState(localStorageState) {
     globalState.delay = createGlobalDelay(localStorageState?.delay);
     globalState.fadeIn = createGlobalFadeValue(
         localStorageState?.fadeIn,
@@ -310,13 +322,13 @@ function initializeGlobalState(globalState, localStorageState) {
     globalState.randomEndPoint = (
         createGlobalRandomPoint(
             localStorageState?.randomEndPoint,
-            globalDefault.randomEndPoint
+            globalDefault.randomEndPoint.areAllDisable
         )
     );
     globalState.randomStartPoint = (
         createGlobalRandomPoint(
             localStorageState?.randomStartPoint,
-            globalDefault.randomStartPoint
+            globalDefault.randomStartPoint.areAllDisable
         )
     );
     globalState.timeInterval = (
@@ -324,4 +336,126 @@ function initializeGlobalState(globalState, localStorageState) {
     );
 }
 
-export default initializeGlobalState;
+
+/*-
+verifyAppVersion :: string -> boolean */
+function verifyAppVersion(version) {
+    return (
+        typeof version === "string"
+        && localStorage.getItem("version") !== version
+        ? (
+            localStorage.clear(),
+            localStorage.setItem("version", version),
+            true
+        )
+        : false
+    );
+}
+
+/*-
+initializeLocalStorage :: () -> undefined */
+function initializeLocalStorage() {
+    let n = 0;
+    let m = 0;
+    let key = "";
+    let innerKey = "";
+    let localStorageKey = "";
+
+    while (n < globalDefaultKeys.length) {
+        key = globalDefaultKeys[n];
+        localStorageKey = key;
+        if (globalDefaultObjectsKeys[key] !== undefined) {
+            m = 0;
+            while (m < globalDefaultObjectsKeys[key].length) {
+                innerKey = globalDefaultObjectsKeys[key][m];
+                localStorageKey =  key + "." + innerKey;
+                localStorage.setItem(localStorageKey, globalDefault[key][innerKey]);
+                m += 1;
+            }
+        } else {
+            localStorage.setItem(localStorageKey, globalDefault[key]);
+        }
+        n += 1;
+    }
+}
+
+/*-
+stateFromLocalStorage :: () -> some<localStorageState> */
+function stateFromLocalStorage() {
+    const state = {};
+    let n = 0;
+    let m = 0;
+    let key = "";
+    let innerKey = "";
+    let localStorageKey = "";
+
+    while (n < globalDefaultKeys.length) {
+        key = globalDefaultKeys[n];
+        localStorageKey = key;
+        if (globalDefaultObjectsKeys[key] !== undefined) {
+            state[key] = {};
+            m = 0;
+            while (m < globalDefaultObjectsKeys[key].length) {
+                innerKey = globalDefaultObjectsKeys[key][m];
+                localStorageKey =  key + "." + innerKey;
+                state[key][innerKey] = JSON.parse(localStorage[localStorageKey]);
+                m += 1;
+            }
+        } else {
+            state[key] = JSON.parse(localStorage[key]);
+        }
+        n += 1;
+    }
+    return state;
+}
+
+/*-
+handleStateInitializers :: (string) -> undefined */
+function handleStateInitializers(version) {
+    const hasNotLocalStorage = verifyAppVersion(version);
+    if (hasNotLocalStorage) {
+        initializeLocalStorage();
+        initializeGlobalState();
+    } else {
+        initializeGlobalState(
+            stateFromLocalStorage()
+        );
+    }
+}
+
+/*-
+setInitialAudioContext :: () -> undefined */
+function setInitialAudioContext() {
+    const AudioContextObject = (
+        window?.AudioContext !== undefined
+        ? window.AudioContext
+        : window.webkitAudioContext
+    );
+    globalState.audioContext = new AudioContextObject({
+        latencyHint: "playback",
+        sampleRate: 44100
+    });
+
+    const audioContext = globalState.audioContext;
+    //listener position
+    if (audioContext.listener.positionX) {
+        audioContext.listener.positionX.value = 0;
+        audioContext.listener.positionY.value = 0;
+        audioContext.listener.positionZ.value = 1;
+        audioContext.listener.forwardZ.value = -5;
+    } else {
+        audioContext.listener.setPosition(0, 0, 1);
+        audioContext.listener.setOrientation(0, 0, -5, 0 ,1, 0);
+    }
+
+    //Create the first instance of panningModel "HRTF"
+    const PANNER = audioContext.createPanner();
+    PANNER.panningModel = "HRTF";
+
+    globalState.audioContext.resume();
+}
+
+export {
+    handleStateInitializers,
+    setInitialAudioContext
+};

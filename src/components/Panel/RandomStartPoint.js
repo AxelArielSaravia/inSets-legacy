@@ -28,7 +28,7 @@ function RandomStartPoint() {
     return (
         <PanelConfigContainer
             title="Random Start Point"
-            description="Enable and disable the random start point effect."
+            description="Enable and disable the random cut effect for the start point."
             DisableAllButtonEnabled
             changeDisable={changeDisable}
             disableValue={allRandomStartPointsAreDisabled.value}

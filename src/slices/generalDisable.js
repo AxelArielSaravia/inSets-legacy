@@ -128,7 +128,7 @@ function generalDisableAction(type, effect, scope) {
         && effects[effect] !== undefined
     ) {
         globalState[effect].areAllDisable = type === "disable";
-        localStorage.setItem(effect, JSON.stringify(globalState[effect]));
+        localStorage.setItem(`${effect}.areAllDisable`, globalState[effect].areAllDisable);
         return (
             type === "enable" && scopes[scope] !== undefined
             ? staticActions[`${type}_${effect}_${scope}`]

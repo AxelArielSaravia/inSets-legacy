@@ -35,34 +35,38 @@ const delayActions = Object.freeze({
         const resetObject = Object.assign({}, globalDefault.delay);
         resetObject.areAllDisable = globalState.delay.areAllDisable;
         globalState.delay = resetObject;
-        localStorage.setItem("delay", JSON.stringify(resetObject));
+        localStorage.setItem("delay.areAllDisable", globalState.delay.areAllDisable);
+        localStorage.setItem("delay.timeMax", globalState.delay.timeMax);
+        localStorage.setItem("delay.timeMin", globalState.delay.timeMin);
+        localStorage.setItem("delay.feedbackMax", globalState.delay.feedbackMax);
+        localStorage.setItem("delay.feedbackMin", globalState.delay.feedbackMin);
         return {type: "reset", payload: resetObject};
     },
     changeTimeMax(number) {
         if (isInsideInterval(globalState.delay.timeMin, delayLimits.TIME_MAX, number)) {
             globalState.delay.timeMax = number;
-            localStorage.setItem("delay", JSON.stringify(globalState.delay));
+            localStorage.setItem("delay.timeMax", number);
             return {type: "time/changeMax", payload: Object.assign({}, globalState.delay)};
         }
     },
     changeTimeMin(number) {
         if (isInsideInterval(delayLimits.TIME_MIN, globalState.delay.timeMax, number)) {
             globalState.delay.timeMin = number;
-            localStorage.setItem("delay", JSON.stringify(globalState.delay));
+            localStorage.setItem("delay.timeMin", number);
             return {type: "time/changeMin", payload: Object.assign({}, globalState.delay)};
         }
     },
     changeFeedbackMax(number) {
         if (isInsideInterval( globalState.delay.feedbackMin, delayLimits.FBACK_MAX, number)) {
             globalState.delay.feedbackMax = number;
-            localStorage.setItem("delay", JSON.stringify(globalState.delay));
+            localStorage.setItem("delay.feedbackMax", number);
             return {type: "feedback/changeMax", payload: Object.assign({}, globalState.delay)};
         }
     },
     changeFeedbackMin(number) {
         if (isInsideInterval(delayLimits.FBACK_MIN,  globalState.delay.feedbackMax, number)) {
             globalState.delay.feedbackMin = number;
-            localStorage.setItem("delay", JSON.stringify(globalState.delay));
+            localStorage.setItem("delay.feedbackMin", number);
             return {type: "feedback/changeMin", payload: Object.assign({}, globalState.delay)};
         }
     },

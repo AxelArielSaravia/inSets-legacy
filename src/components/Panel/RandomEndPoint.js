@@ -27,7 +27,7 @@ function RandomEndPoint() {
     return (
         <PanelConfigContainer
             title="Random End Point"
-            description="Enable and disable the random end point effect."
+            description="Enable and disable the random cut effect for the end point."
             DisableAllButtonEnabled
             changeDisable={changeDisable}
             disableValue={allRandomEndPointsAreDisabled.value}

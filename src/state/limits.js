@@ -15,9 +15,7 @@ const filterLimits = Object.freeze({
     FREQ_MIN: 0,
     Q_MAX: 36,
     Q_MIN: 0,
-    TYPES: Object.freeze([
-        "lowpass", "highpass", "bandpass", "notch"
-    ])
+    TYPES: ["bandpass", "highpass", "lowpass", "notch"]
 });
 
 const pannerLimits = Object.freeze({

@@ -50,7 +50,7 @@ function Sets() {
     return (
         <PanelConfigContainer
             title="Audios Sets"
-            description="This represent the probability values of audios sets length for the next execution. The maximum length of a set is 15. The default value is 1"
+            description="Here are the probability values of audios sets sizes for the executions. The maximum size of a set that can be executed is 15."
             ResetButtonEnabled
             reset={reset}
         >

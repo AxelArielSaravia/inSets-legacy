@@ -1,8 +1,6 @@
 import {
     useReducer,
     useContext,
-    useState,
-    useEffect
 } from "react";
 
 import {filterReducer, filterActions} from "../../slices/filter.js";
@@ -22,57 +20,7 @@ import PanelConfigContainer from "./PanelConfigContainer.js";
 import PanelConfigChild from "./PanelConfigChild.js";
 import PanelInterval from "./PanelInterval.js";
 
-function FilterTypeButton({setTypes, types, value}) {
-    const index = types.indexOf(value);
-    const [isDisable, setIsDisable] = useState(index === -1);
-
-    useEffect(function () {
-        const i = types.indexOf(value);
-        setIsDisable(() => i === -1);
-    }, [types, value]);
-
-
-    const handleOnClick = function () {
-        const arr = [...types];
-        const i = types.indexOf(value);
-        if (isDisable) {
-            if (i === -1) {
-                arr.push(value);
-            }
-            setIsDisable(() => false);
-        } else if (arr.length > 1) {
-            arr.splice(i, 1);
-            setIsDisable(() => true);
-        }
-        setTypes(arr);
-    };
-
-    return (
-        <Button
-            className={isDisable ? "inactive" : ""}
-            onClick={handleOnClick}
-        >
-            <p className="fs-text">{value}</p>
-        </Button>
-    );
-}
-
-function TypesListMapFn(el) {
-    return (
-        <div key={"filter_type-" + el} className="p-2">
-            <FilterTypeButton
-                value={el}
-                types={this.types}
-                setTypes={this.typesChange}
-            />
-        </div>
-    );
-}
-
-function TypesList(props) {
-    const list = props?.list;
-    return list.map(TypesListMapFn, props);
-}
+const {FREQ_MAX, Q_MAX} = filterLimits;
 
 let _generalDisableDispatch = undefinedFunction;
 let _filterDispatch = undefinedFunction;
@@ -108,15 +56,27 @@ function qMinOnChange(val) {
         filterActions.changeMinQ(Number(val))
     );
 }
-function typesChange(arr) {
-    _filterDispatch(filterActions.changeTypes(arr));
+function changeType(val) {
+    _filterDispatch(filterActions.changeType(val));
 }
 
-function Filter({
-    FREQ_MAX,
-    Q_MAX,
-    TYPES
-}) {
+
+function Type({isDisable, type, canBeDisable}) {
+    return (
+        <div className="p-2">
+            <Button
+                className={canBeDisable && isDisable ? "inactive" : ""}
+                value={type}
+                onClick={changeType}
+            >
+                <p className="fs-text">{type}</p>
+            </Button>
+
+        </div>
+    );
+}
+
+function Filter() {
     const [{
         allFiltersAreDisabled
     }, generalDisableDispatch] = useContext(GeneralDisableContext);
@@ -125,9 +85,12 @@ function Filter({
         frequencyMin,
         qMax,
         qMin,
-        types
+        bandpass,
+        highpass,
+        lowpass,
+        notch
     },filterDispatch] = useReducer(filterReducer, createFilterInitialState());
-
+    const canBeDisabled = !(bandpass && highpass && lowpass && notch);
     _filterDispatch = filterDispatch;
     _generalDisableDispatch = generalDisableDispatch;
 
@@ -164,26 +127,15 @@ function Filter({
             />
             <PanelConfigChild title="filter types selected:">
                 <div className="flex-row flex-wrap justify- align-c">
-                    <TypesList
-                        types={types}
-                        typesChange={typesChange}
-                        list={TYPES}
-                    />
+                    <Type isDisable={highpass} canBeDisable={canBeDisabled} type="highpass"/>
+                    <Type isDisable={lowpass} canBeDisable={canBeDisabled} type="lowpass"/>
+                    <Type isDisable={bandpass} canBeDisable={canBeDisabled} type="bandpass"/>
+                    <Type isDisable={notch} canBeDisable={canBeDisabled}type="notch"/>
                 </div>
             </PanelConfigChild>
         </PanelConfigContainer>
     );
 }
 
-function ContainFilter() {
-    const {TYPES, FREQ_MAX, Q_MAX} = filterLimits;
-    return (
-        <Filter
-            TYPES={TYPES}
-            FREQ_MAX={FREQ_MAX}
-            Q_MAX={Q_MAX}
-        />
-    );
-}
 
-export default ContainFilter;
+export default Filter;

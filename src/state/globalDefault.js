@@ -20,7 +20,10 @@ const globalDefault = Object.freeze({
         frequencyMin: 40,
         qMax: 36,
         qMin: 0,
-        types: ["lowpass", "highpass", "bandpass", "notch"]
+        bandpass: false,
+        highpass: false,
+        lowpass: false,
+        notch: false
     }),
     panner: Object.freeze({
         areAllDisable: false,
@@ -56,7 +59,47 @@ const globalDefaultKeys = [
     "timeInterval"
 ];
 
+const globalDefaultObjectsKeys = {
+    "delay": [
+        "areAllDisable",
+        "feedbackMax",
+        "feedbackMin",
+        "timeMax",
+        "timeMin"
+    ],
+    "filter": [
+        "areAllDisable",
+        "frequencyMax",
+        "frequencyMin",
+        "qMax",
+        "qMin",
+        "bandpass",
+        "highpass",
+        "lowpass",
+        "notch"
+    ],
+    "panner": [
+        "areAllDisable",
+        "xMax",
+        "xMin",
+        "yMax",
+        "yMin",
+        "zMax",
+        "zMin"
+    ],
+    "playbackRate": [
+        "areAllDisable",
+        "max",
+        "min"
+    ],
+    "randomEndPoint": ["areAllDisable"],
+    "randomStartPoint": ["areAllDisable"],
+    "timeInterval": ["max", "min"]
+};
+
+
 export {
     globalDefault,
-    globalDefaultKeys
+    globalDefaultKeys,
+    globalDefaultObjectsKeys
 };

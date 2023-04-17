@@ -9,16 +9,19 @@ import {createId} from "../utils.js";
 import {audioListActions} from "../slices/audioList.js";
 import {appActions} from "../slices/app.js";
 
+function forEachAudio(audio, id) {
+    stop(id);
+}
 /*-
-deleteAll: audioListDispatcher -> undefined; */
+deleteAll :: audioListDispatcher -> undefined; */
 function deleteAll(audioListDispatcher) {
     audioListDispatcher(audioListActions.clear());
-    globalState.audioList.forEach((_, id) => stop(id));
+    globalState.audioList.forEach(forEachAudio);
     globalState.audioList = new Map();
 }
 
 /*-
-startApp: appDispatcher -> undefined */
+startApp :: appDispatcher -> undefined */
 function startApp(appDispatcher) {
     globalState.startedId = createId();
     //First play
@@ -31,7 +34,7 @@ function startApp(appDispatcher) {
 }
 
 /*-
-stopApp: audioDispatcher -> undefined */
+stopApp :: audioDispatcher -> undefined */
 function stopApp(audioDispatcher) {
     globalState.audioList.forEach(function (audioState) {
         if (audioState.isPlaying) {

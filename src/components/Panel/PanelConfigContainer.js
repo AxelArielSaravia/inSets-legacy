@@ -64,17 +64,14 @@ function DisableAllButton({
         : `disable all ${title}s`
     );
 
-    function onClick() {
-        changeDisable(disableValue);
-    }
-
     return (
         <div className="p-5">
             <div className="flex-row align-c justify-c p-10">
                 <p className="fs-text p-5">disable all:</p>
                 <Button
                     title={ButtonTitle}
-                    onClick={onClick}
+                    onClick={changeDisable}
+                    value={disableValue}
                 >
                     <p className="fs-text-s text-bold">
                         {disableValue ? "true" : "false"}

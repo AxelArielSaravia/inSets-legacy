@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import {
     handleStateInitializers,
     setInitialAudioContext
-} from "./stateInitializer.js";
+} from "./state/stateInitializer.js";
 
 import App from "./components/App.js";
 
@@ -28,7 +28,7 @@ window.addEventListener("DOMContentLoaded", function () {
     const buttonContainer = document.getElementById("button-container");
 
     /* INIT STATE */
-    handleStateInitializers("v0.3.6");
+    handleStateInitializers("v0.3.8");
 
     if (hasAudioContext()) {
         const startButton = document.createElement("button");
