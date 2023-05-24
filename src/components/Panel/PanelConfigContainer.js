@@ -1,3 +1,6 @@
+//@ts-check
+import React from "react";
+
 import Button from "../Button.js";
 import Show from "../Show.js";
 
@@ -7,6 +10,8 @@ const titleStyle = {
     marginBottom: "10px"
 };
 
+/**
+@type {(porps: {title?: string}) => JSX.Element} */
 function Title({title}) {
     return (
         <Show is={title !== undefined}>
@@ -17,6 +22,8 @@ function Title({title}) {
     );
 }
 
+/**
+@type {(porps: {description?: string}) => JSX.Element} */
 function Description({description}) {
     return (
         <Show is={description !== undefined}>
@@ -29,13 +36,20 @@ function Description({description}) {
     );
 }
 
+
+/**
+@type {(porps: {
+    enabled: boolean,
+    title: string,
+    reset?: (v?: any) => void
+}) => JSX.Element | null} */
 function ResetButton({
     enabled,
     title,
     reset
 }) {
     if (!enabled) {
-        return;
+        return null;
     }
     return (
         <div className="flex-column align-c justify-c p-5">
@@ -49,6 +63,13 @@ function ResetButton({
     );
 }
 
+/**
+@type {(porps: {
+    enabled: boolean,
+    changeDisable?: (v?: any) => void,
+    disableValue?: boolean,
+    title?: string
+}) => JSX.Element | null} */
 function DisableAllButton({
     enabled,
     changeDisable,
@@ -56,7 +77,7 @@ function DisableAllButton({
     title
 }) {
     if (!enabled) {
-        return;
+        return null;
     }
     const ButtonTitle = (
         disableValue
@@ -82,6 +103,17 @@ function DisableAllButton({
     );
 }
 
+/**
+@type {(props: {
+    DisableAllButtonEnabled?: boolean,
+    ResetButtonEnabled?: boolean,
+    title: string,
+    description?: string,
+    changeDisable?: (v?: any) => void,
+    disableValue?: boolean,
+    reset?: (v?: any) => void,
+    children: JSX.Element | Array<JSX.Element>
+}) => JSX.Element} */
 function PanelConfigContainer({
     DisableAllButtonEnabled = false,
     ResetButtonEnabled = false,

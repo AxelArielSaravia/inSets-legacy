@@ -1,9 +1,19 @@
+//@ts-check
 import globalState from "../state/globalState.js";
-import {random} from "../utils.js";
+import dispatch from "../state/dispatch.js";
 import {appActions} from "../slices/app.js";
-import {startApp} from "./app.js";
+import {random} from "../utils.js";
 
+/**
+@type {(
+    arrOfKeys: Array<string>,
+    arrOfSums: Array<number>,
+    sum: number,
+    i: number,
+    w: number
+) => {[key: string]: true}} */
 function chooseAudios(arrOfKeys, arrOfSums, sum, i, w) {
+    /**@type {{[key: string]: true}} */
     const set = {};
     let arrOfSums_length = arrOfSums.length;
     while (i < w) {
@@ -49,13 +59,12 @@ function chooseAudios(arrOfKeys, arrOfSums, sum, i, w) {
     return set;
 }
 
-/*-
-randomSetsExecution: undefined -> undefined || {state: boolean, audios: Object<string, true>}
-*/
+/**
+@type {() => boolean} */
 function randomSetsExecution() {
 //Do not select any sound
     if (globalState.eventsForEachSet.arrOfEvents.length < 2) {
-        return;
+        return false;
     }
 //Calculate the cardinal of set execution
 //its use practical Vose's Alias Method
@@ -107,80 +116,80 @@ function randomSetsExecution() {
         );
     }
 
-    console.log("next set execution size: ", cardinal);//DEBUGGER
+    console.info("Set execution size:", cardinal);//DEBUGGER
 
 //Do not select any sound
     if (cardinal <= 0) {
-        return;
+        return false;
     }
 
 //Select all audios to execute
     if (cardinal === globalState.audioList.size) {
         const executeSet = {};
-        globalState.audioList.forEach(function fe(_, key) {
+        for (const [key] of globalState.audioList) {
             executeSet[key] = true;
-        });
-        return {
-            state: true, //include
-            audios: executeSet
-        };
+        }
+        globalState.generativeState.audiosSet = executeSet;
+        globalState.generativeState.playAudiosFromSet = true;
+        return true;
     }
 
     {
 //Create a new set execution
-        const audio_list = globalState.audioList;
-        const size = audio_list.size;
-        const arrOfKeys = [];
-        const arrOfSums = [];
+        const audioList = globalState.audioList;
+        const size = audioList.size;
+        const arrOfKeys = Array(size);
+        const arrOfSums = Array(size);
         let sum = 0;
-        let i_key = -1;
+        let i_key = 0;
 
         if (cardinal <= Math.floor(size / 2)) {
-            //initialize
-            audio_list.forEach(function fe(audio, key) {
-                arrOfKeys.push(key);
-                arrOfSums.push([i_key += 1, sum += audio.audioEvents]);
-            });
-            return {
-                state: true, //include
-                audios: chooseAudios(arrOfKeys, arrOfSums, sum, 0, cardinal)
-            };
+    //initialize
+            for (let [k, audio] of audioList) {
+                sum += audio.audioEvents;
+                arrOfKeys[i_key] = k;
+                arrOfSums[i_key] = [i_key, sum];
+                i_key += 1;
+            }
+            globalState.generativeState.playAudiosFromSet = true;
+            globalState.generativeState.audiosSet = chooseAudios(arrOfKeys, arrOfSums, sum, 0, cardinal);
         } else {
-            //initialize
+    //initialize
             const sumOfAllAudiosEvents = globalState.sumOfAllAudiosEvents;
-            audio_list.forEach(function fe(el, key) {
-                arrOfKeys.push(key);
-                arrOfSums.push([i_key += 1, sum += sumOfAllAudiosEvents - el.audioEvents]);
-            });
-
-            return {
-                state: false, //exclude
-                audios: chooseAudios(arrOfKeys, arrOfSums, sum, cardinal, size)
-            };
+            for (let [k, audio] of audioList) {
+                sum += sumOfAllAudiosEvents - audio.audioEvents;
+                arrOfKeys[i_key] = k;
+                arrOfSums[i_key] = [i_key, sum];
+                i_key += 1;
+            }
+            globalState.generativeState.playAudiosFromSet = false;
+            globalState.generativeState.audiosSet = chooseAudios(arrOfKeys, arrOfSums, sum, cardinal, size);
         }
+        return true;
     }
 }
 
-function randomTimeExecutionCallback(STARTED_ID, set, appDispatcher) {
-    if (set !== undefined) {
-        appDispatcher(appActions.newExecution(set));
+/**
+@type {(STARTED_ID: string, execute: boolean) => void} */
+function randomTimeExecutionCallback(STARTED_ID, execute) {
+    if (execute !== undefined) {
+        dispatch.app(appActions.newExecution());
     }
-    randomTimeExecution(appDispatcher, STARTED_ID);
+    randomTimeExecution(STARTED_ID);
 }
 
-/*-
-randomTimeExecution: (appDispatcher, string) -> undefined;
-*/
-function randomTimeExecution(appDispatcher, STARTED_ID) {
+/**
+@type {(STARTED_ID: string) => void} */
+function randomTimeExecution(STARTED_ID) {
     if (globalState.isStarted
         && globalState.startedId === STARTED_ID
     ) {
         const n = random(globalState.timeInterval.min, globalState.timeInterval.max) * 100;
-        console.log("next execution:", n + " ms");//DEBUGGER
-        const set = randomSetsExecution();
-        setTimeout(randomTimeExecutionCallback, n, STARTED_ID, set, appDispatcher);
+        console.info("Next execution:", n + "ms");
+        const execute = randomSetsExecution();
+        setTimeout(randomTimeExecutionCallback, n, STARTED_ID, execute);
     } else {
-        console.log("END");
+        console.info("END");
     }
 }
 

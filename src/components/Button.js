@@ -1,12 +1,18 @@
+//@ts-check
+import React from "react";
+/**
+@type {(porps: {
+    className?: string,
+    value?: any,
+    title?: string,
+    onClick?: (v?: any) => void,
+    children?: Array<JSX.Element> | JSX.Element
+}) => JSX.Element} */
 export default function ToolButton({
     className = "",
     value,
     title,
     onClick,
-    onPointerDown,
-    onPointerUp,
-    onPointerLeave,
-    onKeyDown,
     children
 }) {
     return (
@@ -14,11 +20,7 @@ export default function ToolButton({
             title={title}
             className={"t-button " + className}
             type="button"
-            onClick={() => onClick(value)}
-            onPointerDown={onPointerDown}
-            onPointerUp={onPointerUp}
-            onPointerLeave={onPointerLeave}
-            onKeyDown={onKeyDown}
+            onClick={onClick !== undefined ? () => onClick(value) : undefined}
         >
             {children}
         </button>

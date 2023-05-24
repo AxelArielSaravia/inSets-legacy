@@ -1,12 +1,12 @@
+// @ts-check
 const EmptyObject = {};
 
+const EventOnce = {once: true};
 
-
-/*-
-createId :: undefined -> string */
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_";
+/** @type {() => string }*/
 function createId() {
-    let id = Date.now() + "";
+    let id = Date.now().toString();
     for (let i = 0; i < 8; i += 1) {
         const char = CHARS[Math.floor(Math.random() * CHARS.length)];
         const position = Math.floor(Math.random() * id.length);
@@ -25,47 +25,24 @@ function createId() {
     return id;
 }
 
-/*-
-getRandomColor :: undefined -> string */
+/**
+@type {() => string} */
 function getRandomColor() {
     return `rgb(${random(32, 141)},${random(32, 141)},${random(32, 141)})`;
 }
 
-/*-
-@desc (
-    Looks if a number exist in a close interval
-)
-isInsideInterval :: (number, number, number) -> boolean */
-function isInsideInterval(min, max, val) {
-    return (
-        (typeof min !== "number"
-         || typeof max !== "number"
-         || typeof val !== "number"
-        )
-        ? false
-        : min <= val && val <= max
-    );
+/**
+@type {(min: number, max: number) => number}*/
+function random(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-/*-
-random :: number, number -> number */
-function random(min, max) {
-    try {
-        if (typeof min !== "number" || typeof max !== "number") {
-            new Error("the arguments in random function must be numbers");
-        }
-        return Math.floor(Math.random() * (max - min + 1) + min);
-    } catch(err) {
-        console.error(err);
-        return NaN;
-    }
-}
+
 
 export {
     EmptyObject,
-
+    EventOnce,
     createId,
     getRandomColor,
-    isInsideInterval,
     random
 };

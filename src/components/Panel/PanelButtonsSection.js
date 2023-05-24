@@ -1,13 +1,13 @@
-import {useContext} from "react";
+//@ts-check
+import React from "react";
 
 import globalState from "../../state/globalState.js";
 import {globalDefaultKeys, globalDefaultObjectsKeys} from "../../state/globalDefault.js";
-
-import {GeneralDisableContext} from "../contexts/GeneralDisable.js";
+import dispatch from "../../state/dispatch.js";
 
 import {panelConfigActions} from "../../slices/panelConfig.js";
 import {generalDisableAction} from "../../slices/generalDisable.js";
-import {undefinedFunction} from "../utils.js";
+
 
 import Button from "../Button.js";
 
@@ -15,63 +15,68 @@ import "./PanelButtonsSection.scss";
 
 
 
-let _dispatch = undefinedFunction;
-let _generalDisableDispatch = undefinedFunction;
-
 function setsOnClick() {
-    _dispatch(panelConfigActions.changePanelToSets);
+    dispatch.panelConfig(panelConfigActions.changePanelToSets);
 }
 
 function timeOnClick() {
-    _dispatch(panelConfigActions.changePanelToTime);
+    dispatch.panelConfig(panelConfigActions.changePanelToTime);
 }
 
 function fadeTimeOnClick() {
-    _dispatch(panelConfigActions.changePanelToFades);
+    dispatch.panelConfig(panelConfigActions.changePanelToFades);
 }
 
 function pannerOnClick() {
-    _dispatch(panelConfigActions.changePanelToPanner);
+    dispatch.panelConfig(panelConfigActions.changePanelToPanner);
 }
 
 function filterOnClick() {
-    _dispatch(panelConfigActions.changePanelToFilter);
+    dispatch.panelConfig(panelConfigActions.changePanelToFilter);
 }
 
 function delayOnClick() {
-    _dispatch(panelConfigActions.changePanelToDelay);
+    dispatch.panelConfig(panelConfigActions.changePanelToDelay);
 }
 
 function playBackRateOnClick() {
-    _dispatch(panelConfigActions.changePanelToRate);
+    dispatch.panelConfig(panelConfigActions.changePanelToRate);
 }
 
 function randomStartPointOnClick() {
-    _dispatch(panelConfigActions.changePanelToRSP);
+    dispatch.panelConfig(panelConfigActions.changePanelToRSP);
 }
 
 function randomEndPointOnClick() {
-    _dispatch(panelConfigActions.changePanelToREP);
+    dispatch.panelConfig(panelConfigActions.changePanelToREP);
 }
 
+/**
+@type {React.MouseEventHandler<HTMLButtonElement>} */
 function exportJson(e) {
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(localStorage));
     const downloadAnchorNode = e.currentTarget.firstElementChild;
+    if (downloadAnchorNode === null) {
+        return;
+    }
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(localStorage));
     downloadAnchorNode.setAttribute("href",     dataStr);
     downloadAnchorNode.setAttribute("download", "inSets_configs.json");
     downloadAnchorNode.click();
-    _dispatch(panelConfigActions.closePanel);
+    dispatch.panelConfig(panelConfigActions.closePanel);
 }
 
-function importJsonClick (e) {
-    e.currentTarget.value = "";
-}
-
-function stateFromImportJSON(text) {
+/**
+@type {React.MouseEventHandler<HTMLInputElement>} */
+async function importJsonInput(e) {
+    if (e.currentTarget.files?.[0] === undefined) {
+        return;
+    }
+    const text = await e.currentTarget.files[0].text();
     const importText = JSON.parse(text);
     let n = 0;
     let m = 0;
-    let key = "";
+    /**@type {GlobalDefaultKeys} */
+    let key = "delay";
     let innerKey = "";
     let localStorageKey = "";
     while (n < globalDefaultKeys.length) {
@@ -87,8 +92,8 @@ function stateFromImportJSON(text) {
                 if(importText[localStorageKey] !== undefined) {
                     globalState[key][innerKey] = JSON.parse(importText[localStorageKey]);
                     localStorage[localStorageKey] = importText[localStorageKey];
-                    if (innerKey === "areAllDisable") {
-                        _generalDisableDispatch(generalDisableAction(
+                    if (key !== "fadeIn" && key !== "fadeOut" && key !== "timeInterval") {
+                        dispatch.generalDisable(generalDisableAction(
                             globalState[key][innerKey]? "disable": "enable",
                             key,
                             "global"
@@ -104,22 +109,26 @@ function stateFromImportJSON(text) {
         }
         n += 1;
     }
-    _dispatch(panelConfigActions.closePanel);
+    dispatch.panelConfig(panelConfigActions.closePanel);
 }
 
-function importJsonInput(e) {
-    if (e.currentTarget.files[0] !== undefined) {
-        e.currentTarget.files[0].text().then(stateFromImportJSON);
+/**
+@type {React.MouseEventHandler<HTMLInputElement>} */
+function importJsonClick (e) {
+    e.currentTarget.value = "";
+}
+
+/**
+@type {React.MouseEventHandler<HTMLButtonElement>} */
+function importJson(e) {
+    /**@type {(Element & HTMLElement) | null}*/
+    const input = e.currentTarget.firstElementChild;
+    if (input !== null) {
+        input.click();
     }
 }
 
-function importJson(e) {
-    const input = e.currentTarget.firstElementChild;
-    input.click();
-}
-
 function ImportButton() {
-    _generalDisableDispatch = useContext(GeneralDisableContext)[1];
     return (
         <div className="panel-button flex-row justify-c">
             <button
@@ -157,7 +166,13 @@ function ExportButton() {
     );
 }
 
-
+/**
+@type {(props: {
+    active: boolean,
+    onClickHandler: React.MouseEventHandler<HTMLButtonElement>,
+    text: string,
+    title: string,
+}) => JSX.Element} */
 function PanelButton({
     active = false,
     onClickHandler,
@@ -184,13 +199,17 @@ function PanelButton({
 
 const PanelButtons_className = "panel panel-buttons p-5 flex-column align-c";
 
+/**
+@type {(props: {
+    isPanelButtonsVisible: boolean,
+    isPanelConfigVisible: boolean,
+    panelSelected: "" | "DELAY" | "FILTER" | "PANNER" | "RATE" | "REP" | "RSP" | "SETS" | "TIME" | "FADES",
+}) => JSX.Element} */
 function PanelButtonsSection({
     isPanelButtonsVisible,
     isPanelConfigVisible,
     panelSelected,
-    dispatch
 }) {
-    _dispatch = dispatch;
     return (
         <div className={(
             !isPanelButtonsVisible

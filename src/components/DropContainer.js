@@ -1,11 +1,26 @@
-import {useCallback} from "react";
+//@ts-check
+import React from "react";
 
-import useAddFiles from "./hooks/useAddFiles.js";
+import addFiles from "../addFiles.js";
 
 import {IconMusicFile} from "./icons.js";
 
+/**
+@type {React.DragEventHandler<HTMLDivElement>} */
 function preventDefault(e) {
     e.preventDefault();
+}
+
+/**
+@type {React.DragEventHandler<HTMLDivElement>} */
+function handleFileDrop(e) {
+    e.preventDefault();
+    if (e.dataTransfer === null) {
+        console.warn("Warning: The dataTransfer of the Drop Event is null.");
+        return;
+    }
+    e.dataTransfer.dropEffect = "copy";
+    addFiles(e.dataTransfer.files);
 }
 
 function DropArea() {
@@ -22,14 +37,6 @@ function DropArea() {
 }
 
 function DropContainer() {
-    const addFiles = useAddFiles();
-
-    const handleFileDrop = useCallback(function(e) {
-        e.preventDefault();
-        e.dataTransfer.dropEffect = "copy";
-        addFiles(e.dataTransfer.files);
-    },[addFiles]);
-
     return (
         <div
             className="dropFile flex-column align-c justify-c"

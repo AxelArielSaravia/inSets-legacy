@@ -1,16 +1,12 @@
-import {
-    useReducer,
-    useContext,
-    useEffect
-} from "react";
+//@ts-check
+import React, {useReducer, useContext} from "react";
 
-import {AudioListContext} from "../contexts/AudioList.js";
+import {createSetsState} from "../../state/factory.js";
+import {emptyDispatch} from "../../state/dispatch.js";
 
 import {setsReducer, setsActions} from "../../slices/sets.js";
 
-import {createSetsInitialState} from "../initialState.js";
-
-import {fixPercent, undefinedFunction} from "../utils.js";
+import {AudioListContext} from "../contexts/AudioList.js";
 
 import AddAndSubtract from "../AddAndSubtract.js";
 import PanelConfigContainer from "./PanelConfigContainer.js";
@@ -18,34 +14,63 @@ import PanelConfigContainer from "./PanelConfigContainer.js";
 
 import "./Sets.scss";
 
-let _setsDispatcher = undefinedFunction;
+let _setsDispatcher = emptyDispatch;
 
 function reset() {
     _setsDispatcher(setsActions.reset());
 }
+
+/**
+@type {(i: number) => void} */
 function addEvent(i) {
     _setsDispatcher(setsActions.addEvent(i));
 }
+
+/**
+@type {(i: number) => void} */
 function removeEvent(i) {
     _setsDispatcher(setsActions.removeEvent(i));
 }
 
-function Sets() {
-    const [{completedAudioListSize}] = useContext(AudioListContext);
-    const [{
-        arrOfEvents,
-        sumOfAllEvents
-    }, setsDispatcher] = useReducer(setsReducer, createSetsInitialState());
+/**
+@type {(props: {arrOfEvents: Array<number>, sumOfAllEvents: number}) => Array<JSX.Element>} */
+function SetsChildren({arrOfEvents, sumOfAllEvents}) {
+    const children = [];
+    for (const i in arrOfEvents) {
+        const val = arrOfEvents[i];
+        children.push(
+            <div key={"set-" + i} className="set-container p-5">
+                <h4 className="fs-text">{i}</h4>
+                <AddAndSubtract
+                    addOnClick={addEvent}
+                    subtractOnClick={removeEvent}
+                    value={i}
+                    viewValue={val}
+                    horizontal
+                />
+                <p className="fs-text">
+                    {(sumOfAllEvents <= 0
+                        ? 0
+                        : ((val * 100) / sumOfAllEvents)
+                    ).toFixed(1) + "%"}
+                </p>
+            </div>
+        );
+    }
+    return children;
+}
 
+function Sets() {
+    const {completedAudioListSize} = useContext(AudioListContext);
+    const [{arrOfEvents, sumOfAllEvents}, setsDispatcher] = useReducer(setsReducer, createSetsState());
     _setsDispatcher = setsDispatcher;
 
-    useEffect(function () {
-        if (arrOfEvents.length < 15
-            && completedAudioListSize + 1 !== arrOfEvents.length
-        ) {
-            setsDispatcher(setsActions.update);
-        }
-    }, [completedAudioListSize, arrOfEvents]);
+    if (
+        arrOfEvents.length < 15
+        && completedAudioListSize + 1 !== arrOfEvents.length
+    ) {
+        setsDispatcher(setsActions.update());
+    }
 
     return (
         <PanelConfigContainer
@@ -67,24 +92,10 @@ function Sets() {
                         <h4 className="fs-text">Value</h4>
                         <h4 className="fs-text">Probability</h4>
                     </div>
-                    {arrOfEvents.map(function (val, i) {
-                        return (
-                            <div key={"set-" + i} className="set-container p-5">
-                                <h4 className="fs-text">{i}</h4>
-                                <AddAndSubtract
-                                    addOnClick={addEvent}
-                                    subtractOnClick={removeEvent}
-                                    value={i}
-                                    viewValue={val}
-                                    horizontal
-                                />
-                                <p className="fs-text">
-                                    {fixPercent(sumOfAllEvents, val, 100, 1) + "%"}
-                                </p>
-                            </div>
-
-                        );
-                    })}
+                    <SetsChildren
+                        arrOfEvents={arrOfEvents}
+                        sumOfAllEvents={sumOfAllEvents}
+                    />
                 </div>
             )}
         </PanelConfigContainer>

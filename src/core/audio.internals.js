@@ -1,3 +1,4 @@
+//@ts-check
 import globalState from "../state/globalState.js";
 import {delayLimits, filterLimits} from "../state/limits.js";
 
@@ -17,10 +18,13 @@ import {audioActions} from "../slices/audio.js";
 
 const GAIN_0 = 0.0001;
 
-/*-
-createAudioRandomChain :: (AudioContext, AudioState) -> [GainNode, GainNode] */
+/**
+@type {(audioState: AudioState) => undefined | Panic}*/
 function createAudioRandomChain(audioState) {
     const audioContext = globalState.audioContext;
+    if (audioContext === undefined) {
+        throw new Error("PANIC!!! The audio context disapears. We can not run the app.");
+    }
     //main gains
     const inputGain = audioContext.createGain();
     const outputGain = audioContext.createGain();
@@ -31,6 +35,7 @@ function createAudioRandomChain(audioState) {
     outputGain.gain.value = GAIN_0;
 
     //The variable that we use for the connections chain
+    /**@type {any} */
     let prev = inputGain;
     //PANNER
     if (!audioState.pannerIsDisable) {
@@ -83,7 +88,7 @@ function createAudioRandomChain(audioState) {
             : globalState.filter.types[random(0, n - 1)]
         );
         FILTER.Q.value = (
-            FILTER.type !== "lowpass" || FILTER.type !== "highpass"
+            FILTER.type !== "lowpass" && FILTER.type !== "highpass"
             ? rToQ(random(globalState.filter.qMin, globalState.filter.qMax))
             : 1
         );
@@ -120,105 +125,117 @@ function createAudioRandomChain(audioState) {
     prev.connect(outputGain);
 
     audioState.source.connect(inputGain);
-    outputGain.connect(globalState.audioContext.destination);
+    outputGain.connect(audioContext.destination);
 
     audioState.outputGain = outputGain;
+    return;
 }
 
-/*-
-fadeOut :: AudioState -> Promise */
+/**
+@type {(audioState: AudioState) => Promise | Panic} */
 function fadeOut(audioState) {
+    if (globalState.audioContext === undefined) {
+        throw new Error("PANIC!!! The audio context disapears. We can not run the app.");
+    }
     const fadeTime = rToFade(globalState.fadeOut);
-    audioState.outputGain.gain.linearRampToValueAtTime(
-        GAIN_0,
-        globalState.audioContext.currentTime + (fadeTime / 1000)
-    );
+    if (audioState.outputGain !== undefined) {
+        audioState.outputGain.gain.linearRampToValueAtTime(
+            GAIN_0,
+            globalState.audioContext.currentTime + (fadeTime / 1000)
+        );
+    } else {
+        console.warn(
+            "Warning: For some reason the Audio", audioState.id,"have a undefined outputGain.",
+            "Cause of that, the app can not do a fadeOut."
+        );
+    }
     return wait(fadeTime + 50);
 }
 
-/*-
-fadeIn :: AudioState -> undefined */
+/**
+@type {(audioState: AudioState) => Panic | undefined} */
 function fadeIn(audioState) {
+    if (globalState.audioContext === undefined) {
+        throw new Error("PANIC!!! The audio context disapears. We can not run the app.");
+    }
     const fadeTime = rToFade(globalState.fadeIn);
-    audioState.outputGain.gain.exponentialRampToValueAtTime(
-        audioState.volume,
-        globalState.audioContext.currentTime + (fadeTime / 1000)
-    );
+    if (audioState.outputGain !== undefined) {
+        audioState.outputGain.gain.exponentialRampToValueAtTime(
+            audioState.volume,
+            globalState.audioContext.currentTime + (fadeTime / 1000)
+        );
+    } else {
+        console.warn(
+            "Warning: For some reason the Audio", audioState.id,"have a undefined outputGain.",
+            "Cause of that, the app can not do a fadeIn."
+        );
+    }
+    return;
 }
 
-/*-
-_stop :: (AudioState, auidioDispatcher) -> Promise<boolean> */
-function _stop(audioState, audioDispatcher) {
-    return (
-        audioState !== undefined && audioState.isPlaying
-        ? (
-//FADEOUT THE AUDIO
-            fadeOut(audioState).then(
-                function () {
-                    if (typeof audioDispatcher === "function") {
-                        return audioDispatcher(audioActions.stop);
-                    }
-                }
-            ).then(
-//DISCONNECT AUDIO
-                function () {
-                    if (audioState === undefined || !audioState.isPlaying) {
-                        return false;
-                    }
-                    if (audioState.audioEngine !== undefined
-                        && !audioState.audioEngine.paused
-                    ) {
-                        audioState.audioEngine.pause();
-                    }
-                    audioState.audioEngine.ontimeupdate = undefined;
-                    if (audioState.outputGain !== undefined) {
-                        audioState.outputGain.disconnect();
-                    }
-                    audioState.outputGain = undefined;
-                    if (audioState.source !== undefined) {
-                        audioState.source.disconnect();
-                    }
-                    audioState.isPlaying = false;
-                    return true;
-                }
-            )
-        )
-        : new Promise(function (res) { res(false); })
-    );
-}
 
-/*-
-_play :: (AudioState, audioDispatcher) -> Promise<boolean> */
-function _play(audioState, audioDispatcher) {
-    if (audioState !== undefined) {
-//Set RandomPoints
-        {
-            let rsp = audioState.startTime;
-            let rep = audioState.endTime;
-
-            if (audioState.duration >= 1) {
-                let interval = 0.5; //500 miliseconds
-                if (!audioState.randomStartPointIsDisable
-                    && !audioState.randomEndPointIsDisable
-                ) {
-                    //create interval
-                    const d = Math.round(audioState.duration * 10);
-                    const p = Math.round((rep - rsp) * 10);
-                    const min = 5; //500 miliseconds;
-                    const max = (p < 5 ? min : p > d ? d : p);
-                    interval = random(min, max) / 10;
-                }
-                if (!audioState.randomStartPointIsDisable) {
-                    rsp = random(audioState.startTime * 10, (rep - interval) * 10) / 10;
-                }
-                if (!audioState.randomEndPointIsDisable) {
-                    rep = random((rsp + interval) * 10, audioState.endTime * 10) / 10;
-                }
-            }
-            audioDispatcher(audioActions.changePoints(audioState, rsp, rep));
+/**
+@type {(audioState: AudioState, callDispatch: boolean) => Promise<boolean>} */
+async function _stop(audioState, callDispatch) {
+    if (audioState !== undefined && audioState.isPlaying) {
+    //FADEOUT THE AUDIO
+        await fadeOut(audioState); //CAN PANIC
+        audioState.audioEngine.ontimeupdate = null;
+        if (callDispatch) {
+            audioState?.dispatch(audioActions.stop);
         }
 
-//Set Audio Configuration
+        if (!audioState.isPlaying) {
+            return false;
+        }
+
+        if (!audioState.audioEngine.paused) {
+            audioState.audioEngine.pause();
+        }
+        if (audioState.outputGain !== undefined) {
+            audioState.outputGain.disconnect();
+        }
+        audioState.outputGain = undefined;
+        if (audioState.source !== undefined) {
+            audioState.source.disconnect();
+        }
+        audioState.isPlaying = false;
+        return true;
+    } else {
+        return false;
+    }
+}
+
+/**
+@type {(audioState: AudioState) => Promise<boolean>}*/
+async function _play(audioState) {
+    if (audioState !== undefined) {
+    //Set RandomPoints
+        let rsp = audioState.startTime;
+        let rep = audioState.endTime;
+
+        if (audioState.duration >= 1) {
+            let interval = 0.5; //500 miliseconds
+            if (!audioState.randomStartPointIsDisable
+                && !audioState.randomEndPointIsDisable
+            ) {
+                //create interval
+                const d = Math.round(audioState.duration * 10);
+                const p = Math.round((rep - rsp) * 10);
+                const min = 5; //500 miliseconds;
+                const max = (p < 5 ? min : p > d ? d : p);
+                interval = random(min, max) / 10;
+            }
+            if (!audioState.randomStartPointIsDisable) {
+                rsp = random(audioState.startTime * 10, (rep - interval) * 10) / 10;
+            }
+            if (!audioState.randomEndPointIsDisable) {
+                rep = random((rsp + interval) * 10, audioState.endTime * 10) / 10;
+            }
+        }
+        audioState?.dispatch(audioActions.changePoints(audioState, rsp, rep));
+
+    //Set Audio Configuration
         //PLAYBACK RATE
         if (!audioState.playbackRateIsDisable) {
             const value = rToPlaybackRate(random(globalState.playbackRate.min, globalState.playbackRate.max));
@@ -232,41 +249,34 @@ function _play(audioState, audioDispatcher) {
         //CONNECTIONS
         createAudioRandomChain(audioState);
 
-//Set currentTime
+    //Set currentTime
         audioState.audioEngine.currentTime = audioState.startPoint;
 
-//Calculate the End
-        audioState.audioEngine.ontimeupdate = function (e) {
-            audioDispatcher(
-                audioActions.changeCurrentTime(audioState, e.target.currentTime)
+    //Calculate the End
+        /**
+        @type {<T extends HTMLAudioElement>(this:T , e: Event) => any} */
+        audioState.audioEngine.ontimeupdate = function () {
+            audioState?.dispatch(
+                audioActions.changeCurrentTime(audioState, this.currentTime)
             );
-            if (e.target.currentTime >= audioState.endPoint) {
-                audioDispatcher(audioActions.colorToDefault);
-                _stop(audioState, audioDispatcher);
+            if (this.currentTime >= audioState.endPoint) {
+                audioState?.dispatch(audioActions.colorToDefault);
+                _stop(audioState, true);
             }
         };
 
-//Play AudioEngine
+    //Play AudioEngine
         //audioState.outputGain.gain.value = 1;
-        return new Promise(
-            function (res) {
-                res(audioState.audioEngine.play());
-            }
-        ).then(
-            function () {
-                audioState.isPlaying = true;
-                fadeIn(audioState);
-                return audioDispatcher(audioActions.play);
-            }
-        ).then(
-            function () {
-                return true;
-            }
-        );
-    }
-    return new Promise(function (res) { res(false); });
-}
+        await audioState.audioEngine.play();
 
+        audioState.isPlaying = true;
+        fadeIn(audioState); //CAN PANIC
+        audioState?.dispatch(audioActions.play);
+        return true;
+    } else {
+        return false;
+    }
+}
 export {
     _play,
     _stop

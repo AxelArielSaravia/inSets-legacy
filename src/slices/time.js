@@ -1,76 +1,102 @@
+// @ts-check
 import globalState from "../state/globalState.js";
-import {globalDefault} from "../state/globalDefault.js";
 import {timeIntervalLimits} from "../state/limits.js";
-import {isInsideInterval} from "../utils.js";
+import {
+    createDefaultGlobalTimeInterval,
+    createGlobalTimeInterval
+} from "../state/factory.js";
 
-/*-
-timeReducer: (GlobalTimeInterval, {
-    type: "reset" | "max/change" | "min/change",
-    payload: undefined | GlobalTimeInterval
-}) -> GlobalTimeInterval */
-function timeReducer(state, action) {
-    const type = action?.type;
-    const payload = action?.payload;
-    return (
-        type === "reset"
-        || type === "max/change"
-        || type === "min/change"
-        ? payload
-        : state
-    );
-}
+/**
+@type {{type: any, payload: any}} */
+const ReturnTimeAction = {
+    type: "",
+    payload: undefined
+};
 
-/*-
-changeMax :: (number, boolean) -> {type: string, payload: GlobalTimeInterval}*/
-function changeMax(number, add) {
+/**
+@type {(n: number, add: boolean) => Maybe<TimeAction>} */
+function changeMax(n, add) {
     const value = (
-        add !== undefined
-        ? globalState.timeInterval.max + number
-        : globalState.timeInterval.max - number
+        add
+        ? globalState.timeInterval.max + n
+        : globalState.timeInterval.max - n
     );
-    if (isInsideInterval(globalState.timeInterval.min, timeIntervalLimits.MAX, value)) {
+    if (globalState.timeInterval.min <= value && value <= timeIntervalLimits.MAX) {
         globalState.timeInterval.max = value;
-        localStorage.setItem("timeInterval.max", globalState.timeInterval.max);
-        return {type: "max/change", payload: Object.assign({}, globalState.timeInterval)};
+        localStorage.setItem("timeInterval.max", String(value));
+        ReturnTimeAction.type = "max/change";
+        ReturnTimeAction.payload = createGlobalTimeInterval();
+        return ReturnTimeAction;
     }
 }
 
-/*-
-changeMin :: (number, boolean) -> {type: string, payload: GlobalTimeInterval} */
-function changeMin(number, add) {
+/**
+@type {(n: number, add: boolean) => Maybe<TimeAction>} */
+function changeMin(n, add) {
     const value = (
-        add !== undefined
-        ? globalState.timeInterval.min + number
-        : globalState.timeInterval.min - number
+        add
+        ? globalState.timeInterval.min + n
+        : globalState.timeInterval.min - n
     );
-    if (isInsideInterval(timeIntervalLimits.MIN, globalState.timeInterval.max, value)) {
+    if (timeIntervalLimits.MIN <= value && value <= globalState.timeInterval.max) {
         globalState.timeInterval.min = value;
-        localStorage.setItem("timeInterval.min", globalState.timeInterval.min);
-        return {type: "min/change", payload: Object.assign({}, globalState.timeInterval)};
+        localStorage.setItem("timeInterval.min", String(value));
+        ReturnTimeAction.type = "min/change";
+        ReturnTimeAction.payload = createGlobalTimeInterval();
+        return ReturnTimeAction;
     }
 }
 
-const timeActions = Object.freeze({
+/**
+@type {Readonly<{
+    reset: () => TimeAction,
+    addToMax: (n: number) => Maybe<TimeAction>,
+    subtractToMax: (n: number) => Maybe<TimeAction>,
+    addToMin: (n: number) => Maybe<TimeAction>,
+    subtractToMin: (n: number) => Maybe<TimeAction>
+}>} */
+const timeActions = {
+    /**
+    @type {() => TimeAction} */
     reset() {
-        const defaultObj = Object.assign({}, globalDefault.timeInterval);
+        const defaultObj = createDefaultGlobalTimeInterval();
         globalState.timeInterval = defaultObj;
-        localStorage.setItem("timeInterval.max", globalState.timeInterval.max);
-        localStorage.setItem("timeInterval.min", globalState.timeInterval.min);
-        return {type: "reset", payload: defaultObj};
+        localStorage.setItem("timeInterval.max", String(defaultObj.max));
+        localStorage.setItem("timeInterval.min", String(defaultObj.min));
+        ReturnTimeAction.type = "reset";
+        ReturnTimeAction.payload = defaultObj;
+        return ReturnTimeAction;
     },
-    addToMax(number) {
-        return changeMax(number, true);
+    /**
+    @type {(n: number) => Maybe<TimeAction>} */
+    addToMax(n) {
+        return changeMax(n, true);
     },
-    subtractToMax(number) {
-        return changeMax(number);
+    /**
+    @type {(n: number) => Maybe<TimeAction>} */
+    subtractToMax(n) {
+        return changeMax(n, false);
     },
-    addToMin(number) {
-        return changeMin(number, true);
+    /**
+    @type {(n: number) => Maybe<TimeAction>} */
+    addToMin(n) {
+        return changeMin(n, true);
     },
-    subtractToMin(number) {
-        return changeMin(number);
+    /**
+    @type {(n: number) => Maybe<TimeAction>} */
+    subtractToMin(n) {
+        return changeMin(n, false);
     }
-});
+};
+
+/**
+@type {(state: GlobalTimeInterval, action: Maybe<TimeAction>) => GlobalTimeInterval} */
+function timeReducer(state, action) {
+    if (action !== undefined) {
+        return action.payload;
+    }
+    return state;
+}
 
 export {
     timeActions,

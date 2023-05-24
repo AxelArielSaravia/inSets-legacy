@@ -1,15 +1,18 @@
-import {useReducer, useMemo} from "react";
+//@ts-check
+import React, {useReducer, useMemo} from "react";
+
+import {emptyDispatch} from "../../state/dispatch.js";
 
 import {timeReducer, timeActions} from "../../slices/time.js";
-import {createTimeInitialState} from "../initialState.js";
+import {createGlobalTimeInterval} from "../../state/factory.js";
 
-import {isMinorThanTen, undefinedFunction} from "../utils.js";
+import {isMinorThanTen} from "../utils.js";
 
 import AddAndSubtract from "../AddAndSubtract.js";
 import PanelConfigContainer from "./PanelConfigContainer.js";
 import PanelConfigChild from "./PanelConfigChild.js";
 
-let _timeDispatch = undefinedFunction;
+let _timeDispatch = emptyDispatch;
 
 function TimeTitle() {
     return (
@@ -74,8 +77,8 @@ function subtractToMax(val) {
 }
 
 function MaxTime({max}) {
-    const minutes = useMemo(() => isMinorThanTen(Number.parseInt(max / 600) % 60), [max]);
-    const seconds = useMemo(() => isMinorThanTen(Number.parseInt(max / 10) % 60), [max]);
+    const minutes = useMemo(() => isMinorThanTen(Math.floor(max / 600) % 60), [max]);
+    const seconds = useMemo(() => isMinorThanTen(Math.floor(max / 10) % 60), [max]);
 
     return (
         <TimeChild
@@ -97,8 +100,8 @@ function subtractToMin(val) {
 }
 
 function MinTime({min}) {
-    const minutes = useMemo(() => isMinorThanTen(Number.parseInt(min / 600) % 60), [min]);
-    const seconds = useMemo(() => isMinorThanTen(Number.parseInt(min / 10) % 60), [min]);
+    const minutes = useMemo(() => isMinorThanTen(Math.floor(min / 600) % 60), [min]);
+    const seconds = useMemo(() => isMinorThanTen(Math.floor(min / 10) % 60), [min]);
 
     return (
         <TimeChild
@@ -117,10 +120,8 @@ function resetTime() {
 }
 
 function Time() {
-    const [{min, max}, timeDispatch] = useReducer(timeReducer, createTimeInitialState());
-
+    const [{min, max}, timeDispatch] = useReducer(timeReducer, createGlobalTimeInterval());
     _timeDispatch = timeDispatch;
-
     return (
         <PanelConfigContainer
             title="Time to wait"

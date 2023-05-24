@@ -1,5 +1,16 @@
+//@ts-check
+import React from "react";
 import "./Range.scss";
 
+/**
+@type {(prop: {
+    max?: string | number,
+    min?: string | number,
+    step?: string | number,
+    value?: any,
+    reverse?: boolean,
+    onChange?: (a?: string | number) => void
+}) => JSX.Element} */
 function Range({
     max = "100",
     min = "0",
@@ -8,8 +19,11 @@ function Range({
     reverse,
     onChange
 }) {
+    /**@type {React.ChangeEventHandler<HTMLInputElement>} */
     function handler (e) {
-        return onChange(e.target.value);
+        if (onChange !== undefined) {
+            return onChange(e.target.value);
+        }
     }
     return (
         <div className={reverse ? "range reverse" : "range"} role="slider" aria-valuenow={value}>

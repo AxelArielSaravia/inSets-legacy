@@ -6,6 +6,7 @@
 .audio-container {
     position: relative;
     width: 100%;
+    max-width: 1900px;
     height: 100%;
 
     background-image: radial-gradient(circle, var(--c-transitive2) 1.5px, transparent 1.5px);

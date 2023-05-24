@@ -1,29 +1,26 @@
-import {useContext} from "react";
+//@ts-check
+import React, {useContext} from "react";
+
+import dispatch from "../../state/dispatch.js";
+
+import {generalDisableAction} from "../../slices/generalDisable.js";
 
 import {GeneralDisableContext} from "../contexts/GeneralDisable.js";
-import {undefinedFunction} from "../utils.js";
-import {generalDisableAction} from "../../slices/generalDisable.js";
 
 import PanelConfigContainer from "./PanelConfigContainer.js";
 
-let _generalDisableDispatch = undefinedFunction;
-
+/**
+@type {(value: boolean) => void} */
 function changeDisable(value) {
     if (value) {
-        _generalDisableDispatch(generalDisableAction("enable", "randomEndPoint", "global"));
+        dispatch.generalDisable(generalDisableAction("enable", "randomEndPoint", "global"));
     } else {
-        _generalDisableDispatch(generalDisableAction("disable", "randomEndPoint"));
+        dispatch.generalDisable(generalDisableAction("disable", "randomEndPoint", "global"));
     }
 }
 
 function RandomEndPoint() {
-    const [
-        {allRandomEndPointsAreDisabled},
-        generalDisableDispatch
-    ] = useContext(GeneralDisableContext);
-
-    _generalDisableDispatch = generalDisableDispatch;
-
+    const {allRandomEndPointsAreDisabled} = useContext(GeneralDisableContext);
     return (
         <PanelConfigContainer
             title="Random End Point"

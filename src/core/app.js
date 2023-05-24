@@ -1,3 +1,4 @@
+//@ts-check
 import globalState from "../state/globalState.js";
 
 import {stop} from "./audio.js";
@@ -8,39 +9,47 @@ import {createId} from "../utils.js";
 
 import {audioListActions} from "../slices/audioList.js";
 import {appActions} from "../slices/app.js";
+import dispatch from "../state/dispatch.js";
 
-function forEachAudio(audio, id) {
-    stop(id);
+
+async function forEachAudio(_, id, map) {
+    await stop(id);
+    map.delete(id);
 }
-/*-
-deleteAll :: audioListDispatcher -> undefined; */
-function deleteAll(audioListDispatcher) {
-    audioListDispatcher(audioListActions.clear());
+
+/**
+@type {() => void} */
+function deleteAll() {
+    dispatch.audioList(audioListActions.clear());
     globalState.audioList.forEach(forEachAudio);
-    globalState.audioList = new Map();
 }
 
-/*-
-startApp :: appDispatcher -> undefined */
-function startApp(appDispatcher) {
+
+/**
+@type {() => void} */
+function startApp() {
     globalState.startedId = createId();
     //First play
-    const set = randomSetsExecution();
-    if (set !== undefined) {
-        appDispatcher(appActions.newExecution(set));
+    const execute = randomSetsExecution();
+    if (execute !== undefined) {
+        dispatch.app(appActions.newExecution());
     }
     //recursive call
-    randomTimeExecution(appDispatcher, globalState.startedId);
+    randomTimeExecution(globalState.startedId);
 }
 
-/*-
-stopApp :: audioDispatcher -> undefined */
-function stopApp(audioDispatcher) {
-    globalState.audioList.forEach(function (audioState) {
-        if (audioState.isPlaying) {
-            _stop(audioState, audioDispatcher);
-        }
-    });
+/**
+@type {(audioState: AudioState) => void} */
+function stopApp_forEach(audioState) {
+    if (audioState.isPlaying) {
+        _stop(audioState, true);
+    }
+}
+
+/**
+@type {() => void} */
+function stopApp() {
+    globalState.audioList.forEach(stopApp_forEach);
 }
 
 export {

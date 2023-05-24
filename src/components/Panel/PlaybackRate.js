@@ -1,31 +1,29 @@
-import {
-    useReducer,
-    useContext
-} from "react";
+//@ts-check
+import React, {useReducer, useContext} from "react";
+
+import dispatch, {emptyDispatch} from "../../state/dispatch.js";
+import {createGlobalPlaybackRate} from "../../state/factory.js";
+import {playbackRateLimits} from "../../state/limits.js";
 
 import {playbackRateReducer, playbackRateActions} from "../../slices/playbackRate.js";
 import {generalDisableAction} from "../../slices/generalDisable.js";
 
-import {createPlaybackRateInitialState} from "../initialState.js";
-import {playbackRateLimits} from "../../state/limits.js";
-
-import {GeneralDisableContext} from "../contexts/GeneralDisable.js";
-
 import {rToPlaybackRate} from "../../core/maps.js";
 
-import {undefinedFunction} from "../utils.js";
+import {GeneralDisableContext} from "../contexts/GeneralDisable.js";
 
 import PanelConfigContainer from "./PanelConfigContainer.js";
 import PanelInterval from "./PanelInterval.js";
 
-let _generalDisableDispatch = undefinedFunction;
-let _playbackRateDispatch = undefinedFunction;
+let _playbackRateDispatch = emptyDispatch;
 
+/**
+@type {(value: boolean) => void} */
 function changeDisable(value) {
     if (value) {
-        _generalDisableDispatch(generalDisableAction("enable", "playbackRate", "global"));
+        dispatch.generalDisable(generalDisableAction("enable", "playbackRate", "global"));
     } else {
-        _generalDisableDispatch(generalDisableAction("disable", "playbackRate"));
+        dispatch.generalDisable(generalDisableAction("disable", "playbackRate", "global"));
     }
 }
 
@@ -33,29 +31,31 @@ function reset() {
     _playbackRateDispatch(playbackRateActions.reset());
 }
 
+/**
+@type {(val: string) => void} */
 function minOnChange(val) {
     _playbackRateDispatch(
         playbackRateActions.changeMin(Number(val))
     );
 }
 
+/**
+@type {(val: string) => void} */
 function maxOnChange(val) {
     _playbackRateDispatch(
         playbackRateActions.changeMax(Number(val))
     );
 }
 
+/**
+@type {(porp: {MAX: number}) => JSX.Element} */
 function PlaybackRate({MAX}) {
-    const [
-        {allPlaybackRatesAreDisabled},
-        generalDisableDispatch
-    ] = useContext(GeneralDisableContext);
+    const {allPlaybackRatesAreDisabled}= useContext(GeneralDisableContext);
     const [
         {min, max},
         playbackRateDispatch
-    ] = useReducer(playbackRateReducer, createPlaybackRateInitialState());
+    ] = useReducer(playbackRateReducer, createGlobalPlaybackRate());
 
-    _generalDisableDispatch = generalDisableDispatch;
     _playbackRateDispatch = playbackRateDispatch;
 
     return (

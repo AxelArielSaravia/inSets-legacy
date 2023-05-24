@@ -1,67 +1,71 @@
+// @ts-check
 import globalState from "../state/globalState.js";
+import {createSetsState} from "../state/factory.js";
 
-/*-
-setsReducer: (EventsForEachSet, {
-    type: "reset" | "sets/update" | "sets/addEvent" | "sets/removeEvent"
-    payload?: EventsForEachSet
-}) -> EventsForEachSet */
-function setsReducer(state, action) {
-    const type = action?.type;
-    const payload = action?.payload;
-    return (
-        type === "reset"
-        || type === "addEvent"
-        || type === "removeEvent"
-        ? payload
-        : (
-            type === "update"
-            ? globalState.eventsForEachSet
-            : state
-        )
-    );
-}
+/**@type {{type: any, payload: any}} */
+const return_action = {type: "", payload: undefined};
 
-const setsActions = Object.freeze({
-    update: {type: "update"},
-    addEvent(index) {
-        const arrOfEvents = globalState.eventsForEachSet.arrOfEvents;
-        const sumOfAllEvents = globalState.eventsForEachSet.sumOfAllEvents;
-        if (arrOfEvents[index] <= 0
-            || sumOfAllEvents !== arrOfEvents[index]
-        ) {
-            arrOfEvents[index] += 1;
-            const newState = {
-                arrOfEvents,
-                sumOfAllEvents: sumOfAllEvents + 1
-            };
-
-            globalState.eventsForEachSet = newState;
-            return {type: "addEvent", payload: newState};
+/**
+@type {Readonly<{
+    update(): SetsAction,
+    addEvent(i: number): Maybe<SetsAction>,
+    removeEvent(i: number): Maybe<SetsAction>,
+    reset(): SetsAction
+}>} */
+const setsActions = {
+    /**
+    @type {() => SetsAction} */
+    update() {
+        return_action.type = "update";
+        return_action.payload = createSetsState();
+        return return_action;
+    },
+    /**
+    @type {(i: number) => Maybe<SetsAction>} */
+    addEvent(i) {
+        const gstate = globalState.eventsForEachSet;
+        const value = gstate.arrOfEvents[i];
+        if (value <= 0 || gstate.sumOfAllEvents !== value) {
+            gstate.arrOfEvents[i] += 1;
+            gstate.sumOfAllEvents += 1;
+            return_action.type = "addEvent";
+            return_action.payload = createSetsState();
+            return return_action;
         }
     },
-    removeEvent(index) {
-        const arrOfEvents = globalState.eventsForEachSet.arrOfEvents;
-        const sumOfAllEvents = globalState.eventsForEachSet.sumOfAllEvents;
-        if (sumOfAllEvents > 1 && arrOfEvents[index] > 0) {
-            arrOfEvents[index] -= 1;
-            const newState = {
-                arrOfEvents,
-                sumOfAllEvents: sumOfAllEvents - 1
-            };
-            globalState.eventsForEachSet = newState;
-            return {type: "removeEvent", payload: newState};
+    /**
+    @type {(i: number) => Maybe<SetsAction>} */
+    removeEvent(i) {
+        const gstate = globalState.eventsForEachSet;
+        if (gstate.sumOfAllEvents > 1 && gstate.arrOfEvents[i] > 0) {
+            gstate.arrOfEvents[i] -= 1;
+            gstate.sumOfAllEvents -= 1;
+            return_action.type = "removeEvent";
+            return_action.payload = createSetsState();
+            return return_action;
         }
     },
+    /**
+    @type {() => SetsAction} */
     reset() {
-        const length = globalState.eventsForEachSet.arrOfEvents.length;
-        const resetObject = {
-            arrOfEvents: (new Array(length)).fill(1),
-            sumOfAllEvents: length
-        };
-        globalState.eventsForEachSet = resetObject;
-        return {type: "reset", payload: resetObject};
+        const gstate = globalState.eventsForEachSet;
+        const length = gstate.arrOfEvents.length;
+        gstate.arrOfEvents = (new Array(length)).fill(1);
+        gstate.sumOfAllEvents = length;
+        return_action.type = "reset";
+        return_action.payload = createSetsState();
+        return return_action;
     }
-});
+};
+
+/**
+@type {(state: EventsForEachSet, action: Maybe<SetsAction>) => EventsForEachSet} */
+function setsReducer(state, action) {
+    if (action !== undefined) {
+        return action.payload;
+    }
+    return state;
+}
 
 export {
     setsActions,

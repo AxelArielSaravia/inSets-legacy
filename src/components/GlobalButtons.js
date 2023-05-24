@@ -1,53 +1,53 @@
-import {useContext} from "react";
+//@ts-check
+import React, {useContext} from "react";
 
-import {deleteAll, startApp, stopApp} from "../core/app.js";
+import dispatch from "../state/dispatch.js";
 
-import {AudioListContext} from "./contexts/AudioList.js";
-import {AppContext} from "./contexts/App.js";
-import {SumOfAllAudiosEventsContext} from "./contexts/SumOfAllAudiosEvents.js";
+import addFiles from "../addFiles.js";
 
 import {appActions} from "../slices/app.js";
 import {sumOfAllAudiosEventsActions} from "../slices/sumOfAllAudiosEvents.js";
 
-import useAddFiles from "./hooks/useAddFiles.js";
+import {deleteAll, startApp, stopApp} from "../core/app.js";
 
-import {undefinedFunction} from "./utils.js";
+import {AppContext} from "./contexts/App.js";
+
 
 import Button from "./Button.js";
-import {
-    IconTrash,
-    IconMusicFile,
-    IconStop,
-    IconStart
-} from "./icons.js";
+import {IconTrash, IconMusicFile, IconStop, IconStart} from "./icons.js";
 
 import "./GlobalButtons.scss";
 
-
-let _addFiles = undefinedFunction;
-let _audioListDispatcher = undefinedFunction;
-let _sumOfAllAudiosEventsDispatcher = undefinedFunction;
-
+/**
+@type {React.MouseEventHandler<HTMLInputElement>} */
 function handelAddFilesClick (e) {
     e.currentTarget.value = "";
 }
-
+/**
+@type {React.FormEventHandler<HTMLInputElement>} */
 function handelAddFilesInput(e) {
-    _addFiles(e.currentTarget.files);
+    if (e.currentTarget.files !== null) {
+        addFiles(e.currentTarget.files);
+    }
 }
 
+/**
+@type {React.MouseEventHandler<HTMLButtonElement>} */
 function handelAddFilesButton(e) {
     const input = e.currentTarget.firstElementChild;
-    input.click();
+    if (input !== null) {
+        input.click();
+    }
 }
 
+/**
+@type {React.MouseEventHandler} */
 function handleClearOnClick() {
-    deleteAll(_audioListDispatcher);
-    _sumOfAllAudiosEventsDispatcher(sumOfAllAudiosEventsActions.clear());
+    deleteAll();
+    dispatch.sumOfAllAudiosEvents(sumOfAllAudiosEventsActions.clear());
 }
 
 function AddFilesButton() {
-    _addFiles = useAddFiles();
     return (
         <button
             title="add audio files"
@@ -72,23 +72,25 @@ function AddFilesButton() {
     );
 }
 
-function StartButton() {
-    const [{isStarted}, appDispatcher] = useContext(AppContext);
-
-    function handlePlayOnClick() {
-
-        if (!isStarted) {
-            appDispatcher(appActions.start());
-            startApp(appDispatcher);
-        } else {
-            appDispatcher(appActions.stop());
-        }
+/**
+@type {(isStarted: boolean) => void} */
+function handlePlayOnClick(isStarted) {
+    if (!isStarted) {
+        dispatch.app(appActions.start());
+        startApp();
+    } else {
+        dispatch.app(appActions.stop());
     }
+}
+
+function StartButton() {
+    const {isStarted} = useContext(AppContext);
 
     return (
         <Button
             title={isStarted ? "stop runing" : "start runing"}
             className="audioButtonsSection_start flex-row align-c justify-c"
+            value={isStarted}
             onClick={handlePlayOnClick}
         >
             {
@@ -102,11 +104,6 @@ function StartButton() {
 }
 
 function ClearButton() {
-    const [, audioListDispatcher] = useContext(AudioListContext);
-    const [, sumOfAllAudiosEventsDispatcher] = useContext(SumOfAllAudiosEventsContext);
-    _audioListDispatcher = audioListDispatcher;
-    _sumOfAllAudiosEventsDispatcher = sumOfAllAudiosEventsDispatcher;
-
     return (
         <Button
             className="flex-row align-c justify-c"

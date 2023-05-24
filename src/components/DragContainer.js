@@ -1,12 +1,16 @@
-import {useState} from "react";
+//@ts-check
+import React, {useState} from "react";
 
 import DropContainer from "./DropContainer.js";
 import Show from "./Show.js";
 
 let counter = 0;
 
+/**
+@type {(porp: {className?:string, style?: object, children: Array<JSX.Element>}) => JSX.Element} */
 function DragContainer({className, style, children}) {
     const [isDragActive, setIsDragActive] = useState(false);
+
     function handleDragEnter() {
         counter += 1;
         setIsDragActive(true);

@@ -1,3 +1,5 @@
+//@ts-check
+import React from "react";
 import {
     IconChevronUp,
     IconChevronDown,
@@ -9,6 +11,13 @@ import Button from "./Button.js";
 
 import "./AddAndSubtract.scss";
 
+/**
+@type {(porps: {
+    horizontal?: boolean,
+    subtractOnClick?: (v?: any) => void,
+    addOnClick?: (v?: any) => void,
+    value: any,
+}) => JSX.Element} */
 function ButtonLeftUp({
     horizontal,
     subtractOnClick,
@@ -17,7 +26,6 @@ function ButtonLeftUp({
 }) {
     return (
         <Button
-            type="button"
             className="addAndSubtract_button flex-column align-c justify-c"
             onClick={horizontal ? subtractOnClick : addOnClick}
             value={value}
@@ -30,6 +38,13 @@ function ButtonLeftUp({
     );
 }
 
+/**
+@type {(porps: {
+    horizontal?: boolean,
+    subtractOnClick?: (v?: any) => void,
+    addOnClick?: (v?: any) => void,
+    value: any,
+}) => JSX.Element} */
 function ButtonRightDown({
     horizontal,
     addOnClick,
@@ -38,7 +53,6 @@ function ButtonRightDown({
 }) {
     return (
         <Button
-            type="button"
             className="addAndSubtract_button flex-column align-c justify-c"
             onClick={horizontal ? addOnClick : subtractOnClick}
             value={value}
@@ -51,6 +65,14 @@ function ButtonRightDown({
     );
 }
 
+/**
+@type {(porps: {
+    addOnClick?: (v?: any) => void,
+    subtractOnClick?: (v?: any) => void,
+    viewValue?: string | number,
+    horizontal?: boolean,
+    value: any,
+}) => JSX.Element} */
 function AddAndSubtract({
     addOnClick,
     subtractOnClick,

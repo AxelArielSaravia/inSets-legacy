@@ -1,53 +1,72 @@
+// @ts-check
 import globalState from "../state/globalState.js";
 import {getRandomColor} from "../utils.js";
+import {createAppStateFrom, createAppState} from "../state/factory.js";
 
-/*-
-appReducer: (AppState, {
-    type: "start" | "stop" | "newAudioSet"
-    payload: undefined | string
-}) -> AppState */
-function appReducer(state, action) {
-    const type = action?.type;
-    if (type === "start") {
-        const newState = Object.assign({}, state);
-        newState.isStarted = true;
-        return newState;
-    } else if (type === "stop") {
-        return {
-            isStarted: false,
-            playAudiosSet: {},
-            playColor: "",
-            state: true
-        };
-    } else if (type === "newExecution" && state.isStarted) {
-        const newState = Object.assign({}, state);
-        newState.playAudiosSet = action.payload.audios;
-        newState.state = action.payload.state;
-        newState.playColor = getRandomColor();
-        return newState;
-    } else {
-        return state;
-    }
-}
-
-const staticActions = {
-    start: {type: "start"},
-    stop: {type: "stop"},
+/**@type {{type: "newExecution", payload: any}} */
+const returnNewExecution = {
+    type: "newExecution",
+    payload: globalState.generativeState,
 };
 
-const appActions = Object.freeze({
+/**
+@type {{type: any}} */
+const returnAppAction = {
+    type: "start",
+};
+
+/**
+@type {Readonly<{
+    start: () => AppAction,
+    stop: () => AppAction,
+    newExecution: () => AppAction
+}>} */
+const appActions = {
+    /**
+    @type {() => AppAction}*/
     start() {
         globalState.isStarted = true;
-        return staticActions.start;
+        returnAppAction.type = "start";
+        return returnAppAction;
     },
+    /**
+    @type {() => AppAction}*/
     stop() {
         globalState.isStarted = false;
-        return staticActions.stop;
+        returnAppAction.type = "stop";
+        return returnAppAction;
     },
-    newExecution(sets) {
-        return {type: "newExecution", payload: sets};
+    /**
+    @type {() => AppAction}*/
+    newExecution() {
+        return returnNewExecution;
     }
-});
+};
+
+/**
+@type {(state: AppState, action: Maybe<AppAction>) => AppState}*/
+function appReducer(state, action) {
+    if (action !== undefined) {
+        const type = action?.type;
+        if (type === "start") {
+            const newState = createAppStateFrom(state);
+            newState.isStarted = true;
+            return newState;
+        } else if (type === "stop") {
+            return createAppState();
+        } else { //type === "nexExecution"
+            if (state.isStarted) {
+                const newState = createAppStateFrom(state);
+                newState.audiosSet = action.payload.audiosSet;
+                newState.playColor = getRandomColor();
+                newState.playAudiosFromSet = action.payload.playAudiosFromSet;
+                return newState;
+            }
+        }
+    }
+    return state;
+}
+
 
 export {
     appActions,

@@ -1,4 +1,5 @@
-import {
+//@ts-check
+import React, {
     memo,
     useReducer,
     useEffect,
@@ -7,14 +8,11 @@ import {
     useMemo
 } from "react";
 
-import {GeneralDisableContext} from "../contexts/GeneralDisable.js";
-import {AppContext} from "../contexts/App.js";
-import {AudioListContext} from "../contexts/AudioList.js";
-import {SumOfAllAudiosEventsContext} from "../contexts/SumOfAllAudiosEvents.js";
-import {audioActions} from "../../slices/audio.js";
+import globalState from "../../state/globalState.js";
+import dispatch from "../../state/dispatch.js";
+import {createAudioViewState} from "../../state/factory.js";
 
-import {audioReducer} from "../../slices/audio.js";
-import {createAudioInitialState} from "../initialState.js";
+import {audioActions, audioReducer} from "../../slices/audio.js";
 import {sumOfAllAudiosEventsActions} from "../../slices/sumOfAllAudiosEvents.js";
 import {generalDisableAction} from "../../slices/generalDisable.js";
 
@@ -26,10 +24,13 @@ import {
     stop
 } from "../../core/audio.js";
 
+import {AppContext} from "../contexts/App.js";
+import {GeneralDisableContext} from "../contexts/GeneralDisable.js";
+import {SumOfAllAudiosEventsContext} from "../contexts/SumOfAllAudiosEvents.js";
+
 import {
     durationToTime,
     durationToShortTime,
-    floorPercent
 } from "../utils.js";
 
 import Button from "../Button.js";
@@ -48,13 +49,10 @@ import "./AudioElement.scss";
 
 const playbackStyle = {width: "80%"};
 
-function DeleteButton({id, events, audioDispatch}) {
-    const [, audioListDispatch] = useContext(AudioListContext);
-    const [, sumOfAllAudiosEventsDispatch] = useContext(SumOfAllAudiosEventsContext);
-
+function DeleteButton({id, events}) {
     function onClick() {
-        deleteAudio(id, audioListDispatch, audioDispatch);
-        sumOfAllAudiosEventsDispatch(
+        deleteAudio(id);
+        dispatch.sumOfAllAudiosEvents(
             sumOfAllAudiosEventsActions.subtract(events)
         );
     }
@@ -114,9 +112,9 @@ function PlayButton({isPlaying, playOnClick}) {
             className="audio-button flex-column align-c"
             onClick={playOnClick}
         >
-            { isPlaying
-            ? <IconPause className="icon-text-l icon-play"/>
-            : <IconPlay className="icon-text-l icon-play"/>
+            {isPlaying
+                ? <IconPause className="icon-text-l icon-play"/>
+                : <IconPlay className="icon-text-l icon-play"/>
             }
         </Button>
     );
@@ -253,10 +251,15 @@ function Configuration({
     );
 }
 
+/**@type {(props:{id: string}) => JSX.Element} */
 function AudioElement({id}) {
-    const [{isStarted, playAudiosSet, playColor, state}] = useContext(AppContext);
-
-    const [{
+    /**@type {[AudioViewState, React.Dispatch<Maybe<AudioViewAction>>]} */
+    const [audioState, audioDispatch] = useReducer(audioReducer, createAudioViewState(id));
+    const audio = globalState.audioList.get(id);
+    if (audio !== undefined) {
+        audio.dispatch = audioDispatch;
+    }
+    const {
         color,
         title,
         duration,
@@ -275,40 +278,50 @@ function AudioElement({id}) {
         playbackRateIsDisable,
         randomEndPointIsDisable,
         randomStartPointIsDisable
-    }, audioDispatch] = useReducer(audioReducer, createAudioInitialState(id));
+    } = audioState;
+    const {
+        isStarted,
+        audiosSet,
+        playColor,
+        playAudiosFromSet
+    } = useContext(AppContext);
+    const sumOfAllEvents = useContext(SumOfAllAudiosEventsContext);
 
-    const [sumOfAllEvents, sumOfAllEventsdispatch] = useContext(SumOfAllAudiosEventsContext);
-
-    const [{
+    const {
         allDelaysAreDisabled,
         allFiltersAreDisabled,
         allPannersAreDisabled,
         allPlaybackRatesAreDisabled,
         allRandomEndPointsAreDisabled,
         allRandomStartPointsAreDisabled,
-    }, generalDisableDispatch] = useContext(GeneralDisableContext);
+    } = useContext(GeneralDisableContext);
 
     const isDurationShort = useMemo(() => duration <= 60, [duration]);
 
     const probabilityPrecent = useMemo(
-        () => floorPercent(sumOfAllEvents, audioEvents, 100),
+        function floorPercent() {
+            if (sumOfAllEvents <= 0) {
+                return 0;
+            }
+            return Math.floor((audioEvents * 100) / sumOfAllEvents);
+        },
         [audioEvents, sumOfAllEvents]
     );
 
     useEffect(function () {
-        if ((state && id in playAudiosSet)
-            || (!state && !(id in playAudiosSet))
+        if ((playAudiosFromSet && audiosSet[id] === true)
+            || (!playAudiosFromSet && audiosSet[id] !== true)
         ) {
-            rePlay(id, audioDispatch);
+            rePlay(id);
             audioDispatch(audioActions.changeColor(playColor));
         }
-    }, [id, playAudiosSet, state]);
+    }, [id, audiosSet, playAudiosFromSet]);
 
     //STOP EFFECT
     //if the the app was stoped stop the audio
     useEffect(function () {
         if (!isStarted) {
-            stop(id, audioDispatch);
+            stop(id);
             audioDispatch(audioActions.colorToDefault);
         }
     }, [id, isStarted]);
@@ -364,76 +377,75 @@ function AudioElement({id}) {
     const changeDelay = useCallback(function () {
         if (delayIsDisable) {
             if (allDelaysAreDisabled.value) {
-                generalDisableDispatch(generalDisableAction("enable", "delay", "local"));
+                dispatch.generalDisable(generalDisableAction("enable", "delay", "local"));
             }
             audioDispatch(audioActions.enable("delay", id));
         } else {
             audioDispatch(audioActions.disable("delay", id));
         }
-    },[delayIsDisable, allDelaysAreDisabled, generalDisableDispatch, id]);
+    },[delayIsDisable, allDelaysAreDisabled, id]);
 
     const changeFilter = useCallback(function () {
         if (filterIsDisable) {
             if (allFiltersAreDisabled.value) {
-                generalDisableDispatch(generalDisableAction("enable", "filter", "local"));
+                dispatch.generalDisable(generalDisableAction("enable", "filter", "local"));
             }
             audioDispatch(audioActions.enable("filter", id));
         } else {
             audioDispatch(audioActions.disable("filter", id));
         }
-    },[filterIsDisable, allFiltersAreDisabled, generalDisableDispatch, id]);
+    },[filterIsDisable, allFiltersAreDisabled, id]);
 
     const changePanner = useCallback(function () {
         if (pannerIsDisable) {
             if (allPannersAreDisabled.value) {
-                generalDisableDispatch(generalDisableAction("enable", "panner", "local"));
+                dispatch.generalDisable(generalDisableAction("enable", "panner", "local"));
             }
             audioDispatch(audioActions.enable("panner", id));
         } else {
             audioDispatch(audioActions.disable("panner", id));
         }
-    },[pannerIsDisable, allPannersAreDisabled, generalDisableDispatch, id]);
+    },[pannerIsDisable, allPannersAreDisabled, id]);
 
     const changePlaybackRate = useCallback(function () {
         if (playbackRateIsDisable) {
             if (allPlaybackRatesAreDisabled.value) {
-                generalDisableDispatch(generalDisableAction("enable", "playbackRate", "local"));
+                dispatch.generalDisable(generalDisableAction("enable", "playbackRate", "local"));
             }
             audioDispatch(audioActions.enable("playbackRate", id));
         } else {
             audioDispatch(audioActions.disable("playbackRate", id));
         }
-    },[playbackRateIsDisable, allPlaybackRatesAreDisabled, generalDisableDispatch, id]);
+    },[playbackRateIsDisable, allPlaybackRatesAreDisabled, id]);
 
     const changeREP = useCallback(function () {
         if (randomEndPointIsDisable) {
             if (allRandomEndPointsAreDisabled.value) {
-                generalDisableDispatch(generalDisableAction("enable", "randomEndPoint", "local"));
+                dispatch.generalDisable(generalDisableAction("enable", "randomEndPoint", "local"));
             }
             audioDispatch(audioActions.enable("randomEndPoint", id));
         } else {
             audioDispatch(audioActions.disable("randomEndPoint", id));
         }
-    },[randomEndPointIsDisable, allRandomEndPointsAreDisabled, generalDisableDispatch, id]);
+    },[randomEndPointIsDisable, allRandomEndPointsAreDisabled, id]);
 
-    const changeRSP= useCallback(function () {
+    const changeRSP = useCallback(function () {
         if (randomStartPointIsDisable) {
             if (allRandomStartPointsAreDisabled.value) {
-                generalDisableDispatch(generalDisableAction("enable", "randomStartPoint", "local"));
-                generalDisableDispatch({type: "enable/randomStartPoint", payload:false});
+                dispatch.generalDisable(generalDisableAction("enable", "randomStartPoint", "local"));
             }
             audioDispatch(audioActions.enable("randomStartPoint", id));
         } else {
             audioDispatch(audioActions.disable("randomStartPoint", id));
         }
-    },[randomStartPointIsDisable, allRandomStartPointsAreDisabled, generalDisableDispatch, id]);
+    },[randomStartPointIsDisable, allRandomStartPointsAreDisabled, id]);
 
     function addEvent() {
         if (audioEvents > 0 && sumOfAllEvents === audioEvents) {
             return;
         }
         if (audioEvents < 50) {
-            sumOfAllEventsdispatch(sumOfAllAudiosEventsActions.add());
+            dispatch.sumOfAllAudiosEvents(sumOfAllAudiosEventsActions.add());
             audioDispatch(audioActions.addAudioEvents(id));
         }
     }
@@ -442,7 +454,7 @@ function AudioElement({id}) {
             return;
         }
         if (audioEvents > 1) {
-            sumOfAllEventsdispatch(sumOfAllAudiosEventsActions.subtractOne());
+            dispatch.sumOfAllAudiosEvents(sumOfAllAudiosEventsActions.subtractOne());
             audioDispatch(audioActions.subtractAudioEvents(id));
         }
     }
@@ -458,10 +470,10 @@ function AudioElement({id}) {
 
     const playOnClick = useCallback(function() {
         if (isPlaying) {
-            stop(id, audioDispatch);
+            stop(id);
             audioDispatch(audioActions.colorToDefault);
         } else {
-            play(id, audioDispatch);
+            play(id);
         }
     },[id, isPlaying]);
 
@@ -492,7 +504,6 @@ function AudioElement({id}) {
                 <DeleteButton
                     id={id}
                     events={audioEvents}
-                    audioDispatch={audioDispatch}
                 />
             </section>
             <Configuration
@@ -507,7 +518,6 @@ function AudioElement({id}) {
                 currentTime={currentTime}
                 audioDispatch={audioDispatch}
                 audioEvents={audioEvents}
-                sumOfAllEvents={sumOfAllEvents}
                 subtractEvent={subtractEvent}
                 addEvent={addEvent}
                 delayIsDisable={delayIsDisable}

@@ -1,7 +1,10 @@
-import useOnClickClosePanel from "../hooks/useOnClickClosePanel.js";
+//@ts-check
+import React from "react";
+import dispatch from "../../state/dispatch.js";
+
+import {panelConfigActions} from "../../slices/panelConfig.js";
 
 import {IconChevronBarLeft} from "../icons.js";
-
 import Delay from "./Delay.js";
 import Fades from "./Fades.js";
 import Filter from "./Filter.js";
@@ -14,8 +17,26 @@ import Time from "./Time.js";
 
 import "./PanelConfigSection.scss";
 
-const PanelConfig_className = "panel panel-config flex-column";
 
+function closeConfigPanel() {
+    dispatch.panelConfig(panelConfigActions.closePanel);
+}
+
+/**
+@type {(prop: {
+    selected: (
+        ""
+        | "DELAY"
+        | "FILTER"
+        | "PANNER"
+        | "RATE"
+        | "REP"
+        | "RSP"
+        | "SETS"
+        | "TIME"
+        | "FADES"
+    )
+}) => JSX.Element | null} */
 function PanelSelected({selected}) {
     if (selected === "DELAY") {
         return <Delay/>;
@@ -44,17 +65,41 @@ function PanelSelected({selected}) {
     if (selected === "TIME") {
         return <Time/>;
     }
-    return;
+    return null;
 }
 
-function PanelConfigSection({isActive, panelSelected, closeConfigPanel}) {
+const PanelConfig_className = "panel panel-config flex-column";
+/**
+@type {(props: {
+    isPanelConfigVisible: boolean,
+    panelSelected: (
+        ""
+        | "DELAY"
+        | "FILTER"
+        | "PANNER"
+        | "RATE"
+        | "REP"
+        | "RSP"
+        | "SETS"
+        | "TIME"
+        | "FADES"
+    )
+}) => JSX.Element} */
+function PanelConfigSection({isPanelConfigVisible, panelSelected}) {
     const _className = (
-        isActive
+        isPanelConfigVisible
         ? PanelConfig_className
         : PanelConfig_className + " panel-hidden"
     );
 
-    useOnClickClosePanel(isActive, ".content-audio_aside *", closeConfigPanel);
+    if (isPanelConfigVisible) {
+        document.onclick = function docEventClick(e) {
+            if (!e.target?.matches(".content-audio_aside *")) {
+                closeConfigPanel();
+                document.onclick = null;
+            }
+        };
+    }
 
     return (
         <div id="configPanel" className={_className}>
@@ -62,7 +107,7 @@ function PanelConfigSection({isActive, panelSelected, closeConfigPanel}) {
                 <button
                     title="close"
                     type="button"
-                    className="panel-config-close flex-column align-c"
+                    className="panel-config-close t-button flex-column align-c"
                     onClick={closeConfigPanel}
                 >
                     <IconChevronBarLeft className="icon-text-l"/>

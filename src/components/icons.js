@@ -1,3 +1,7 @@
+//@ts-check
+import React from "react";
+/**
+@type {(props: {className?: string}) => JSX.Element} */
 function IconMusicFile({className = ""}) {
     return (
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className={className} viewBox="0 0 16 16">
@@ -7,6 +11,8 @@ function IconMusicFile({className = ""}) {
     );
 }
 
+/**
+@type {(props: {className?: string}) => JSX.Element} */
 function IconPlay({className = ""}) {
     return (
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className={className} viewBox="0 0 16 16">
@@ -15,6 +21,8 @@ function IconPlay({className = ""}) {
     );
 }
 
+/**
+@type {(props: {className?: string}) => JSX.Element} */
 function IconPause({className = ""}) {
     return(
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className={className} viewBox="0 0 16 16">
@@ -23,6 +31,8 @@ function IconPause({className = ""}) {
     );
 }
 
+/**
+@type {(props: {className?: string}) => JSX.Element} */
 function IconStart({className = ""}) {
     return(
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className={className} viewBox="0 0 16 16">
@@ -32,6 +42,8 @@ function IconStart({className = ""}) {
     );
 }
 
+/**
+@type {(props: {className?: string}) => JSX.Element} */
 function IconStop({className = ""}) {
     return(
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className={className} viewBox="0 0 16 16">
@@ -41,6 +53,8 @@ function IconStop({className = ""}) {
     );
 }
 
+/**
+@type {(props: {className?: string}) => JSX.Element} */
 function IconTrash({className = ""}) {
     return(
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className={className} viewBox="0 0 16 16">
@@ -49,6 +63,8 @@ function IconTrash({className = ""}) {
     );
 }
 
+/**
+@type {(props: {className?: string}) => JSX.Element} */
 function IconVolume({className = ""}) {
     return(
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className={className} viewBox="0 0 16 16">
@@ -57,6 +73,8 @@ function IconVolume({className = ""}) {
     );
 }
 
+/**
+@type {(props: {className?: string}) => JSX.Element} */
 function IconX({className = ""}) {
     return(
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className={className} viewBox="0 0 16 16">
@@ -65,6 +83,8 @@ function IconX({className = ""}) {
     );
 }
 
+/**
+@type {(props: {className?: string}) => JSX.Element} */
 function IconColumns({className = ""}) {
     return(
         <svg xmlns="http://www.w3.org/2000/svg"  fill="currentColor" className={className} viewBox="0 0 16 16">
@@ -73,6 +93,8 @@ function IconColumns({className = ""}) {
     );
 }
 
+/**
+@type {(props: {className?: string}) => JSX.Element} */
 function IconColumnsGap({className = ""}) {
     return(
         <svg xmlns="http://www.w3.org/2000/svg"  fill="currentColor" className={className} viewBox="0 0 16 16">
@@ -81,6 +103,8 @@ function IconColumnsGap({className = ""}) {
     );
 }
 
+/**
+@type {(props: {className?: string}) => JSX.Element} */
 function IconChevronBarLeft({className = ""}) {
     return(
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className={className} viewBox="0 0 16 16">
@@ -89,6 +113,8 @@ function IconChevronBarLeft({className = ""}) {
     );
 }
 
+/**
+@type {(props: {className?: string}) => JSX.Element} */
 function IconChevronUp({className = ""}) {
     return(
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className={className} viewBox="0 0 16 16">
@@ -97,6 +123,8 @@ function IconChevronUp({className = ""}) {
     );
 }
 
+/**
+@type {(props: {className?: string}) => JSX.Element} */
 function IconChevronDown({className = ""}) {
     return(
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className={className} viewBox="0 0 16 16">
@@ -104,7 +132,8 @@ function IconChevronDown({className = ""}) {
         </svg>
     );
 }
-
+/**
+@type {(props: {className?: string}) => JSX.Element} */
 function IconChevronRight({className = ""}) {
     return(
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className={className} viewBox="0 0 16 16">
@@ -113,6 +142,8 @@ function IconChevronRight({className = ""}) {
     );
 }
 
+/**
+@type {(props: {className?: string}) => JSX.Element} */
 function IconChevronLeft({className = ""}) {
     return(
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className={className} viewBox="0 0 16 16">
@@ -121,6 +152,8 @@ function IconChevronLeft({className = ""}) {
     );
 }
 
+/**
+@type {(props: {className?: string}) => JSX.Element} */
 function IconGearFill({className = ""}) {
     return(
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className={className} viewBox="0 0 16 16">
@@ -129,6 +162,8 @@ function IconGearFill({className = ""}) {
     );
 }
 
+/**
+@type {(props: {className?: string}) => JSX.Element} */
 function IconGear({className = ""}) {
     return(
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className={className} viewBox="0 0 16 16">

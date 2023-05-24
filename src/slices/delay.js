@@ -1,76 +1,100 @@
+// @ts-check
 import globalState from "../state/globalState.js";
-import {globalDefault} from "../state/globalDefault.js";
+import {
+    createDefaultGlobalDelay,
+    createGlobalDelay
+} from "../state/factory.js";
 import {delayLimits} from "../state/limits.js";
-import {isInsideInterval} from "../utils.js";
 
-const delayReducerTypes = {
-    "reset": true,
-    "time/changeMax": true,
-    "time/changeMin": true,
-    "feedback/changeMax": true,
-    "feedback/changeMin": true
+/**@type {{type: any, payload: any}} */
+const ReturnDealyAction = {
+    type: "reset",
+    payload: undefined,
 };
 
-/*-
-delayReducer: (GlobalDelay, {
-    type: "reset"
-        | "time/changeMax"
-        | "time/changeMin"
-        | "feedback/changeMax"
-        | "feedback/changeMin",
-    payload: GlobalDelay | undefined
-}) -> GlobalDelay */
-function delayReducer(state, action) {
-    const type = action?.type;
-    const payload = action?.payload;
-    return (
-        delayReducerTypes[type] !== undefined
-        ? payload
-        : state
-    );
-}
-
-const delayActions = Object.freeze({
+/**
+@type {Readonly<{
+    reset: () => DelayAction,
+    changeTimeMax: (n: number) => Maybe<DelayAction>,
+    changeTimeMin: (n: number) => Maybe<DelayAction>,
+    changeFeedbackMax: (n: number) => Maybe<DelayAction>,
+    changeFeedbackMin: (n: number) => Maybe<DelayAction>
+}>} */
+const delayActions = {
+    /**
+    @type {() => DelayAction} */
     reset() {
-        const resetObject = Object.assign({}, globalDefault.delay);
+        const resetObject = createDefaultGlobalDelay();
         resetObject.areAllDisable = globalState.delay.areAllDisable;
         globalState.delay = resetObject;
-        localStorage.setItem("delay.areAllDisable", globalState.delay.areAllDisable);
-        localStorage.setItem("delay.timeMax", globalState.delay.timeMax);
-        localStorage.setItem("delay.timeMin", globalState.delay.timeMin);
-        localStorage.setItem("delay.feedbackMax", globalState.delay.feedbackMax);
-        localStorage.setItem("delay.feedbackMin", globalState.delay.feedbackMin);
-        return {type: "reset", payload: resetObject};
+        localStorage.setItem("delay.areAllDisable", String(resetObject.areAllDisable));
+        localStorage.setItem("delay.timeMax", String(resetObject.timeMax));
+        localStorage.setItem("delay.timeMin", String(resetObject.timeMin));
+        localStorage.setItem("delay.feedbackMax", String(resetObject.feedbackMax));
+        localStorage.setItem("delay.feedbackMin", String(resetObject.feedbackMin));
+        ReturnDealyAction.type = "reset";
+        ReturnDealyAction.payload = resetObject;
+        return ReturnDealyAction;
     },
-    changeTimeMax(number) {
-        if (isInsideInterval(globalState.delay.timeMin, delayLimits.TIME_MAX, number)) {
-            globalState.delay.timeMax = number;
-            localStorage.setItem("delay.timeMax", number);
-            return {type: "time/changeMax", payload: Object.assign({}, globalState.delay)};
+    /**
+    @type {(n: number) => Maybe<DelayAction>} */
+    changeTimeMax(n) {
+        const globalDelay = globalState.delay;
+        if (globalDelay.timeMin <= n && n <= delayLimits.TIME_MAX) {
+            globalDelay.timeMax = n;
+            localStorage.setItem("delay.timeMax", String(n));
+            ReturnDealyAction.type = "time/changeMax";
+            ReturnDealyAction.payload = createGlobalDelay();
+            return ReturnDealyAction;
         }
     },
-    changeTimeMin(number) {
-        if (isInsideInterval(delayLimits.TIME_MIN, globalState.delay.timeMax, number)) {
-            globalState.delay.timeMin = number;
-            localStorage.setItem("delay.timeMin", number);
-            return {type: "time/changeMin", payload: Object.assign({}, globalState.delay)};
+    /**
+    @type {(n: number) => Maybe<DelayAction>}*/
+    changeTimeMin(n) {
+        const globalDelay = globalState.delay;
+        if (delayLimits.TIME_MIN <= n && n <= globalDelay.timeMax) {
+            globalDelay.timeMin = n;
+            localStorage.setItem("delay.timeMin", String(n));
+            ReturnDealyAction.type = "time/changeMin";
+            ReturnDealyAction.payload = createGlobalDelay();
+            return ReturnDealyAction;
         }
     },
-    changeFeedbackMax(number) {
-        if (isInsideInterval( globalState.delay.feedbackMin, delayLimits.FBACK_MAX, number)) {
-            globalState.delay.feedbackMax = number;
-            localStorage.setItem("delay.feedbackMax", number);
-            return {type: "feedback/changeMax", payload: Object.assign({}, globalState.delay)};
+    /**
+    @type {(n: number) => Maybe<DelayAction>}*/
+    changeFeedbackMax(n) {
+        if (globalState.delay.feedbackMin <= n && n <= delayLimits.FBACK_MAX) {
+            globalState.delay.feedbackMax = n;
+            localStorage.setItem("delay.feedbackMax", String(n));
+            ReturnDealyAction.type = "feedback/changeMax";
+            ReturnDealyAction.payload = createGlobalDelay();
+            return ReturnDealyAction;
         }
     },
-    changeFeedbackMin(number) {
-        if (isInsideInterval(delayLimits.FBACK_MIN,  globalState.delay.feedbackMax, number)) {
-            globalState.delay.feedbackMin = number;
-            localStorage.setItem("delay.feedbackMin", number);
-            return {type: "feedback/changeMin", payload: Object.assign({}, globalState.delay)};
+        /**
+    @type {(n: number) => Maybe<DelayAction>}*/
+    changeFeedbackMin(n) {
+        if (delayLimits.FBACK_MIN <= n && n <= globalState.delay.feedbackMax) {
+            globalState.delay.feedbackMin = n;
+            localStorage.setItem("delay.feedbackMin", String(n));
+            ReturnDealyAction.type = "feedback/changeMin";
+            ReturnDealyAction.payload = createGlobalDelay();
+            return ReturnDealyAction;
         }
     },
-});
+};
+
+/**
+@type {(
+    state: GlobalDelay,
+    action: Maybe<DelayAction>
+) => GlobalDelay} */
+function delayReducer(state, action) {
+    if (action !== undefined) {
+        return action.payload;
+    }
+    return state;
+}
 
 export {
     delayActions,

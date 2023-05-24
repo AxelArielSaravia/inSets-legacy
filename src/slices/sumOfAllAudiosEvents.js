@@ -1,45 +1,53 @@
+//@ts-check
 import globalState from "../state/globalState.js";
 
-/*-
-sumOfAllAudiosEventsReducer :: (number, {
-    type: "add" | "subtract"
-    payload: undefined | number
-}) -> number */
-function sumOfAllAudiosEventsReducer(state, action) {
-    const type = action?.type;
-    return (
-        type === "add"
-        || type === "clear"
-        || type === "subtract"
-        ? globalState.sumOfAllAudiosEvents
-        : state
-    );
-}
+/**
+@type {SumOfAllAudiosEventsAction} */
+const ReturnSumOfAllAudiosEventsAction = {type: "add"};
 
-const staticActions = {
-    add: {type: "add"},
-    clear: {type: "clear"},
-    subtractOne: {type: "subtract", payload: 1}
-};
-
-const sumOfAllAudiosEventsActions = Object.freeze({
+/**
+@type {Readonly<{
+    add(): SumOfAllAudiosEventsAction,
+    clear(): SumOfAllAudiosEventsAction,
+    subtract(n: number): SumOfAllAudiosEventsAction,
+    subtractOne(): SumOfAllAudiosEventsAction
+}>} */
+const sumOfAllAudiosEventsActions = {
+    /**
+    @type {() => SumOfAllAudiosEventsAction} */
     add() {
         globalState.sumOfAllAudiosEvents += 1;
-        return staticActions.add;
+        ReturnSumOfAllAudiosEventsAction.type = "add";
+        return ReturnSumOfAllAudiosEventsAction;
     },
+    /**
+    @type {() => SumOfAllAudiosEventsAction} */
     clear() {
         globalState.sumOfAllAudiosEvents = 0;
-        return staticActions.clear;
+        ReturnSumOfAllAudiosEventsAction.type = "clear";
+        return ReturnSumOfAllAudiosEventsAction;
     },
-    subtract(number) {
-        globalState.sumOfAllAudiosEvents -= number;
-        return {type: "subtract", payload: number};
+    /**
+    @type {(n: number) => SumOfAllAudiosEventsAction} */
+    subtract(n) {
+        globalState.sumOfAllAudiosEvents -= n;
+        ReturnSumOfAllAudiosEventsAction.type = "subtract";
+        return ReturnSumOfAllAudiosEventsAction;
     },
+    /**
+    @type {() => SumOfAllAudiosEventsAction} */
     subtractOne() {
         globalState.sumOfAllAudiosEvents -= 1;
-        return staticActions.subtractOne;
+        ReturnSumOfAllAudiosEventsAction.type = "subtract";
+        return ReturnSumOfAllAudiosEventsAction;
     }
-});
+};
+
+/**
+@type {(state: number , action: SumOfAllAudiosEventsAction) => number} */
+function sumOfAllAudiosEventsReducer(state, action) {
+    return globalState.sumOfAllAudiosEvents;
+}
 
 export {
     sumOfAllAudiosEventsActions,

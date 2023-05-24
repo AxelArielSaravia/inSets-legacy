@@ -1,60 +1,56 @@
+// @ts-check
 import globalState from "../state/globalState.js";
 import {globalDefault} from "../state/globalDefault.js";
 import {fadeLimits} from "../state/limits.js";
-import {isInsideInterval} from "../utils.js";
+import {createFadesState} from "../state/factory.js";
 
-/*-
-fadesReducer :: (FadesState, {
-    type: "reset" | "fadeIn/change" | "fadeOut/change",
-    payload?: FadesState
-}) -> FadesState */
-function fadesReducer(state, action) {
-    const type = action?.type;
-    const payload = action?.payload;
-    return (
-        type === "reset"
-        || type === "fadeIn/change"
-        || type === "fadeOut/change"
-        ? payload
-        : state
-    );
-}
-
-const fadesActions = Object.freeze({
+/**
+@type {Readonly<{
+    reset: () => FadeAction,
+    changeFadeIn: (n: number) => Maybe<FadeAction>,
+    changeFadeOut: (n: number) => Maybe<FadeAction>
+}>} */
+const fadesActions = {
+    /**
+    @type {() => FadeAction} */
     reset() {
         globalState.fadeIn = globalDefault.fadeIn;
         globalState.fadeOut = globalDefault.fadeOut;
-        localStorage.setItem("fadeIn", globalDefault.fadeIn);
-        localStorage.setItem("fadeOut", globalDefault.fadeOut);
-        return {
-            type: "reset",
-            payload: {
-                fadeIn: globalDefault.fadeIn,
-                fadeOut: globalDefault.fadeOut
-            }
-        };
+        localStorage.setItem("fadeIn", String(globalDefault.fadeIn));
+        localStorage.setItem("fadeOut", String(globalDefault.fadeOut));
+        return {type: "reset", payload: createFadesState()};
     },
-    changeFadeIn(number) {
-        if (isInsideInterval(fadeLimits.MIN, fadeLimits.MAX, number)) {
-            globalState.fadeIn = number;
-            localStorage.setItem("fadeIn", globalDefault.fadeIn);
-            return {
-                type: "fadeIn/change",
-                payload: {fadeIn: number, fadeOut: globalState.fadeOut}
-            };
+    /**
+    @type {(n: number) => Maybe<FadeAction>} */
+    changeFadeIn(n) {
+        if (fadeLimits.MIN <= n && n <= fadeLimits.MAX) {
+            globalState.fadeIn = n;
+            localStorage.setItem("fadeIn", String(n));
+            return {type: "fadeIn/change", payload: createFadesState()};
         }
     },
-    changeFadeOut(number) {
-        if (isInsideInterval(fadeLimits.MIN, fadeLimits.MAX, number)) {
-            globalState.fadeOut = number;
-            localStorage.setItem("fadeOut", globalDefault.fadeOut);
-            return {
-                type: "fadeOut/change",
-                payload: {fadeIn: globalState.fadeIn, fadeOut:number}
-            };
+    /**
+    @type {(n: number) => Maybe<FadeAction>} */
+    changeFadeOut(n) {
+        if (fadeLimits.MIN <= n && n <= fadeLimits.MAX) {
+            globalState.fadeOut = n;
+            localStorage.setItem("fadeOut", String(n));
+            return {type: "fadeOut/change", payload: createFadesState()};
         }
     }
-});
+};
+
+/**
+@type {(
+    state: {fadeIn: number, fadeOut: number},
+    action: Maybe<FadeAction>
+) => {fadeIn: number, fadeOut: number}} */
+function fadesReducer(state, action) {
+    if (action !== undefined) {
+        return action.payload;
+    }
+    return state;
+}
 
 export {
     fadesActions,

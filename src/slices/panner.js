@@ -1,95 +1,120 @@
+// @ts-check
 import globalState from "../state/globalState.js";
-import {globalDefault} from "../state/globalDefault.js";
 import {pannerLimits} from "../state/limits.js";
-import {isInsideInterval} from "../utils.js";
 
-const pannerReducerTypes = {
-    "reset": true,
-    "x/changeMax": true,
-    "x/changeMin": true,
-    "y/changeMax": true,
-    "y/changeMin": true,
-    "z/changeMax": true,
-    "z/changeMin": true
+import {createGlobalPanner, createDefaultGlobalPanner} from "../state/factory.js";
+
+/**
+@type {{type: any, payload: any}} */
+const ReturnPannerAction = {
+    type: "",
+    payload: undefined
 };
-/*-
-pannerReducer: (GlobalPanner, {
-    type: "reset"
-        | "x/changeMax"
-        | "x/changeMin"
-        | "y/changeMax"
-        | "y/changeMin"
-        | "z/changeMax"
-        | "z/changeMin",
-    payload: undefined | number
-}) -> GlobalPanner */
-function pannerReducer(state, action) {
-    const type = action?.type;
-    const payload = action?.payload;
-    return (
-        pannerReducerTypes[type] !== undefined
-        ? payload
-        : state
-    );
-}
 
-const pannerActions = Object.freeze({
+/**
+@type {Readonly<{
+    reset: () => PannerAction,
+    changeXMax: (n: number) => Maybe<PannerAction>,
+    changeXMin: (n: number) => Maybe<PannerAction>,
+    changeYMax: (n: number) => Maybe<PannerAction>,
+    changeYMin: (n: number) => Maybe<PannerAction>,
+    changeZMax: (n: number) => Maybe<PannerAction>,
+    changeZMin: (n: number) => Maybe<PannerAction>
+}>} */
+const pannerActions = {
+    /**
+    @type {() => PannerAction} */
     reset() {
-        const resetObject = Object.assign({}, globalDefault.panner);
+        const resetObject = createDefaultGlobalPanner();
         resetObject.areAllDisable =  globalState.panner.areAllDisable;
         globalState.panner = resetObject;
-        localStorage.setItem("panner.areAllDisable", globalState.panner.areAllDisable);
-        localStorage.setItem("panner.xMax", globalState.panner.xMax);
-        localStorage.setItem("panner.xMin", globalState.panner.xMin);
-        localStorage.setItem("panner.yMax", globalState.panner.yMax);
-        localStorage.setItem("panner.yMin", globalState.panner.yMin);
-        localStorage.setItem("panner.zMax", globalState.panner.zMax);
-        localStorage.setItem("panner.zMin", globalState.panner.zMin);
-        return {type: "reset", payload: resetObject};
+        localStorage.setItem("panner.areAllDisable", String(resetObject.areAllDisable));
+        localStorage.setItem("panner.xMax", String(resetObject.xMax));
+        localStorage.setItem("panner.xMin", String(resetObject.xMin));
+        localStorage.setItem("panner.yMax", String(resetObject.yMax));
+        localStorage.setItem("panner.yMin", String(resetObject.yMin));
+        localStorage.setItem("panner.zMax", String(resetObject.zMax));
+        localStorage.setItem("panner.zMin", String(resetObject.zMin));
+        ReturnPannerAction.type = "reset";
+        ReturnPannerAction.payload = resetObject;
+        return ReturnPannerAction;
     },
-    changeXMax(number) {
-        if (isInsideInterval(globalState.panner.xMin, pannerLimits.MAX, number)) {
-            globalState.panner.xMax = number;
-            localStorage.setItem("panner.xMax", number);
-            return {type: "x/changeMax", payload: Object.assign({}, globalState.panner)};
+    /**
+    @type {(n: number) => Maybe<PannerAction>} */
+    changeXMax(n) {
+        if (globalState.panner.xMin <= n && n <= pannerLimits.MAX) {
+            globalState.panner.xMax = n;
+            localStorage.setItem("panner.xMax", String(n));
+            ReturnPannerAction.type = "x/changeMax";
+            ReturnPannerAction.payload = createGlobalPanner();
+            return ReturnPannerAction;
         }
     },
-    changeXMin(number) {
-        if (isInsideInterval(pannerLimits.MIN, globalState.panner.xMax, number)) {
-            globalState.panner.xMin = number;
-            localStorage.setItem("panner.xMin", number);
-            return {type: "x/changeMin", payload: Object.assign({}, globalState.panner)};
+    /**
+    @type {(n: number) => Maybe<PannerAction>} */
+    changeXMin(n) {
+        if (pannerLimits.MIN <= n && n <= globalState.panner.xMax) {
+            globalState.panner.xMin = n;
+            localStorage.setItem("panner.xMin", String(n));
+            ReturnPannerAction.type = "x/changeMin";
+            ReturnPannerAction.payload = createGlobalPanner();
+            return ReturnPannerAction;
         }
     },
-    changeYMax(number) {
-        if (isInsideInterval(globalState.panner.yMin, pannerLimits.MAX, number)) {
-            globalState.panner.yMax = number;
-            localStorage.setItem("panner.yMax", number);
-            return {type: "y/changeMax", payload: Object.assign({}, globalState.panner)};
+    /**
+    @type {(n: number) => Maybe<PannerAction>} */
+    changeYMax(n) {
+        if (globalState.panner.yMin <= n && n <= pannerLimits.MAX) {
+            globalState.panner.yMax = n;
+            localStorage.setItem("panner.yMax", String(n));
+            ReturnPannerAction.type = "y/changeMax";
+            ReturnPannerAction.payload = createGlobalPanner();
+            return ReturnPannerAction;
         }
     },
-    changeYMin(number) {
-        if (isInsideInterval(pannerLimits.MIN, globalState.panner.yMax, number)) {
-            globalState.panner.yMin = number;
-            localStorage.setItem("panner.yMin", number);
-            return {type: "y/changeMin", payload: Object.assign({}, globalState.panner)};
+    /**
+    @type {(n: number) => Maybe<PannerAction>} */
+    changeYMin(n) {
+        if (pannerLimits.MIN <= n && n <= globalState.panner.yMax) {
+            globalState.panner.yMin = n;
+            localStorage.setItem("panner.yMin", String(n));
+            ReturnPannerAction.type = "y/changeMin";
+            ReturnPannerAction.payload = createGlobalPanner();
+            return ReturnPannerAction;
         }
     },
-    changeZMax(number) {
-        if (isInsideInterval(globalState.panner.zMin, pannerLimits.MAX, number)) {
-            globalState.panner.zMax = number;
-            localStorage.setItem("panner.zMax", number);
-            return {type: "z/changeMax", payload: Object.assign({}, globalState.panner)};
+    /**
+    @type {(n: number) => Maybe<PannerAction>} */
+    changeZMax(n) {
+        if (globalState.panner.zMin <= n && n <= pannerLimits.Z_MAX) {
+            globalState.panner.zMax = n;
+            localStorage.setItem("panner.zMax", String(n));
+            ReturnPannerAction.type = "z/changeMax";
+            ReturnPannerAction.payload = createGlobalPanner();
+            return ReturnPannerAction;
         }
     },
-    changeZMin(number) {
-        if (isInsideInterval(pannerLimits.MIN, globalState.panner.zMax, number)) {
-            globalState.panner.zMin = number;
-            localStorage.setItem("panner.zMin", number);
-            return {type: "z/changeMin", payload: Object.assign({}, globalState.panner)};
+    /**
+    @type {(n: number) => Maybe<PannerAction>} */
+    changeZMin(n) {
+        if (pannerLimits.MIN <= n && n <= globalState.panner.zMax) {
+            globalState.panner.zMin = n;
+            localStorage.setItem("panner.zMin", String(n));
+            ReturnPannerAction.type = "z/changeMin";
+            ReturnPannerAction.payload = createGlobalPanner();
+            return ReturnPannerAction;
         }
     }
-});
+};
+
+/**
+@type {(state: GlobalPanner, action: Maybe<PannerAction>) => GlobalPanner} */
+function pannerReducer(state, action) {
+    if (action !== undefined) {
+        return action.payload;
+    }
+    return state;
+}
 
 export {
     pannerActions,

@@ -1,7 +1,10 @@
-import {useReducer} from "react";
+//@ts-check
+import React, {useReducer} from "react";
 
-import {panelConfigReducer, panelConfigActions} from "../../slices/panelConfig.js";
-import {panelConfigInitialState} from "../initialState.js";
+import {createPanelConfigState} from "../../state/factory.js";
+import dispatch from "../../state/dispatch.js";
+
+import {panelConfigReducer} from "../../slices/panelConfig.js";
 
 import PanelButtonsSection from "./PanelButtonsSection.js";
 import PanelConfigSection from "./PanelConfigSection.js";
@@ -9,29 +12,20 @@ import PanelSwitcher from "./PanelSwitcher.js";
 
 import "./PanelContainer.scss";
 
-
-let _dispatch = () => undefined;
-
-function closeConfigPanel() {
-    _dispatch(panelConfigActions.closePanel);
-}
-function switchOnClick() {
-    _dispatch(panelConfigActions.switchPanel);
-}
-
 function GeneralPanel() {
-    const [{
+    /**
+    @type {[PanelConfigState, React.Dispatch<PanelConfigAction>]} */
+    const [panelConfig, panelConfigDispatch] = useReducer(panelConfigReducer, createPanelConfigState());
+    const {
         isPanelButtonsVisible,
         isPanelConfigVisible,
         isPanelVisible,
         panelSelected
-    }, dispatch] = useReducer(panelConfigReducer, panelConfigInitialState);
-    _dispatch = dispatch;
-
+    } = panelConfig;
+    dispatch.panelConfig = panelConfigDispatch;
     return (
         <>
             <PanelSwitcher
-                switchOnClick={switchOnClick}
                 isPanelVisible={isPanelVisible}
             />
             <aside className={isPanelVisible ? "panel-container flex-column" : "panel-container flex-column panel-container-hidden"}>
@@ -44,12 +38,10 @@ function GeneralPanel() {
                         isPanelButtonsVisible={isPanelButtonsVisible}
                         isPanelConfigVisible={isPanelConfigVisible}
                         panelSelected={panelSelected}
-                        dispatch={dispatch}
                     />
                     <PanelConfigSection
-                        isActive={isPanelConfigVisible}
+                        isPanelConfigVisible={isPanelConfigVisible}
                         panelSelected={panelSelected}
-                        closeConfigPanel={closeConfigPanel}
                     />
                 </div>
             </aside>

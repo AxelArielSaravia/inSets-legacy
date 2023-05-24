@@ -1,4 +1,5 @@
-import {useContext} from "react";
+//@ts-check
+import React, {useContext} from "react";
 
 import {AudioListContext} from "../contexts/AudioList.js";
 import useMatchMedia from "../hooks/useMatchMedia.js";
@@ -16,6 +17,8 @@ function AudioLoadingElement() {
     );
 }
 
+/**
+@type {(props: {bool: boolean, id: string}) => JSX.Element} */
 function SelectAudioElement({bool, id}) {
     return (
         bool
@@ -24,6 +27,8 @@ function SelectAudioElement({bool, id}) {
     );
 }
 
+/**
+@type {(this: {[k: string]: true}, id: string) => JSX.Element} */
 function listMapFn(id) {
     return (
         <div
@@ -33,13 +38,15 @@ function listMapFn(id) {
             arial-live="polite"
         >
             <SelectAudioElement
-                bool={id in this}
+                bool={this[id] === true}
                 id={id}
             />
         </div>
     );
 }
 
+/**
+@type {(prop: {left: Array<JSX.Element>, right: Array<JSX.Element>}) => JSX.Element}*/
 function AudioContainerColumns({left, right}) {
     return (
         <>
@@ -52,18 +59,18 @@ function AudioContainerColumns({left, right}) {
         </>
     );
 }
+
+/**@type {Array<JSX.Element>} */
 let left = [];
+/**@type {Array<JSX.Element>} */
 let right = [];
 function AudioElementList2() {
-    const [{
-        loadedAudioList,
-        completedAudioList
-    }] = useContext(AudioListContext);
+    const {loadedAudioList, completedAudioList} = useContext(AudioListContext);
     const list = Object.keys(loadedAudioList);
     const mid = Math.round(list.length / 2);
 
-    left = Array(mid);
-    right = Array(mid);
+    left = [];
+    right = [];
 
     for (let i = 0; i < list.length; i += 1) {
         if (i < mid) {
@@ -75,12 +82,10 @@ function AudioElementList2() {
     return <AudioContainerColumns left={left} right={right}/>;
 }
 
+/**
+@type {() => Array<JSX.Element>} */
 function AudioElementList() {
-    const [{
-        loadedAudioList,
-        completedAudioList
-    }] = useContext(AudioListContext);
-
+    const {loadedAudioList, completedAudioList} = useContext(AudioListContext);
     return Object.keys(loadedAudioList).map(listMapFn, completedAudioList);
 }
 
@@ -96,7 +101,7 @@ function Media() {
 }
 
 function NoAudioFile() {
-    const [{loadedAudioListSize}] = useContext(AudioListContext);
+    const {loadedAudioListSize} = useContext(AudioListContext);
     return (
         <Show is={loadedAudioListSize === 0}>
             <div className="audioFiles_icon flex-column align-c justify-c flex-grow-1">
@@ -108,7 +113,7 @@ function NoAudioFile() {
 
 function AudioContainer() {
     return (
-        <main className="main flex-column p-5">
+        <main className="main flex-column align-c p-5">
             <div className="audio-container flex-column">
                 <div className="audio-container_sub">
                     <Media/>

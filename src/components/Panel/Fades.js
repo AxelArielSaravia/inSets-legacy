@@ -1,50 +1,54 @@
-import {useReducer} from "react";
+//@ts-check
+import React, {useReducer} from "react";
+
+import {emptyDispatch} from "../../state/dispatch.js";
 
 import {fadesReducer, fadesActions} from "../../slices/fades.js";
-import {createFadesInitialState} from "../initialState.js";
+import {createFadesState} from "../../state/factory.js";
 import {fadeLimits} from "../../state/limits.js";
 
 import {rToFade} from "../../core/maps.js";
-
-import {undefinedFunction} from "../utils.js";
 
 import PanelConfigContainer from "./PanelConfigContainer.js";
 import PanelConfigChild from "./PanelConfigChild.js";
 import PanelRange from "./PanelRange.js";
 
-let _fadesDispatch = undefinedFunction;
+let _fadesDispatch = emptyDispatch;
 
 function reset() {
     _fadesDispatch(fadesActions.reset());
 }
+
+/**
+@type {(val: string) => void} */
 function fadeInOnChange(val) {
     _fadesDispatch(fadesActions.changeFadeIn(Number(val)));
 }
+
+/**
+@type {(val: string) => void} */
 function fadeOutOnChange(val) {
     _fadesDispatch(fadesActions.changeFadeOut(Number(val)));
 }
 
-
+/**
+@type {(props: {MAX: number}) => JSX.Element} */
 function Fades({MAX}) {
-    const [
-        {fadeIn, fadeOut},
-        fadesDispatch
-    ] = useReducer(fadesReducer, createFadesInitialState());
-
+    const [{fadeIn, fadeOut}, fadesDispatch] = useReducer(fadesReducer, createFadesState());
     _fadesDispatch = fadesDispatch;
-
     return (
         <PanelConfigContainer
+            DisableAllButtonEnabled={false}
+            ResetButtonEnabled
             title="Fades"
             description="Change the fadeIn and fadeOut values for all audios."
-            ResetButtonEnabled
             reset={reset}
         >
             <PanelConfigChild title="fadeIn">
                 <PanelRange
                     max={MAX}
                     value={fadeIn}
-                    valueText={rToFade(fadeIn)}
+                    valueText={String(rToFade(fadeIn))}
                     valueTextAdd="ms"
                     onChange={fadeInOnChange}
                 />
@@ -53,7 +57,7 @@ function Fades({MAX}) {
                 <PanelRange
                     max={MAX}
                     value={fadeOut}
-                    valueText={rToFade(fadeOut)}
+                    valueText={String(rToFade(fadeOut))}
                     valueTextAdd="ms"
                     onChange={fadeOutOnChange}
                 />
@@ -64,7 +68,6 @@ function Fades({MAX}) {
 
 function ContainFades() {
     const {MAX} = fadeLimits;
-
     return (
         <Fades MAX={MAX}/>
     );

@@ -1,75 +1,78 @@
-import {
-    useReducer,
-    useContext
-} from "react";
+//@ts-check
+import React, {useReducer, useContext} from "react";
 
-import {GeneralDisableContext} from "../contexts/GeneralDisable.js";
+import dispatch, {emptyDispatch} from "../../state/dispatch.js";
+import {pannerLimits} from "../../state/limits.js";
+import {createGlobalPanner} from "../../state/factory.js";
 
 import {pannerReducer, pannerActions} from "../../slices/panner.js";
 import {generalDisableAction} from "../../slices/generalDisable.js";
-import {createPannerInitialState} from "../initialState.js";
-import {pannerLimits} from "../../state/limits.js";
 
 import {rToPanner} from "../../core/maps.js";
 
-import {undefinedFunction} from "../utils.js";
+import {GeneralDisableContext} from "../contexts/GeneralDisable.js";
 
 import PanelConfigContainer from "./PanelConfigContainer.js";
 import PanelInterval from "./PanelInterval.js";
 
-let _pannerDispatch = undefinedFunction;
-let _generalDisableDispatch = undefinedFunction;
+let _pannerDispatch = emptyDispatch;
 
 function reset() {
     _pannerDispatch(pannerActions.reset());
 }
 
+/**
+@type {(val: string) => void} */
 function xMaxOnChange(val) {
     _pannerDispatch(pannerActions.changeXMax(Number(val)));
 }
 
+/**
+@type {(val: string) => void} */
 function xMinOnChange(val) {
     _pannerDispatch(pannerActions.changeXMin(Number(val)));
 }
 
+/**
+@type {(val: string) => void} */
 function yMaxOnChange(val) {
     _pannerDispatch(pannerActions.changeYMax(Number(val)));
 }
 
+/**
+@type {(val: string) => void} */
 function yMinOnChange(val) {
     _pannerDispatch(pannerActions.changeYMin(Number(val)));
 }
 
+/**
+@type {(val: string) => void} */
 function zMaxOnChange(val) {
     _pannerDispatch(pannerActions.changeZMax(Number(val)));
 }
 
+/**
+@type {(val: string) => void} */
 function zMinOnChange(val) {
     _pannerDispatch(pannerActions.changeZMin(Number(val)));
 }
 
+/**
+@type {(value: boolean) => void} */
 function changeDisable(value) {
     if (value) {
-        _generalDisableDispatch(generalDisableAction("enable", "panner", "global"));
+        dispatch.generalDisable(generalDisableAction("enable", "panner", "global"));
     } else {
-        _generalDisableDispatch(generalDisableAction("disable", "panner"));
+        dispatch.generalDisable(generalDisableAction("disable", "panner", "global"));
     }
 }
 
+/**
+@type {(prop: {Z_MAX: number, MAX: number}) => JSX.Element} */
 function Panner({Z_MAX, MAX}) {
-    const [{allPannersAreDisabled}, generalDisableDispatch] = useContext(GeneralDisableContext);
-    const [{
-        xMax,
-        xMin,
-        yMax,
-        yMin,
-        zMax,
-        zMin
-    }, pannerDispatch] = useReducer(pannerReducer, createPannerInitialState());
-
+    const {allPannersAreDisabled}= useContext(GeneralDisableContext);
+    const [{xMax, xMin, yMax, yMin, zMax, zMin}, pannerDispatch] = useReducer(pannerReducer, createGlobalPanner());
     _pannerDispatch = pannerDispatch;
-    _generalDisableDispatch = generalDisableDispatch;
-
     return (
         <PanelConfigContainer
             title="Panner"
@@ -119,7 +122,6 @@ function Panner({Z_MAX, MAX}) {
 
 function ContainPanner() {
     const {Z_MAX, MAX} = pannerLimits;
-
     return (
         <Panner
             Z_MAX={Z_MAX}

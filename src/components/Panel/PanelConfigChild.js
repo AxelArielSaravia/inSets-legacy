@@ -1,7 +1,11 @@
-const style = {
-    width:"100%"
-};
 
+const style = {width:"100%"};
+
+/**
+@type {(props: {
+    title?: string,
+    children?: JSX.Element | Array<JSX.Element>
+}) => JSX.Element} */
 function PanelConfigChild({title, children}) {
     return (
         <div className="config-panel_children p-5" style={style}>

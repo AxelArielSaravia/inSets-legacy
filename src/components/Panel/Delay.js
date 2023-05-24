@@ -1,69 +1,71 @@
-import {
-    useReducer,
-    useContext
-} from "react";
+//@ts-check
+import React, {useReducer, useContext} from "react";
+
+import dispatch, {emptyDispatch} from "../../state/dispatch.js";
+import {createGlobalDelay} from "../../state/factory.js";
+import {delayLimits} from "../../state/limits.js";
 
 import {delayReducer, delayActions} from "../../slices/delay.js";
 import {generalDisableAction} from "../../slices/generalDisable.js";
 
-import {GeneralDisableContext} from "../contexts/GeneralDisable.js";
-import {createDelayInitialState} from "../initialState.js";
-import {delayLimits} from "../../state/limits.js";
-
 import {rToFeedback, rToTime} from "../../core/maps.js";
 
-import {undefinedFunction} from "../utils.js";
+import {GeneralDisableContext} from "../contexts/GeneralDisable.js";
 
 import PanelConfigContainer from "./PanelConfigContainer.js";
 import PanelInterval from "./PanelInterval.js";
 
+let _delayDispatch = emptyDispatch;
 
-let _delayDispatch = undefinedFunction;
-let _generalDisableDispatcher = undefinedFunction;
-
+/**
+@type {(value: boolean) => void} */
 function changeDisable(value) {
     if (value) {
-        _generalDisableDispatcher(generalDisableAction("enable", "delay", "global"));
+        dispatch.generalDisable(generalDisableAction("enable", "delay", "global"));
     } else {
-        _generalDisableDispatcher(generalDisableAction("disable", "delay"));
+        dispatch.generalDisable(generalDisableAction("disable", "delay", "global"));
     }
 }
 
 function reset() {
     _delayDispatch(delayActions.reset());
 }
+
+/**
+@type {(val: string) => void} */
 function timeMaxOnChange(val) {
     _delayDispatch(delayActions.changeTimeMax(Number(val)));
 }
+
+/**
+@type {(val: string) => void} */
 function timeMinOnChange(val) {
     _delayDispatch(delayActions.changeTimeMin(Number(val)));
 }
+
+/**
+@type {(val: string) => void} */
 function feedbackMaxOnChange(val) {
     _delayDispatch(delayActions.changeFeedbackMax(Number(val)));
 }
+
+/**
+@type {(val: string) => void} */
 function feedbackMinOnChange(val) {
     _delayDispatch(delayActions.changeFeedbackMin(Number(val)));
 }
 
-
-function Delay({
-    FBACK_MAX,
-    TIME_MAX
-}) {
-    const [
-        {allDelaysAreDisabled},
-        generalDisableDispatcher
-    ] = useContext(GeneralDisableContext);
+/**
+@type {(prop: {FBACK_MAX: number, TIME_MAX: number}) => JSX.Element} */
+function Delay({FBACK_MAX, TIME_MAX}) {
+    const {allDelaysAreDisabled} = useContext(GeneralDisableContext);
     const [{
         timeMin,
         timeMax,
         feedbackMin,
         feedbackMax
-    }, delayDispatch] = useReducer(delayReducer, createDelayInitialState());
-
-    _generalDisableDispatcher = generalDisableDispatcher;
+    }, delayDispatch] = useReducer(delayReducer, createGlobalDelay());
     _delayDispatch = delayDispatch;
-
     return (
         <PanelConfigContainer
             title="Delay"
@@ -102,7 +104,6 @@ function Delay({
 
 function ContainDelay() {
     const {FBACK_MAX, TIME_MAX} = delayLimits;
-
     return (
         <Delay FBACK_MAX={FBACK_MAX} TIME_MAX={TIME_MAX}/>
     );

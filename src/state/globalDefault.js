@@ -1,20 +1,22 @@
-const randomPointObject = Object.freeze({
+// @ts-check
+/**@type {Freeze<GlobalRandomPoint>}*/
+const randomPointObject = {
     areAllDisable: false
-});
+};
 
-/*-
-globalDefault :: LocalStorageState */
-const globalDefault = Object.freeze({
-    delay: Object.freeze({
+/**
+@type {Freeze<LocalStorageState>} */
+const globalDefault = {
+    delay: {
         areAllDisable: false,
         feedbackMax: 16,
         feedbackMin: 4,
         timeMax: 39,
         timeMin: 3
-    }),
+    },
     fadeIn: 2,
     fadeOut: 5,
-    filter: Object.freeze({
+    filter: {
         areAllDisable: false,
         frequencyMax: 240,
         frequencyMin: 40,
@@ -24,29 +26,31 @@ const globalDefault = Object.freeze({
         highpass: false,
         lowpass: false,
         notch: false
-    }),
-    panner: Object.freeze({
+    },
+    panner: {
         areAllDisable: false,
         xMax: 80,
         xMin: 20,
         yMax: 80,
         yMin: 20,
         zMax: 50,
-        zMin: 0
-    }),
-    playbackRate: Object.freeze({
+        zMin: 0,
+    },
+    playbackRate: {
         areAllDisable: false,
         max: 15,
         min: 5
-    }),
+    },
     randomEndPoint: randomPointObject,
     randomStartPoint: randomPointObject,
-    timeInterval: Object.freeze({
+    timeInterval: {
         max: 50,  //handreads of miliseconds
         min: 8  //handreads of miliseconds
-    })
-});
+    }
+};
 
+/**
+@type {Freeze<Array<GlobalDefaultKeys>>} */
 const globalDefaultKeys = [
     "delay",
     "fadeIn",
@@ -59,6 +63,44 @@ const globalDefaultKeys = [
     "timeInterval"
 ];
 
+/**
+@type {Freeze<{
+    "delay": [
+        "areAllDisable",
+        "feedbackMax",
+        "feedbackMin",
+        "timeMax",
+        "timeMin"
+    ],
+    "filter": [
+        "areAllDisable",
+        "frequencyMax",
+        "frequencyMin",
+        "qMax",
+        "qMin",
+        "bandpass",
+        "highpass",
+        "lowpass",
+        "notch"
+    ],
+    "panner": [
+        "areAllDisable",
+        "xMax",
+        "xMin",
+        "yMax",
+        "yMin",
+        "zMax",
+        "zMin"
+    ],
+    "playbackRate": [
+        "areAllDisable",
+        "max",
+        "min"
+    ],
+    "randomEndPoint": ["areAllDisable"],
+    "randomStartPoint": ["areAllDisable"],
+    "timeInterval": ["max", "min"]
+}>} */
 const globalDefaultObjectsKeys = {
     "delay": [
         "areAllDisable",

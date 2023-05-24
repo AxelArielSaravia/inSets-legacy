@@ -1,100 +1,68 @@
-/*-
-GlobalDelay :: {
-    areAllDisable: boolean,
-    timeMin: number,
-    timeMax: number,
-    feedbackMin: number,
-    feedbackMax: number
-}
-
-GlobalFilter :: {
-    areAllDisable: boolean,
-    frequencyMax: number,
-    frequencyMin: number,
-    qMax: number,
-    qMin: number,
-    types: ["lowpass"?, "highpass"?, "bandpass"?, "notch"?]
-}
-
-GlobalPanner :: {
-    areAllDisable: boolean,
-    xMax: number,
-    xMin: number,
-    yMax: number,
-    yMin: number,
-    zMax: number,
-    zMin: number
-}
-
-GlobalPlaybackRate :: {
-    areAllDisable: boolean,
-    max: number,
-    min: number
-}
-
-GlobalTimeInterval :: {
-    min: number,
-    max: number
-}
-
-GlobalRandomPoint :: {
-    areAllDisable: boolean
-}
-
-EventsForEachSet :: {
-    arrOfEvents: Array<number>,
-    sumOfAllEvents: number
-}
-*/
-
-/*
-LocalStorageState :: {
-    delay: GlobalDelay,
-    fadeIn: number,
-    fadeOut: number,
-    fadeTime: number,
-    filter: GlobalFilter,
-    panner: GlobalPanner,
-    playbackRate: GlobalPlaybackRate,
-    randomEndPoint: GlobalRandomPoint,
-    randomStartPoint: GlobalRandomPoint,
-    timeInterval: GlobalTimeInterval
-}
-
-GlobalState :: {
-    ...LocalStorageState,
-    audioContext: undefined | AudioContext,
-    audioList: Map<string, AudioState>,
-    isStarted: boolean,
-    startedId: string,
-    eventsForEachSet: EventsForEachSet
-}
-*/
-
+// @ts-check
+import {globalDefault} from "./globalDefault.js";
 import {EmptyObject} from "../utils.js";
 
-/*-
-GlobalState: GlobalState
-*/
-const GlobalState = Object.seal({
+/**
+@type {GlobalState} */
+const globalState = {
     audioContext: undefined,
     audioList: new Map(),
-    delay: EmptyObject,
-    eventsForEachSet: Object.seal({
+    delay: {
+        areAllDisable: globalDefault.delay.areAllDisable,
+        timeMax: globalDefault.delay.timeMax,
+        timeMin: globalDefault.delay.timeMin,
+        feedbackMax: globalDefault.delay.feedbackMax,
+        feedbackMin: globalDefault.delay.feedbackMin,
+    },
+    eventsForEachSet:{
         arrOfEvents: [1],
         sumOfAllEvents: 1
-    }),
-    fadeIn: 0,
-    fadeOut: 0,
-    filter: EmptyObject,
+    },
+    fadeIn: globalDefault.fadeIn,
+    fadeOut: globalDefault.fadeOut,
+    filter: {
+        areAllDisable: globalDefault.filter.areAllDisable,
+        frequencyMax: globalDefault.filter.frequencyMax,
+        frequencyMin: globalDefault.filter.frequencyMin,
+        qMax: globalDefault.filter.qMax,
+        qMin: globalDefault.filter.qMin,
+        bandpass: globalDefault.filter.bandpass,
+        highpass: globalDefault.filter.highpass,
+        lowpass: globalDefault.filter.lowpass,
+        notch: globalDefault.filter.notch,
+        types: Array(4),
+    },
     isStarted: false,
-    panner: EmptyObject,
-    playbackRate: EmptyObject,
-    randomEndPoint: EmptyObject,
-    randomStartPoint: EmptyObject,
+    panner: {
+        areAllDisable: globalDefault.panner.areAllDisable,
+        xMax: globalDefault.panner.xMax,
+        xMin: globalDefault.panner.xMin,
+        yMax: globalDefault.panner.yMax,
+        yMin: globalDefault.panner.yMin,
+        zMax: globalDefault.panner.zMax,
+        zMin: globalDefault.panner.zMin
+    },
+    playbackRate: {
+        areAllDisable: globalDefault.playbackRate.areAllDisable,
+        max: globalDefault.playbackRate.max,
+        min: globalDefault.playbackRate.min
+    },
+    randomEndPoint: {
+        areAllDisable: globalDefault.randomEndPoint.areAllDisable
+    },
+    randomStartPoint: {
+        areAllDisable: globalDefault.randomStartPoint.areAllDisable
+    },
     startedId: "",
     sumOfAllAudiosEvents: 0,
-    timeInterval: EmptyObject
-});
+    timeInterval: {
+        max: globalDefault.timeInterval.max,
+        min: globalDefault.timeInterval.min
+    },
+    generativeState: {
+        audiosSet: EmptyObject,
+        playAudiosFromSet: true,
+    }
+};
 
-export default GlobalState;
+export default globalState;
