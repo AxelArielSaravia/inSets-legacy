@@ -1,0 +1,52 @@
+.audioButtonsSection {
+    width: 100%;
+    min-height: 50px;
+}
+.audioButtonsSection .ABSection_button {
+    width: 80px;
+}
+.audioButtonsSection .fileInput-contain {
+    padding: 0;
+}
+.audioButtonsSection .fileInput-contain .fileInput {
+    position: absolute;
+    z-index: -1;
+    height: 100%;
+    width: 100%;
+}
+.audioButtonsSection .fileInput-contain .fileInput-view {
+    padding: 4px;
+    background-color: var(--c-primary);
+}
+
+
+.audioButtonsSection .audioButtonsSection_start {
+    margin:0 10px;
+}
+.audioButtonsSection .audioButtonsSection_start h4 {
+    width: 60px;
+}
+
+@media screen and (max-width: 368px) {
+    .audioButtonsSection h4 {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 576px) {
+    .audioButtonsSection .audioButtonsSection_start h4 {
+        width: 70px;
+    }
+    .audioButtonsSection .ABSection_button {
+        width: 95px;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .audioButtonsSection .audioButtonsSection_start h4 {
+        width: 80px;
+    }
+    .audioButtonsSection .ABSection_button {
+        width: 110px;
+    }
+}

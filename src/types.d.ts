@@ -4,7 +4,7 @@ type Maybe<T> = T | undefined;
 type Some<Obj extends object> = {[K in keyof Obj]?: Obj[K]};
 
 type Freeze<Obj extends object> = {
-    readonly [K in keyof Obj]: Obj[K] extends object 
+    readonly [K in keyof Obj]: Obj[K] extends object
         ? Freeze<Obj[K]>
         : Obj[K]
 }
@@ -17,7 +17,7 @@ type Values<Obj extends object> = Obj[keyof Obj];
 
 type UndefinedFunction = () => undefined;
 
-type Async<fn extends function> = fn;
+type Async<fn extends () => {} > = fn;
 
 
 //STATES
@@ -64,7 +64,12 @@ type LocalStorageFilter = {
     notch: boolean,
 };
 
-type GlobalFilter = LocalStorageFilter & {types: Array<"bandpass" | "highpass" | "lowpass" | "notch">};
+type GlobalFilter = (
+    LocalStorageFilter
+    & {
+        types: Array<"bandpass" | "highpass" | "lowpass" | "notch">
+    }
+);
 
 type GlobalPanner = {
     areAllDisable: boolean,
@@ -150,7 +155,7 @@ type AudioState = {
 type AudioViewState = {
     audioEvents: number,
     color: string,
-    configurationIsOpen: bolean,
+    configurationIsOpen: boolean,
     currentTime: number,
     delayIsDisable: boolean,
     duration: number,
@@ -186,34 +191,34 @@ type AudioListState = {
 type GeneralDisableState = {
     allDelaysAreDisabled: {
         global: boolean,
-        value: boolen
+        value: boolean
     },
     allFiltersAreDisabled: {
         global: boolean,
-        value: boolen
+        value: boolean
     },
     allPannersAreDisabled: {
         global: boolean,
-        value: boolen
+        value: boolean
     },
     allPlaybackRatesAreDisabled: {
         global: boolean,
-        value: boolen
+        value: boolean
     },
     allRandomEndPointsAreDisabled: {
         global: boolean,
-        value: boolen
+        value: boolean
     },
     allRandomStartPointsAreDisabled: {
         global: boolean,
-        value: boolen
+        value: boolean
     }
 };
 
 type PanelConfigState = {
-    isPanelConfigVisible: bolean,
-    isPanelButtonsVisible: bolean,
-    isPanelVisible: bolean,
+    isPanelConfigVisible: boolean,
+    isPanelButtonsVisible: boolean,
+    isPanelVisible: boolean,
     panelSelected: (
         ""
         | "SETS"
@@ -240,10 +245,16 @@ type AppAction = (
             playAudiosFromSet: boolean
         }
     }
-)
+);
 
 type DelayAction = {
-    type: "reset" | "time/changeMax" | "time/changeMin" | "feedback/changeMax" | "feedback/changeMin",
+    type: (
+        "reset"
+        | "time/changeMax"
+        | "time/changeMin"
+        | "feedback/changeMax"
+        |"feedback/changeMin"
+    ),
     payload: GlobalDelay
 };
 
@@ -303,13 +314,22 @@ type AudioViewAction = (
         | {type: "color/default"}
         | {type: "configuration/toggle"}
         | {type: "currentTime/change", payload: number}
-        | {type: "effect", payload: {
-            disable: boolean
-            effect: Effects
-        }}
+        | {
+            type: "effect",
+            payload: {
+                disable: boolean
+                effect: Effects
+            }
+        }
         | {type: "endTime/change", payload: number}
         | {type: "play"}
-        | {type: "points/change", payload: {endPoint: number, startPoint: number}}
+        | {
+            type: "points/change",
+            payload: {
+                endPoint: number,
+                startPoint: number
+            }
+        }
         | {type: "startTime/change", payload: number}
         | {type: "stop"}
         | {type: "volume/change", payload: number}
@@ -361,10 +381,14 @@ type SumOfAllAudiosEventsAction = {
 
 //OVERLOADS
 
-interface HTMLAudioElement extends HTMLMediaElement{
-    cloneNode(a?: boolean): HTMLAudioElement
+interface Node {
+    cloneNode<T extends Node>(a?: boolean): T
 }
 
-interface HTMLButtonElement {
-    get firstElementChild(): HTMLElement | null; 
+interface HTMLElement {
+    get firstElementChild<T extends HTMLElement>(): T | null
+}
+
+interface Window {
+    webkitAudioContext: Maybe<AudioContext>
 }

@@ -84,10 +84,10 @@ function oncanplaythrough() {
 }
 
 /**
-@type {Async<(file: File, id: string) => Promise<undefined>>} */
+@type {(file: File, id: string) => Promise<undefined>} */
 async function audioFromFile(file, id) {
-    /**@type {HTMLAudioElement & {name?: string, type?:string}} */
-    const HTMLAudio = AudioTemplate.cloneNode();
+    /**@type {HTMLAudioElement & {name: string, type: string}} */
+    const HTMLAudio  = AudioTemplate.cloneNode();
     HTMLAudio.src = URL.createObjectURL(file);
     HTMLAudio.id = id;
     HTMLAudio.name = file.name;

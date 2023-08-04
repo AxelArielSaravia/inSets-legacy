@@ -238,7 +238,12 @@ async function _play(audioState) {
     //Set Audio Configuration
         //PLAYBACK RATE
         if (!audioState.playbackRateIsDisable) {
-            const value = rToPlaybackRate(random(globalState.playbackRate.min, globalState.playbackRate.max));
+            const value = rToPlaybackRate(
+                random(
+                    globalState.playbackRate.min,
+                    globalState.playbackRate.max
+                )
+            );
             audioState.playbackRate = value;
             audioState.audioEngine.playbackRate = value;
         } else {

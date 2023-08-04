@@ -1,0 +1,21 @@
+.panel-config-container .panel-config-container--children {
+    width: 100%;
+}
+
+@media screen and (min-width: 368px) {
+    .panel-config-container .panel-config-container--children {
+        width: 80%;
+    }
+    .panel-config-container .panel-config-container--description {
+        width: 80%;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .panel-config-container .panel-config-container--children {
+        width: 90%;
+    }
+    .panel-config-container .panel-config-container--description {
+        width: 100%;
+    }
+}

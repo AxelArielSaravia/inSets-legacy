@@ -1,0 +1,14 @@
+.addAndSubtract .addAndSubtract_button {
+    border: 1px solid var(--c-secondary);
+    color: var(--c-secondary);
+    margin: 0;
+    padding: 2px;
+}
+
+.addAndSubtract .addAndSubtract_button * {
+    padding: 2px;
+}
+
+.addAndSubtract .addAndSubtract_text {
+    min-width: 40px;
+}

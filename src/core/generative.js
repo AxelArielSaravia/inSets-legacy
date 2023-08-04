@@ -30,7 +30,10 @@ function chooseAudios(arrOfKeys, arrOfSums, sum, i, w) {
                 if (arrOfSums[midI][1] < target) {
                     startI = midI + 1;
                 } else {
-                    if (arrOfSums[midI - 1] === undefined || arrOfSums[midI - 1][1] < target) {
+                    if (
+                        arrOfSums[midI - 1] === undefined
+                        || arrOfSums[midI - 1][1] < target
+                    ) {
                         //select an element
                         index = midI;
                         break;
@@ -79,15 +82,17 @@ function randomSetsExecution() {
         const small = [];
         const large = [];
         const sumOfAllEvents = globalState.eventsForEachSet.sumOfAllEvents;
-        const p = globalState.eventsForEachSet.arrOfEvents.map(function m(value, i) {
-            const res = value * length;
-            if (res < sumOfAllEvents) {
-                small.push(i);
-            } else {
-                large.push(i);
+        const p = globalState.eventsForEachSet.arrOfEvents.map(
+            function m(value, i) {
+                const res = value * length;
+                if (res < sumOfAllEvents) {
+                    small.push(i);
+                } else {
+                    large.push(i);
+                }
+                return res;
             }
-            return res;
-        });
+        );
         while (small.length !== 0 && large.length !== 0) {
             const l = small.pop();
             const g = large.pop();
@@ -152,7 +157,9 @@ function randomSetsExecution() {
                 i_key += 1;
             }
             globalState.generativeState.playAudiosFromSet = true;
-            globalState.generativeState.audiosSet = chooseAudios(arrOfKeys, arrOfSums, sum, 0, cardinal);
+            globalState.generativeState.audiosSet = (
+                chooseAudios(arrOfKeys, arrOfSums, sum, 0, cardinal)
+            );
         } else {
     //initialize
             const sumOfAllAudiosEvents = globalState.sumOfAllAudiosEvents;
@@ -163,7 +170,9 @@ function randomSetsExecution() {
                 i_key += 1;
             }
             globalState.generativeState.playAudiosFromSet = false;
-            globalState.generativeState.audiosSet = chooseAudios(arrOfKeys, arrOfSums, sum, cardinal, size);
+            globalState.generativeState.audiosSet = (
+                chooseAudios(arrOfKeys, arrOfSums, sum, cardinal, size)
+            );
         }
         return true;
     }
@@ -184,7 +193,12 @@ function randomTimeExecution(STARTED_ID) {
     if (globalState.isStarted
         && globalState.startedId === STARTED_ID
     ) {
-        const n = random(globalState.timeInterval.min, globalState.timeInterval.max) * 100;
+        const n = (
+            random(
+                globalState.timeInterval.min,
+                globalState.timeInterval.max
+            ) * 100
+        );
         console.info("Next execution:", n + "ms");
         const execute = randomSetsExecution();
         setTimeout(randomTimeExecutionCallback, n, STARTED_ID, execute);

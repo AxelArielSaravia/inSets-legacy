@@ -1,0 +1,62 @@
+.panel {
+    position: absolute;
+    width: 100%;
+    background-color: var(--c-primary);
+    transition: opacity 200ms ease-out;
+}
+
+@media screen and (max-width: 767px) {
+    .panel-container {
+        position: absolute;
+        min-height: calc(100% - 50px);
+        width: 100vw;
+        top: 50px;
+        right: 0;
+        z-index: 4;
+        background:var(--c-primary);
+        opacity: 98%;
+        transition: opacity 200ms ease-out;
+    }
+
+    .panel-container.panel-container-hidden {
+        opacity: 0;
+        min-height: 0;
+        height: 0;
+        visibility: hidden;
+        overflow: hidden;
+        transition:
+            min-height 0ms ease-out 200ms,
+            opacity 200ms ease-out;
+    }
+
+    .panel.panel-hidden {
+        height: 0;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .panel-container {
+        position: relative;
+        height: 100%;
+        opacity: 1;
+    }
+    .panel-container .panel_title {
+        display: none;
+    }
+
+    .panel-buttons {
+        position: relative;
+        z-index: 5;
+    }
+
+    .panel-buttons .panel-button {
+        width: 100%;
+    }
+
+    .panel-section {
+        height: 100%;
+    }
+}

@@ -1,0 +1,37 @@
+.panel-config {
+    /*overflow: auto;*/
+    padding: 5px;
+}
+
+.panel-config .panel-config-close {
+    position: relative;
+}
+
+@media screen and (min-width: 768px) {
+    .panel-config.panel {
+        width: 400px;
+        height: 100%;
+        overflow: auto;
+        top: 0;
+        left: 100%;
+        padding: 10px;
+        opacity: 95%;
+        z-index: 4;
+        transition: left 100ms ease-out;
+    }
+
+    .panel-config.panel-hidden {
+        left: -400px; 
+        visibility: hidden;
+        transition: left 100ms ease-out, visibility 1ms 100ms;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .panel-config.panel {
+        width: 470px;
+    }
+    .panel-config.panel-hidden {
+        left: -470px;
+    }
+}
