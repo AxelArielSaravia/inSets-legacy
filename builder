@@ -15,7 +15,7 @@ while getopts ":p" option; do
 done
 
 if [ $prod = true ]; then
-    output=./public
+    output=./build
 else
     output=./dev-server
 fi
