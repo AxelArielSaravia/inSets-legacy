@@ -60,7 +60,7 @@ if [ $prod = true ];
 then
     #HTML
     minify -v -o $html_4_o -b ${html_4_fl[*]}
-    minify -v -o $html_o ${html_fl[*]}
+    minify -v -o $html_o -b ${html_fl[*]}
 
     #CSS
     minify -v -o $css_g_o $css_g_fl
