@@ -1,7 +1,8 @@
 # [inSets](https://insets-music.web.app/) v0.4.0
 [¿Cómo se utiliza la aplicación?](https://github.com/AxelArielSaravia/inSets/blob/main/README.md#c%C3%B3mo-se-utiliza-la-aplicaci%C3%B3n)
 
-Basada en [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API) y HTML Audio tag
+Basada en [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API)
+y [HTML Audio tag](https://html.spec.whatwg.org/multipage/media.html#the-audio-element)
 
 ### Aplicación de Composición Musical
 
@@ -27,22 +28,22 @@ Como se mencionó arriba, inSets no utiliza un sistema métrico de distribución
 
 - Opción 1: apretando en el botón **Add** y seleccionando el archivo de audio.
 
-![open file 1](doc-media/open-file1.gif)
+![open file 1](github-media/open-file1.gif)
 
 - Opción 2: arrastrando el archivo deseado a la pantalla.
 
-![open file 2](doc-media/open-file2.gif)
+![open file 2](github-media/open-file2.gif)
 
 ### Iniciar y finalizar
 
 - Iniciar apretando **Start**.
 
-![Iniciar obra](doc-media/start.gif)
+![Iniciar obra](github-media/start.gif)
 
 
 - Finalizar apretando **Stop**.
 
-![Finalizar obra](doc-media/stop.gif)
+![Finalizar obra](github-media/stop.gif)
 
 **Notas:**
 
@@ -54,11 +55,11 @@ Un audio mantiene su color hasta que el sistema decide ejecutarlo de nuevo, lleg
 
 - Para eliminar todos los audio apretar el botón **Clear**.
 
-![Elimiar todos los audios](doc-media/clearall.gif)
+![Elimiar todos los audios](github-media/clearall.gif)
 
 ### Audio
 
-![audio1](doc-media/audio.svg)
+![audio1](github-media/audio.svg)
 
 **Notas:**
 
@@ -79,7 +80,7 @@ Tanto el límite inferior como el límite superior de  tiempo del audio, justame
 ### Sets
 
 Configuraciones de los conjunto de audios.
-![audio sets](doc-media/audio-set.svg)
+![audio sets](github-media/audio-set.svg)
 
 **Notas:**
 
@@ -88,7 +89,7 @@ El conjunto más grande de audios que es posible dentro de la aplicación es 15.
 ### Time
 
 Configuración del tiempo a esperar por cada ejecución.
-![time](doc-media/time.svg)
+![time](github-media/time.svg)
 
 ### Configuraciones generales de audios
 
@@ -97,17 +98,17 @@ Las configuraciones que siguen se refieren, en lo general, a los intervalos de d
 ### Fades
 
 Configuraciones de fade-in y fade-out.
-![fades](doc-media/fades.svg)
+![fades](github-media/fades.svg)
 
 ### Delay
 
 Configuración de delay.
-![delay](doc-media/delay.svg)
+![delay](github-media/delay.svg)
 
 ### Filter
 
 Configuración de filtros.
-![filters](doc-media/filters.svg)
+![filters](github-media/filters.svg)
 
 **Notas:**
 
@@ -119,7 +120,7 @@ El **factor de calidad** (q factor) opera normalmente para bandpass y notch. En 
 ### Panner
 
 Configuración de paneo.
-![panner](doc-media/panner.svg)
+![panner](github-media/panner.svg)
 
 **Notas:**
 
@@ -133,7 +134,7 @@ En el **intervalo de distancia** 0 es lo más cerca posible mientras más aument
 ### Pb Rate
 
 Configuración de la velocidad de muestreo.
-![playback rate](doc-media/rate.svg)
+![playback rate](github-media/rate.svg)
 
 **Nota:**
 
@@ -143,10 +144,10 @@ Como dice el valor que se decide del intervalo se multiplica por la velocidad de
 ### REP (Random End Point)
 
 Configuración del punto aleatorio de fin.
-![random end point](doc-media/REP.svg)
+![random end point](github-media/REP.svg)
 
 
 ### RSP (Random Start Point)
 
 Configuración del punto aleatorio de inicio.
-![random start point](doc-media/RSP.svg)
+![random start point](github-media/RSP.svg)
