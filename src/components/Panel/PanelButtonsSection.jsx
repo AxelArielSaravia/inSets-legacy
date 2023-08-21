@@ -198,7 +198,18 @@ const PanelButtons_className = "panel panel-buttons p-5 flex-column align-c";
 @type {(props: {
     isPanelButtonsVisible: boolean,
     isPanelConfigVisible: boolean,
-    panelSelected: "" | "DELAY" | "FILTER" | "PANNER" | "RATE" | "REP" | "RSP" | "SETS" | "TIME" | "FADES",
+    panelSelected: (
+        ""
+        | "DELAY"
+        | "FILTER"
+        | "PANNER"
+        | "RATE"
+        | "REP"
+        | "RSP"
+        | "SETS"
+        | "TIME"
+        | "FADES"
+    )
 }) => JSX.Element} */
 function PanelButtonsSection({
     isPanelButtonsVisible,
@@ -208,7 +219,7 @@ function PanelButtonsSection({
     return (
         <div className={(
             !isPanelButtonsVisible
-            ? PanelButtons_className + " panel-hidden"
+            ? `${PanelButtons_className} panel-hidden`
             : PanelButtons_className
         )}>
             <PanelButton

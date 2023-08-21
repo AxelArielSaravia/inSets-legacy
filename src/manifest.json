@@ -5,7 +5,7 @@
     "theme_color": "#e4d3d3",
     "background_color": "#181616",
     "scope": "./",
-    "start_url": "./",
+    "start_url": "https://insets-music.web.app/",
     "display": "standalone",
     "icons": [
         {

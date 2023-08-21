@@ -65,6 +65,14 @@ function PanelSelected({selected}) {
     return null;
 }
 
+
+function documentOnclick(e) {
+    if (!e.target?.matches(".content-audio_aside *")) {
+        closeConfigPanel();
+        document.onclick = null;
+    }
+}
+
 const PanelConfig_className = "panel panel-config flex-column";
 /**
 @type {(props: {
@@ -86,16 +94,13 @@ function PanelConfigSection({isPanelConfigVisible, panelSelected}) {
     const _className = (
         isPanelConfigVisible
         ? PanelConfig_className
-        : PanelConfig_className + " panel-hidden"
+        : `${PanelConfig_className} panel-hidden`
     );
 
     if (isPanelConfigVisible) {
-        document.onclick = function docEventClick(e) {
-            if (!e.target?.matches(".content-audio_aside *")) {
-                closeConfigPanel();
-                document.onclick = null;
-            }
-        };
+        document.onclick = documentOnclick;
+    } else {
+        document.onclick = null;
     }
 
     return (
