@@ -66,10 +66,17 @@ function PanelSelected({selected}) {
 }
 
 
+const MIN_WIDTH_768 = window.matchMedia("(min-width: 768px)");
+
+
 function documentOnclick(e) {
-    if (!e.target?.matches(".content-audio_aside *")) {
-        closeConfigPanel();
+    if (!MIN_WIDTH_768.matches) {
         document.onclick = null;
+    } else {
+        if (!e.target?.matches(".content-audio_aside *")) {
+            closeConfigPanel();
+            document.onclick = null;
+        }
     }
 }
 
@@ -97,7 +104,7 @@ function PanelConfigSection({isPanelConfigVisible, panelSelected}) {
         : `${PanelConfig_className} panel-hidden`
     );
 
-    if (isPanelConfigVisible) {
+    if (isPanelConfigVisible && MIN_WIDTH_768.matches) {
         document.onclick = documentOnclick;
     } else {
         document.onclick = null;
