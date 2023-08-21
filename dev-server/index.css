@@ -461,9 +461,13 @@
 
 .audio-element .audio-element_title {
     width: 100%;
-    margin: 0 5px;
-    cursor: pointer; 
+    margin: 0 5px 0 0;
+    cursor: pointer;
     max-width: unset;
+}
+
+.audio-element .audio-element_title svg {
+    flex-shrink: 0;
 }
 
 .audio-element .audio-button {

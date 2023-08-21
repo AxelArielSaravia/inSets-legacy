@@ -39,9 +39,9 @@ import Range from "../Range.jsx";
 import {
     IconX,
     IconVolume,
-    IconGear,
     IconPlay,
-    IconPause
+    IconPause,
+    IconMore
 } from "../icons.jsx";
 import AudioPlayback from "./AudioPlayback.jsx";
 
@@ -72,7 +72,7 @@ function ConfigButton({value, change}) {
             className={value ? `${className} active` : className}
             onClick={change}
         >
-            <IconGear className="icon-text-l"/>
+            <IconMore className="icon-text-l"/>
         </Button>
     );
 }
@@ -104,16 +104,17 @@ function EffectButton({text, onClick, isDisable}) {
     );
 }
 
-function PlayButton({isPlaying, playOnClick}) {
+function PlayButton({isPlaying, title, playOnClick}) {
     return (
         <Button
-            className="audio-button flex-column align-c"
+            className="audio-element_title flex-row align-c ellipsis"
             onClick={playOnClick}
         >
             {isPlaying
                 ? <IconPause className="icon-text-l icon-play"/>
                 : <IconPlay className="icon-text-l icon-play"/>
             }
+            <h3 className="fs-text ellipsis">{title}</h3>
         </Button>
     );
 }
@@ -488,13 +489,11 @@ function AudioElement({id}) {
             )}
         >
             <section className="audio-element_header flex-row align-c justify-sb p-2">
-                <PlayButton isPlaying={isPlaying} playOnClick={playOnClick}/>
-                <Button
-                    className="audio-element_title flex-row align-c ellipsis"
-                    onClick={playOnClick}
-                >
-                    <h3 className="fs-text ellipsis">{title}</h3>
-                </Button>
+                <PlayButton
+                    isPlaying={isPlaying}
+                    title={title}
+                    playOnClick={playOnClick}
+                />
                 <Volume volume={volume} changeVolume={changeVolume}/>
                 <div className="px-10">
                     <ConfigButton value={configurationIsOpen} change={changeConfigurationsState}/>
