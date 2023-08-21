@@ -1,8 +1,7 @@
 //@ts-check
-import React, {useContext} from "react";
+import React, {useContext, useState} from "react";
 
 import {AudioListContext} from "../contexts/AudioList.jsx";
-import useMatchMedia from "../hooks/useMatchMedia.jsx";
 
 import AudioElement from "./AudioElement.jsx";
 import Show from "../Show.jsx";
@@ -89,11 +88,23 @@ function AudioElementList() {
 
 const minWidth_1160 = "(min-width: 1160px)";
 
+/**
+@type {(b: boolean) => boolean} */
+function signal(b) {
+    return !b;
+}
+let DispatchMedia;
+const MIN_WIDTH_1160 = window.matchMedia("(min-width: 1160px)");
+MIN_WIDTH_1160.onchange = function (e) {
+    if (e.matches) {
+        DispatchMedia(signal);
+    }
+}
 
 function Media() {
-    const value = useMatchMedia(minWidth_1160);
+    DispatchMedia = useState(true)[1];
     return (
-        value
+        MIN_WIDTH_1160
         ? <AudioElementList2/>
         : <AudioElementList/>
     );
