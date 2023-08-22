@@ -253,7 +253,10 @@ function Configuration({
 /**@type {(props:{id: string}) => JSX.Element} */
 function AudioElement({id}) {
     /**@type {[AudioViewState, React.Dispatch<Maybe<AudioViewAction>>]} */
-    const [audioState, audioDispatch] = useReducer(audioReducer, createAudioViewState(id));
+    const [audioState, audioDispatch] = useReducer(
+        audioReducer,
+        createAudioViewState(id)
+    );
     const audio = globalState.audioList.get(id);
     if (audio !== undefined) {
         audio.dispatch = audioDispatch;
@@ -464,7 +467,7 @@ function AudioElement({id}) {
     }, [id]);
 
     const changeConfigurationsState = useCallback(function () {
-        audioDispatch(audioActions.configurationToggler);
+        audioDispatch(audioActions.configurationToggler(id));
     }, []);
 
     const playOnClick = useCallback(function() {

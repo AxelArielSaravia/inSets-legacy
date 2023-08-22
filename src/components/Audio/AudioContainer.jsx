@@ -86,8 +86,6 @@ function AudioElementList() {
     return Object.keys(loadedAudioList).map(listMapFn, completedAudioList);
 }
 
-const minWidth_1160 = "(min-width: 1160px)";
-
 /**
 @type {(b: boolean) => boolean} */
 function signal(b) {
@@ -95,16 +93,14 @@ function signal(b) {
 }
 let DispatchMedia;
 const MIN_WIDTH_1160 = window.matchMedia("(min-width: 1160px)");
-MIN_WIDTH_1160.onchange = function (e) {
-    if (e.matches) {
-        DispatchMedia(signal);
-    }
+MIN_WIDTH_1160.onchange = function () {
+    DispatchMedia(signal);
 }
 
 function Media() {
     DispatchMedia = useState(true)[1];
     return (
-        MIN_WIDTH_1160
+        MIN_WIDTH_1160.matches
         ? <AudioElementList2/>
         : <AudioElementList/>
     );

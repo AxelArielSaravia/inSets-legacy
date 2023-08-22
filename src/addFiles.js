@@ -55,6 +55,7 @@ function oncanplaythrough() {
     const audioState = {
         audioEngine: this,
         audioEvents: 1,
+        configurationIsOpen: false,
         delayIsDisable: globalState.delay.areAllDisable,
         dispatch(a){},
         duration: this.duration, //seconds

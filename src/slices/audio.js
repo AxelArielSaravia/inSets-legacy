@@ -28,7 +28,13 @@ const audioActions = Object.freeze({
     /**@type {{type: "color/default"}} */
     colorToDefault: {type: "color/default"},
     /**@type {{type: "configuration/toggle"}} */
-    configurationToggler: {type: "configuration/toggle"},
+    configurationToggler(id) {
+        const audioState = globalState.audioList.get(id);
+        if (audioState !== undefined) {
+            audioState.configurationIsOpen = !audioState.configurationIsOpen;
+        }
+        return {type: "configuration/toggle"}
+    },
     /**@type {{type: "play"}} */
     play: {type: "play"},
     /**@type {{type: "stop"}} */

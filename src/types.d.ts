@@ -130,6 +130,7 @@ type GlobalState = LocalStorageState & {
 type AudioState = {
     audioEngine: HTMLAudioElement,
     audioEvents: number,
+    configurationIsOpen: boolean,
     delayIsDisable: boolean,
     dispatch: React.Dispatch<Maybe<AudioViewAction>>,
     duration: number,   //seconds

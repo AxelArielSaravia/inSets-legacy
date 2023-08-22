@@ -141,7 +141,7 @@ function createAudioViewState(id) {
     return {
         audioEvents: audioState.audioEvents,
         color: "",
-        configurationIsOpen: false,
+        configurationIsOpen: audioState.configurationIsOpen,
         currentTime: audioState.startPoint,
         delayIsDisable: audioState.delayIsDisable,
         duration: audioState.duration,
