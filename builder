@@ -115,9 +115,9 @@ else
     echo "Concatenate ${css_fl[*]} to $css_o"
 
     #JS
-    bun build $input/theme.js --outdir $output --minify
-    bun build $js_fl --outdir $output --minify
-    bun build $input/pwasw.js --outdir $output --minify
+    bun build $input/theme.js --outdir $output
+    bun build $js_fl --outdir $output
+    bun build $input/pwasw.js --outdir $output
 
     #Manifest
     cp $input/manifest.json $output/app.webmanifest

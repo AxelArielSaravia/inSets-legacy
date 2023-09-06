@@ -49,5 +49,3 @@ if (window.AudioContext !== undefined
         '<div class="init-content flex-column align-c justify-c"><h1 class="fs-text-l text-center py-20">ERROR: Sorry we have a problem</h1><div class="py-20"><p class="fs-text-l text-center" >Your browser does NOT have AudioContext🎵 support❗❗</p><p class="fs-text-l text-center" >and because of that, we CAN NOT run the app 😭</p></div><p class="fs-text-l text-center py-20">Please, use any other actualized browser.</p></div>'
     );
 }
-
-

@@ -1,5 +1,5 @@
 //@ts-check
-import React, {useContext, useState} from "react";
+import React, {useContext} from "react";
 
 import {AudioListContext} from "../contexts/AudioList.jsx";
 
@@ -43,67 +43,10 @@ function listMapFn(id) {
 }
 
 /**
-@type {(prop: {left: Array<JSX.Element>, right: Array<JSX.Element>}) => JSX.Element}*/
-function AudioContainerColumns({left, right}) {
-    return (
-        <>
-            <div className="audio-container_column">
-                {left}
-            </div>
-            <div className="audio-container_column">
-                {right}
-            </div>
-        </>
-    );
-}
-
-/**@type {Array<JSX.Element>} */
-let left = [];
-/**@type {Array<JSX.Element>} */
-let right = [];
-function AudioElementList2() {
-    const {loadedAudioList, completedAudioList} = useContext(AudioListContext);
-    const list = Object.keys(loadedAudioList);
-    const mid = Math.round(list.length / 2);
-
-    left = [];
-    right = [];
-
-    for (let i = 0; i < list.length; i += 1) {
-        if (i < mid) {
-            left.push(listMapFn.call(completedAudioList, list[i]));
-        } else {
-            right.push(listMapFn.call(completedAudioList, list[i]));
-        }
-    }
-    return <AudioContainerColumns left={left} right={right}/>;
-}
-
-/**
 @type {() => Array<JSX.Element>} */
 function AudioElementList() {
     const {loadedAudioList, completedAudioList} = useContext(AudioListContext);
     return Object.keys(loadedAudioList).map(listMapFn, completedAudioList);
-}
-
-/**
-@type {(b: boolean) => boolean} */
-function signal(b) {
-    return !b;
-}
-let DispatchMedia;
-const MIN_WIDTH_1160 = window.matchMedia("(min-width: 1160px)");
-MIN_WIDTH_1160.onchange = function () {
-    DispatchMedia(signal);
-}
-
-function Media() {
-    DispatchMedia = useState(true)[1];
-    return (
-        MIN_WIDTH_1160.matches
-        ? <AudioElementList2/>
-        : <AudioElementList/>
-    );
 }
 
 function NoAudioFile() {
@@ -122,7 +65,7 @@ function AudioContainer() {
         <main className="main flex-column align-c p-5">
             <div className="audio-container flex-column">
                 <div className="audio-container_sub">
-                    <Media/>
+                    <AudioElementList/>
                 </div>
                 <NoAudioFile/>
             </div>
