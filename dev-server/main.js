@@ -1,6 +1,6 @@
 var __create = Object.create;
-var __defProp = Object.defineProperty;
 var __getProtoOf = Object.getPrototypeOf;
+var __defProp = Object.defineProperty;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __toESM = (mod, isNodeMode, target) => {
@@ -147,7 +147,7 @@ var require_react_development = __commonJS((exports, module) => {
           if (didWarnStateUpdateForUnmountedComponent[warningKey]) {
             return;
           }
-          error("Can't call %s on a component that is not yet mounted. This is a no-op, but it might indicate a bug in your application. Instead, assign to `this.state` directly or define a `state = {};` class property with the desired state in the %s component.", callerName, componentName);
+          error("Can't call %s on a component that is not yet mounted. " + "This is a no-op, but it might indicate a bug in your application. " + "Instead, assign to `this.state` directly or define a `state = {};` " + "class property with the desired state in the %s component.", callerName, componentName);
           didWarnStateUpdateForUnmountedComponent[warningKey] = true;
         }
       }
@@ -179,7 +179,7 @@ var require_react_development = __commonJS((exports, module) => {
       Component.prototype.isReactComponent = {};
       Component.prototype.setState = function(partialState, callback) {
         if (typeof partialState !== "object" && typeof partialState !== "function" && partialState != null) {
-          throw new Error("setState(...): takes an object of state variables to update or a function which returns an object of state variables.");
+          throw new Error("setState(...): takes an object of state variables to update or a " + "function which returns an object of state variables.");
         }
         this.updater.enqueueSetState(this, partialState, callback, "setState");
       };
@@ -188,8 +188,8 @@ var require_react_development = __commonJS((exports, module) => {
       };
       {
         var deprecatedAPIs = {
-          isMounted: ["isMounted", "Instead, make sure to clean up subscriptions and pending requests in componentWillUnmount to prevent memory leaks."],
-          replaceState: ["replaceState", "Refactor your code to use setState instead (see https://github.com/facebook/react/issues/3236)."]
+          isMounted: ["isMounted", "Instead, make sure to clean up subscriptions and pending requests in " + "componentWillUnmount to prevent memory leaks."],
+          replaceState: ["replaceState", "Refactor your code to use setState instead (see " + "https://github.com/facebook/react/issues/3236)."]
         };
         var defineDeprecationWarning = function(methodName, info) {
           Object.defineProperty(Component.prototype, methodName, {
@@ -254,7 +254,7 @@ var require_react_development = __commonJS((exports, module) => {
       function checkKeyStringCoercion(value) {
         {
           if (willCoercionThrow(value)) {
-            error("The provided key is an unsupported type %s. This value must be coerced to a string before before using it here.", typeName(value));
+            error("The provided key is an unsupported type %s." + " This value must be coerced to a string before before using it here.", typeName(value));
             return testStringCoercion(value);
           }
         }
@@ -276,7 +276,7 @@ var require_react_development = __commonJS((exports, module) => {
         }
         {
           if (typeof type.tag === "number") {
-            error("Received an unexpected object in getComponentNameFromType(). This is likely a bug in React. Please file an issue.");
+            error("Received an unexpected object in getComponentNameFromType(). " + "This is likely a bug in React. Please file an issue.");
           }
         }
         if (typeof type === "function") {
@@ -367,7 +367,7 @@ var require_react_development = __commonJS((exports, module) => {
           {
             if (!specialPropKeyWarningShown) {
               specialPropKeyWarningShown = true;
-              error("%s: `key` is not a prop. Trying to access it will result in `undefined` being returned. If you need to access the same value within the child component, you should pass it as a different prop. (https://reactjs.org/link/special-props)", displayName);
+              error("%s: `key` is not a prop. Trying to access it will result " + "in `undefined` being returned. If you need to access the same " + "value within the child component, you should pass it as a different " + "prop. (https://reactjs.org/link/special-props)", displayName);
             }
           }
         };
@@ -382,7 +382,7 @@ var require_react_development = __commonJS((exports, module) => {
           {
             if (!specialPropRefWarningShown) {
               specialPropRefWarningShown = true;
-              error("%s: `ref` is not a prop. Trying to access it will result in `undefined` being returned. If you need to access the same value within the child component, you should pass it as a different prop. (https://reactjs.org/link/special-props)", displayName);
+              error("%s: `ref` is not a prop. Trying to access it will result " + "in `undefined` being returned. If you need to access the same " + "value within the child component, you should pass it as a different " + "prop. (https://reactjs.org/link/special-props)", displayName);
             }
           }
         };
@@ -397,7 +397,7 @@ var require_react_development = __commonJS((exports, module) => {
           if (typeof config.ref === "string" && ReactCurrentOwner.current && config.__self && ReactCurrentOwner.current.stateNode !== config.__self) {
             var componentName = getComponentNameFromType(ReactCurrentOwner.current.type);
             if (!didWarnAboutStringRefs[componentName]) {
-              error('Component "%s" contains the string ref "%s". Support for string refs will be removed in a future major release. This case cannot be automatically converted to an arrow function. We ask you to manually fix this case by using useRef() or createRef() instead. Learn more about using refs safely here: https://reactjs.org/link/strict-mode-string-ref', componentName, config.ref);
+              error('Component "%s" contains the string ref "%s". ' + "Support for string refs will be removed in a future major release. " + "This case cannot be automatically converted to an arrow function. " + "We ask you to manually fix this case by using useRef() or createRef() instead. " + "Learn more about using refs safely here: " + "https://reactjs.org/link/strict-mode-string-ref", componentName, config.ref);
               didWarnAboutStringRefs[componentName] = true;
             }
           }
@@ -649,7 +649,7 @@ var require_react_development = __commonJS((exports, module) => {
             {
               if (iteratorFn === iterableChildren.entries) {
                 if (!didWarnAboutMaps) {
-                  warn("Using Maps as children is not supported. Use an array of keyed ReactElements instead.");
+                  warn("Using Maps as children is not supported. " + "Use an array of keyed ReactElements instead.");
                 }
                 didWarnAboutMaps = true;
               }
@@ -664,7 +664,7 @@ var require_react_development = __commonJS((exports, module) => {
             }
           } else if (type === "object") {
             var childrenString = String(children);
-            throw new Error("Objects are not valid as a React child (found: " + (childrenString === "[object Object]" ? "object with keys {" + Object.keys(children).join(", ") + "}" : childrenString) + "). If you meant to render a collection of children, use an array instead.");
+            throw new Error("Objects are not valid as a React child (found: " + (childrenString === "[object Object]" ? "object with keys {" + Object.keys(children).join(", ") + "}" : childrenString) + "). " + "If you meant to render a collection of children, use an array " + "instead.");
           }
         }
         return subtreeCount;
@@ -731,7 +731,7 @@ var require_react_development = __commonJS((exports, module) => {
               get: function() {
                 if (!hasWarnedAboutUsingConsumerProvider) {
                   hasWarnedAboutUsingConsumerProvider = true;
-                  error("Rendering <Context.Consumer.Provider> is not supported and will be removed in a future major release. Did you mean to render <Context.Provider> instead?");
+                  error("Rendering <Context.Consumer.Provider> is not supported and will be removed in " + "a future major release. Did you mean to render <Context.Provider> instead?");
                 }
                 return context.Provider;
               },
@@ -767,7 +767,7 @@ var require_react_development = __commonJS((exports, module) => {
               get: function() {
                 if (!hasWarnedAboutUsingNestedContextConsumers) {
                   hasWarnedAboutUsingNestedContextConsumers = true;
-                  error("Rendering <Context.Consumer.Consumer> is not supported and will be removed in a future major release. Did you mean to render <Context.Consumer> instead?");
+                  error("Rendering <Context.Consumer.Consumer> is not supported and will be removed in " + "a future major release. Did you mean to render <Context.Consumer> instead?");
                 }
                 return context.Consumer;
               }
@@ -778,7 +778,7 @@ var require_react_development = __commonJS((exports, module) => {
               },
               set: function(displayName) {
                 if (!hasWarnedAboutDisplayNameOnConsumer) {
-                  warn("Setting `displayName` on Context.Consumer has no effect. You should set it directly on the context with Context.displayName = '%s'.", displayName);
+                  warn("Setting `displayName` on Context.Consumer has no effect. " + "You should set it directly on the context with Context.displayName = '%s'.", displayName);
                   hasWarnedAboutDisplayNameOnConsumer = true;
                 }
               }
@@ -823,12 +823,12 @@ var require_react_development = __commonJS((exports, module) => {
           var moduleObject = payload._result;
           {
             if (moduleObject === undefined) {
-              error("lazy: Expected the result of a dynamic import() call. Instead received: %s\n\nYour code should look like: \n  const MyComponent = lazy(() => import('./MyComponent'))\n\nDid you accidentally put curly braces around the import?", moduleObject);
+              error("lazy: Expected the result of a dynamic imp" + "ort() call. " + "Instead received: %s\n\nYour code should look like: \n  " + "const MyComponent = lazy(() => imp" + "ort('./MyComponent'))\n\n" + "Did you accidentally put curly braces around the import?", moduleObject);
             }
           }
           {
             if (!("default" in moduleObject)) {
-              error("lazy: Expected the result of a dynamic import() call. Instead received: %s\n\nYour code should look like: \n  const MyComponent = lazy(() => import('./MyComponent'))", moduleObject);
+              error("lazy: Expected the result of a dynamic imp" + "ort() call. " + "Instead received: %s\n\nYour code should look like: \n  " + "const MyComponent = lazy(() => imp" + "ort('./MyComponent'))", moduleObject);
             }
           }
           return moduleObject.default;
@@ -856,7 +856,7 @@ var require_react_development = __commonJS((exports, module) => {
                 return defaultProps;
               },
               set: function(newDefaultProps) {
-                error("React.lazy(...): It is not supported to assign `defaultProps` to a lazy component import. Either specify them where the component is defined, or create a wrapping component around it.");
+                error("React.lazy(...): It is not supported to assign `defaultProps` to " + "a lazy component import. Either specify them where the component " + "is defined, or create a wrapping component around it.");
                 defaultProps = newDefaultProps;
                 Object.defineProperty(lazyType, "defaultProps", {
                   enumerable: true
@@ -869,7 +869,7 @@ var require_react_development = __commonJS((exports, module) => {
                 return propTypes;
               },
               set: function(newPropTypes) {
-                error("React.lazy(...): It is not supported to assign `propTypes` to a lazy component import. Either specify them where the component is defined, or create a wrapping component around it.");
+                error("React.lazy(...): It is not supported to assign `propTypes` to " + "a lazy component import. Either specify them where the component " + "is defined, or create a wrapping component around it.");
                 propTypes = newPropTypes;
                 Object.defineProperty(lazyType, "propTypes", {
                   enumerable: true
@@ -883,7 +883,7 @@ var require_react_development = __commonJS((exports, module) => {
       function forwardRef(render) {
         {
           if (render != null && render.$$typeof === REACT_MEMO_TYPE) {
-            error("forwardRef requires a render function but received a `memo` component. Instead of forwardRef(memo(...)), use memo(forwardRef(...)).");
+            error("forwardRef requires a render function but received a `memo` " + "component. Instead of forwardRef(memo(...)), use " + "memo(forwardRef(...)).");
           } else if (typeof render !== "function") {
             error("forwardRef requires a render function but was given %s.", render === null ? "null" : typeof render);
           } else {
@@ -893,7 +893,7 @@ var require_react_development = __commonJS((exports, module) => {
           }
           if (render != null) {
             if (render.defaultProps != null || render.propTypes != null) {
-              error("forwardRef render functions do not support propTypes or defaultProps. Did you accidentally pass a React component?");
+              error("forwardRef render functions do not support propTypes or defaultProps. " + "Did you accidentally pass a React component?");
             }
           }
         }
@@ -940,7 +940,7 @@ var require_react_development = __commonJS((exports, module) => {
       function memo(type, compare) {
         {
           if (!isValidElementType(type)) {
-            error("memo: The first argument must be a component. Instead received: %s", type === null ? "null" : typeof type);
+            error("memo: The first argument must be a component. Instead " + "received: %s", type === null ? "null" : typeof type);
           }
         }
         var elementType = {
@@ -970,7 +970,7 @@ var require_react_development = __commonJS((exports, module) => {
         var dispatcher = ReactCurrentDispatcher.current;
         {
           if (dispatcher === null) {
-            error("Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:\n1. You might have mismatching versions of React and the renderer (such as React DOM)\n2. You might be breaking the Rules of Hooks\n3. You might have more than one copy of React in the same app\nSee https://reactjs.org/link/invalid-hook-call for tips about how to debug and fix this problem.");
+            error("Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for" + " one of the following reasons:\n" + "1. You might have mismatching versions of React and the renderer (such as React DOM)\n" + "2. You might be breaking the Rules of Hooks\n" + "3. You might have more than one copy of React in the same app\n" + "See https://reactjs.org/link/invalid-hook-call for tips about how to debug and fix this problem.");
           }
         }
         return dispatcher;
@@ -981,9 +981,9 @@ var require_react_development = __commonJS((exports, module) => {
           if (Context._context !== undefined) {
             var realContext = Context._context;
             if (realContext.Consumer === Context) {
-              error("Calling useContext(Context.Consumer) is not supported, may cause bugs, and will be removed in a future major release. Did you mean to call useContext(Context) instead?");
+              error("Calling useContext(Context.Consumer) is not supported, may cause bugs, and will be " + "removed in a future major release. Did you mean to call useContext(Context) instead?");
             } else if (realContext.Provider === Context) {
-              error("Calling useContext(Context.Provider) is not supported. Did you mean to call useContext(Context) instead?");
+              error("Calling useContext(Context.Provider) is not supported. " + "Did you mean to call useContext(Context) instead?");
             }
           }
         }
@@ -1121,7 +1121,7 @@ var require_react_development = __commonJS((exports, module) => {
             });
           }
           if (disabledDepth < 0) {
-            error("disabledDepth fell below zero. This is a bug in React. Please file an issue.");
+            error("disabledDepth fell below zero. " + "This is a bug in React. Please file an issue.");
           }
         }
       }
@@ -1316,7 +1316,7 @@ var require_react_development = __commonJS((exports, module) => {
               var error$1 = undefined;
               try {
                 if (typeof typeSpecs[typeSpecName] !== "function") {
-                  var err = Error((componentName || "React class") + ": " + location + " type `" + typeSpecName + "` is invalid; it must be a function, usually from the `prop-types` package, but received `" + typeof typeSpecs[typeSpecName] + "`.This often happens because of typos such as `PropTypes.function` instead of `PropTypes.func`.");
+                  var err = Error((componentName || "React class") + ": " + location + " type `" + typeSpecName + "` is invalid; " + "it must be a function, usually from the `prop-types` package, but received `" + typeof typeSpecs[typeSpecName] + "`." + "This often happens because of typos such as `PropTypes.function` instead of `PropTypes.func`.");
                   err.name = "Invariant Violation";
                   throw err;
                 }
@@ -1326,7 +1326,7 @@ var require_react_development = __commonJS((exports, module) => {
               }
               if (error$1 && !(error$1 instanceof Error)) {
                 setCurrentlyValidatingElement(element);
-                error("%s: type specification of %s `%s` is invalid; the type checker function must return `null` or an `Error` but returned a %s. You may have forgotten to pass an argument to the type checker creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and shape all require an argument).", componentName || "React class", location, typeSpecName, typeof error$1);
+                error("%s: type specification of %s" + " `%s` is invalid; the type checker " + "function must return `null` or an `Error` but returned a %s. " + "You may have forgotten to pass an argument to the type checker " + "creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and " + "shape all require an argument).", componentName || "React class", location, typeSpecName, typeof error$1);
                 setCurrentlyValidatingElement(null);
               }
               if (error$1 instanceof Error && !(error$1.message in loggedTypeFailures)) {
@@ -1404,7 +1404,7 @@ var require_react_development = __commonJS((exports, module) => {
         }
         {
           setCurrentlyValidatingElement$1(element);
-          error('Each child in a list should have a unique "key" prop.%s%s See https://reactjs.org/link/warning-keys for more information.', currentComponentErrorInfo, childOwner);
+          error('Each child in a list should have a unique "key" prop.' + "%s%s See https://reactjs.org/link/warning-keys for more information.", currentComponentErrorInfo, childOwner);
           setCurrentlyValidatingElement$1(null);
         }
       }
@@ -1461,7 +1461,7 @@ var require_react_development = __commonJS((exports, module) => {
             error("Component %s declared `PropTypes` instead of `propTypes`. Did you misspell the property assignment?", _name || "Unknown");
           }
           if (typeof type.getDefaultProps === "function" && !type.getDefaultProps.isReactClassApproved) {
-            error("getDefaultProps is only used on classic React.createClass definitions. Use a static property named `defaultProps` instead.");
+            error("getDefaultProps is only used on classic React.createClass " + "definitions. Use a static property named `defaultProps` instead.");
           }
         }
       }
@@ -1472,7 +1472,7 @@ var require_react_development = __commonJS((exports, module) => {
             var key = keys[i];
             if (key !== "children" && key !== "key") {
               setCurrentlyValidatingElement$1(fragment);
-              error("Invalid prop `%s` supplied to `React.Fragment`. React.Fragment can only have `key` and `children` props.", key);
+              error("Invalid prop `%s` supplied to `React.Fragment`. " + "React.Fragment can only have `key` and `children` props.", key);
               setCurrentlyValidatingElement$1(null);
               break;
             }
@@ -1489,7 +1489,7 @@ var require_react_development = __commonJS((exports, module) => {
         if (!validType) {
           var info = "";
           if (type === undefined || typeof type === "object" && type !== null && Object.keys(type).length === 0) {
-            info += " You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.";
+            info += " You likely forgot to export your component from the file " + "it's defined in, or you might have mixed up default and named imports.";
           }
           var sourceInfo = getSourceInfoErrorAddendumForProps(props);
           if (sourceInfo) {
@@ -1509,7 +1509,7 @@ var require_react_development = __commonJS((exports, module) => {
             typeString = typeof type;
           }
           {
-            error("React.createElement: type is invalid -- expected a string (for built-in components) or a class/function (for composite components) but got: %s.%s", typeString, info);
+            error("React.createElement: type is invalid -- expected a string (for " + "built-in components) or a class/function (for composite " + "components) but got: %s.%s", typeString, info);
           }
         }
         var element = createElement.apply(this, arguments);
@@ -1535,12 +1535,12 @@ var require_react_development = __commonJS((exports, module) => {
         {
           if (!didWarnAboutDeprecatedCreateFactory) {
             didWarnAboutDeprecatedCreateFactory = true;
-            warn("React.createFactory() is deprecated and will be removed in a future major release. Consider using JSX or use React.createElement() directly instead.");
+            warn("React.createFactory() is deprecated and will be removed in " + "a future major release. Consider using JSX " + "or use React.createElement() directly instead.");
           }
           Object.defineProperty(validatedFactory, "type", {
             enumerable: false,
             get: function() {
-              warn("Factory.type is deprecated. Access the class directly before passing it to createFactory.");
+              warn("Factory.type is deprecated. Access the class directly " + "before passing it to createFactory.");
               Object.defineProperty(this, "type", {
                 value: type
               });
@@ -1573,7 +1573,7 @@ var require_react_development = __commonJS((exports, module) => {
             if (prevTransition === null && currentTransition._updatedFibers) {
               var updatedFibersCount = currentTransition._updatedFibers.size;
               if (updatedFibersCount > 10) {
-                warn("Detected a large number of updates inside startTransition. If this is due to a subscription please re-write it to use React provided hooks. Otherwise concurrent mode guarantees are off the table.");
+                warn("Detected a large number of updates inside startTransition. " + "If this is due to a subscription please re-write it to use React provided hooks. " + "Otherwise concurrent mode guarantees are off the table.");
               }
               currentTransition._updatedFibers.clear();
             }
@@ -1594,7 +1594,7 @@ var require_react_development = __commonJS((exports, module) => {
                 if (didWarnAboutMessageChannel === false) {
                   didWarnAboutMessageChannel = true;
                   if (typeof MessageChannel === "undefined") {
-                    error("This browser does not have a MessageChannel implementation, so enqueuing tasks via await act(async () => ...) will fail. Please file an issue at https://github.com/facebook/react/issues if you encounter this warning.");
+                    error("This browser does not have a MessageChannel implementation, " + "so enqueuing tasks via await act(async () => ...) will fail. " + "Please file an issue at https://github.com/facebook/react/issues " + "if you encounter this warning.");
                   }
                 }
               }
@@ -1658,7 +1658,7 @@ var require_react_development = __commonJS((exports, module) => {
                 }).then(function() {
                   if (!wasAwaited) {
                     didWarnNoAwaitAct = true;
-                    error("You called act(async () => ...) without await. This could lead to unexpected testing behaviour, interleaving multiple act calls and mixing their scopes. You should - await act(async () => ...);");
+                    error("You called act(async () => ...) without await. " + "This could lead to unexpected testing behaviour, " + "interleaving multiple act calls and mixing their " + "scopes. " + "You should - await act(async () => ...);");
                   }
                 });
               }
@@ -1698,7 +1698,7 @@ var require_react_development = __commonJS((exports, module) => {
       function popActScope(prevActScopeDepth) {
         {
           if (prevActScopeDepth !== actScopeDepth - 1) {
-            error("You seem to have overlapping act() calls, this is not supported. Be sure to await previous act() calls before making a new one. ");
+            error("You seem to have overlapping act() calls, this is not supported. " + "Be sure to await previous act() calls before making a new one. ");
           }
           actScopeDepth = prevActScopeDepth;
         }
@@ -2166,7 +2166,7 @@ var require_scheduler_development = __commonJS((exports) => {
       }
       function forceFrameRate(fps) {
         if (fps < 0 || fps > 125) {
-          console["error"]("forceFrameRate takes a positive int between 0 and 125, forcing frame rates higher than 125 fps is not supported");
+          console["error"]("forceFrameRate takes a positive int between 0 and 125, " + "forcing frame rates higher than 125 fps is not supported");
           return;
         }
         if (fps > 0) {
@@ -2361,7 +2361,7 @@ var require_react_dom_development = __commonJS((exports) => {
       function registerDirectEvent(registrationName, dependencies) {
         {
           if (registrationNameDependencies[registrationName]) {
-            error("EventRegistry: More than one plugin attempted to publish the same registration name, `%s`.", registrationName);
+            error("EventRegistry: More than one plugin attempted to publish the same " + "registration name, `%s`.", registrationName);
           }
         }
         registrationNameDependencies[registrationName] = dependencies;
@@ -2401,7 +2401,7 @@ var require_react_dom_development = __commonJS((exports) => {
       function checkAttributeStringCoercion(value, attributeName) {
         {
           if (willCoercionThrow(value)) {
-            error("The provided `%s` attribute is an unsupported type %s. This value must be coerced to a string before before using it here.", attributeName, typeName(value));
+            error("The provided `%s` attribute is an unsupported type %s." + " This value must be coerced to a string before before using it here.", attributeName, typeName(value));
             return testStringCoercion(value);
           }
         }
@@ -2409,7 +2409,7 @@ var require_react_dom_development = __commonJS((exports) => {
       function checkKeyStringCoercion(value) {
         {
           if (willCoercionThrow(value)) {
-            error("The provided key is an unsupported type %s. This value must be coerced to a string before before using it here.", typeName(value));
+            error("The provided key is an unsupported type %s." + " This value must be coerced to a string before before using it here.", typeName(value));
             return testStringCoercion(value);
           }
         }
@@ -2417,7 +2417,7 @@ var require_react_dom_development = __commonJS((exports) => {
       function checkPropStringCoercion(value, propName) {
         {
           if (willCoercionThrow(value)) {
-            error("The provided `%s` prop is an unsupported type %s. This value must be coerced to a string before before using it here.", propName, typeName(value));
+            error("The provided `%s` prop is an unsupported type %s." + " This value must be coerced to a string before before using it here.", propName, typeName(value));
             return testStringCoercion(value);
           }
         }
@@ -2425,7 +2425,7 @@ var require_react_dom_development = __commonJS((exports) => {
       function checkCSSPropertyStringCoercion(value, propName) {
         {
           if (willCoercionThrow(value)) {
-            error("The provided `%s` CSS property is an unsupported type %s. This value must be coerced to a string before before using it here.", propName, typeName(value));
+            error("The provided `%s` CSS property is an unsupported type %s." + " This value must be coerced to a string before before using it here.", propName, typeName(value));
             return testStringCoercion(value);
           }
         }
@@ -2433,7 +2433,7 @@ var require_react_dom_development = __commonJS((exports) => {
       function checkHtmlStringCoercion(value) {
         {
           if (willCoercionThrow(value)) {
-            error("The provided HTML markup uses a value of unsupported type %s. This value must be coerced to a string before before using it here.", typeName(value));
+            error("The provided HTML markup uses a value of unsupported type %s." + " This value must be coerced to a string before before using it here.", typeName(value));
             return testStringCoercion(value);
           }
         }
@@ -2441,7 +2441,7 @@ var require_react_dom_development = __commonJS((exports) => {
       function checkFormFieldValueStringCoercion(value) {
         {
           if (willCoercionThrow(value)) {
-            error("Form field values (value, checked, defaultValue, or defaultChecked props) must be strings, not %s. This value must be coerced to a string before before using it here.", typeName(value));
+            error("Form field values (value, checked, defaultValue, or defaultChecked props)" + " must be strings, not %s." + " This value must be coerced to a string before before using it here.", typeName(value));
             return testStringCoercion(value);
           }
         }
@@ -2738,7 +2738,7 @@ var require_react_dom_development = __commonJS((exports) => {
         {
           if (!didWarn && isJavaScriptProtocol.test(url)) {
             didWarn = true;
-            error("A future version of React will block javascript: URLs as a security precaution. Use event handlers instead if you can. If you need to generate unsafe HTML try using dangerouslySetInnerHTML instead. React was passed %s.", JSON.stringify(url));
+            error("A future version of React will block javascript: URLs as a security precaution. " + "Use event handlers instead if you can. If you need to generate unsafe HTML try " + "using dangerouslySetInnerHTML instead. React was passed %s.", JSON.stringify(url));
           }
         }
       }
@@ -2971,7 +2971,7 @@ var require_react_dom_development = __commonJS((exports) => {
             });
           }
           if (disabledDepth < 0) {
-            error("disabledDepth fell below zero. This is a bug in React. Please file an issue.");
+            error("disabledDepth fell below zero. " + "This is a bug in React. Please file an issue.");
           }
         }
       }
@@ -3204,7 +3204,7 @@ var require_react_dom_development = __commonJS((exports) => {
         }
         {
           if (typeof type.tag === "number") {
-            error("Received an unexpected object in getComponentNameFromType(). This is likely a bug in React. Please file an issue.");
+            error("Received an unexpected object in getComponentNameFromType(). " + "This is likely a bug in React. Please file an issue.");
           }
         }
         if (typeof type === "function") {
@@ -3402,10 +3402,10 @@ var require_react_dom_development = __commonJS((exports) => {
       function checkControlledValueProps(tagName, props) {
         {
           if (!(hasReadOnlyValue[props.type] || props.onChange || props.onInput || props.readOnly || props.disabled || props.value == null)) {
-            error("You provided a `value` prop to a form field without an `onChange` handler. This will render a read-only field. If the field should be mutable use `defaultValue`. Otherwise, set either `onChange` or `readOnly`.");
+            error("You provided a `value` prop to a form field without an " + "`onChange` handler. This will render a read-only field. If " + "the field should be mutable use `defaultValue`. Otherwise, " + "set either `onChange` or `readOnly`.");
           }
           if (!(props.onChange || props.readOnly || props.disabled || props.checked == null)) {
-            error("You provided a `checked` prop to a form field without an `onChange` handler. This will render a read-only field. If the field should be mutable use `defaultChecked`. Otherwise, set either `onChange` or `readOnly`.");
+            error("You provided a `checked` prop to a form field without an " + "`onChange` handler. This will render a read-only field. If " + "the field should be mutable use `defaultChecked`. Otherwise, " + "set either `onChange` or `readOnly`.");
           }
         }
       }
@@ -3532,11 +3532,11 @@ var require_react_dom_development = __commonJS((exports) => {
         {
           checkControlledValueProps("input", props);
           if (props.checked !== undefined && props.defaultChecked !== undefined && !didWarnCheckedDefaultChecked) {
-            error("%s contains an input of type %s with both checked and defaultChecked props. Input elements must be either controlled or uncontrolled (specify either the checked prop, or the defaultChecked prop, but not both). Decide between using a controlled or uncontrolled input element and remove one of these props. More info: https://reactjs.org/link/controlled-components", getCurrentFiberOwnerNameInDevOrNull() || "A component", props.type);
+            error("%s contains an input of type %s with both checked and defaultChecked props. " + "Input elements must be either controlled or uncontrolled " + "(specify either the checked prop, or the defaultChecked prop, but not " + "both). Decide between using a controlled or uncontrolled input " + "element and remove one of these props. More info: " + "https://reactjs.org/link/controlled-components", getCurrentFiberOwnerNameInDevOrNull() || "A component", props.type);
             didWarnCheckedDefaultChecked = true;
           }
           if (props.value !== undefined && props.defaultValue !== undefined && !didWarnValueDefaultValue) {
-            error("%s contains an input of type %s with both value and defaultValue props. Input elements must be either controlled or uncontrolled (specify either the value prop, or the defaultValue prop, but not both). Decide between using a controlled or uncontrolled input element and remove one of these props. More info: https://reactjs.org/link/controlled-components", getCurrentFiberOwnerNameInDevOrNull() || "A component", props.type);
+            error("%s contains an input of type %s with both value and defaultValue props. " + "Input elements must be either controlled or uncontrolled " + "(specify either the value prop, or the defaultValue prop, but not " + "both). Decide between using a controlled or uncontrolled input " + "element and remove one of these props. More info: " + "https://reactjs.org/link/controlled-components", getCurrentFiberOwnerNameInDevOrNull() || "A component", props.type);
             didWarnValueDefaultValue = true;
           }
         }
@@ -3560,11 +3560,11 @@ var require_react_dom_development = __commonJS((exports) => {
         {
           var controlled = isControlled(props);
           if (!node._wrapperState.controlled && controlled && !didWarnUncontrolledToControlled) {
-            error("A component is changing an uncontrolled input to be controlled. This is likely caused by the value changing from undefined to a defined value, which should not happen. Decide between using a controlled or uncontrolled input element for the lifetime of the component. More info: https://reactjs.org/link/controlled-components");
+            error("A component is changing an uncontrolled input to be controlled. " + "This is likely caused by the value changing from undefined to " + "a defined value, which should not happen. " + "Decide between using a controlled or uncontrolled input " + "element for the lifetime of the component. More info: https://reactjs.org/link/controlled-components");
             didWarnUncontrolledToControlled = true;
           }
           if (node._wrapperState.controlled && !controlled && !didWarnControlledToUncontrolled) {
-            error("A component is changing a controlled input to be uncontrolled. This is likely caused by the value changing from a defined to undefined, which should not happen. Decide between using a controlled or uncontrolled input element for the lifetime of the component. More info: https://reactjs.org/link/controlled-components");
+            error("A component is changing a controlled input to be uncontrolled. " + "This is likely caused by the value changing from a defined to " + "undefined, which should not happen. " + "Decide between using a controlled or uncontrolled input " + "element for the lifetime of the component. More info: https://reactjs.org/link/controlled-components");
             didWarnControlledToUncontrolled = true;
           }
         }
@@ -3651,7 +3651,7 @@ var require_react_dom_development = __commonJS((exports) => {
             }
             var otherProps = getFiberCurrentPropsFromNode(otherNode);
             if (!otherProps) {
-              throw new Error("ReactDOMInput: Mixing React and non-React radio inputs with the same `name` is not supported.");
+              throw new Error("ReactDOMInput: Mixing React and non-React radio inputs with the " + "same `name` is not supported.");
             }
             updateValueIfChanged(otherNode);
             updateWrapper(otherNode, otherProps);
@@ -3683,18 +3683,18 @@ var require_react_dom_development = __commonJS((exports) => {
                 }
                 if (!didWarnInvalidChild) {
                   didWarnInvalidChild = true;
-                  error("Cannot infer the option value of complex children. Pass a `value` prop or use a plain string as children to <option>.");
+                  error("Cannot infer the option value of complex children. " + "Pass a `value` prop or use a plain string as children to <option>.");
                 }
               });
             } else if (props.dangerouslySetInnerHTML != null) {
               if (!didWarnInvalidInnerHTML) {
                 didWarnInvalidInnerHTML = true;
-                error("Pass a `value` prop if you set dangerouslyInnerHTML so React knows which value should be selected.");
+                error("Pass a `value` prop if you set dangerouslyInnerHTML so React knows " + "which value should be selected.");
               }
             }
           }
           if (props.selected != null && !didWarnSelectedSetOnOption) {
-            error("Use the `defaultValue` or `value` props on <select> instead of setting `selected` on <option>.");
+            error("Use the `defaultValue` or `value` props on <select> instead of " + "setting `selected` on <option>.");
             didWarnSelectedSetOnOption = true;
           }
         }
@@ -3730,9 +3730,9 @@ var require_react_dom_development = __commonJS((exports) => {
             }
             var propNameIsArray = isArray(props[propName]);
             if (props.multiple && !propNameIsArray) {
-              error("The `%s` prop supplied to <select> must be an array if `multiple` is true.%s", propName, getDeclarationErrorAddendum());
+              error("The `%s` prop supplied to <select> must be an array if " + "`multiple` is true.%s", propName, getDeclarationErrorAddendum());
             } else if (!props.multiple && propNameIsArray) {
-              error("The `%s` prop supplied to <select> must be a scalar value if `multiple` is false.%s", propName, getDeclarationErrorAddendum());
+              error("The `%s` prop supplied to <select> must be a scalar " + "value if `multiple` is false.%s", propName, getDeclarationErrorAddendum());
             }
           }
         }
@@ -3789,7 +3789,7 @@ var require_react_dom_development = __commonJS((exports) => {
         };
         {
           if (props.value !== undefined && props.defaultValue !== undefined && !didWarnValueDefaultValue$1) {
-            error("Select elements must be either controlled or uncontrolled (specify either the value prop, or the defaultValue prop, but not both). Decide between using a controlled or uncontrolled select element and remove one of these props. More info: https://reactjs.org/link/controlled-components");
+            error("Select elements must be either controlled or uncontrolled " + "(specify either the value prop, or the defaultValue prop, but not " + "both). Decide between using a controlled or uncontrolled select " + "element and remove one of these props. More info: " + "https://reactjs.org/link/controlled-components");
             didWarnValueDefaultValue$1 = true;
           }
         }
@@ -3844,7 +3844,7 @@ var require_react_dom_development = __commonJS((exports) => {
         {
           checkControlledValueProps("textarea", props);
           if (props.value !== undefined && props.defaultValue !== undefined && !didWarnValDefaultVal) {
-            error("%s contains a textarea with both value and defaultValue props. Textarea elements must be either controlled or uncontrolled (specify either the value prop, or the defaultValue prop, but not both). Decide between using a controlled or uncontrolled textarea and remove one of these props. More info: https://reactjs.org/link/controlled-components", getCurrentFiberOwnerNameInDevOrNull() || "A component");
+            error("%s contains a textarea with both value and defaultValue props. " + "Textarea elements must be either controlled or uncontrolled " + "(specify either the value prop, or the defaultValue prop, but not " + "both). Decide between using a controlled or uncontrolled textarea " + "and remove one of these props. More info: " + "https://reactjs.org/link/controlled-components", getCurrentFiberOwnerNameInDevOrNull() || "A component");
             didWarnValDefaultVal = true;
           }
         }
@@ -3853,7 +3853,7 @@ var require_react_dom_development = __commonJS((exports) => {
           var { children, defaultValue } = props;
           if (children != null) {
             {
-              error("Use the `defaultValue` or `value` props instead of setting children on <textarea>.");
+              error("Use the `defaultValue` or `value` props instead of setting " + "children on <textarea>.");
             }
             {
               if (defaultValue != null) {
@@ -4128,7 +4128,7 @@ var require_react_dom_development = __commonJS((exports) => {
             return;
           }
           warnedStyleValues[value] = true;
-          error(`Style property values shouldn't contain a semicolon. Try "%s: %s" instead.`, name, value.replace(badStyleValueWithSemicolonPattern, ""));
+          error("Style property values shouldn't contain a semicolon. " + 'Try "%s: %s" instead.', name, value.replace(badStyleValueWithSemicolonPattern, ""));
         };
         var warnStyleValueIsNaN = function(name, value) {
           if (warnedForNaNValue) {
@@ -4234,7 +4234,7 @@ var require_react_dom_development = __commonJS((exports) => {
                 continue;
               }
               warnedAbout[warningKey] = true;
-              error("%s a style property during rerender (%s) when a conflicting property is set (%s) can lead to styling bugs. To avoid this, don't mix shorthand and non-shorthand properties for the same value; instead, replace the shorthand with separate values.", isValueEmpty(styleUpdates[originalKey]) ? "Removing" : "Updating", originalKey, correctOriginalKey);
+              error("%s a style property during rerender (%s) when a " + "conflicting property is set (%s) can lead to styling bugs. To " + "avoid this, don't mix shorthand and non-shorthand properties " + "for the same value; instead, replace the shorthand with " + "separate values.", isValueEmpty(styleUpdates[originalKey]) ? "Removing" : "Updating", originalKey, correctOriginalKey);
             }
           }
         }
@@ -4266,7 +4266,7 @@ var require_react_dom_development = __commonJS((exports) => {
         }
         if (voidElementTags[tag]) {
           if (props.children != null || props.dangerouslySetInnerHTML != null) {
-            throw new Error(tag + " is a void element tag and must neither have `children` nor use `dangerouslySetInnerHTML`.");
+            throw new Error(tag + " is a void element tag and must neither have `children` nor " + "use `dangerouslySetInnerHTML`.");
           }
         }
         if (props.dangerouslySetInnerHTML != null) {
@@ -4274,16 +4274,16 @@ var require_react_dom_development = __commonJS((exports) => {
             throw new Error("Can only set one of `children` or `props.dangerouslySetInnerHTML`.");
           }
           if (typeof props.dangerouslySetInnerHTML !== "object" || !(HTML in props.dangerouslySetInnerHTML)) {
-            throw new Error("`props.dangerouslySetInnerHTML` must be in the form `{__html: ...}`. Please visit https://reactjs.org/link/dangerously-set-inner-html for more information.");
+            throw new Error("`props.dangerouslySetInnerHTML` must be in the form `{__html: ...}`. " + "Please visit https://reactjs.org/link/dangerously-set-inner-html " + "for more information.");
           }
         }
         {
           if (!props.suppressContentEditableWarning && props.contentEditable && props.children != null) {
-            error("A component is `contentEditable` and contains `children` managed by React. It is now your responsibility to guarantee that none of those nodes are unexpectedly modified or duplicated. This is probably not intentional.");
+            error("A component is `contentEditable` and contains `children` managed by " + "React. It is now your responsibility to guarantee that none of " + "those nodes are unexpectedly modified or duplicated. This is " + "probably not intentional.");
           }
         }
         if (props.style != null && typeof props.style !== "object") {
-          throw new Error("The `style` prop expects a mapping from style properties to values, not a string. For example, style={{marginRight: spacing + 'em'}} when using JSX.");
+          throw new Error("The `style` prop expects a mapping from style properties to values, " + "not a string. For example, style={{marginRight: spacing + 'em'}} when " + "using JSX.");
         }
       }
       function isCustomComponent(tagName, props) {
@@ -4893,9 +4893,9 @@ var require_react_dom_development = __commonJS((exports) => {
             return "`" + prop + "`";
           }).join(", ");
           if (invalidProps.length === 1) {
-            error("Invalid aria prop %s on <%s> tag. For details, see https://reactjs.org/link/invalid-aria-props", unknownPropString, type);
+            error("Invalid aria prop %s on <%s> tag. " + "For details, see https://reactjs.org/link/invalid-aria-props", unknownPropString, type);
           } else if (invalidProps.length > 1) {
-            error("Invalid aria props %s on <%s> tag. For details, see https://reactjs.org/link/invalid-aria-props", unknownPropString, type);
+            error("Invalid aria props %s on <%s> tag. " + "For details, see https://reactjs.org/link/invalid-aria-props", unknownPropString, type);
           }
         }
       }
@@ -4914,9 +4914,9 @@ var require_react_dom_development = __commonJS((exports) => {
           if (props != null && props.value === null && !didWarnValueNull) {
             didWarnValueNull = true;
             if (type === "select" && props.multiple) {
-              error("`value` prop on `%s` should not be null. Consider using an empty array when `multiple` is set to `true` to clear the component or `undefined` for uncontrolled components.", type);
+              error("`value` prop on `%s` should not be null. " + "Consider using an empty array when `multiple` is set to `true` " + "to clear the component or `undefined` for uncontrolled components.", type);
             } else {
-              error("`value` prop on `%s` should not be null. Consider using an empty string to clear the component or `undefined` for uncontrolled components.", type);
+              error("`value` prop on `%s` should not be null. " + "Consider using an empty string to clear the component or `undefined` " + "for uncontrolled components.", type);
             }
           }
         }
@@ -4935,7 +4935,7 @@ var require_react_dom_development = __commonJS((exports) => {
           }
           var lowerCasedName = name.toLowerCase();
           if (lowerCasedName === "onfocusin" || lowerCasedName === "onfocusout") {
-            error("React uses onFocus and onBlur instead of onFocusIn and onFocusOut. All React events are normalized to bubble, so onFocusIn and onFocusOut are not needed/supported by React.");
+            error("React uses onFocus and onBlur instead of onFocusIn and onFocusOut. " + "All React events are normalized to bubble, so onFocusIn and onFocusOut " + "are not needed/supported by React.");
             warnedProperties$1[name] = true;
             return true;
           }
@@ -4957,7 +4957,7 @@ var require_react_dom_development = __commonJS((exports) => {
             }
           } else if (EVENT_NAME_REGEX.test(name)) {
             if (INVALID_EVENT_NAME_REGEX.test(name)) {
-              error("Invalid event handler property `%s`. React events use the camelCase naming convention, for example `onClick`.", name);
+              error("Invalid event handler property `%s`. " + "React events use the camelCase naming convention, for example `onClick`.", name);
             }
             warnedProperties$1[name] = true;
             return true;
@@ -4966,22 +4966,22 @@ var require_react_dom_development = __commonJS((exports) => {
             return true;
           }
           if (lowerCasedName === "innerhtml") {
-            error("Directly setting property `innerHTML` is not permitted. For more information, lookup documentation on `dangerouslySetInnerHTML`.");
+            error("Directly setting property `innerHTML` is not permitted. " + "For more information, lookup documentation on `dangerouslySetInnerHTML`.");
             warnedProperties$1[name] = true;
             return true;
           }
           if (lowerCasedName === "aria") {
-            error("The `aria` attribute is reserved for future use in React. Pass individual `aria-` attributes instead.");
+            error("The `aria` attribute is reserved for future use in React. " + "Pass individual `aria-` attributes instead.");
             warnedProperties$1[name] = true;
             return true;
           }
           if (lowerCasedName === "is" && value !== null && value !== undefined && typeof value !== "string") {
-            error("Received a `%s` for a string attribute `is`. If this is expected, cast the value to a string.", typeof value);
+            error("Received a `%s` for a string attribute `is`. If this is expected, cast " + "the value to a string.", typeof value);
             warnedProperties$1[name] = true;
             return true;
           }
           if (typeof value === "number" && isNaN(value)) {
-            error("Received NaN for the `%s` attribute. If this is expected, cast the value to a string.", name);
+            error("Received NaN for the `%s` attribute. If this is expected, cast " + "the value to a string.", name);
             warnedProperties$1[name] = true;
             return true;
           }
@@ -4995,15 +4995,15 @@ var require_react_dom_development = __commonJS((exports) => {
               return true;
             }
           } else if (!isReserved && name !== lowerCasedName) {
-            error("React does not recognize the `%s` prop on a DOM element. If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `%s` instead. If you accidentally passed it from a parent component, remove it from the DOM element.", name, lowerCasedName);
+            error("React does not recognize the `%s` prop on a DOM element. If you " + "intentionally want it to appear in the DOM as a custom " + "attribute, spell it as lowercase `%s` instead. " + "If you accidentally passed it from a parent component, remove " + "it from the DOM element.", name, lowerCasedName);
             warnedProperties$1[name] = true;
             return true;
           }
           if (typeof value === "boolean" && shouldRemoveAttributeWithWarning(name, value, propertyInfo, false)) {
             if (value) {
-              error('Received `%s` for a non-boolean attribute `%s`.\n\nIf you want to write it to the DOM, pass a string instead: %s="%s" or %s={value.toString()}.', value, name, name, value, name);
+              error("Received `%s` for a non-boolean attribute `%s`.\n\n" + "If you want to write it to the DOM, pass a string instead: " + '%s="%s" or %s={value.toString()}.', value, name, name, value, name);
             } else {
-              error('Received `%s` for a non-boolean attribute `%s`.\n\nIf you want to write it to the DOM, pass a string instead: %s="%s" or %s={value.toString()}.\n\nIf you used to conditionally omit it with %s={condition && value}, pass %s={condition ? value : undefined} instead.', value, name, name, value, name, name, name);
+              error("Received `%s` for a non-boolean attribute `%s`.\n\n" + "If you want to write it to the DOM, pass a string instead: " + '%s="%s" or %s={value.toString()}.\n\n' + "If you used to conditionally omit it with %s={condition && value}, " + "pass %s={condition ? value : undefined} instead.", value, name, name, value, name, name, name);
             }
             warnedProperties$1[name] = true;
             return true;
@@ -5016,7 +5016,7 @@ var require_react_dom_development = __commonJS((exports) => {
             return false;
           }
           if ((value === "false" || value === "true") && propertyInfo !== null && propertyInfo.type === BOOLEAN) {
-            error("Received the string `%s` for the boolean attribute `%s`. %s Did you mean %s={%s}?", value, name, value === "false" ? "The browser will interpret it as a truthy value." : 'Although this works, it will not work as expected if you pass the string "false".', name, value);
+            error("Received the string `%s` for the boolean attribute `%s`. " + "%s " + "Did you mean %s={%s}?", value, name, value === "false" ? "The browser will interpret it as a truthy value." : 'Although this works, it will not work as expected if you pass the string "false".', name, value);
             warnedProperties$1[name] = true;
             return true;
           }
@@ -5036,9 +5036,9 @@ var require_react_dom_development = __commonJS((exports) => {
             return "`" + prop + "`";
           }).join(", ");
           if (unknownProps.length === 1) {
-            error("Invalid value for prop %s on <%s> tag. Either remove it from the element, or pass a string or number value to keep it in the DOM. For details, see https://reactjs.org/link/attribute-behavior ", unknownPropString, type);
+            error("Invalid value for prop %s on <%s> tag. Either remove it from the element, " + "or pass a string or number value to keep it in the DOM. " + "For details, see https://reactjs.org/link/attribute-behavior ", unknownPropString, type);
           } else if (unknownProps.length > 1) {
-            error("Invalid values for props %s on <%s> tag. Either remove them from the element, or pass a string or number value to keep them in the DOM. For details, see https://reactjs.org/link/attribute-behavior ", unknownPropString, type);
+            error("Invalid values for props %s on <%s> tag. Either remove them from the element, " + "or pass a string or number value to keep them in the DOM. " + "For details, see https://reactjs.org/link/attribute-behavior ", unknownPropString, type);
           }
         }
       };
@@ -5056,7 +5056,7 @@ var require_react_dom_development = __commonJS((exports) => {
       function setReplayingEvent(event) {
         {
           if (currentReplayingEvent !== null) {
-            error("Expected currently replaying event to be null. This error is likely caused by a bug in React. Please file an issue.");
+            error("Expected currently replaying event to be null. This error " + "is likely caused by a bug in React. Please file an issue.");
           }
         }
         currentReplayingEvent = event;
@@ -5064,7 +5064,7 @@ var require_react_dom_development = __commonJS((exports) => {
       function resetReplayingEvent() {
         {
           if (currentReplayingEvent === null) {
-            error("Expected currently replaying event to not be null. This error is likely caused by a bug in React. Please file an issue.");
+            error("Expected currently replaying event to not be null. This error " + "is likely caused by a bug in React. Please file an issue.");
           }
         }
         currentReplayingEvent = null;
@@ -5088,7 +5088,7 @@ var require_react_dom_development = __commonJS((exports) => {
           return;
         }
         if (typeof restoreImpl !== "function") {
-          throw new Error("setRestoreImplementation() needs to be called to handle a target for controlled events. This error is likely caused by a bug in React. Please file an issue.");
+          throw new Error("setRestoreImplementation() needs to be called to handle a target for controlled " + "events. This error is likely caused by a bug in React. Please file an issue.");
         }
         var stateNode = internalInstance.stateNode;
         if (stateNode) {
@@ -5225,7 +5225,7 @@ var require_react_dom_development = __commonJS((exports) => {
           var fakeNode = document.createElement("react");
           invokeGuardedCallbackImpl = function invokeGuardedCallbackDev(name, func, context, a, b, c, d, e, f) {
             if (typeof document === "undefined" || document === null) {
-              throw new Error("The `document` global was defined when React was initialized, but is not defined anymore. This can happen in a test environment if a component schedules an update from an asynchronous callback, but the test has already finished running. To solve this, you can either unmount the component at the end of your test (and ensure that any asynchronous operations get canceled in `componentWillUnmount`), or you can change the test itself to be asynchronous.");
+              throw new Error("The `document` global was defined when React was initialized, but is not " + "defined anymore. This can happen in a test environment if a component " + "schedules an update from an asynchronous callback, but the test has already " + "finished running. To solve this, you can either unmount the component at " + "the end of your test (and ensure that any asynchronous operations get " + "canceled in `componentWillUnmount`), or you can change the test itself " + "to be asynchronous.");
             }
             var evt = document.createEvent("Event");
             var didCall = false;
@@ -5273,9 +5273,9 @@ var require_react_dom_development = __commonJS((exports) => {
             }
             if (didCall && didError) {
               if (!didSetError) {
-                error2 = new Error(`An error was thrown inside one of your components, but React doesn't know what it was. This is likely due to browser flakiness. React does its best to preserve the "Pause on exceptions" behavior of the DevTools, which requires some DEV-mode only tricks. It's possible that these don't work in your browser. Try triggering the error in production mode, or switching to a modern browser. If you suspect that this is actually an issue with React, please file an issue.`);
+                error2 = new Error("An error was thrown inside one of your components, but React " + "doesn't know what it was. This is likely due to browser " + 'flakiness. React does its best to preserve the "Pause on ' + 'exceptions" behavior of the DevTools, which requires some ' + "DEV-mode only tricks. It's possible that these don't work in " + "your browser. Try triggering the error in production mode, " + "or switching to a modern browser. If you suspect that this is " + "actually an issue with React, please file an issue.");
               } else if (isCrossOriginError) {
-                error2 = new Error("A cross-origin error was thrown. React doesn't have access to the actual error object in development. See https://reactjs.org/link/crossorigin-error for more information.");
+                error2 = new Error("A cross-origin error was thrown. React doesn't have access to " + "the actual error object in development. " + "See https://reactjs.org/link/crossorigin-error for more information.");
               }
               this.onError(error2);
             }
@@ -5331,7 +5331,7 @@ var require_react_dom_development = __commonJS((exports) => {
           caughtError = null;
           return error2;
         } else {
-          throw new Error("clearCaughtError was called but no error was captured. This error is likely caused by a bug in React. Please file an issue.");
+          throw new Error("clearCaughtError was called but no error was captured. This error " + "is likely caused by a bug in React. Please file an issue.");
         }
       }
       function get(key) {
@@ -5425,7 +5425,7 @@ var require_react_dom_development = __commonJS((exports) => {
             var ownerFiber = owner;
             var instance = ownerFiber.stateNode;
             if (!instance._warnedAboutRefsInRender) {
-              error("%s is accessing isMounted inside its render() function. render() should be a pure function of props and state. It should never access something that requires stale data from the previous render, such as refs. Move this logic to componentDidMount and componentDidUpdate instead.", getComponentNameFromFiber(ownerFiber) || "A component");
+              error("%s is accessing isMounted inside its render() function. " + "render() should be a pure function of props and state. It should " + "never access something that requires stale data from the previous " + "render, such as refs. Move this logic to componentDidMount and " + "componentDidUpdate instead.", getComponentNameFromFiber(ownerFiber) || "A component");
             }
             instance._warnedAboutRefsInRender = true;
           }
@@ -5523,12 +5523,12 @@ var require_react_dom_development = __commonJS((exports) => {
                 _child = _child.sibling;
               }
               if (!didFindChild) {
-                throw new Error("Child was not found in either parent set. This indicates a bug in React related to the return pointer. Please file an issue.");
+                throw new Error("Child was not found in either parent set. This indicates a bug " + "in React related to the return pointer. Please file an issue.");
               }
             }
           }
           if (a.alternate !== b) {
-            throw new Error("Return fibers should always be each others' alternates. This error is likely caused by a bug in React. Please file an issue.");
+            throw new Error("Return fibers should always be each others' alternates. " + "This error is likely caused by a bug in React. Please file an issue.");
           }
         }
         if (a.tag !== HostRoot) {
@@ -5605,7 +5605,7 @@ var require_react_dom_development = __commonJS((exports) => {
         }
         if (!hook.supportsFiber) {
           {
-            error("The installed version of React DevTools is too old and will not work with the current version of React. Please update React DevTools. https://reactjs.org/link/react-devtools");
+            error("The installed version of React DevTools is too old and will not work " + "with the current version of React. Please update React DevTools. " + "https://reactjs.org/link/react-devtools");
           }
           return true;
         }
@@ -7389,12 +7389,12 @@ var require_react_dom_development = __commonJS((exports) => {
       var SyntheticWheelEvent = createSyntheticEvent(WheelEventInterface);
       var END_KEYCODES = [9, 13, 27, 32];
       var START_KEYCODE = 229;
-      var canUseCompositionEvent = canUseDOM && ("CompositionEvent" in window);
+      var canUseCompositionEvent = canUseDOM && "CompositionEvent" in window;
       var documentMode = null;
-      if (canUseDOM && ("documentMode" in document)) {
+      if (canUseDOM && "documentMode" in document) {
         documentMode = document.documentMode;
       }
-      var canUseTextInputEvent = canUseDOM && ("TextEvent" in window) && !documentMode;
+      var canUseTextInputEvent = canUseDOM && "TextEvent" in window && !documentMode;
       var useFallbackCompositionData = canUseDOM && (!canUseCompositionEvent || documentMode && documentMode > 8 && documentMode <= 11);
       var SPACEBAR_CODE = 32;
       var SPACEBAR_CHAR = String.fromCharCode(SPACEBAR_CODE);
@@ -7437,7 +7437,7 @@ var require_react_dom_development = __commonJS((exports) => {
       }
       function getDataFromCustomEvent(nativeEvent) {
         var detail = nativeEvent.detail;
-        if (typeof detail === "object" && ("data" in detail)) {
+        if (typeof detail === "object" && "data" in detail) {
           return detail.data;
         }
         return null;
@@ -8073,7 +8073,7 @@ var require_react_dom_development = __commonJS((exports) => {
           setOffsets(input, offsets);
         }
       }
-      var skipSelectionChangeEvent = canUseDOM && ("documentMode" in document) && document.documentMode <= 11;
+      var skipSelectionChangeEvent = canUseDOM && "documentMode" in document && document.documentMode <= 11;
       function registerEvents$3() {
         registerTwoPhaseEvent("onSelect", ["focusout", "contextmenu", "dragend", "focusin", "keydown", "keyup", "mousedown", "mouseup", "selectionchange"]);
       }
@@ -8082,7 +8082,7 @@ var require_react_dom_development = __commonJS((exports) => {
       var lastSelection = null;
       var mouseDown = false;
       function getSelection$1(node) {
-        if (("selectionStart" in node) && hasSelectionCapabilities(node)) {
+        if ("selectionStart" in node && hasSelectionCapabilities(node)) {
           return {
             start: node.selectionStart,
             end: node.selectionEnd
@@ -8187,7 +8187,7 @@ var require_react_dom_development = __commonJS((exports) => {
         }
         var prefixMap = vendorPrefixes[eventName];
         for (var styleProp in prefixMap) {
-          if (prefixMap.hasOwnProperty(styleProp) && (styleProp in style)) {
+          if (prefixMap.hasOwnProperty(styleProp) && styleProp in style) {
             return prefixedEventNames[eventName] = prefixMap[styleProp];
           }
         }
@@ -8381,7 +8381,7 @@ var require_react_dom_development = __commonJS((exports) => {
       function listenToNonDelegatedEvent(domEventName, targetElement) {
         {
           if (!nonDelegatedEvents.has(domEventName)) {
-            error('Did not expect a listenToNonDelegatedEvent() call for "%s". This is a bug in React. Please file an issue.', domEventName);
+            error('Did not expect a listenToNonDelegatedEvent() call for "%s". ' + "This is a bug in React. Please file an issue.", domEventName);
           }
         }
         var isCapturePhaseListener = false;
@@ -8395,7 +8395,7 @@ var require_react_dom_development = __commonJS((exports) => {
       function listenToNativeEvent(domEventName, isCapturePhaseListener, target) {
         {
           if (nonDelegatedEvents.has(domEventName) && !isCapturePhaseListener) {
-            error('Did not expect a listenToNativeEvent() call for "%s" in the bubble phase. This is a bug in React. Please file an issue.', domEventName);
+            error('Did not expect a listenToNativeEvent() call for "%s" in the bubble phase. ' + "This is a bug in React. Please file an issue.", domEventName);
           }
         }
         var eventSystemFlags = 0;
@@ -8697,7 +8697,7 @@ var require_react_dom_development = __commonJS((exports) => {
         };
         warnForInvalidEventListener = function(registrationName, listener) {
           if (listener === false) {
-            error("Expected `%s` listener to be a function, instead got `false`.\n\nIf you used to conditionally omit it with %s={condition && value}, pass %s={condition ? value : undefined} instead.", registrationName, registrationName, registrationName);
+            error("Expected `%s` listener to be a function, instead got `false`.\n\n" + "If you used to conditionally omit it with %s={condition && value}, " + "pass %s={condition ? value : undefined} instead.", registrationName, registrationName, registrationName);
           } else {
             error("Expected `%s` listener to be a function, instead got a value of `%s` type.", registrationName, typeof listener);
           }
@@ -8815,12 +8815,12 @@ var require_react_dom_development = __commonJS((exports) => {
           {
             isCustomComponentTag = isCustomComponent(type, props);
             if (!isCustomComponentTag && type !== type.toLowerCase()) {
-              error("<%s /> is using incorrect casing. Use PascalCase for React components, or lowercase for HTML elements.", type);
+              error("<%s /> is using incorrect casing. " + "Use PascalCase for React components, " + "or lowercase for HTML elements.", type);
             }
           }
           if (type === "script") {
             var div = ownerDocument.createElement("div");
-            div.innerHTML = "<script></script>";
+            div.innerHTML = "<script><" + "/script>";
             var firstChild = div.firstChild;
             domElement = div.removeChild(firstChild);
           } else if (typeof props.is === "string") {
@@ -8845,7 +8845,7 @@ var require_react_dom_development = __commonJS((exports) => {
           if (namespaceURI === HTML_NAMESPACE) {
             if (!isCustomComponentTag && Object.prototype.toString.call(domElement) === "[object HTMLUnknownElement]" && !hasOwnProperty.call(warnedUnknownTags, type)) {
               warnedUnknownTags[type] = true;
-              error("The tag <%s> is unrecognized in this browser. If you meant to render a React component, start its name with an uppercase letter.", type);
+              error("The tag <%s> is unrecognized in this browser. " + "If you meant to render a React component, start its name with " + "an uppercase letter.", type);
             }
           }
         }
@@ -9563,7 +9563,7 @@ var require_react_dom_development = __commonJS((exports) => {
               tagDisplayName = "Text nodes";
             } else {
               tagDisplayName = "Whitespace text nodes";
-              whitespaceInfo = " Make sure you don't have any extra whitespace between tags on each line of your source code.";
+              whitespaceInfo = " Make sure you don't have any extra whitespace between tags on " + "each line of your source code.";
             }
           } else {
             tagDisplayName = "<" + childTag + ">";
@@ -9571,11 +9571,11 @@ var require_react_dom_development = __commonJS((exports) => {
           if (invalidParent) {
             var info = "";
             if (ancestorTag === "table" && childTag === "tr") {
-              info += " Add a <tbody>, <thead> or <tfoot> to your code to match the DOM tree generated by the browser.";
+              info += " Add a <tbody>, <thead> or <tfoot> to your code to match the DOM tree generated by " + "the browser.";
             }
             error("validateDOMNesting(...): %s cannot appear as a child of <%s>.%s%s", tagDisplayName, ancestorTag, whitespaceInfo, info);
           } else {
-            error("validateDOMNesting(...): %s cannot appear as a descendant of <%s>.", tagDisplayName, ancestorTag);
+            error("validateDOMNesting(...): %s cannot appear as a descendant of " + "<%s>.", tagDisplayName, ancestorTag);
           }
         };
       }
@@ -10187,7 +10187,7 @@ var require_react_dom_development = __commonJS((exports) => {
               var error$1 = undefined;
               try {
                 if (typeof typeSpecs[typeSpecName] !== "function") {
-                  var err = Error((componentName || "React class") + ": " + location + " type `" + typeSpecName + "` is invalid; it must be a function, usually from the `prop-types` package, but received `" + typeof typeSpecs[typeSpecName] + "`.This often happens because of typos such as `PropTypes.function` instead of `PropTypes.func`.");
+                  var err = Error((componentName || "React class") + ": " + location + " type `" + typeSpecName + "` is invalid; " + "it must be a function, usually from the `prop-types` package, but received `" + typeof typeSpecs[typeSpecName] + "`." + "This often happens because of typos such as `PropTypes.function` instead of `PropTypes.func`.");
                   err.name = "Invariant Violation";
                   throw err;
                 }
@@ -10197,7 +10197,7 @@ var require_react_dom_development = __commonJS((exports) => {
               }
               if (error$1 && !(error$1 instanceof Error)) {
                 setCurrentlyValidatingElement(element);
-                error("%s: type specification of %s `%s` is invalid; the type checker function must return `null` or an `Error` but returned a %s. You may have forgotten to pass an argument to the type checker creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and shape all require an argument).", componentName || "React class", location, typeSpecName, typeof error$1);
+                error("%s: type specification of %s" + " `%s` is invalid; the type checker " + "function must return `null` or an `Error` but returned a %s. " + "You may have forgotten to pass an argument to the type checker " + "creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and " + "shape all require an argument).", componentName || "React class", location, typeSpecName, typeof error$1);
                 setCurrentlyValidatingElement(null);
               }
               if (error$1 instanceof Error && !(error$1.message in loggedTypeFailures)) {
@@ -10325,7 +10325,7 @@ var require_react_dom_development = __commonJS((exports) => {
       function pushTopLevelContextObject(fiber, context, didChange) {
         {
           if (contextStackCursor.current !== emptyContextObject) {
-            throw new Error("Unexpected context found on stack. This error is likely caused by a bug in React. Please file an issue.");
+            throw new Error("Unexpected context found on stack. " + "This error is likely caused by a bug in React. Please file an issue.");
           }
           push(contextStackCursor, context, fiber);
           push(didPerformWorkStackCursor, didChange, fiber);
@@ -10340,7 +10340,7 @@ var require_react_dom_development = __commonJS((exports) => {
               var componentName = getComponentNameFromFiber(fiber) || "Unknown";
               if (!warnedAboutMissingGetChildContext[componentName]) {
                 warnedAboutMissingGetChildContext[componentName] = true;
-                error("%s.childContextTypes is specified but there is no getChildContext() method on the instance. You can either define getChildContext() on %s or remove childContextTypes from it.", componentName, componentName);
+                error("%s.childContextTypes is specified but there is no getChildContext() method " + "on the instance. You can either define getChildContext() on %s or remove " + "childContextTypes from it.", componentName, componentName);
               }
             }
             return parentContext;
@@ -10372,7 +10372,7 @@ var require_react_dom_development = __commonJS((exports) => {
         {
           var instance = workInProgress2.stateNode;
           if (!instance) {
-            throw new Error("Expected to have an instance by this point. This error is likely caused by a bug in React. Please file an issue.");
+            throw new Error("Expected to have an instance by this point. " + "This error is likely caused by a bug in React. Please file an issue.");
           }
           if (didChange) {
             var mergedContext = processChildContext(workInProgress2, type, previousContext);
@@ -10390,7 +10390,7 @@ var require_react_dom_development = __commonJS((exports) => {
       function findCurrentUnmaskedContext(fiber) {
         {
           if (!isFiberMounted(fiber) || fiber.tag !== ClassComponent) {
-            throw new Error("Expected subtree parent to be a mounted class component. This error is likely caused by a bug in React. Please file an issue.");
+            throw new Error("Expected subtree parent to be a mounted class component. " + "This error is likely caused by a bug in React. Please file an issue.");
           }
           var node = fiber;
           do {
@@ -10407,7 +10407,7 @@ var require_react_dom_development = __commonJS((exports) => {
             }
             node = node.return;
           } while (node !== null);
-          throw new Error("Found unexpected detached subtree parent. This error is likely caused by a bug in React. Please file an issue.");
+          throw new Error("Found unexpected detached subtree parent. " + "This error is likely caused by a bug in React. Please file an issue.");
         }
       }
       var LegacyRoot = 0;
@@ -10578,7 +10578,7 @@ var require_react_dom_development = __commonJS((exports) => {
       function warnIfNotHydrating() {
         {
           if (!getIsHydrating()) {
-            error("Expected to be hydrating. This is a bug in React. Please file an issue.");
+            error("Expected to be hydrating. This is a bug in React. Please file " + "an issue.");
           }
         }
       }
@@ -10777,7 +10777,7 @@ var require_react_dom_development = __commonJS((exports) => {
         return (fiber.mode & ConcurrentMode) !== NoMode && (fiber.flags & DidCapture) === NoFlags;
       }
       function throwOnHydrationMismatch(fiber) {
-        throw new Error("Hydration failed because the initial UI does not match what was rendered on the server.");
+        throw new Error("Hydration failed because the initial UI does not match what was " + "rendered on the server.");
       }
       function tryToClaimNextHydratableInstance(fiber) {
         if (!isHydrating) {
@@ -10852,7 +10852,7 @@ var require_react_dom_development = __commonJS((exports) => {
         var suspenseState = fiber.memoizedState;
         var suspenseInstance = suspenseState !== null ? suspenseState.dehydrated : null;
         if (!suspenseInstance) {
-          throw new Error("Expected to have a hydrated suspense instance. This error is likely caused by a bug in React. Please file an issue.");
+          throw new Error("Expected to have a hydrated suspense instance. " + "This error is likely caused by a bug in React. Please file an issue.");
         }
         hydrateSuspenseInstance(suspenseInstance, fiber);
       }
@@ -10860,7 +10860,7 @@ var require_react_dom_development = __commonJS((exports) => {
         var suspenseState = fiber.memoizedState;
         var suspenseInstance = suspenseState !== null ? suspenseState.dehydrated : null;
         if (!suspenseInstance) {
-          throw new Error("Expected to have a hydrated suspense instance. This error is likely caused by a bug in React. Please file an issue.");
+          throw new Error("Expected to have a hydrated suspense instance. " + "This error is likely caused by a bug in React. Please file an issue.");
         }
         return getNextHydratableInstanceAfterSuspenseInstance(suspenseInstance);
       }
@@ -11051,27 +11051,27 @@ var require_react_dom_development = __commonJS((exports) => {
           }
           if (UNSAFE_componentWillMountUniqueNames.size > 0) {
             var sortedNames = setToSortedString(UNSAFE_componentWillMountUniqueNames);
-            error("Using UNSAFE_componentWillMount in strict mode is not recommended and may indicate bugs in your code. See https://reactjs.org/link/unsafe-component-lifecycles for details.\n\n* Move code with side effects to componentDidMount, and set initial state in the constructor.\n\nPlease update the following components: %s", sortedNames);
+            error("Using UNSAFE_componentWillMount in strict mode is not recommended and may indicate bugs in your code. " + "See https://reactjs.org/link/unsafe-component-lifecycles for details.\n\n" + "* Move code with side effects to componentDidMount, and set initial state in the constructor.\n" + "\nPlease update the following components: %s", sortedNames);
           }
           if (UNSAFE_componentWillReceivePropsUniqueNames.size > 0) {
             var _sortedNames = setToSortedString(UNSAFE_componentWillReceivePropsUniqueNames);
-            error("Using UNSAFE_componentWillReceiveProps in strict mode is not recommended and may indicate bugs in your code. See https://reactjs.org/link/unsafe-component-lifecycles for details.\n\n* Move data fetching code or side effects to componentDidUpdate.\n* If you're updating state whenever props change, refactor your code to use memoization techniques or move it to static getDerivedStateFromProps. Learn more at: https://reactjs.org/link/derived-state\n\nPlease update the following components: %s", _sortedNames);
+            error("Using UNSAFE_componentWillReceiveProps in strict mode is not recommended " + "and may indicate bugs in your code. " + "See https://reactjs.org/link/unsafe-component-lifecycles for details.\n\n" + "* Move data fetching code or side effects to componentDidUpdate.\n" + "* If you're updating state whenever props change, " + "refactor your code to use memoization techniques or move it to " + "static getDerivedStateFromProps. Learn more at: https://reactjs.org/link/derived-state\n" + "\nPlease update the following components: %s", _sortedNames);
           }
           if (UNSAFE_componentWillUpdateUniqueNames.size > 0) {
             var _sortedNames2 = setToSortedString(UNSAFE_componentWillUpdateUniqueNames);
-            error("Using UNSAFE_componentWillUpdate in strict mode is not recommended and may indicate bugs in your code. See https://reactjs.org/link/unsafe-component-lifecycles for details.\n\n* Move data fetching code or side effects to componentDidUpdate.\n\nPlease update the following components: %s", _sortedNames2);
+            error("Using UNSAFE_componentWillUpdate in strict mode is not recommended " + "and may indicate bugs in your code. " + "See https://reactjs.org/link/unsafe-component-lifecycles for details.\n\n" + "* Move data fetching code or side effects to componentDidUpdate.\n" + "\nPlease update the following components: %s", _sortedNames2);
           }
           if (componentWillMountUniqueNames.size > 0) {
             var _sortedNames3 = setToSortedString(componentWillMountUniqueNames);
-            warn("componentWillMount has been renamed, and is not recommended for use. See https://reactjs.org/link/unsafe-component-lifecycles for details.\n\n* Move code with side effects to componentDidMount, and set initial state in the constructor.\n* Rename componentWillMount to UNSAFE_componentWillMount to suppress this warning in non-strict mode. In React 18.x, only the UNSAFE_ name will work. To rename all deprecated lifecycles to their new names, you can run `npx react-codemod rename-unsafe-lifecycles` in your project source folder.\n\nPlease update the following components: %s", _sortedNames3);
+            warn("componentWillMount has been renamed, and is not recommended for use. " + "See https://reactjs.org/link/unsafe-component-lifecycles for details.\n\n" + "* Move code with side effects to componentDidMount, and set initial state in the constructor.\n" + "* Rename componentWillMount to UNSAFE_componentWillMount to suppress " + "this warning in non-strict mode. In React 18.x, only the UNSAFE_ name will work. " + "To rename all deprecated lifecycles to their new names, you can run " + "`npx react-codemod rename-unsafe-lifecycles` in your project source folder.\n" + "\nPlease update the following components: %s", _sortedNames3);
           }
           if (componentWillReceivePropsUniqueNames.size > 0) {
             var _sortedNames4 = setToSortedString(componentWillReceivePropsUniqueNames);
-            warn("componentWillReceiveProps has been renamed, and is not recommended for use. See https://reactjs.org/link/unsafe-component-lifecycles for details.\n\n* Move data fetching code or side effects to componentDidUpdate.\n* If you're updating state whenever props change, refactor your code to use memoization techniques or move it to static getDerivedStateFromProps. Learn more at: https://reactjs.org/link/derived-state\n* Rename componentWillReceiveProps to UNSAFE_componentWillReceiveProps to suppress this warning in non-strict mode. In React 18.x, only the UNSAFE_ name will work. To rename all deprecated lifecycles to their new names, you can run `npx react-codemod rename-unsafe-lifecycles` in your project source folder.\n\nPlease update the following components: %s", _sortedNames4);
+            warn("componentWillReceiveProps has been renamed, and is not recommended for use. " + "See https://reactjs.org/link/unsafe-component-lifecycles for details.\n\n" + "* Move data fetching code or side effects to componentDidUpdate.\n" + "* If you're updating state whenever props change, refactor your " + "code to use memoization techniques or move it to " + "static getDerivedStateFromProps. Learn more at: https://reactjs.org/link/derived-state\n" + "* Rename componentWillReceiveProps to UNSAFE_componentWillReceiveProps to suppress " + "this warning in non-strict mode. In React 18.x, only the UNSAFE_ name will work. " + "To rename all deprecated lifecycles to their new names, you can run " + "`npx react-codemod rename-unsafe-lifecycles` in your project source folder.\n" + "\nPlease update the following components: %s", _sortedNames4);
           }
           if (componentWillUpdateUniqueNames.size > 0) {
             var _sortedNames5 = setToSortedString(componentWillUpdateUniqueNames);
-            warn("componentWillUpdate has been renamed, and is not recommended for use. See https://reactjs.org/link/unsafe-component-lifecycles for details.\n\n* Move data fetching code or side effects to componentDidUpdate.\n* Rename componentWillUpdate to UNSAFE_componentWillUpdate to suppress this warning in non-strict mode. In React 18.x, only the UNSAFE_ name will work. To rename all deprecated lifecycles to their new names, you can run `npx react-codemod rename-unsafe-lifecycles` in your project source folder.\n\nPlease update the following components: %s", _sortedNames5);
+            warn("componentWillUpdate has been renamed, and is not recommended for use. " + "See https://reactjs.org/link/unsafe-component-lifecycles for details.\n\n" + "* Move data fetching code or side effects to componentDidUpdate.\n" + "* Rename componentWillUpdate to UNSAFE_componentWillUpdate to suppress " + "this warning in non-strict mode. In React 18.x, only the UNSAFE_ name will work. " + "To rename all deprecated lifecycles to their new names, you can run " + "`npx react-codemod rename-unsafe-lifecycles` in your project source folder.\n" + "\nPlease update the following components: %s", _sortedNames5);
           }
         };
         var pendingLegacyContextWarning = new Map;
@@ -11079,7 +11079,7 @@ var require_react_dom_development = __commonJS((exports) => {
         ReactStrictModeWarnings.recordLegacyContextWarning = function(fiber, instance) {
           var strictRoot = findStrictRoot(fiber);
           if (strictRoot === null) {
-            error("Expected to find a StrictMode component in a strict mode tree. This error is likely caused by a bug in React. Please file an issue.");
+            error("Expected to find a StrictMode component in a strict mode tree. " + "This error is likely caused by a bug in React. Please file an issue.");
             return;
           }
           if (didWarnAboutLegacyContext.has(fiber.type)) {
@@ -11108,7 +11108,7 @@ var require_react_dom_development = __commonJS((exports) => {
             var sortedNames = setToSortedString(uniqueNames);
             try {
               setCurrentFiber(firstFiber);
-              error("Legacy context API has been detected within a strict-mode tree.\n\nThe old API will be supported in all 16.x releases, but applications using it should migrate to the new version.\n\nPlease update the following components: %s\n\nLearn more about this warning here: https://reactjs.org/link/legacy-context", sortedNames);
+              error("Legacy context API has been detected within a strict-mode tree." + "\n\nThe old API will be supported in all 16.x releases, but applications " + "using it should migrate to the new version." + "\n\nPlease update the following components: %s" + "\n\nLearn more about this warning here: https://reactjs.org/link/legacy-context", sortedNames);
             } finally {
               resetCurrentFiber();
             }
@@ -11170,7 +11170,7 @@ var require_react_dom_development = __commonJS((exports) => {
           context._currentValue = nextValue;
           {
             if (context._currentRenderer !== undefined && context._currentRenderer !== null && context._currentRenderer !== rendererSigil) {
-              error("Detected multiple renderers concurrently rendering the same context provider. This is currently unsupported.");
+              error("Detected multiple renderers concurrently rendering the " + "same context provider. This is currently unsupported.");
             }
             context._currentRenderer = rendererSigil;
           }
@@ -11204,7 +11204,7 @@ var require_react_dom_development = __commonJS((exports) => {
         }
         {
           if (node !== propagationRoot) {
-            error("Expected to find the propagation root when scheduling context work. This error is likely caused by a bug in React. Please file an issue.");
+            error("Expected to find the propagation root when scheduling context work. " + "This error is likely caused by a bug in React. Please file an issue.");
           }
         }
       }
@@ -11314,7 +11314,7 @@ var require_react_dom_development = __commonJS((exports) => {
       function readContext(context) {
         {
           if (isDisallowedContextReadInDEV) {
-            error("Context can only be read while React is rendering. In classes, you can read it in the render method or getDerivedStateFromProps. In function components, you can read it directly in the function body, but not inside Hooks like useReducer() or useMemo().");
+            error("Context can only be read while React is rendering. " + "In classes, you can read it in the render method or getDerivedStateFromProps. " + "In function components, you can read it directly in the function body, but not " + "inside Hooks like useReducer() or useMemo().");
           }
         }
         var value = context._currentValue;
@@ -11328,7 +11328,7 @@ var require_react_dom_development = __commonJS((exports) => {
           };
           if (lastContextDependency === null) {
             if (currentlyRenderingFiber === null) {
-              throw new Error("Context can only be read while React is rendering. In classes, you can read it in the render method or getDerivedStateFromProps. In function components, you can read it directly in the function body, but not inside Hooks like useReducer() or useMemo().");
+              throw new Error("Context can only be read while React is rendering. " + "In classes, you can read it in the render method or getDerivedStateFromProps. " + "In function components, you can read it directly in the function body, but not " + "inside Hooks like useReducer() or useMemo().");
             }
             lastContextDependency = contextItem;
             currentlyRenderingFiber.dependencies = {
@@ -11501,7 +11501,7 @@ var require_react_dom_development = __commonJS((exports) => {
         var sharedQueue = updateQueue.shared;
         {
           if (currentlyProcessingQueue === sharedQueue && !didWarnUpdateInsideUpdate) {
-            error("An update (setState, replaceState, or forceUpdate) was scheduled from inside an update function. Update functions should be pure, with zero side-effects. Consider using componentDidUpdate or a callback.");
+            error("An update (setState, replaceState, or forceUpdate) was scheduled " + "from inside an update function. Update functions should be pure, " + "with zero side-effects. Consider using componentDidUpdate or a " + "callback.");
             didWarnUpdateInsideUpdate = true;
           }
         }
@@ -11828,7 +11828,7 @@ var require_react_dom_development = __commonJS((exports) => {
           var key = callerName + "_" + callback;
           if (!didWarnOnInvalidCallback.has(key)) {
             didWarnOnInvalidCallback.add(key);
-            error("%s(...): Expected the last optional `callback` argument to be a function. Instead received: %s.", callerName, callback);
+            error("%s(...): Expected the last optional `callback` argument to be a " + "function. Instead received: %s.", callerName, callback);
           }
         };
         warnOnUndefinedDerivedState = function(type, partialState) {
@@ -11836,14 +11836,14 @@ var require_react_dom_development = __commonJS((exports) => {
             var componentName = getComponentNameFromType(type) || "Component";
             if (!didWarnAboutUndefinedDerivedState.has(componentName)) {
               didWarnAboutUndefinedDerivedState.add(componentName);
-              error("%s.getDerivedStateFromProps(): A valid state object (or null) must be returned. You have returned undefined.", componentName);
+              error("%s.getDerivedStateFromProps(): A valid state object (or null) must be returned. " + "You have returned undefined.", componentName);
             }
           }
         };
         Object.defineProperty(fakeInternalInstance, "_processChildContext", {
           enumerable: false,
           value: function() {
-            throw new Error("_processChildContext is not available in React 16+. This likely means you have multiple copies of React and are attempting to nest a React 15 tree inside a React 16 tree using unstable_renderSubtreeIntoContainer, which isn't supported. Try to make sure you have only one copy of React (and ideally, switch to ReactDOM.createPortal).");
+            throw new Error("_processChildContext is not available in React 16+. This likely " + "means you have multiple copies of React and are attempting to nest " + "a React 15 tree inside a React 16 tree using " + "unstable_renderSubtreeIntoContainer, which isn't supported. Try " + "to make sure you have only one copy of React (and ideally, switch " + "to ReactDOM.createPortal).");
           }
         });
         Object.freeze(fakeInternalInstance);
@@ -11950,7 +11950,7 @@ var require_react_dom_development = __commonJS((exports) => {
               }
             }
             if (shouldUpdate === undefined) {
-              error("%s.shouldComponentUpdate(): Returned undefined instead of a boolean value. Make sure to return true or false.", getComponentNameFromType(ctor) || "Component");
+              error("%s.shouldComponentUpdate(): Returned undefined instead of a " + "boolean value. Make sure to return true or false.", getComponentNameFromType(ctor) || "Component");
             }
           }
           return shouldUpdate;
@@ -11967,76 +11967,76 @@ var require_react_dom_development = __commonJS((exports) => {
           var renderPresent = instance.render;
           if (!renderPresent) {
             if (ctor.prototype && typeof ctor.prototype.render === "function") {
-              error("%s(...): No `render` method found on the returned component instance: did you accidentally return an object from the constructor?", name);
+              error("%s(...): No `render` method found on the returned component " + "instance: did you accidentally return an object from the constructor?", name);
             } else {
-              error("%s(...): No `render` method found on the returned component instance: you may have forgotten to define `render`.", name);
+              error("%s(...): No `render` method found on the returned component " + "instance: you may have forgotten to define `render`.", name);
             }
           }
           if (instance.getInitialState && !instance.getInitialState.isReactClassApproved && !instance.state) {
-            error("getInitialState was defined on %s, a plain JavaScript class. This is only supported for classes created using React.createClass. Did you mean to define a state property instead?", name);
+            error("getInitialState was defined on %s, a plain JavaScript class. " + "This is only supported for classes created using React.createClass. " + "Did you mean to define a state property instead?", name);
           }
           if (instance.getDefaultProps && !instance.getDefaultProps.isReactClassApproved) {
-            error("getDefaultProps was defined on %s, a plain JavaScript class. This is only supported for classes created using React.createClass. Use a static property to define defaultProps instead.", name);
+            error("getDefaultProps was defined on %s, a plain JavaScript class. " + "This is only supported for classes created using React.createClass. " + "Use a static property to define defaultProps instead.", name);
           }
           if (instance.propTypes) {
-            error("propTypes was defined as an instance property on %s. Use a static property to define propTypes instead.", name);
+            error("propTypes was defined as an instance property on %s. Use a static " + "property to define propTypes instead.", name);
           }
           if (instance.contextType) {
-            error("contextType was defined as an instance property on %s. Use a static property to define contextType instead.", name);
+            error("contextType was defined as an instance property on %s. Use a static " + "property to define contextType instead.", name);
           }
           {
             if (instance.contextTypes) {
-              error("contextTypes was defined as an instance property on %s. Use a static property to define contextTypes instead.", name);
+              error("contextTypes was defined as an instance property on %s. Use a static " + "property to define contextTypes instead.", name);
             }
             if (ctor.contextType && ctor.contextTypes && !didWarnAboutContextTypeAndContextTypes.has(ctor)) {
               didWarnAboutContextTypeAndContextTypes.add(ctor);
-              error("%s declares both contextTypes and contextType static properties. The legacy contextTypes property will be ignored.", name);
+              error("%s declares both contextTypes and contextType static properties. " + "The legacy contextTypes property will be ignored.", name);
             }
           }
           if (typeof instance.componentShouldUpdate === "function") {
-            error("%s has a method called componentShouldUpdate(). Did you mean shouldComponentUpdate()? The name is phrased as a question because the function is expected to return a value.", name);
+            error("%s has a method called " + "componentShouldUpdate(). Did you mean shouldComponentUpdate()? " + "The name is phrased as a question because the function is " + "expected to return a value.", name);
           }
           if (ctor.prototype && ctor.prototype.isPureReactComponent && typeof instance.shouldComponentUpdate !== "undefined") {
-            error("%s has a method called shouldComponentUpdate(). shouldComponentUpdate should not be used when extending React.PureComponent. Please extend React.Component if shouldComponentUpdate is used.", getComponentNameFromType(ctor) || "A pure component");
+            error("%s has a method called shouldComponentUpdate(). " + "shouldComponentUpdate should not be used when extending React.PureComponent. " + "Please extend React.Component if shouldComponentUpdate is used.", getComponentNameFromType(ctor) || "A pure component");
           }
           if (typeof instance.componentDidUnmount === "function") {
-            error("%s has a method called componentDidUnmount(). But there is no such lifecycle method. Did you mean componentWillUnmount()?", name);
+            error("%s has a method called " + "componentDidUnmount(). But there is no such lifecycle method. " + "Did you mean componentWillUnmount()?", name);
           }
           if (typeof instance.componentDidReceiveProps === "function") {
-            error("%s has a method called componentDidReceiveProps(). But there is no such lifecycle method. If you meant to update the state in response to changing props, use componentWillReceiveProps(). If you meant to fetch data or run side-effects or mutations after React has updated the UI, use componentDidUpdate().", name);
+            error("%s has a method called " + "componentDidReceiveProps(). But there is no such lifecycle method. " + "If you meant to update the state in response to changing props, " + "use componentWillReceiveProps(). If you meant to fetch data or " + "run side-effects or mutations after React has updated the UI, use componentDidUpdate().", name);
           }
           if (typeof instance.componentWillRecieveProps === "function") {
-            error("%s has a method called componentWillRecieveProps(). Did you mean componentWillReceiveProps()?", name);
+            error("%s has a method called " + "componentWillRecieveProps(). Did you mean componentWillReceiveProps()?", name);
           }
           if (typeof instance.UNSAFE_componentWillRecieveProps === "function") {
-            error("%s has a method called UNSAFE_componentWillRecieveProps(). Did you mean UNSAFE_componentWillReceiveProps()?", name);
+            error("%s has a method called " + "UNSAFE_componentWillRecieveProps(). Did you mean UNSAFE_componentWillReceiveProps()?", name);
           }
           var hasMutatedProps = instance.props !== newProps;
           if (instance.props !== undefined && hasMutatedProps) {
-            error("%s(...): When calling super() in `%s`, make sure to pass up the same props that your component's constructor was passed.", name, name);
+            error("%s(...): When calling super() in `%s`, make sure to pass " + "up the same props that your component's constructor was passed.", name, name);
           }
           if (instance.defaultProps) {
-            error("Setting defaultProps as an instance property on %s is not supported and will be ignored. Instead, define defaultProps as a static property on %s.", name, name);
+            error("Setting defaultProps as an instance property on %s is not supported and will be ignored." + " Instead, define defaultProps as a static property on %s.", name, name);
           }
           if (typeof instance.getSnapshotBeforeUpdate === "function" && typeof instance.componentDidUpdate !== "function" && !didWarnAboutGetSnapshotBeforeUpdateWithoutDidUpdate.has(ctor)) {
             didWarnAboutGetSnapshotBeforeUpdateWithoutDidUpdate.add(ctor);
-            error("%s: getSnapshotBeforeUpdate() should be used with componentDidUpdate(). This component defines getSnapshotBeforeUpdate() only.", getComponentNameFromType(ctor));
+            error("%s: getSnapshotBeforeUpdate() should be used with componentDidUpdate(). " + "This component defines getSnapshotBeforeUpdate() only.", getComponentNameFromType(ctor));
           }
           if (typeof instance.getDerivedStateFromProps === "function") {
-            error("%s: getDerivedStateFromProps() is defined as an instance method and will be ignored. Instead, declare it as a static method.", name);
+            error("%s: getDerivedStateFromProps() is defined as an instance method " + "and will be ignored. Instead, declare it as a static method.", name);
           }
           if (typeof instance.getDerivedStateFromError === "function") {
-            error("%s: getDerivedStateFromError() is defined as an instance method and will be ignored. Instead, declare it as a static method.", name);
+            error("%s: getDerivedStateFromError() is defined as an instance method " + "and will be ignored. Instead, declare it as a static method.", name);
           }
           if (typeof ctor.getSnapshotBeforeUpdate === "function") {
-            error("%s: getSnapshotBeforeUpdate() is defined as a static method and will be ignored. Instead, declare it as an instance method.", name);
+            error("%s: getSnapshotBeforeUpdate() is defined as a static method " + "and will be ignored. Instead, declare it as an instance method.", name);
           }
           var _state = instance.state;
           if (_state && (typeof _state !== "object" || isArray(_state))) {
             error("%s.state: must be set to an object or null", name);
           }
           if (typeof instance.getChildContext === "function" && typeof ctor.childContextTypes !== "object") {
-            error("%s.getChildContext(): childContextTypes must be defined in order to use getChildContext().", name);
+            error("%s.getChildContext(): childContextTypes must be defined in order to " + "use getChildContext().", name);
           }
         }
       }
@@ -12060,7 +12060,7 @@ var require_react_dom_development = __commonJS((exports) => {
               didWarnAboutInvalidateContextType.add(ctor);
               var addendum = "";
               if (contextType === undefined) {
-                addendum = " However, it is set to undefined. This can be caused by a typo or by mixing up named and default imports. This can also happen due to a circular dependency, so try moving the createContext() call to a separate file.";
+                addendum = " However, it is set to undefined. " + "This can be caused by a typo or by mixing up named and default imports. " + "This can also happen due to a circular dependency, so " + "try moving the createContext() call to a separate file.";
               } else if (typeof contextType !== "object") {
                 addendum = " However, it is set to a " + typeof contextType + ".";
               } else if (contextType.$$typeof === REACT_PROVIDER_TYPE) {
@@ -12070,7 +12070,7 @@ var require_react_dom_development = __commonJS((exports) => {
               } else {
                 addendum = " However, it is set to an object with keys {" + Object.keys(contextType).join(", ") + "}.";
               }
-              error("%s defines an invalid contextType. contextType should point to the Context object returned by React.createContext().%s", getComponentNameFromType(ctor) || "Component", addendum);
+              error("%s defines an invalid contextType. " + "contextType should point to the Context object returned by React.createContext().%s", getComponentNameFromType(ctor) || "Component", addendum);
             }
           }
         }
@@ -12100,7 +12100,7 @@ var require_react_dom_development = __commonJS((exports) => {
             var componentName = getComponentNameFromType(ctor) || "Component";
             if (!didWarnAboutUninitializedState.has(componentName)) {
               didWarnAboutUninitializedState.add(componentName);
-              error("`%s` uses `getDerivedStateFromProps` but its initial state is %s. This is not recommended. Instead, define the initial state by assigning an object to `this.state` in the constructor of `%s`. This ensures that `getDerivedStateFromProps` arguments have a consistent shape.", componentName, instance.state === null ? "null" : "undefined", componentName);
+              error("`%s` uses `getDerivedStateFromProps` but its initial state is " + "%s. This is not recommended. Instead, define the initial state by " + "assigning an object to `this.state` in the constructor of `%s`. " + "This ensures that `getDerivedStateFromProps` arguments have a consistent shape.", componentName, instance.state === null ? "null" : "undefined", componentName);
             }
           }
           if (typeof ctor.getDerivedStateFromProps === "function" || typeof instance.getSnapshotBeforeUpdate === "function") {
@@ -12127,7 +12127,7 @@ var require_react_dom_development = __commonJS((exports) => {
               var newApiName = typeof ctor.getDerivedStateFromProps === "function" ? "getDerivedStateFromProps()" : "getSnapshotBeforeUpdate()";
               if (!didWarnAboutLegacyLifecyclesAndDerivedState.has(_componentName)) {
                 didWarnAboutLegacyLifecyclesAndDerivedState.add(_componentName);
-                error("Unsafe legacy lifecycles will not be called for components using new component APIs.\n\n%s uses %s but also contains the following legacy lifecycles:%s%s%s\n\nThe above lifecycles should be removed. Learn more about this warning here:\nhttps://reactjs.org/link/unsafe-component-lifecycles", _componentName, newApiName, foundWillMountName !== null ? "\n  " + foundWillMountName : "", foundWillReceivePropsName !== null ? "\n  " + foundWillReceivePropsName : "", foundWillUpdateName !== null ? "\n  " + foundWillUpdateName : "");
+                error("Unsafe legacy lifecycles will not be called for components using new component APIs.\n\n" + "%s uses %s but also contains the following legacy lifecycles:%s%s%s\n\n" + "The above lifecycles should be removed. Learn more about this warning here:\n" + "https://reactjs.org/link/unsafe-component-lifecycles", _componentName, newApiName, foundWillMountName !== null ? "\n  " + foundWillMountName : "", foundWillReceivePropsName !== null ? "\n  " + foundWillReceivePropsName : "", foundWillUpdateName !== null ? "\n  " + foundWillUpdateName : "");
               }
             }
           }
@@ -12147,7 +12147,7 @@ var require_react_dom_development = __commonJS((exports) => {
         }
         if (oldState !== instance.state) {
           {
-            error("%s.componentWillMount(): Assigning directly to this.state is deprecated (except inside a component's constructor). Use setState instead.", getComponentNameFromFiber(workInProgress2) || "Component");
+            error("%s.componentWillMount(): Assigning directly to this.state is " + "deprecated (except inside a component's " + "constructor). Use setState instead.", getComponentNameFromFiber(workInProgress2) || "Component");
           }
           classComponentUpdater.enqueueReplaceState(instance, instance.state, null);
         }
@@ -12165,7 +12165,7 @@ var require_react_dom_development = __commonJS((exports) => {
             var componentName = getComponentNameFromFiber(workInProgress2) || "Component";
             if (!didWarnAboutStateAssignmentForComponent.has(componentName)) {
               didWarnAboutStateAssignmentForComponent.add(componentName);
-              error("%s.componentWillReceiveProps(): Assigning directly to this.state is deprecated (except inside a component's constructor). Use setState instead.", componentName);
+              error("%s.componentWillReceiveProps(): Assigning directly to " + "this.state is deprecated (except inside a component's " + "constructor). Use setState instead.", componentName);
             }
           }
           classComponentUpdater.enqueueReplaceState(instance, instance.state, null);
@@ -12192,7 +12192,7 @@ var require_react_dom_development = __commonJS((exports) => {
             var componentName = getComponentNameFromType(ctor) || "Component";
             if (!didWarnAboutDirectlyAssigningPropsToState.has(componentName)) {
               didWarnAboutDirectlyAssigningPropsToState.add(componentName);
-              error("%s: It is not recommended to assign props directly to state because updates to props won't be reflected in state. In most cases, it is better to use props directly.", componentName);
+              error("%s: It is not recommended to assign props directly to state " + "because updates to props won't be reflected in state. " + "In most cases, it is better to use props directly.", componentName);
             }
           }
           if (workInProgress2.mode & StrictLegacyMode) {
@@ -12406,7 +12406,7 @@ var require_react_dom_development = __commonJS((exports) => {
             return;
           }
           if (typeof child._store !== "object") {
-            throw new Error("React Component in warnForMissingKey should have a _store. This error is likely caused by a bug in React. Please file an issue.");
+            throw new Error("React Component in warnForMissingKey should have a _store. " + "This error is likely caused by a bug in React. Please file an issue.");
           }
           child._store.validated = true;
           var componentName = getComponentNameFromFiber(returnFiber) || "Component";
@@ -12414,7 +12414,7 @@ var require_react_dom_development = __commonJS((exports) => {
             return;
           }
           ownerHasKeyUseWarning[componentName] = true;
-          error('Each child in a list should have a unique "key" prop. See https://reactjs.org/link/warning-keys for more information.');
+          error("Each child in a list should have a unique " + '"key" prop. See https://reactjs.org/link/warning-keys for ' + "more information.");
         };
       }
       function coerceRef(returnFiber, current2, element) {
@@ -12425,7 +12425,7 @@ var require_react_dom_development = __commonJS((exports) => {
               var componentName = getComponentNameFromFiber(returnFiber) || "Component";
               if (!didWarnAboutStringRefs[componentName]) {
                 {
-                  error('A string ref, "%s", has been found within a strict mode tree. String refs are a source of potential bugs and should be avoided. We recommend using useRef() or createRef() instead. Learn more about using refs safely here: https://reactjs.org/link/strict-mode-string-ref', mixedRef);
+                  error('A string ref, "%s", has been found within a strict mode tree. ' + "String refs are a source of potential bugs and should be avoided. " + "We recommend using useRef() or createRef() instead. " + "Learn more about using refs safely here: " + "https://reactjs.org/link/strict-mode-string-ref", mixedRef);
                 }
                 didWarnAboutStringRefs[componentName] = true;
               }
@@ -12437,12 +12437,12 @@ var require_react_dom_development = __commonJS((exports) => {
             if (owner) {
               var ownerFiber = owner;
               if (ownerFiber.tag !== ClassComponent) {
-                throw new Error("Function components cannot have string refs. We recommend using useRef() instead. Learn more about using refs safely here: https://reactjs.org/link/strict-mode-string-ref");
+                throw new Error("Function components cannot have string refs. " + "We recommend using useRef() instead. " + "Learn more about using refs safely here: " + "https://reactjs.org/link/strict-mode-string-ref");
               }
               inst = ownerFiber.stateNode;
             }
             if (!inst) {
-              throw new Error("Missing owner for string ref " + mixedRef + ". This error is likely caused by a bug in React. Please file an issue.");
+              throw new Error("Missing owner for string ref " + mixedRef + ". This error is likely caused by a " + "bug in React. Please file an issue.");
             }
             var resolvedInst = inst;
             {
@@ -12470,7 +12470,7 @@ var require_react_dom_development = __commonJS((exports) => {
               throw new Error("Expected ref to be a function, a string, an object returned by React.createRef(), or null.");
             }
             if (!element._owner) {
-              throw new Error("Element ref was specified as a string (" + mixedRef + ") but no owner was set. This could happen for one of the following reasons:\n1. You may be adding a ref to a function component\n2. You may be adding a ref to a component that was not created inside a component's render method\n3. You have multiple copies of React loaded\nSee https://reactjs.org/link/refs-must-have-owner for more information.");
+              throw new Error("Element ref was specified as a string (" + mixedRef + ") but no owner was set. This could happen for one of" + " the following reasons:\n" + "1. You may be adding a ref to a function component\n" + "2. You may be adding a ref to a component that was not created inside a component's render method\n" + "3. You have multiple copies of React loaded\n" + "See https://reactjs.org/link/refs-must-have-owner for more information.");
             }
           }
         }
@@ -12478,7 +12478,7 @@ var require_react_dom_development = __commonJS((exports) => {
       }
       function throwOnInvalidObjectType(returnFiber, newChild) {
         var childString = Object.prototype.toString.call(newChild);
-        throw new Error("Objects are not valid as a React child (found: " + (childString === "[object Object]" ? "object with keys {" + Object.keys(newChild).join(", ") + "}" : childString) + "). If you meant to render a collection of children, use an array instead.");
+        throw new Error("Objects are not valid as a React child (found: " + (childString === "[object Object]" ? "object with keys {" + Object.keys(newChild).join(", ") + "}" : childString) + "). " + "If you meant to render a collection of children, use an array " + "instead.");
       }
       function warnOnFunctionType(returnFiber) {
         {
@@ -12487,7 +12487,7 @@ var require_react_dom_development = __commonJS((exports) => {
             return;
           }
           ownerHasFunctionTypeWarning[componentName] = true;
-          error("Functions are not valid as a React child. This may happen if you return a Component instead of <Component /> from render. Or maybe you meant to call this function rather than return it.");
+          error("Functions are not valid as a React child. This may happen if " + "you return a Component instead of <Component /> from render. " + "Or maybe you meant to call this function rather than return it.");
         }
       }
       function resolveLazy(lazyType) {
@@ -12758,7 +12758,7 @@ var require_react_dom_development = __commonJS((exports) => {
                   knownKeys.add(key);
                   break;
                 }
-                error("Encountered two children with the same key, `%s`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be " + "duplicated and/or omitted \u2014 the behavior is unsupported and " + "could change in a future version.", key);
+                error("Encountered two children with the same key, `%s`. " + "Keys should be unique so that components maintain their identity " + "across updates. Non-unique keys may cause children to be " + "duplicated and/or omitted \u2014 the behavior is unsupported and " + "could change in a future version.", key);
                 break;
               case REACT_LAZY_TYPE:
                 var payload = child._payload;
@@ -12871,18 +12871,18 @@ var require_react_dom_development = __commonJS((exports) => {
         function reconcileChildrenIterator(returnFiber, currentFirstChild, newChildrenIterable, lanes) {
           var iteratorFn = getIteratorFn(newChildrenIterable);
           if (typeof iteratorFn !== "function") {
-            throw new Error("An object is not an iterable. This error is likely caused by a bug in React. Please file an issue.");
+            throw new Error("An object is not an iterable. This error is likely caused by a bug in " + "React. Please file an issue.");
           }
           {
             if (typeof Symbol === "function" && newChildrenIterable[Symbol.toStringTag] === "Generator") {
               if (!didWarnAboutGenerators) {
-                error("Using Generators as children is unsupported and will likely yield unexpected results because enumerating a generator mutates it. You may convert it to an array with `Array.from()` or the `[...spread]` operator before rendering. Keep in mind you might need to polyfill these features for older browsers.");
+                error("Using Generators as children is unsupported and will likely yield " + "unexpected results because enumerating a generator mutates it. " + "You may convert it to an array with `Array.from()` or the " + "`[...spread]` operator before rendering. Keep in mind " + "you might need to polyfill these features for older browsers.");
               }
               didWarnAboutGenerators = true;
             }
             if (newChildrenIterable.entries === iteratorFn) {
               if (!didWarnAboutMaps) {
-                error("Using Maps as children is not supported. Use an array of keyed ReactElements instead.");
+                error("Using Maps as children is not supported. " + "Use an array of keyed ReactElements instead.");
               }
               didWarnAboutMaps = true;
             }
@@ -13144,7 +13144,7 @@ var require_react_dom_development = __commonJS((exports) => {
       var rootInstanceStackCursor = createCursor(NO_CONTEXT);
       function requiredContext(c) {
         if (c === NO_CONTEXT) {
-          throw new Error("Expected host context to exist. This error is likely caused by a bug in React. Please file an issue.");
+          throw new Error("Expected host context to exist. This error is likely caused by a bug " + "in React. Please file an issue.");
         }
         return c;
       }
@@ -13324,7 +13324,7 @@ var require_react_dom_development = __commonJS((exports) => {
       function checkDepsAreArrayDev(deps) {
         {
           if (deps !== undefined && deps !== null && !isArray(deps)) {
-            error("%s received a final argument that is not an array (instead, received `%s`). When specified, the final argument must be an array.", currentHookNameInDev, typeof deps);
+            error("%s received a final argument that is not an array (instead, received `%s`). When " + "specified, the final argument must be an array.", currentHookNameInDev, typeof deps);
           }
         }
       }
@@ -13346,13 +13346,13 @@ var require_react_dom_development = __commonJS((exports) => {
                 row += newHookName + "\n";
                 table += row;
               }
-              error("React has detected a change in the order of Hooks called by %s. This will lead to bugs and errors if not fixed. For more information, read the Rules of Hooks: https://reactjs.org/link/rules-of-hooks\n\n   Previous render            Next render\n   ------------------------------------------------------\n%s   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n", componentName, table);
+              error("React has detected a change in the order of Hooks called by %s. " + "This will lead to bugs and errors if not fixed. " + "For more information, read the Rules of Hooks: https://reactjs.org/link/rules-of-hooks\n\n" + "   Previous render            Next render\n" + "   ------------------------------------------------------\n" + "%s" + "   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n", componentName, table);
             }
           }
         }
       }
       function throwInvalidHookError() {
-        throw new Error("Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:\n1. You might have mismatching versions of React and the renderer (such as React DOM)\n2. You might be breaking the Rules of Hooks\n3. You might have more than one copy of React in the same app\nSee https://reactjs.org/link/invalid-hook-call for tips about how to debug and fix this problem.");
+        throw new Error("Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for" + " one of the following reasons:\n" + "1. You might have mismatching versions of React and the renderer (such as React DOM)\n" + "2. You might be breaking the Rules of Hooks\n" + "3. You might have more than one copy of React in the same app\n" + "See https://reactjs.org/link/invalid-hook-call for tips about how to debug and fix this problem.");
       }
       function areHookInputsEqual(nextDeps, prevDeps) {
         {
@@ -13362,13 +13362,13 @@ var require_react_dom_development = __commonJS((exports) => {
         }
         if (prevDeps === null) {
           {
-            error("%s received a final argument during this render, but not during the previous render. Even though the final argument is optional, its type cannot change between renders.", currentHookNameInDev);
+            error("%s received a final argument during this render, but not during " + "the previous render. Even though the final argument is optional, " + "its type cannot change between renders.", currentHookNameInDev);
           }
           return false;
         }
         {
           if (nextDeps.length !== prevDeps.length) {
-            error("The final argument passed to %s changed size between renders. The order and size of this array must remain constant.\n\nPrevious: %s\nIncoming: %s", currentHookNameInDev, "[" + prevDeps.join(", ") + "]", "[" + nextDeps.join(", ") + "]");
+            error("The final argument passed to %s changed size between renders. The " + "order and size of this array must remain constant.\n\n" + "Previous: %s\n" + "Incoming: %s", currentHookNameInDev, "[" + prevDeps.join(", ") + "]", "[" + nextDeps.join(", ") + "]");
           }
         }
         for (var i = 0;i < prevDeps.length && i < nextDeps.length; i++) {
@@ -13406,7 +13406,7 @@ var require_react_dom_development = __commonJS((exports) => {
             didScheduleRenderPhaseUpdateDuringThisPass = false;
             localIdCounter = 0;
             if (numberOfReRenders >= RE_RENDER_LIMIT) {
-              throw new Error("Too many re-renders. React limits the number of renders to prevent an infinite loop.");
+              throw new Error("Too many re-renders. React limits the number of renders to prevent " + "an infinite loop.");
             }
             numberOfReRenders += 1;
             {
@@ -13436,12 +13436,12 @@ var require_react_dom_development = __commonJS((exports) => {
           hookTypesDev = null;
           hookTypesUpdateIndexDev = -1;
           if (current2 !== null && (current2.flags & StaticMask) !== (workInProgress2.flags & StaticMask) && (current2.mode & ConcurrentMode) !== NoMode) {
-            error("Internal React error: Expected static flag was missing. Please notify the React team.");
+            error("Internal React error: Expected static flag was missing. Please " + "notify the React team.");
           }
         }
         didScheduleRenderPhaseUpdate = false;
         if (didRenderTooFewHooks) {
-          throw new Error("Rendered fewer hooks than expected. This may be caused by an accidental early return statement.");
+          throw new Error("Rendered fewer hooks than expected. This may be caused by an accidental " + "early return statement.");
         }
         return children;
       }
@@ -13591,7 +13591,7 @@ var require_react_dom_development = __commonJS((exports) => {
           }
           {
             if (current2.baseQueue !== baseQueue) {
-              error("Internal error: Expected work-in-progress queue to be a clone. This is a bug in React.");
+              error("Internal error: Expected work-in-progress queue to be a clone. " + "This is a bug in React.");
             }
           }
           current2.baseQueue = baseQueue = pendingQueue;
@@ -13717,7 +13717,7 @@ var require_react_dom_development = __commonJS((exports) => {
         var isHydrating2 = getIsHydrating();
         if (isHydrating2) {
           if (getServerSnapshot === undefined) {
-            throw new Error("Missing getServerSnapshot, which is required for server-rendered content. Will revert to client rendering.");
+            throw new Error("Missing getServerSnapshot, which is required for " + "server-rendered content. Will revert to client rendering.");
           }
           nextSnapshot = getServerSnapshot();
           {
@@ -13972,7 +13972,7 @@ var require_react_dom_development = __commonJS((exports) => {
           var refObject = ref;
           {
             if (!refObject.hasOwnProperty("current")) {
-              error("Expected useImperativeHandle() first argument to either be a ref callback or React.createRef() object. Instead received: %s.", "an object with keys {" + Object.keys(refObject).join(", ") + "}");
+              error("Expected useImperativeHandle() first argument to either be a " + "ref callback or React.createRef() object. Instead received: %s.", "an object with keys {" + Object.keys(refObject).join(", ") + "}");
             }
           }
           var _inst2 = create();
@@ -13985,7 +13985,7 @@ var require_react_dom_development = __commonJS((exports) => {
       function mountImperativeHandle(ref, create, deps) {
         {
           if (typeof create !== "function") {
-            error("Expected useImperativeHandle() second argument to be a function that creates a handle. Instead received: %s.", create !== null ? typeof create : "null");
+            error("Expected useImperativeHandle() second argument to be a function " + "that creates a handle. Instead received: %s.", create !== null ? typeof create : "null");
           }
         }
         var effectDeps = deps !== null && deps !== undefined ? deps.concat([ref]) : null;
@@ -14001,7 +14001,7 @@ var require_react_dom_development = __commonJS((exports) => {
       function updateImperativeHandle(ref, create, deps) {
         {
           if (typeof create !== "function") {
-            error("Expected useImperativeHandle() second argument to be a function that creates a handle. Instead received: %s.", create !== null ? typeof create : "null");
+            error("Expected useImperativeHandle() second argument to be a function " + "that creates a handle. Instead received: %s.", create !== null ? typeof create : "null");
           }
         }
         var effectDeps = deps !== null && deps !== undefined ? deps.concat([ref]) : null;
@@ -14114,7 +14114,7 @@ var require_react_dom_development = __commonJS((exports) => {
             if (prevTransition === null && currentTransition._updatedFibers) {
               var updatedFibersCount = currentTransition._updatedFibers.size;
               if (updatedFibersCount > 10) {
-                warn("Detected a large number of updates inside startTransition. If this is due to a subscription please re-write it to use React provided hooks. Otherwise concurrent mode guarantees are off the table.");
+                warn("Detected a large number of updates inside startTransition. " + "If this is due to a subscription please re-write it to use React provided hooks. " + "Otherwise concurrent mode guarantees are off the table.");
               }
               currentTransition._updatedFibers.clear();
             }
@@ -14174,7 +14174,7 @@ var require_react_dom_development = __commonJS((exports) => {
       function dispatchReducerAction(fiber, queue, action) {
         {
           if (typeof arguments[3] === "function") {
-            error("State updates from the useState() and useReducer() Hooks don't support the second callback argument. To execute a side effect after rendering, declare it in the component body with useEffect().");
+            error("State updates from the useState() and useReducer() Hooks don't support the " + "second callback argument. To execute a side effect after " + "rendering, declare it in the component body with useEffect().");
           }
         }
         var lane = requestUpdateLane(fiber);
@@ -14200,7 +14200,7 @@ var require_react_dom_development = __commonJS((exports) => {
       function dispatchSetState(fiber, queue, action) {
         {
           if (typeof arguments[3] === "function") {
-            error("State updates from the useState() and useReducer() Hooks don't support the second callback argument. To execute a side effect after rendering, declare it in the component body with useEffect().");
+            error("State updates from the useState() and useReducer() Hooks don't support the " + "second callback argument. To execute a side effect after " + "rendering, declare it in the component body with useEffect().");
           }
         }
         var lane = requestUpdateLane(fiber);
@@ -14307,10 +14307,10 @@ var require_react_dom_development = __commonJS((exports) => {
       var InvalidNestedHooksDispatcherOnRerenderInDEV = null;
       {
         var warnInvalidContextAccess = function() {
-          error("Context can only be read while React is rendering. In classes, you can read it in the render method or getDerivedStateFromProps. In function components, you can read it directly in the function body, but not inside Hooks like useReducer() or useMemo().");
+          error("Context can only be read while React is rendering. " + "In classes, you can read it in the render method or getDerivedStateFromProps. " + "In function components, you can read it directly in the function body, but not " + "inside Hooks like useReducer() or useMemo().");
         };
         var warnInvalidHookAccess = function() {
-          error("Do not call Hooks inside useEffect(...), useMemo(...), or other built-in Hooks. You can only call Hooks at the top level of your React function. For more information, see https://reactjs.org/link/rules-of-hooks");
+          error("Do not call Hooks inside useEffect(...), useMemo(...), or other built-in Hooks. " + "You can only call Hooks at the top level of your React function. " + "For more information, see " + "https://reactjs.org/link/rules-of-hooks");
         };
         HooksDispatcherOnMountInDEV = {
           readContext: function(context) {
@@ -15247,7 +15247,7 @@ var require_react_dom_development = __commonJS((exports) => {
             var componentNameMessage = componentName ? "The above error occurred in the <" + componentName + "> component:" : "The above error occurred in one of your React components:";
             var errorBoundaryMessage;
             if (boundary.tag === HostRoot) {
-              errorBoundaryMessage = "Consider adding an error boundary to your tree to customize error handling behavior.\nVisit https://reactjs.org/link/error-boundaries to learn more about error boundaries.";
+              errorBoundaryMessage = "Consider adding an error boundary to your tree to customize error handling behavior.\n" + "Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.";
             } else {
               var errorBoundaryName = getComponentNameFromFiber(boundary) || "Anonymous";
               errorBoundaryMessage = "React will try to recreate this component tree from scratch " + ("using the error boundary you provided, " + errorBoundaryName + ".");
@@ -15310,7 +15310,7 @@ var require_react_dom_development = __commonJS((exports) => {
             {
               if (typeof getDerivedStateFromError !== "function") {
                 if (!includesSomeLane(fiber.lanes, SyncLane)) {
-                  error("%s: Error boundaries should implement getDerivedStateFromError(). In that method, return a state update to display an error message or fallback UI.", getComponentNameFromFiber(fiber) || "Unknown");
+                  error("%s: Error boundaries should implement getDerivedStateFromError(). " + "In that method, return a state update to display an error message or fallback UI.", getComponentNameFromFiber(fiber) || "Unknown");
                 }
               }
             }
@@ -15433,7 +15433,7 @@ var require_react_dom_development = __commonJS((exports) => {
               renderDidSuspendDelayIfPossible();
               return;
             }
-            var uncaughtSuspenseError = new Error("A component suspended while responding to synchronous input. This will cause the UI to be replaced with a loading indicator. To fix, updates that suspend should be wrapped with startTransition.");
+            var uncaughtSuspenseError = new Error("A component suspended while responding to synchronous input. This " + "will cause the UI to be replaced with a loading indicator. To " + "fix, updates that suspend should be wrapped " + "with startTransition.");
             value = uncaughtSuspenseError;
           }
         } else {
@@ -15842,7 +15842,7 @@ var require_react_dom_development = __commonJS((exports) => {
           var inst = workInProgress2.stateNode;
           if (shouldUpdate && inst.props !== nextProps) {
             if (!didWarnAboutReassigningProps) {
-              error("It looks like %s is reassigning its own `this.props` while rendering. This is not supported and can lead to confusing bugs.", getComponentNameFromFiber(workInProgress2) || "a component");
+              error("It looks like %s is reassigning its own `this.props` while rendering. " + "This is not supported and can lead to confusing bugs.", getComponentNameFromFiber(workInProgress2) || "a component");
             }
             didWarnAboutReassigningProps = true;
           }
@@ -15933,10 +15933,10 @@ var require_react_dom_development = __commonJS((exports) => {
           updateQueue.baseState = overrideState;
           workInProgress2.memoizedState = overrideState;
           if (workInProgress2.flags & ForceClientRender) {
-            var recoverableError = createCapturedValueAtFiber(new Error("There was an error while hydrating. Because the error happened outside of a Suspense boundary, the entire root will switch to client rendering."), workInProgress2);
+            var recoverableError = createCapturedValueAtFiber(new Error("There was an error while hydrating. Because the error happened outside " + "of a Suspense boundary, the entire root will switch to " + "client rendering."), workInProgress2);
             return mountHostRootWithoutHydrating(current2, workInProgress2, nextChildren, renderLanes2, recoverableError);
           } else if (nextChildren !== prevChildren) {
-            var _recoverableError = createCapturedValueAtFiber(new Error("This root received an early update, before anything was able hydrate. Switched the entire root to client rendering."), workInProgress2);
+            var _recoverableError = createCapturedValueAtFiber(new Error("This root received an early update, before anything was able " + "hydrate. Switched the entire root to client rendering."), workInProgress2);
             return mountHostRootWithoutHydrating(current2, workInProgress2, nextChildren, renderLanes2, _recoverableError);
           } else {
             enterHydrationState(workInProgress2);
@@ -16077,7 +16077,7 @@ var require_react_dom_development = __commonJS((exports) => {
           if (Component2.prototype && typeof Component2.prototype.render === "function") {
             var componentName = getComponentNameFromType(Component2) || "Unknown";
             if (!didWarnAboutBadClass[componentName]) {
-              error("The <%s /> component appears to have a render method, but doesn't extend React.Component. This is likely to cause errors. Change %s to extend React.Component instead.", componentName, componentName);
+              error("The <%s /> component appears to have a render method, but doesn't extend React.Component. " + "This is likely to cause errors. Change %s to extend React.Component instead.", componentName, componentName);
               didWarnAboutBadClass[componentName] = true;
             }
           }
@@ -16098,7 +16098,7 @@ var require_react_dom_development = __commonJS((exports) => {
           if (typeof value === "object" && value !== null && typeof value.render === "function" && value.$$typeof === undefined) {
             var _componentName = getComponentNameFromType(Component2) || "Unknown";
             if (!didWarnAboutModulePatternComponent[_componentName]) {
-              error("The <%s /> component appears to be a function component that returns a class instance. Change %s to a class that extends React.Component instead. If you can't use a class try assigning the prototype on the function as a workaround. `%s.prototype = React.Component.prototype`. Don't use an arrow function since it cannot be called with `new` by React.", _componentName, _componentName, _componentName);
+              error("The <%s /> component appears to be a function component that returns a class instance. " + "Change %s to a class that extends React.Component instead. " + "If you can't use a class try assigning the prototype on the function as a workaround. " + "`%s.prototype = React.Component.prototype`. Don't use an arrow function since it " + "cannot be called with `new` by React.", _componentName, _componentName, _componentName);
               didWarnAboutModulePatternComponent[_componentName] = true;
             }
           }
@@ -16107,7 +16107,7 @@ var require_react_dom_development = __commonJS((exports) => {
           {
             var _componentName2 = getComponentNameFromType(Component2) || "Unknown";
             if (!didWarnAboutModulePatternComponent[_componentName2]) {
-              error("The <%s /> component appears to be a function component that returns a class instance. Change %s to a class that extends React.Component instead. If you can't use a class try assigning the prototype on the function as a workaround. `%s.prototype = React.Component.prototype`. Don't use an arrow function since it cannot be called with `new` by React.", _componentName2, _componentName2, _componentName2);
+              error("The <%s /> component appears to be a function component that returns a class instance. " + "Change %s to a class that extends React.Component instead. " + "If you can't use a class try assigning the prototype on the function as a workaround. " + "`%s.prototype = React.Component.prototype`. Don't use an arrow function since it " + "cannot be called with `new` by React.", _componentName2, _componentName2, _componentName2);
               didWarnAboutModulePatternComponent[_componentName2] = true;
             }
           }
@@ -16169,7 +16169,7 @@ var require_react_dom_development = __commonJS((exports) => {
             }
             if (!didWarnAboutFunctionRefs[warningKey]) {
               didWarnAboutFunctionRefs[warningKey] = true;
-              error("Function components cannot be given refs. Attempts to access this ref will fail. Did you mean to use React.forwardRef()?%s", info);
+              error("Function components cannot be given refs. " + "Attempts to access this ref will fail. " + "Did you mean to use React.forwardRef()?%s", info);
             }
           }
           if (typeof Component2.getDerivedStateFromProps === "function") {
@@ -16430,7 +16430,7 @@ var require_react_dom_development = __commonJS((exports) => {
       function mountDehydratedSuspenseComponent(workInProgress2, suspenseInstance, renderLanes2) {
         if ((workInProgress2.mode & ConcurrentMode) === NoMode) {
           {
-            error("Cannot hydrate Suspense in legacy mode. Switch from ReactDOM.hydrate(element, container) to ReactDOMClient.hydrateRoot(container, <App />).render(element) or remove the Suspense components from the server rendered components.");
+            error("Cannot hydrate Suspense in legacy mode. Switch from " + "ReactDOM.hydrate(element, container) to " + "ReactDOMClient.hydrateRoot(container, <App />)" + ".render(element) or remove the Suspense components from " + "the server rendered components.");
           }
           workInProgress2.lanes = laneToLanes(SyncLane);
         } else if (isSuspenseInstanceFallback(suspenseInstance)) {
@@ -16458,7 +16458,7 @@ var require_react_dom_development = __commonJS((exports) => {
             if (message) {
               error2 = new Error(message);
             } else {
-              error2 = new Error("The server could not finish this Suspense boundary, likely due to an error during server rendering. Switched to client rendering.");
+              error2 = new Error("The server could not finish this Suspense boundary, likely " + "due to an error during server rendering. Switched to " + "client rendering.");
             }
             var capturedValue = createCapturedValue(error2, digest, stack);
             return retrySuspenseComponentWithoutHydrating(current2, workInProgress2, renderLanes2, capturedValue);
@@ -16476,7 +16476,7 @@ var require_react_dom_development = __commonJS((exports) => {
               }
             }
             renderDidSuspendDelayIfPossible();
-            var _capturedValue = createCapturedValue(new Error("This Suspense boundary received an update before it finished hydrating. This caused the boundary to switch to client rendering. The usual way to fix this is to wrap the original update in startTransition."));
+            var _capturedValue = createCapturedValue(new Error("This Suspense boundary received an update before it finished " + "hydrating. This caused the boundary to switch to client rendering. " + "The usual way to fix this is to wrap the original update " + "in startTransition."));
             return retrySuspenseComponentWithoutHydrating(current2, workInProgress2, renderLanes2, _capturedValue);
           } else if (isSuspenseInstancePending(suspenseInstance)) {
             workInProgress2.flags |= DidCapture;
@@ -16494,7 +16494,7 @@ var require_react_dom_development = __commonJS((exports) => {
         } else {
           if (workInProgress2.flags & ForceClientRender) {
             workInProgress2.flags &= ~ForceClientRender;
-            var _capturedValue2 = createCapturedValue(new Error("There was an error while hydrating this Suspense boundary. Switched to client rendering."));
+            var _capturedValue2 = createCapturedValue(new Error("There was an error while hydrating this Suspense boundary. " + "Switched to client rendering."));
             return retrySuspenseComponentWithoutHydrating(current2, workInProgress2, renderLanes2, _capturedValue2);
           } else if (workInProgress2.memoizedState !== null) {
             workInProgress2.child = current2.child;
@@ -16568,20 +16568,20 @@ var require_react_dom_development = __commonJS((exports) => {
                 case "together":
                 case "forwards":
                 case "backwards": {
-                  error('"%s" is not a valid value for revealOrder on <SuspenseList />. Use lowercase "%s" instead.', revealOrder, revealOrder.toLowerCase());
+                  error('"%s" is not a valid value for revealOrder on <SuspenseList />. ' + 'Use lowercase "%s" instead.', revealOrder, revealOrder.toLowerCase());
                   break;
                 }
                 case "forward":
                 case "backward": {
-                  error('"%s" is not a valid value for revealOrder on <SuspenseList />. React uses the -s suffix in the spelling. Use "%ss" instead.', revealOrder, revealOrder.toLowerCase());
+                  error('"%s" is not a valid value for revealOrder on <SuspenseList />. ' + 'React uses the -s suffix in the spelling. Use "%ss" instead.', revealOrder, revealOrder.toLowerCase());
                   break;
                 }
                 default:
-                  error('"%s" is not a supported revealOrder on <SuspenseList />. Did you mean "together", "forwards" or "backwards"?', revealOrder);
+                  error('"%s" is not a supported revealOrder on <SuspenseList />. ' + 'Did you mean "together", "forwards" or "backwards"?', revealOrder);
                   break;
               }
             } else {
-              error('%s is not a supported value for revealOrder on <SuspenseList />. Did you mean "together", "forwards" or "backwards"?', revealOrder);
+              error("%s is not a supported value for revealOrder on <SuspenseList />. " + 'Did you mean "together", "forwards" or "backwards"?', revealOrder);
             }
           }
         }
@@ -16591,10 +16591,10 @@ var require_react_dom_development = __commonJS((exports) => {
           if (tailMode !== undefined && !didWarnAboutTailOptions[tailMode]) {
             if (tailMode !== "collapsed" && tailMode !== "hidden") {
               didWarnAboutTailOptions[tailMode] = true;
-              error('"%s" is not a supported value for tail on <SuspenseList />. Did you mean "collapsed" or "hidden"?', tailMode);
+              error('"%s" is not a supported value for tail on <SuspenseList />. ' + 'Did you mean "collapsed" or "hidden"?', tailMode);
             } else if (revealOrder !== "forwards" && revealOrder !== "backwards") {
               didWarnAboutTailOptions[tailMode] = true;
-              error('<SuspenseList tail="%s" /> is only valid if revealOrder is "forwards" or "backwards". Did you mean to specify revealOrder="forwards"?', tailMode);
+              error('<SuspenseList tail="%s" /> is only valid if revealOrder is ' + '"forwards" or "backwards". ' + 'Did you mean to specify revealOrder="forwards"?', tailMode);
             }
           }
         }
@@ -16605,7 +16605,7 @@ var require_react_dom_development = __commonJS((exports) => {
           var isIterable = !isAnArray && typeof getIteratorFn(childSlot) === "function";
           if (isAnArray || isIterable) {
             var type = isAnArray ? "array" : "iterable";
-            error("A nested %s was passed to row #%s in <SuspenseList />. Wrap it in an additional SuspenseList to configure its revealOrder: <SuspenseList revealOrder=...> ... <SuspenseList revealOrder=...>{%s}</SuspenseList> ... </SuspenseList>", type, index2, type);
+            error("A nested %s was passed to row #%s in <SuspenseList />. Wrap it in " + "an additional SuspenseList to configure its revealOrder: " + "<SuspenseList revealOrder=...> ... " + "<SuspenseList revealOrder=...>{%s}</SuspenseList> ... " + "</SuspenseList>", type, index2, type);
             return false;
           }
         }
@@ -16635,7 +16635,7 @@ var require_react_dom_development = __commonJS((exports) => {
                   }
                 }
               } else {
-                error('A single row was passed to a <SuspenseList revealOrder="%s" />. This is not useful since it needs multiple rows. Did you mean to pass multiple children or an array?', revealOrder);
+                error('A single row was passed to a <SuspenseList revealOrder="%s" />. ' + "This is not useful since it needs multiple rows. " + "Did you mean to pass multiple children or an array?", revealOrder);
               }
             }
           }
@@ -16783,7 +16783,7 @@ var require_react_dom_development = __commonJS((exports) => {
             if (context !== context.Consumer) {
               if (!hasWarnedAboutUsingContextAsConsumer) {
                 hasWarnedAboutUsingContextAsConsumer = true;
-                error("Rendering <Context> directly is not supported and will be removed in a future major release. Did you mean to render <Context.Consumer> instead?");
+                error("Rendering <Context> directly is not supported and will be removed in " + "a future major release. Did you mean to render <Context.Consumer> instead?");
               }
             }
           } else {
@@ -16794,7 +16794,7 @@ var require_react_dom_development = __commonJS((exports) => {
         var render2 = newProps.children;
         {
           if (typeof render2 !== "function") {
-            error("A context consumer was rendered with multiple children, or a child that isn't a function. A context consumer expects a single child that is a function. If you did pass a function, make sure there is no trailing or leading whitespace around it.");
+            error("A context consumer was rendered with multiple children, or a child " + "that isn't a function. A context consumer expects a single child " + "that is a function. If you did pass a function, make sure there " + "is no trailing or leading whitespace around it.");
           }
         }
         prepareToReadContext(workInProgress2, renderLanes2);
@@ -17096,7 +17096,7 @@ var require_react_dom_development = __commonJS((exports) => {
             return updateOffscreenComponent(current2, workInProgress2, renderLanes2);
           }
         }
-        throw new Error("Unknown unit of work tag (" + workInProgress2.tag + "). This error is likely caused by a bug in React. Please file an issue.");
+        throw new Error("Unknown unit of work tag (" + workInProgress2.tag + "). This error is likely caused by a bug in " + "React. Please file an issue.");
       }
       function markUpdate(workInProgress2) {
         workInProgress2.flags |= Update;
@@ -17269,7 +17269,7 @@ var require_react_dom_development = __commonJS((exports) => {
         if (nextState !== null && nextState.dehydrated !== null) {
           if (current2 === null) {
             if (!wasHydrated) {
-              throw new Error("A dehydrated suspense component was completed without a hydrated node. This is probably a bug in React.");
+              throw new Error("A dehydrated suspense component was completed without a hydrated node. " + "This is probably a bug in React.");
             }
             prepareToHydrateHostSuspenseInstance(workInProgress2);
             bubbleProperties(workInProgress2);
@@ -17373,7 +17373,7 @@ var require_react_dom_development = __commonJS((exports) => {
             } else {
               if (!newProps) {
                 if (workInProgress2.stateNode === null) {
-                  throw new Error("We must have new props for new mounts. This error is likely caused by a bug in React. Please file an issue.");
+                  throw new Error("We must have new props for new mounts. This error is likely " + "caused by a bug in React. Please file an issue.");
                 }
                 bubbleProperties(workInProgress2);
                 return null;
@@ -17407,7 +17407,7 @@ var require_react_dom_development = __commonJS((exports) => {
             } else {
               if (typeof newText !== "string") {
                 if (workInProgress2.stateNode === null) {
-                  throw new Error("We must have new props for new mounts. This error is likely caused by a bug in React. Please file an issue.");
+                  throw new Error("We must have new props for new mounts. This error is likely " + "caused by a bug in React. Please file an issue.");
                 }
               }
               var _rootContainerInstance = getRootHostContainer();
@@ -17630,7 +17630,7 @@ var require_react_dom_development = __commonJS((exports) => {
             return null;
           }
         }
-        throw new Error("Unknown unit of work tag (" + workInProgress2.tag + "). This error is likely caused by a bug in React. Please file an issue.");
+        throw new Error("Unknown unit of work tag (" + workInProgress2.tag + "). This error is likely caused by a bug in " + "React. Please file an issue.");
       }
       function unwindWork(current2, workInProgress2, renderLanes2) {
         popTreeContext(workInProgress2);
@@ -17671,7 +17671,7 @@ var require_react_dom_development = __commonJS((exports) => {
             var suspenseState = workInProgress2.memoizedState;
             if (suspenseState !== null && suspenseState.dehydrated !== null) {
               if (workInProgress2.alternate === null) {
-                throw new Error("Threw in newly mounted dehydrated component. This is likely a bug in React. Please file an issue.");
+                throw new Error("Threw in newly mounted dehydrated component. This is likely a bug in " + "React. Please file an issue.");
               }
               resetHydrationState();
             }
@@ -17827,7 +17827,7 @@ var require_react_dom_development = __commonJS((exports) => {
             }
             {
               if (typeof retVal === "function") {
-                error("Unexpected return value from a callback ref in %s. A callback ref should not return a function.", getComponentNameFromFiber(current2));
+                error("Unexpected return value from a callback ref in %s. " + "A callback ref should not return a function.", getComponentNameFromFiber(current2));
               }
             }
           } else {
@@ -17903,10 +17903,10 @@ var require_react_dom_development = __commonJS((exports) => {
                 {
                   if (finishedWork.type === finishedWork.elementType && !didWarnAboutReassigningProps) {
                     if (instance.props !== finishedWork.memoizedProps) {
-                      error("Expected %s props to match memoized props before getSnapshotBeforeUpdate. This might either be because of a bug in React, or because a component reassigns its own `this.props`. Please file an issue.", getComponentNameFromFiber(finishedWork) || "instance");
+                      error("Expected %s props to match memoized props before " + "getSnapshotBeforeUpdate. " + "This might either be because of a bug in React, or because " + "a component reassigns its own `this.props`. " + "Please file an issue.", getComponentNameFromFiber(finishedWork) || "instance");
                     }
                     if (instance.state !== finishedWork.memoizedState) {
-                      error("Expected %s state to match memoized state before getSnapshotBeforeUpdate. This might either be because of a bug in React, or because a component reassigns its own `this.state`. Please file an issue.", getComponentNameFromFiber(finishedWork) || "instance");
+                      error("Expected %s state to match memoized state before " + "getSnapshotBeforeUpdate. " + "This might either be because of a bug in React, or because " + "a component reassigns its own `this.state`. " + "Please file an issue.", getComponentNameFromFiber(finishedWork) || "instance");
                     }
                   }
                 }
@@ -17915,7 +17915,7 @@ var require_react_dom_development = __commonJS((exports) => {
                   var didWarnSet = didWarnAboutUndefinedSnapshotBeforeUpdate;
                   if (snapshot === undefined && !didWarnSet.has(finishedWork.type)) {
                     didWarnSet.add(finishedWork.type);
-                    error("%s.getSnapshotBeforeUpdate(): A snapshot value (or null) must be returned. You have returned undefined.", getComponentNameFromFiber(finishedWork));
+                    error("%s.getSnapshotBeforeUpdate(): A snapshot value (or null) " + "must be returned. You have returned undefined.", getComponentNameFromFiber(finishedWork));
                   }
                 }
                 instance.__reactInternalSnapshotBeforeUpdate = snapshot;
@@ -17935,7 +17935,7 @@ var require_react_dom_development = __commonJS((exports) => {
             case IncompleteClassComponent:
               break;
             default: {
-              throw new Error("This unit of work tag should not have side-effects. This error is likely caused by a bug in React. Please file an issue.");
+              throw new Error("This unit of work tag should not have side-effects. This error is " + "likely caused by a bug in React. Please file an issue.");
             }
           }
           resetCurrentFiber();
@@ -18030,13 +18030,13 @@ var require_react_dom_development = __commonJS((exports) => {
                   }
                   var addendum = undefined;
                   if (destroy === null) {
-                    addendum = " You returned null. If your effect does not require clean up, return undefined (or nothing).";
+                    addendum = " You returned null. If your effect does not require clean " + "up, return undefined (or nothing).";
                   } else if (typeof destroy.then === "function") {
-                    addendum = "\n\nIt looks like you wrote " + hookName + "(async () => ...) or returned a Promise. Instead, write the async function inside your effect and call it immediately:\n\n" + hookName + "(() => {\n  async function fetchData() {\n    // You can await here\n    const response = await MyAPI.getData(someId);\n    // ...\n  }\n  fetchData();\n}, [someId]); // Or [] if effect doesn't need props or state\n\nLearn more about data fetching with Hooks: https://reactjs.org/link/hooks-data-fetching";
+                    addendum = "\n\nIt looks like you wrote " + hookName + "(async () => ...) or returned a Promise. " + "Instead, write the async function inside your effect " + "and call it immediately:\n\n" + hookName + "(() => {\n" + "  async function fetchData() {\n" + "    // You can await here\n" + "    const response = await MyAPI.getData(someId);\n" + "    // ...\n" + "  }\n" + "  fetchData();\n" + "}, [someId]); // Or [] if effect doesn't need props or state\n\n" + "Learn more about data fetching with Hooks: https://reactjs.org/link/hooks-data-fetching";
                   } else {
                     addendum = " You returned: " + destroy;
                   }
-                  error("%s must not return anything besides a function, which is used for clean-up.%s", hookName, addendum);
+                  error("%s must not return anything besides a function, " + "which is used for clean-up.%s", hookName, addendum);
                 }
               }
             }
@@ -18110,10 +18110,10 @@ var require_react_dom_development = __commonJS((exports) => {
                     {
                       if (finishedWork.type === finishedWork.elementType && !didWarnAboutReassigningProps) {
                         if (instance.props !== finishedWork.memoizedProps) {
-                          error("Expected %s props to match memoized props before componentDidMount. This might either be because of a bug in React, or because a component reassigns its own `this.props`. Please file an issue.", getComponentNameFromFiber(finishedWork) || "instance");
+                          error("Expected %s props to match memoized props before " + "componentDidMount. " + "This might either be because of a bug in React, or because " + "a component reassigns its own `this.props`. " + "Please file an issue.", getComponentNameFromFiber(finishedWork) || "instance");
                         }
                         if (instance.state !== finishedWork.memoizedState) {
-                          error("Expected %s state to match memoized state before componentDidMount. This might either be because of a bug in React, or because a component reassigns its own `this.state`. Please file an issue.", getComponentNameFromFiber(finishedWork) || "instance");
+                          error("Expected %s state to match memoized state before " + "componentDidMount. " + "This might either be because of a bug in React, or because " + "a component reassigns its own `this.state`. " + "Please file an issue.", getComponentNameFromFiber(finishedWork) || "instance");
                         }
                       }
                     }
@@ -18133,10 +18133,10 @@ var require_react_dom_development = __commonJS((exports) => {
                     {
                       if (finishedWork.type === finishedWork.elementType && !didWarnAboutReassigningProps) {
                         if (instance.props !== finishedWork.memoizedProps) {
-                          error("Expected %s props to match memoized props before componentDidUpdate. This might either be because of a bug in React, or because a component reassigns its own `this.props`. Please file an issue.", getComponentNameFromFiber(finishedWork) || "instance");
+                          error("Expected %s props to match memoized props before " + "componentDidUpdate. " + "This might either be because of a bug in React, or because " + "a component reassigns its own `this.props`. " + "Please file an issue.", getComponentNameFromFiber(finishedWork) || "instance");
                         }
                         if (instance.state !== finishedWork.memoizedState) {
-                          error("Expected %s state to match memoized state before componentDidUpdate. This might either be because of a bug in React, or because a component reassigns its own `this.state`. Please file an issue.", getComponentNameFromFiber(finishedWork) || "instance");
+                          error("Expected %s state to match memoized state before " + "componentDidUpdate. " + "This might either be because of a bug in React, or because " + "a component reassigns its own `this.state`. " + "Please file an issue.", getComponentNameFromFiber(finishedWork) || "instance");
                         }
                       }
                     }
@@ -18158,10 +18158,10 @@ var require_react_dom_development = __commonJS((exports) => {
                 {
                   if (finishedWork.type === finishedWork.elementType && !didWarnAboutReassigningProps) {
                     if (instance.props !== finishedWork.memoizedProps) {
-                      error("Expected %s props to match memoized props before processing the update queue. This might either be because of a bug in React, or because a component reassigns its own `this.props`. Please file an issue.", getComponentNameFromFiber(finishedWork) || "instance");
+                      error("Expected %s props to match memoized props before " + "processing the update queue. " + "This might either be because of a bug in React, or because " + "a component reassigns its own `this.props`. " + "Please file an issue.", getComponentNameFromFiber(finishedWork) || "instance");
                     }
                     if (instance.state !== finishedWork.memoizedState) {
-                      error("Expected %s state to match memoized state before processing the update queue. This might either be because of a bug in React, or because a component reassigns its own `this.state`. Please file an issue.", getComponentNameFromFiber(finishedWork) || "instance");
+                      error("Expected %s state to match memoized state before " + "processing the update queue. " + "This might either be because of a bug in React, or because " + "a component reassigns its own `this.state`. " + "Please file an issue.", getComponentNameFromFiber(finishedWork) || "instance");
                     }
                   }
                 }
@@ -18253,7 +18253,7 @@ var require_react_dom_development = __commonJS((exports) => {
               break;
             }
             default:
-              throw new Error("This unit of work tag should not have side-effects. This error is likely caused by a bug in React. Please file an issue.");
+              throw new Error("This unit of work tag should not have side-effects. This error is " + "likely caused by a bug in React. Please file an issue.");
           }
         }
         if (!offscreenSubtreeWasHidden) {
@@ -18380,13 +18380,13 @@ var require_react_dom_development = __commonJS((exports) => {
             }
             {
               if (typeof retVal === "function") {
-                error("Unexpected return value from a callback ref in %s. A callback ref should not return a function.", getComponentNameFromFiber(finishedWork));
+                error("Unexpected return value from a callback ref in %s. " + "A callback ref should not return a function.", getComponentNameFromFiber(finishedWork));
               }
             }
           } else {
             {
               if (!ref.hasOwnProperty("current")) {
-                error("Unexpected ref object provided for %s. Use either a ref-setter function or React.createRef().", getComponentNameFromFiber(finishedWork));
+                error("Unexpected ref object provided for %s. " + "Use either a ref-setter function or React.createRef().", getComponentNameFromFiber(finishedWork));
               }
             }
             ref.current = instanceToUse;
@@ -18439,7 +18439,7 @@ var require_react_dom_development = __commonJS((exports) => {
           }
           parent = parent.return;
         }
-        throw new Error("Expected to find a host parent. This error is likely caused by a bug in React. Please file an issue.");
+        throw new Error("Expected to find a host parent. This error is likely caused by a bug " + "in React. Please file an issue.");
       }
       function isHostParent(fiber) {
         return fiber.tag === HostComponent || fiber.tag === HostRoot || fiber.tag === HostPortal;
@@ -18493,7 +18493,7 @@ var require_react_dom_development = __commonJS((exports) => {
             break;
           }
           default:
-            throw new Error("Invalid host parent fiber. This error is likely caused by a bug in React. Please file an issue.");
+            throw new Error("Invalid host parent fiber. This error is likely caused by a bug " + "in React. Please file an issue.");
         }
       }
       function insertOrAppendPlacementNodeIntoContainer(node, before, parent) {
@@ -18571,7 +18571,7 @@ var require_react_dom_development = __commonJS((exports) => {
               parent = parent.return;
             }
           if (hostParent === null) {
-            throw new Error("Expected to find a host parent. This error is likely caused by a bug in React. Please file an issue.");
+            throw new Error("Expected to find a host parent. This error is likely caused by " + "a bug in React. Please file an issue.");
           }
           commitDeletionEffectsOnFiber(root2, returnFiber, deletedFiber);
           hostParent = null;
@@ -18872,7 +18872,7 @@ var require_react_dom_development = __commonJS((exports) => {
             if (flags & Update) {
               {
                 if (finishedWork.stateNode === null) {
-                  throw new Error("This should have a text node initialized. This error is likely caused by a bug in React. Please file an issue.");
+                  throw new Error("This should have a text node initialized. This error is likely " + "caused by a bug in React. Please file an issue.");
                 }
                 var textInstance = finishedWork.stateNode;
                 var newText = finishedWork.memoizedProps;
@@ -19489,7 +19489,7 @@ var require_react_dom_development = __commonJS((exports) => {
         {
           var isReactActEnvironmentGlobal = typeof IS_REACT_ACT_ENVIRONMENT !== "undefined" ? IS_REACT_ACT_ENVIRONMENT : undefined;
           if (!isReactActEnvironmentGlobal && ReactCurrentActQueue.current !== null) {
-            error("The current testing environment is not configured to support act(...)");
+            error("The current testing environment is not configured to support " + "act(...)");
           }
           return isReactActEnvironmentGlobal;
         }
@@ -20183,7 +20183,7 @@ var require_react_dom_development = __commonJS((exports) => {
         executionContext = prevExecutionContext;
         popDispatcher(prevDispatcher);
         if (workInProgress !== null) {
-          throw new Error("Cannot commit an incomplete root. This error is likely caused by a bug in React. Please file an issue.");
+          throw new Error("Cannot commit an incomplete root. This error is likely caused by a " + "bug in React. Please file an issue.");
         }
         {
           markRenderStopped();
@@ -20362,14 +20362,14 @@ var require_react_dom_development = __commonJS((exports) => {
         } else {
           {
             if (lanes === NoLanes) {
-              error("root.finishedLanes should not be empty during a commit. This is a bug in React.");
+              error("root.finishedLanes should not be empty during a commit. This is a " + "bug in React.");
             }
           }
         }
         root2.finishedWork = null;
         root2.finishedLanes = NoLanes;
         if (finishedWork === root2.current) {
-          throw new Error("Cannot commit the same tree as before. This error is likely caused by a bug in React. Please file an issue.");
+          throw new Error("Cannot commit the same tree as before. This error is likely caused by " + "a bug in React. Please file an issue.");
         }
         root2.callbackNode = null;
         root2.callbackPriority = NoLane;
@@ -20648,7 +20648,7 @@ var require_react_dom_development = __commonJS((exports) => {
           fiber = fiber.return;
         }
         {
-          error("Internal React error: Attempted to capture a commit phase error inside a detached tree. This indicates a bug in React. Likely causes include deleting the same fiber more than once, committing an already-finished tree, or an inconsistent return pointer.\n\nError message:\n\n%s", error$1);
+          error("Internal React error: Attempted to capture a commit phase error " + "inside a detached tree. This indicates a bug in React. Likely " + "causes include deleting the same fiber more than once, committing an " + "already-finished tree, or an inconsistent return pointer.\n\n" + "Error message:\n\n%s", error$1);
         }
       }
       function pingSuspendedRoot(root2, wakeable, pingedLanes) {
@@ -20702,7 +20702,7 @@ var require_react_dom_development = __commonJS((exports) => {
             retryCache = boundaryFiber.stateNode;
             break;
           default:
-            throw new Error("Pinged unknown suspense boundary type. This is probably a bug in React.");
+            throw new Error("Pinged unknown suspense boundary type. " + "This is probably a bug in React.");
         }
         if (retryCache !== null) {
           retryCache.delete(wakeable);
@@ -20716,13 +20716,13 @@ var require_react_dom_development = __commonJS((exports) => {
         if (nestedUpdateCount > NESTED_UPDATE_LIMIT) {
           nestedUpdateCount = 0;
           rootWithNestedUpdates = null;
-          throw new Error("Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.");
+          throw new Error("Maximum update depth exceeded. This can happen when a component " + "repeatedly calls setState inside componentWillUpdate or " + "componentDidUpdate. React limits the number of nested updates to " + "prevent infinite loops.");
         }
         {
           if (nestedPassiveUpdateCount > NESTED_PASSIVE_UPDATE_LIMIT) {
             nestedPassiveUpdateCount = 0;
             rootWithPassiveNestedUpdates = null;
-            error("Maximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.");
+            error("Maximum update depth exceeded. This can happen when a component " + "calls setState inside useEffect, but useEffect either doesn't " + "have a dependency array, or one of the dependencies changes on " + "every render.");
           }
         }
       }
@@ -20794,7 +20794,7 @@ var require_react_dom_development = __commonJS((exports) => {
           var previousFiber = current;
           try {
             setCurrentFiber(fiber);
-            error("Can't perform a React state update on a component that hasn't mounted yet. This indicates that you have a side-effect in your render function that asynchronously later calls tries to update the component. Move this work to useEffect instead.");
+            error("Can't perform a React state update on a component that hasn't mounted yet. " + "This indicates that you have a side-effect in your render function that " + "asynchronously later calls tries to update the component. Move this work to " + "useEffect instead.");
           } finally {
             if (previousFiber) {
               setCurrentFiber(fiber);
@@ -20850,13 +20850,13 @@ var require_react_dom_development = __commonJS((exports) => {
                 if (!didWarnAboutUpdateInRenderForAnotherComponent.has(dedupeKey)) {
                   didWarnAboutUpdateInRenderForAnotherComponent.add(dedupeKey);
                   var setStateComponentName = getComponentNameFromFiber(fiber) || "Unknown";
-                  error("Cannot update a component (`%s`) while rendering a different component (`%s`). To locate the bad setState() call inside `%s`, follow the stack trace as described in https://reactjs.org/link/setstate-in-render", setStateComponentName, renderingComponentName, renderingComponentName);
+                  error("Cannot update a component (`%s`) while rendering a " + "different component (`%s`). To locate the bad setState() call inside `%s`, " + "follow the stack trace as described in https://reactjs.org/link/setstate-in-render", setStateComponentName, renderingComponentName, renderingComponentName);
                 }
                 break;
               }
               case ClassComponent: {
                 if (!didWarnAboutUpdateInRender) {
-                  error("Cannot update during an existing state transition (such as within `render`). Render methods should be a pure function of props and state.");
+                  error("Cannot update during an existing state transition (such as " + "within `render`). Render methods should be a pure " + "function of props and state.");
                   didWarnAboutUpdateInRender = true;
                 }
                 break;
@@ -20917,7 +20917,7 @@ var require_react_dom_development = __commonJS((exports) => {
             var previousFiber = current;
             try {
               setCurrentFiber(fiber);
-              error("An update to %s inside a test was not wrapped in act(...).\n\nWhen testing, code that causes React state updates should be wrapped into act(...):\n\nact(() => {\n  /* fire events that update state */\n});\n/* assert on the output */\n\nThis ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act", getComponentNameFromFiber(fiber));
+              error("An update to %s inside a test was not wrapped in act(...).\n\n" + "When testing, code that causes React state updates should be " + "wrapped into act(...):\n\n" + "act(() => {\n" + "  /* fire events that update state */\n" + "});\n" + "/* assert on the output */\n\n" + "This ensures that you're testing the behavior the user would see " + "in the browser." + " Learn more at https://reactjs.org/link/wrap-tests-with-act", getComponentNameFromFiber(fiber));
             } finally {
               if (previousFiber) {
                 setCurrentFiber(fiber);
@@ -20931,7 +20931,7 @@ var require_react_dom_development = __commonJS((exports) => {
       function warnIfSuspenseResolutionNotWrappedWithActDEV(root2) {
         {
           if (root2.tag !== LegacyRoot && isConcurrentActEnvironment() && ReactCurrentActQueue$1.current === null) {
-            error("A suspended resource finished loading inside a test, but the event was not wrapped in act(...).\n\nWhen testing, code that resolves suspended data should be wrapped into act(...):\n\nact(() => {\n  /* finish loading suspended data */\n});\n/* assert on the output */\n\nThis ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act");
+            error("A suspended resource finished loading inside a test, but the event " + "was not wrapped in act(...).\n\n" + "When testing, code that resolves suspended data should be wrapped " + "into act(...):\n\n" + "act(() => {\n" + "  /* finish loading suspended data */\n" + "});\n" + "/* assert on the output */\n\n" + "This ensures that you're testing the behavior the user would see " + "in the browser." + " Learn more at https://reactjs.org/link/wrap-tests-with-act");
           }
         }
       }
@@ -21493,14 +21493,14 @@ var require_react_dom_development = __commonJS((exports) => {
                 var info = "";
                 {
                   if (type === undefined || typeof type === "object" && type !== null && Object.keys(type).length === 0) {
-                    info += " You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.";
+                    info += " You likely forgot to export your component from the file " + "it's defined in, or you might have mixed up default and " + "named imports.";
                   }
                   var ownerName = owner ? getComponentNameFromFiber(owner) : null;
                   if (ownerName) {
                     info += "\n\nCheck the render method of `" + ownerName + "`.";
                   }
                 }
-                throw new Error("Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) " + ("but got: " + (type == null ? type : typeof type) + "." + info));
+                throw new Error("Element type is invalid: expected a string (for built-in " + "components) or a class/function (for composite components) " + ("but got: " + (type == null ? type : typeof type) + "." + info));
               }
             }
         }
@@ -21760,9 +21760,9 @@ var require_react_dom_development = __commonJS((exports) => {
               try {
                 setCurrentFiber(hostFiber);
                 if (fiber.mode & StrictLegacyMode) {
-                  error("%s is deprecated in StrictMode. %s was passed an instance of %s which is inside StrictMode. Instead, add a ref directly to the element you want to reference. Learn more about using refs safely here: https://reactjs.org/link/strict-mode-find-node", methodName, methodName, componentName);
+                  error("%s is deprecated in StrictMode. " + "%s was passed an instance of %s which is inside StrictMode. " + "Instead, add a ref directly to the element you want to reference. " + "Learn more about using refs safely here: " + "https://reactjs.org/link/strict-mode-find-node", methodName, methodName, componentName);
                 } else {
-                  error("%s is deprecated in StrictMode. %s was passed an instance of %s which renders StrictMode children. Instead, add a ref directly to the element you want to reference. Learn more about using refs safely here: https://reactjs.org/link/strict-mode-find-node", methodName, methodName, componentName);
+                  error("%s is deprecated in StrictMode. " + "%s was passed an instance of %s which renders StrictMode children. " + "Instead, add a ref directly to the element you want to reference. " + "Learn more about using refs safely here: " + "https://reactjs.org/link/strict-mode-find-node", methodName, methodName, componentName);
                 }
               } finally {
                 if (previousFiber) {
@@ -21813,7 +21813,7 @@ var require_react_dom_development = __commonJS((exports) => {
         {
           if (isRendering && current !== null && !didWarnAboutNestedUpdates) {
             didWarnAboutNestedUpdates = true;
-            error("Render methods should be a pure function of props and state; triggering nested component updates from render is not allowed. If necessary, trigger nested updates in componentDidUpdate.\n\nCheck the render method of %s.", getComponentNameFromFiber(current) || "Unknown");
+            error("Render methods should be a pure function of props and state; " + "triggering nested component updates from render is not allowed. " + "If necessary, trigger nested updates in componentDidUpdate.\n\n" + "Check the render method of %s.", getComponentNameFromFiber(current) || "Unknown");
           }
         }
         var update = createUpdate(eventTime, lane);
@@ -21824,7 +21824,7 @@ var require_react_dom_development = __commonJS((exports) => {
         if (callback !== null) {
           {
             if (typeof callback !== "function") {
-              error("render(...): Expected the last optional `callback` argument to be a function. Instead received: %s.", callback);
+              error("render(...): Expected the last optional `callback` argument to be a " + "function. Instead received: %s.", callback);
             }
           }
           update.callback = callback;
@@ -22141,18 +22141,18 @@ var require_react_dom_development = __commonJS((exports) => {
         }
         {
           if (typeof arguments[1] === "function") {
-            error("render(...): does not support the second callback argument. To execute a side effect after rendering, declare it in a component body with useEffect().");
+            error("render(...): does not support the second callback argument. " + "To execute a side effect after rendering, declare it in a component body with useEffect().");
           } else if (isValidContainer(arguments[1])) {
-            error("You passed a container to the second argument of root.render(...). You don't need to pass it again since you already passed it to create the root.");
+            error("You passed a container to the second argument of root.render(...). " + "You don't need to pass it again since you already passed it to create the root.");
           } else if (typeof arguments[1] !== "undefined") {
-            error("You passed a second argument to root.render(...) but it only accepts one argument.");
+            error("You passed a second argument to root.render(...) but it only accepts " + "one argument.");
           }
           var container = root2.containerInfo;
           if (container.nodeType !== COMMENT_NODE) {
             var hostInstance = findHostInstanceWithNoPortals(root2.current);
             if (hostInstance) {
               if (hostInstance.parentNode !== container) {
-                error("render(...): It looks like the React-rendered content of the root container was removed without using React. This is not supported and will cause errors. Instead, call root.unmount() to empty a root's container.");
+                error("render(...): It looks like the React-rendered content of the " + "root container was removed without using React. This is not " + "supported and will cause errors. Instead, call " + "root.unmount() to empty a root's container.");
               }
             }
           }
@@ -22162,7 +22162,7 @@ var require_react_dom_development = __commonJS((exports) => {
       ReactDOMHydrationRoot.prototype.unmount = ReactDOMRoot.prototype.unmount = function() {
         {
           if (typeof arguments[0] === "function") {
-            error("unmount(...): does not support a callback argument. To execute a side effect after rendering, declare it in a component body with useEffect().");
+            error("unmount(...): does not support a callback argument. " + "To execute a side effect after rendering, declare it in a component body with useEffect().");
           }
         }
         var root2 = this._internalRoot;
@@ -22171,7 +22171,7 @@ var require_react_dom_development = __commonJS((exports) => {
           var container = root2.containerInfo;
           {
             if (isAlreadyRendering()) {
-              error("Attempted to synchronously unmount a root while React was already rendering. React cannot finish unmounting the root until the current render has completed, which may lead to a race condition.");
+              error("Attempted to synchronously unmount a root while React was already " + "rendering. React cannot finish unmounting the root until the " + "current render has completed, which may lead to a race condition.");
             }
           }
           flushSync(function() {
@@ -22196,7 +22196,7 @@ var require_react_dom_development = __commonJS((exports) => {
               warn("hydrate through createRoot is deprecated. Use ReactDOMClient.hydrateRoot(container, <App />) instead.");
             } else {
               if (typeof options2 === "object" && options2 !== null && options2.$$typeof === REACT_ELEMENT_TYPE) {
-                error("You passed a JSX element to createRoot. You probably meant to call root.render instead. Example usage:\n\n  let root = createRoot(domContainer);\n  root.render(<App />);");
+                error("You passed a JSX element to createRoot. You probably meant to " + "call root.render instead. " + "Example usage:\n\n" + "  let root = createRoot(domContainer);\n" + "  root.render(<App />);");
               }
             }
           }
@@ -22235,7 +22235,7 @@ var require_react_dom_development = __commonJS((exports) => {
         warnIfReactDOMContainerInDEV(container);
         {
           if (initialChildren === undefined) {
-            error("Must provide initial children as second argument to hydrateRoot. Example usage: hydrateRoot(domContainer, <App />)");
+            error("Must provide initial children as second argument to hydrateRoot. " + "Example usage: hydrateRoot(domContainer, <App />)");
           }
         }
         var hydrationCallbacks = options2 != null ? options2 : null;
@@ -22275,13 +22275,13 @@ var require_react_dom_development = __commonJS((exports) => {
       function warnIfReactDOMContainerInDEV(container) {
         {
           if (container.nodeType === ELEMENT_NODE && container.tagName && container.tagName.toUpperCase() === "BODY") {
-            error("createRoot(): Creating roots directly with document.body is discouraged, since its children are often manipulated by third-party scripts and browser extensions. This may lead to subtle reconciliation issues. Try using a container element created for your app.");
+            error("createRoot(): Creating roots directly with document.body is " + "discouraged, since its children are often manipulated by third-party " + "scripts and browser extensions. This may lead to subtle " + "reconciliation issues. Try using a container element created " + "for your app.");
           }
           if (isContainerMarkedAsRoot(container)) {
             if (container._reactRootContainer) {
-              error("You are calling ReactDOMClient.createRoot() on a container that was previously passed to ReactDOM.render(). This is not supported.");
+              error("You are calling ReactDOMClient.createRoot() on a container that was previously " + "passed to ReactDOM.render(). This is not supported.");
             } else {
-              error("You are calling ReactDOMClient.createRoot() on a container that has already been passed to createRoot() before. Instead, call root.render() on the existing root instead if you want to update it.");
+              error("You are calling ReactDOMClient.createRoot() on a container that " + "has already been passed to createRoot() before. Instead, call " + "root.render() on the existing root instead if you want to update it.");
             }
           }
         }
@@ -22294,7 +22294,7 @@ var require_react_dom_development = __commonJS((exports) => {
             var hostInstance = findHostInstanceWithNoPortals(container._reactRootContainer.current);
             if (hostInstance) {
               if (hostInstance.parentNode !== container) {
-                error("render(...): It looks like the React-rendered content of this container was removed without using React. This is not supported and will cause errors. Instead, call ReactDOM.unmountComponentAtNode to empty a container.");
+                error("render(...): It looks like the React-rendered content of this " + "container was removed without using React. This is not " + "supported and will cause errors. Instead, call " + "ReactDOM.unmountComponentAtNode to empty a container.");
               }
             }
           }
@@ -22302,10 +22302,10 @@ var require_react_dom_development = __commonJS((exports) => {
           var rootEl = getReactRootElementInContainer(container);
           var hasNonRootReactChild = !!(rootEl && getInstanceFromNode(rootEl));
           if (hasNonRootReactChild && !isRootRenderedBySomeReact) {
-            error("render(...): Replacing React-rendered children with a new root component. If you intended to update the children of this node, you should instead have the existing children update their state and render the new components instead of calling ReactDOM.render.");
+            error("render(...): Replacing React-rendered children with a new root " + "component. If you intended to update the children of this node, " + "you should instead have the existing children update their state " + "and render the new components instead of calling ReactDOM.render.");
           }
           if (container.nodeType === ELEMENT_NODE && container.tagName && container.tagName.toUpperCase() === "BODY") {
-            error("render(): Rendering components directly into document.body is discouraged, since its children are often manipulated by third-party scripts and browser extensions. This may lead to subtle reconciliation issues. Try rendering into a container element created for your app.");
+            error("render(): Rendering components directly into document.body is " + "discouraged, since its children are often manipulated by third-party " + "scripts and browser extensions. This may lead to subtle " + "reconciliation issues. Try rendering into a container element created " + "for your app.");
           }
         };
       }
@@ -22363,7 +22363,7 @@ var require_react_dom_development = __commonJS((exports) => {
       function warnOnInvalidCallback$1(callback, callerName) {
         {
           if (callback !== null && typeof callback !== "function") {
-            error("%s(...): Expected the last optional `callback` argument to be a function. Instead received: %s.", callerName, callback);
+            error("%s(...): Expected the last optional `callback` argument to be a " + "function. Instead received: %s.", callerName, callback);
           }
         }
       }
@@ -22395,7 +22395,7 @@ var require_react_dom_development = __commonJS((exports) => {
           if (owner !== null && owner.stateNode !== null) {
             var warnedAboutRefsInRender = owner.stateNode._warnedAboutRefsInRender;
             if (!warnedAboutRefsInRender) {
-              error("%s is accessing findDOMNode inside its render(). render() should be a pure function of props and state. It should never access something that requires stale data from the previous render, such as refs. Move this logic to componentDidMount and componentDidUpdate instead.", getComponentNameFromType(owner.type) || "A component");
+              error("%s is accessing findDOMNode inside its render(). " + "render() should be a pure function of props and state. It should " + "never access something that requires stale data from the previous " + "render, such as refs. Move this logic to componentDidMount and " + "componentDidUpdate instead.", getComponentNameFromType(owner.type) || "A component");
             }
             owner.stateNode._warnedAboutRefsInRender = true;
           }
@@ -22412,7 +22412,7 @@ var require_react_dom_development = __commonJS((exports) => {
       }
       function hydrate(element, container, callback) {
         {
-          error("ReactDOM.hydrate is no longer supported in React 18. Use hydrateRoot instead. Until you switch to the new API, your app will behave as if it's running React 17. Learn more: https://reactjs.org/link/switch-to-createroot");
+          error("ReactDOM.hydrate is no longer supported in React 18. Use hydrateRoot " + "instead. Until you switch to the new API, your app will behave as " + "if it's running React 17. Learn " + "more: https://reactjs.org/link/switch-to-createroot");
         }
         if (!isValidContainerLegacy(container)) {
           throw new Error("Target container is not a DOM element.");
@@ -22420,14 +22420,14 @@ var require_react_dom_development = __commonJS((exports) => {
         {
           var isModernRoot = isContainerMarkedAsRoot(container) && container._reactRootContainer === undefined;
           if (isModernRoot) {
-            error("You are calling ReactDOM.hydrate() on a container that was previously passed to ReactDOMClient.createRoot(). This is not supported. Did you mean to call hydrateRoot(container, element)?");
+            error("You are calling ReactDOM.hydrate() on a container that was previously " + "passed to ReactDOMClient.createRoot(). This is not supported. " + "Did you mean to call hydrateRoot(container, element)?");
           }
         }
         return legacyRenderSubtreeIntoContainer(null, element, container, true, callback);
       }
       function render(element, container, callback) {
         {
-          error("ReactDOM.render is no longer supported in React 18. Use createRoot instead. Until you switch to the new API, your app will behave as if it's running React 17. Learn more: https://reactjs.org/link/switch-to-createroot");
+          error("ReactDOM.render is no longer supported in React 18. Use createRoot " + "instead. Until you switch to the new API, your app will behave as " + "if it's running React 17. Learn " + "more: https://reactjs.org/link/switch-to-createroot");
         }
         if (!isValidContainerLegacy(container)) {
           throw new Error("Target container is not a DOM element.");
@@ -22435,14 +22435,14 @@ var require_react_dom_development = __commonJS((exports) => {
         {
           var isModernRoot = isContainerMarkedAsRoot(container) && container._reactRootContainer === undefined;
           if (isModernRoot) {
-            error("You are calling ReactDOM.render() on a container that was previously passed to ReactDOMClient.createRoot(). This is not supported. Did you mean to call root.render(element)?");
+            error("You are calling ReactDOM.render() on a container that was previously " + "passed to ReactDOMClient.createRoot(). This is not supported. " + "Did you mean to call root.render(element)?");
           }
         }
         return legacyRenderSubtreeIntoContainer(null, element, container, false, callback);
       }
       function unstable_renderSubtreeIntoContainer(parentComponent, element, containerNode, callback) {
         {
-          error("ReactDOM.unstable_renderSubtreeIntoContainer() is no longer supported in React 18. Consider using a portal instead. Until you switch to the createRoot API, your app will behave as if it's running React 17. Learn more: https://reactjs.org/link/switch-to-createroot");
+          error("ReactDOM.unstable_renderSubtreeIntoContainer() is no longer supported " + "in React 18. Consider using a portal instead. Until you switch to " + "the createRoot API, your app will behave as if it's running React " + "17. Learn more: https://reactjs.org/link/switch-to-createroot");
         }
         if (!isValidContainerLegacy(containerNode)) {
           throw new Error("Target container is not a DOM element.");
@@ -22459,7 +22459,7 @@ var require_react_dom_development = __commonJS((exports) => {
         {
           var isModernRoot = isContainerMarkedAsRoot(container) && container._reactRootContainer === undefined;
           if (isModernRoot) {
-            error("You are calling ReactDOM.unmountComponentAtNode() on a container that was previously passed to ReactDOMClient.createRoot(). This is not supported. Did you mean to call root.unmount()?");
+            error("You are calling ReactDOM.unmountComponentAtNode() on a container that was previously " + "passed to ReactDOMClient.createRoot(). This is not supported. Did you mean to call root.unmount()?");
           }
         }
         if (container._reactRootContainer) {
@@ -22467,7 +22467,7 @@ var require_react_dom_development = __commonJS((exports) => {
             var rootEl = getReactRootElementInContainer(container);
             var renderedByDifferentReact = rootEl && !getInstanceFromNode(rootEl);
             if (renderedByDifferentReact) {
-              error("unmountComponentAtNode(): The node you're attempting to unmount was rendered by another copy of React.");
+              error("unmountComponentAtNode(): The node you're attempting to unmount " + "was rendered by another copy of React.");
             }
           }
           flushSync(function() {
@@ -22483,7 +22483,7 @@ var require_react_dom_development = __commonJS((exports) => {
             var hasNonRootReactChild = !!(_rootEl && getInstanceFromNode(_rootEl));
             var isContainerReactRoot = container.nodeType === ELEMENT_NODE && isValidContainerLegacy(container.parentNode) && !!container.parentNode._reactRootContainer;
             if (hasNonRootReactChild) {
-              error("unmountComponentAtNode(): The node you're attempting to unmount was rendered by React and is not a top-level container. %s", isContainerReactRoot ? "You may have accidentally passed in a React root node instead of its container." : "Instead, have the parent component update its state and rerender in order to remove this component.");
+              error("unmountComponentAtNode(): The node you're attempting to unmount " + "was rendered by React and is not a top-level container. %s", isContainerReactRoot ? "You may have accidentally passed in a React root node instead " + "of its container." : "Instead, have the parent component update its state and " + "rerender in order to remove this component.");
             }
           }
           return false;
@@ -22496,7 +22496,7 @@ var require_react_dom_development = __commonJS((exports) => {
       setAttemptHydrationAtPriority(runWithPriority);
       {
         if (typeof Map !== "function" || Map.prototype == null || typeof Map.prototype.forEach !== "function" || typeof Set !== "function" || Set.prototype == null || typeof Set.prototype.clear !== "function" || typeof Set.prototype.forEach !== "function") {
-          error("React depends on Map and Set built-in types. Make sure that you load a polyfill in older browsers. https://reactjs.org/link/react-polyfills");
+          error("React depends on Map and Set built-in types. Make sure that you load a " + "polyfill in older browsers. https://reactjs.org/link/react-polyfills");
         }
       }
       setRestoreImplementation(restoreControlledState$3);
@@ -22518,7 +22518,7 @@ var require_react_dom_development = __commonJS((exports) => {
       function createRoot$1(container, options2) {
         {
           if (!Internals.usingClientEntryPoint && true) {
-            error('You are importing createRoot from "react-dom" which is not supported. You should instead import it from "react-dom/client".');
+            error('You are importing createRoot from "react-dom" which is not supported. ' + 'You should instead import it from "react-dom/client".');
           }
         }
         return createRoot(container, options2);
@@ -22526,7 +22526,7 @@ var require_react_dom_development = __commonJS((exports) => {
       function hydrateRoot$1(container, initialChildren, options2) {
         {
           if (!Internals.usingClientEntryPoint && true) {
-            error('You are importing hydrateRoot from "react-dom" which is not supported. You should instead import it from "react-dom/client".');
+            error('You are importing hydrateRoot from "react-dom" which is not supported. ' + 'You should instead import it from "react-dom/client".');
           }
         }
         return hydrateRoot(container, initialChildren, options2);
@@ -22534,7 +22534,7 @@ var require_react_dom_development = __commonJS((exports) => {
       function flushSync$1(fn) {
         {
           if (isAlreadyRendering()) {
-            error("flushSync was called from inside a lifecycle method. React cannot flush when React is already rendering. Consider moving this call to a scheduler task or micro task.");
+            error("flushSync was called from inside a lifecycle method. React cannot " + "flush when React is already rendering. Consider moving this call to " + "a scheduler task or micro task.");
           }
         }
         return flushSync(fn);
@@ -22550,7 +22550,7 @@ var require_react_dom_development = __commonJS((exports) => {
           if (navigator.userAgent.indexOf("Chrome") > -1 && navigator.userAgent.indexOf("Edge") === -1 || navigator.userAgent.indexOf("Firefox") > -1) {
             var protocol = window.location.protocol;
             if (/^(https?|file):$/.test(protocol)) {
-              console.info("%cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools" + (protocol === "file:" ? "\nYou might need to use a local HTTP server (instead of file://): https://reactjs.org/link/react-devtools-faq" : ""), "font-weight:bold");
+              console.info("%cDownload the React DevTools " + "for a better development experience: " + "https://reactjs.org/link/react-devtools" + (protocol === "file:" ? "\nYou might need to use a local HTTP server (instead of file://): " + "https://reactjs.org/link/react-devtools-faq" : ""), "font-weight:bold");
             }
           }
         }
@@ -22705,7 +22705,7 @@ var require_react_jsx_dev_runtime_development = __commonJS((exports) => {
         }
         {
           if (typeof type.tag === "number") {
-            error("Received an unexpected object in getComponentNameFromType(). This is likely a bug in React. Please file an issue.");
+            error("Received an unexpected object in getComponentNameFromType(). " + "This is likely a bug in React. Please file an issue.");
           }
         }
         if (typeof type === "function") {
@@ -22833,7 +22833,7 @@ var require_react_jsx_dev_runtime_development = __commonJS((exports) => {
             });
           }
           if (disabledDepth < 0) {
-            error("disabledDepth fell below zero. This is a bug in React. Please file an issue.");
+            error("disabledDepth fell below zero. " + "This is a bug in React. Please file an issue.");
           }
         }
       }
@@ -23029,7 +23029,7 @@ var require_react_jsx_dev_runtime_development = __commonJS((exports) => {
               var error$1 = undefined;
               try {
                 if (typeof typeSpecs[typeSpecName] !== "function") {
-                  var err = Error((componentName || "React class") + ": " + location + " type `" + typeSpecName + "` is invalid; it must be a function, usually from the `prop-types` package, but received `" + typeof typeSpecs[typeSpecName] + "`.This often happens because of typos such as `PropTypes.function` instead of `PropTypes.func`.");
+                  var err = Error((componentName || "React class") + ": " + location + " type `" + typeSpecName + "` is invalid; " + "it must be a function, usually from the `prop-types` package, but received `" + typeof typeSpecs[typeSpecName] + "`." + "This often happens because of typos such as `PropTypes.function` instead of `PropTypes.func`.");
                   err.name = "Invariant Violation";
                   throw err;
                 }
@@ -23039,7 +23039,7 @@ var require_react_jsx_dev_runtime_development = __commonJS((exports) => {
               }
               if (error$1 && !(error$1 instanceof Error)) {
                 setCurrentlyValidatingElement(element);
-                error("%s: type specification of %s `%s` is invalid; the type checker function must return `null` or an `Error` but returned a %s. You may have forgotten to pass an argument to the type checker creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and shape all require an argument).", componentName || "React class", location, typeSpecName, typeof error$1);
+                error("%s: type specification of %s" + " `%s` is invalid; the type checker " + "function must return `null` or an `Error` but returned a %s. " + "You may have forgotten to pass an argument to the type checker " + "creator (arrayOf, instanceOf, objectOf, oneOf, oneOfType, and " + "shape all require an argument).", componentName || "React class", location, typeSpecName, typeof error$1);
                 setCurrentlyValidatingElement(null);
               }
               if (error$1 instanceof Error && !(error$1.message in loggedTypeFailures)) {
@@ -23079,7 +23079,7 @@ var require_react_jsx_dev_runtime_development = __commonJS((exports) => {
       function checkKeyStringCoercion(value) {
         {
           if (willCoercionThrow(value)) {
-            error("The provided key is an unsupported type %s. This value must be coerced to a string before before using it here.", typeName(value));
+            error("The provided key is an unsupported type %s." + " This value must be coerced to a string before before using it here.", typeName(value));
             return testStringCoercion(value);
           }
         }
@@ -23124,7 +23124,7 @@ var require_react_jsx_dev_runtime_development = __commonJS((exports) => {
           if (typeof config.ref === "string" && ReactCurrentOwner.current && self && ReactCurrentOwner.current.stateNode !== self) {
             var componentName = getComponentNameFromType(ReactCurrentOwner.current.type);
             if (!didWarnAboutStringRefs[componentName]) {
-              error('Component "%s" contains the string ref "%s". Support for string refs will be removed in a future major release. This case cannot be automatically converted to an arrow function. We ask you to manually fix this case by using useRef() or createRef() instead. Learn more about using refs safely here: https://reactjs.org/link/strict-mode-string-ref', getComponentNameFromType(ReactCurrentOwner.current.type), config.ref);
+              error('Component "%s" contains the string ref "%s". ' + "Support for string refs will be removed in a future major release. " + "This case cannot be automatically converted to an arrow function. " + "We ask you to manually fix this case by using useRef() or createRef() instead. " + "Learn more about using refs safely here: " + "https://reactjs.org/link/strict-mode-string-ref", getComponentNameFromType(ReactCurrentOwner.current.type), config.ref);
               didWarnAboutStringRefs[componentName] = true;
             }
           }
@@ -23135,7 +23135,7 @@ var require_react_jsx_dev_runtime_development = __commonJS((exports) => {
           var warnAboutAccessingKey = function() {
             if (!specialPropKeyWarningShown) {
               specialPropKeyWarningShown = true;
-              error("%s: `key` is not a prop. Trying to access it will result in `undefined` being returned. If you need to access the same value within the child component, you should pass it as a different prop. (https://reactjs.org/link/special-props)", displayName);
+              error("%s: `key` is not a prop. Trying to access it will result " + "in `undefined` being returned. If you need to access the same " + "value within the child component, you should pass it as a different " + "prop. (https://reactjs.org/link/special-props)", displayName);
             }
           };
           warnAboutAccessingKey.isReactWarning = true;
@@ -23150,7 +23150,7 @@ var require_react_jsx_dev_runtime_development = __commonJS((exports) => {
           var warnAboutAccessingRef = function() {
             if (!specialPropRefWarningShown) {
               specialPropRefWarningShown = true;
-              error("%s: `ref` is not a prop. Trying to access it will result in `undefined` being returned. If you need to access the same value within the child component, you should pass it as a different prop. (https://reactjs.org/link/special-props)", displayName);
+              error("%s: `ref` is not a prop. Trying to access it will result " + "in `undefined` being returned. If you need to access the same " + "value within the child component, you should pass it as a different " + "prop. (https://reactjs.org/link/special-props)", displayName);
             }
           };
           warnAboutAccessingRef.isReactWarning = true;
@@ -23315,7 +23315,7 @@ var require_react_jsx_dev_runtime_development = __commonJS((exports) => {
             childOwner = " It was passed a child from " + getComponentNameFromType(element._owner.type) + ".";
           }
           setCurrentlyValidatingElement$1(element);
-          error('Each child in a list should have a unique "key" prop.%s%s See https://reactjs.org/link/warning-keys for more information.', currentComponentErrorInfo, childOwner);
+          error('Each child in a list should have a unique "key" prop.' + "%s%s See https://reactjs.org/link/warning-keys for more information.", currentComponentErrorInfo, childOwner);
           setCurrentlyValidatingElement$1(null);
         }
       }
@@ -23374,7 +23374,7 @@ var require_react_jsx_dev_runtime_development = __commonJS((exports) => {
             error("Component %s declared `PropTypes` instead of `propTypes`. Did you misspell the property assignment?", _name || "Unknown");
           }
           if (typeof type.getDefaultProps === "function" && !type.getDefaultProps.isReactClassApproved) {
-            error("getDefaultProps is only used on classic React.createClass definitions. Use a static property named `defaultProps` instead.");
+            error("getDefaultProps is only used on classic React.createClass " + "definitions. Use a static property named `defaultProps` instead.");
           }
         }
       }
@@ -23385,7 +23385,7 @@ var require_react_jsx_dev_runtime_development = __commonJS((exports) => {
             var key = keys[i];
             if (key !== "children" && key !== "key") {
               setCurrentlyValidatingElement$1(fragment);
-              error("Invalid prop `%s` supplied to `React.Fragment`. React.Fragment can only have `key` and `children` props.", key);
+              error("Invalid prop `%s` supplied to `React.Fragment`. " + "React.Fragment can only have `key` and `children` props.", key);
               setCurrentlyValidatingElement$1(null);
               break;
             }
@@ -23403,7 +23403,7 @@ var require_react_jsx_dev_runtime_development = __commonJS((exports) => {
           if (!validType) {
             var info = "";
             if (type === undefined || typeof type === "object" && type !== null && Object.keys(type).length === 0) {
-              info += " You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.";
+              info += " You likely forgot to export your component from the file " + "it's defined in, or you might have mixed up default and named imports.";
             }
             var sourceInfo = getSourceInfoErrorAddendum(source);
             if (sourceInfo) {
@@ -23422,7 +23422,7 @@ var require_react_jsx_dev_runtime_development = __commonJS((exports) => {
             } else {
               typeString = typeof type;
             }
-            error("React.jsx: type is invalid -- expected a string (for built-in components) or a class/function (for composite components) but got: %s.%s", typeString, info);
+            error("React.jsx: type is invalid -- expected a string (for " + "built-in components) or a class/function (for composite " + "components) but got: %s.%s", typeString, info);
           }
           var element = jsxDEV(type, props, key, source, self);
           if (element == null) {
@@ -23440,7 +23440,7 @@ var require_react_jsx_dev_runtime_development = __commonJS((exports) => {
                     Object.freeze(children);
                   }
                 } else {
-                  error("React.jsx: Static children should always be an array. You are likely explicitly calling React.jsxs or React.jsxDEV. Use the Babel transform instead.");
+                  error("React.jsx: Static children should always be an array. " + "You are likely explicitly calling React.jsxs or React.jsxDEV. " + "Use the Babel transform instead.");
                 }
               } else {
                 validateChildKeys(children, type);
@@ -23571,7 +23571,7 @@ var globalDefaultObjectsKeys = {
 };
 
 // src/utils.js
-var createId = function() {
+function createId() {
   let id = Date.now().toString();
   for (let i = 0;i < 8; i += 1) {
     const char = CHARS[Math.floor(Math.random() * CHARS.length)];
@@ -23585,13 +23585,13 @@ var createId = function() {
     }
   }
   return id;
-};
-var getRandomColor = function() {
+}
+function getRandomColor() {
   return `rgb(${random(32, 141)},${random(32, 141)},${random(32, 141)})`;
-};
-var random = function(min, max) {
+}
+function random(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
-};
+}
 var EmptyObject = {};
 var EventOnce = { once: true };
 var CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_";
@@ -23696,7 +23696,7 @@ var audioVolumeLimits = Object.freeze({
 });
 
 // src/state/stateInitializer.js
-var initializeGlobalState = function(localStorageState) {
+function initializeGlobalState(localStorageState) {
   {
     const spec = localStorageState?.delay;
     if (spec !== undefined) {
@@ -23817,11 +23817,11 @@ var initializeGlobalState = function(localStorageState) {
     globalState_default.randomStartPoint.areAllDisable = localStorageState.randomStartPoint.areAllDisable;
   }
   return;
-};
-var verifyAppVersion = function(v) {
+}
+function verifyAppVersion(v) {
   return localStorage.getItem("version") !== v ? (localStorage.clear(), localStorage.setItem("version", v), true) : false;
-};
-var initializeLocalStorage = function() {
+}
+function initializeLocalStorage() {
   let key = "";
   let innerKey = "";
   let localStorageKey = "";
@@ -23841,8 +23841,8 @@ var initializeLocalStorage = function() {
     }
   }
   return;
-};
-var stateFromLocalStorage = function() {
+}
+function stateFromLocalStorage() {
   const state = {};
   let key = "";
   let innerKey = "";
@@ -23864,8 +23864,8 @@ var stateFromLocalStorage = function() {
     }
   }
   return state;
-};
-var handleStateInitializers = function(v) {
+}
+function handleStateInitializers(v) {
   const hasNotLocalStorage = verifyAppVersion(v);
   if (hasNotLocalStorage) {
     initializeLocalStorage();
@@ -23874,8 +23874,8 @@ var handleStateInitializers = function(v) {
     initializeGlobalState(stateFromLocalStorage());
   }
   return;
-};
-var setInitialAudioContext = function() {
+}
+function setInitialAudioContext() {
   const AudioContextObject = window?.AudioContext !== undefined ? window.AudioContext : window.webkitAudioContext;
   const audioContext = new AudioContextObject({
     latencyHint: "playback",
@@ -23895,13 +23895,13 @@ var setInitialAudioContext = function() {
   audioContext.resume();
   globalState_default.audioContext = audioContext;
   return;
-};
+}
 
 // src/components/contexts/AudioList.jsx
 var import_react = __toESM(require_react(), 1);
 
 // src/state/factory.js
-var createDefaultGlobalDelay = function() {
+function createDefaultGlobalDelay() {
   return {
     areAllDisable: globalDefault.delay.areAllDisable,
     feedbackMax: globalDefault.delay.feedbackMax,
@@ -23909,8 +23909,8 @@ var createDefaultGlobalDelay = function() {
     timeMax: globalDefault.delay.timeMax,
     timeMin: globalDefault.delay.timeMin
   };
-};
-var createGlobalDelay = function() {
+}
+function createGlobalDelay() {
   return {
     areAllDisable: globalState_default.delay.areAllDisable,
     feedbackMax: globalState_default.delay.feedbackMax,
@@ -23918,8 +23918,8 @@ var createGlobalDelay = function() {
     timeMax: globalState_default.delay.timeMax,
     timeMin: globalState_default.delay.timeMin
   };
-};
-var createDefaultLocalStorageFilter = function() {
+}
+function createDefaultLocalStorageFilter() {
   return {
     areAllDisable: globalDefault.filter.areAllDisable,
     frequencyMax: globalDefault.filter.frequencyMax,
@@ -23931,8 +23931,8 @@ var createDefaultLocalStorageFilter = function() {
     lowpass: globalDefault.filter.lowpass,
     notch: globalDefault.filter.notch
   };
-};
-var createLocalStorageFilter = function() {
+}
+function createLocalStorageFilter() {
   return {
     areAllDisable: globalState_default.filter.areAllDisable,
     frequencyMax: globalState_default.filter.frequencyMax,
@@ -23944,8 +23944,8 @@ var createLocalStorageFilter = function() {
     lowpass: globalState_default.filter.lowpass,
     notch: globalState_default.filter.notch
   };
-};
-var createDefaultGlobalPanner = function() {
+}
+function createDefaultGlobalPanner() {
   return {
     areAllDisable: globalDefault.panner.areAllDisable,
     xMax: globalDefault.panner.xMax,
@@ -23955,8 +23955,8 @@ var createDefaultGlobalPanner = function() {
     zMax: globalDefault.panner.zMax,
     zMin: globalDefault.panner.zMin
   };
-};
-var createGlobalPanner = function() {
+}
+function createGlobalPanner() {
   return {
     areAllDisable: globalState_default.panner.areAllDisable,
     xMax: globalState_default.panner.xMax,
@@ -23966,34 +23966,34 @@ var createGlobalPanner = function() {
     zMax: globalState_default.panner.zMax,
     zMin: globalState_default.panner.zMin
   };
-};
-var createDefaultGlobalPlaybackRate = function() {
+}
+function createDefaultGlobalPlaybackRate() {
   return {
     areAllDisable: globalDefault.playbackRate.areAllDisable,
     max: globalDefault.playbackRate.max,
     min: globalDefault.playbackRate.min
   };
-};
-var createGlobalPlaybackRate = function() {
+}
+function createGlobalPlaybackRate() {
   return {
     areAllDisable: globalState_default.playbackRate.areAllDisable,
     max: globalState_default.playbackRate.max,
     min: globalState_default.playbackRate.min
   };
-};
-var createDefaultGlobalTimeInterval = function() {
+}
+function createDefaultGlobalTimeInterval() {
   return {
     max: globalDefault.timeInterval.max,
     min: globalDefault.timeInterval.min
   };
-};
-var createGlobalTimeInterval = function() {
+}
+function createGlobalTimeInterval() {
   return {
     max: globalState_default.timeInterval.max,
     min: globalState_default.timeInterval.min
   };
-};
-var createAudioViewState = function(id) {
+}
+function createAudioViewState(id) {
   const audioState = globalState_default.audioList.get(id);
   if (audioState === undefined) {
     console.warn("Warning: The app does not find the id:", id, " in the audios register.\n", "The app does not create the audio object representation that is requested.");
@@ -24020,8 +24020,8 @@ var createAudioViewState = function(id) {
     title: audioState.title,
     volume: audioState.volume
   };
-};
-var createAudioViewStateFrom = function(avs) {
+}
+function createAudioViewStateFrom(avs) {
   return {
     audioEvents: avs.audioEvents,
     color: avs.color,
@@ -24043,46 +24043,46 @@ var createAudioViewStateFrom = function(avs) {
     title: avs.title,
     volume: avs.volume
   };
-};
-var createAppState = function() {
+}
+function createAppState() {
   return {
     isStarted: false,
     audiosSet: EmptyObject,
     playColor: "",
     playAudiosFromSet: true
   };
-};
-var createAppStateFrom = function(as) {
+}
+function createAppStateFrom(as) {
   return {
     isStarted: as.isStarted,
     audiosSet: as.audiosSet,
     playColor: as.playColor,
     playAudiosFromSet: as.playAudiosFromSet
   };
-};
-var createFadesState = function() {
+}
+function createFadesState() {
   return {
     fadeIn: globalState_default.fadeIn,
     fadeOut: globalState_default.fadeOut
   };
-};
-var createAudioListState = function() {
+}
+function createAudioListState() {
   return {
     completedAudioList: {},
     completedAudioListSize: 0,
     loadedAudioList: {},
     loadedAudioListSize: 0
   };
-};
-var createAudioListStateFrom = function(als) {
+}
+function createAudioListStateFrom(als) {
   return {
     completedAudioList: als.completedAudioList,
     completedAudioListSize: als.completedAudioListSize,
     loadedAudioList: als.loadedAudioList,
     loadedAudioListSize: als.loadedAudioListSize
   };
-};
-var createGeneralDisableState = function() {
+}
+function createGeneralDisableState() {
   return {
     allDelaysAreDisabled: {
       global: true,
@@ -24109,8 +24109,8 @@ var createGeneralDisableState = function() {
       value: globalState_default.randomStartPoint.areAllDisable
     }
   };
-};
-var createGeneralDisableStateFrom = function(gds) {
+}
+function createGeneralDisableStateFrom(gds) {
   return {
     allDelaysAreDisabled: {
       global: gds.allDelaysAreDisabled.global,
@@ -24137,24 +24137,24 @@ var createGeneralDisableStateFrom = function(gds) {
       value: gds.allRandomStartPointsAreDisabled.value
     }
   };
-};
-var createPanelConfigState = function() {
+}
+function createPanelConfigState() {
   return {
     isPanelConfigVisible: false,
     isPanelButtonsVisible: false,
     isPanelVisible: false,
     panelSelected: ""
   };
-};
-var createSetsState = function() {
+}
+function createSetsState() {
   return {
     arrOfEvents: globalState_default.eventsForEachSet.arrOfEvents,
     sumOfAllEvents: globalState_default.eventsForEachSet.sumOfAllEvents
   };
-};
+}
 
 // src/slices/audioList.js
-var audioListReducer = function(state, action) {
+function audioListReducer(state, action) {
   const type = action?.type;
   if (type === "addLoading") {
     if (state.loadedAudioList[action.payload] === undefined) {
@@ -24222,7 +24222,7 @@ var audioListReducer = function(state, action) {
     }
     return state;
   }
-};
+}
 var audioListActions = {
   addLoading(id) {
     return { type: "addLoading", payload: id };
@@ -24245,8 +24245,8 @@ var audioListActions = {
 };
 
 // src/state/dispatch.js
-var emptyDispatch = function(a) {
-};
+function emptyDispatch(a) {
+}
 var dispatch = {
   app: emptyDispatch,
   audioList: emptyDispatch,
@@ -24262,7 +24262,7 @@ var AudioListContext = import_react.createContext(createAudioListState());
 var AudioListProvider = import_react.memo(function AudioListProvider2({ children }) {
   const value = import_react.useReducer(audioListReducer, createAudioListState());
   dispatch_default.audioList = value[1];
-  return jsx_dev_runtime.jsxDEV(AudioListContext.Provider, {
+  return /* @__PURE__ */ jsx_dev_runtime.jsxDEV(AudioListContext.Provider, {
     value: value[0],
     children
   }, undefined, false, undefined, this);
@@ -24272,7 +24272,7 @@ var AudioListProvider = import_react.memo(function AudioListProvider2({ children
 var import_react2 = __toESM(require_react(), 1);
 
 // src/slices/generalDisable.js
-var generalDisableAction = function(type, effect, scope) {
+function generalDisableAction(type, effect, scope) {
   const isDisable = type === "disable";
   globalState_default[effect].areAllDisable = isDisable;
   localStorage.setItem(`${effect}.areAllDisable`, String(isDisable));
@@ -24280,12 +24280,12 @@ var generalDisableAction = function(type, effect, scope) {
   returnAction.effect = effects[effect];
   returnAction.payload = payloadOptions[type + "/" + scope];
   return returnAction;
-};
-var generalDisableReducer = function(state, action) {
+}
+function generalDisableReducer(state, action) {
   const newState = createGeneralDisableStateFrom(state);
   newState[`all${action.effect}sAreDisabled`] = action.payload;
   return newState;
-};
+}
 var effects = {
   delay: "Delay",
   filter: "Filter",
@@ -24313,7 +24313,7 @@ var GeneralDisableContext = import_react2.createContext(createGeneralDisableStat
 var GeneralDisableProvider = import_react2.memo(function GeneralDisableProvider2({ children }) {
   const value = import_react2.useReducer(generalDisableReducer, createGeneralDisableState());
   dispatch_default.generalDisable = value[1];
-  return jsx_dev_runtime2.jsxDEV(GeneralDisableContext.Provider, {
+  return /* @__PURE__ */ jsx_dev_runtime2.jsxDEV(GeneralDisableContext.Provider, {
     value: value[0],
     children
   }, undefined, false, undefined, this);
@@ -24324,7 +24324,7 @@ var import_react3 = __toESM(require_react(), 1);
 var import_react4 = __toESM(require_react(), 1);
 
 // src/slices/app.js
-var appReducer = function(state, action) {
+function appReducer(state, action) {
   if (action !== undefined) {
     const type = action?.type;
     if (type === "start") {
@@ -24344,7 +24344,7 @@ var appReducer = function(state, action) {
     }
   }
   return state;
-};
+}
 var returnNewExecution = {
   type: "newExecution",
   payload: globalState_default.generativeState
@@ -24374,7 +24374,7 @@ var AppContext = import_react4.createContext(createAppState());
 var AppProvider = import_react4.memo(function AppProvider2({ children }) {
   const value = import_react4.useReducer(appReducer, createAppState());
   dispatch_default.app = value[1];
-  return jsx_dev_runtime3.jsxDEV(AppContext.Provider, {
+  return /* @__PURE__ */ jsx_dev_runtime3.jsxDEV(AppContext.Provider, {
     value: value[0],
     children
   }, undefined, false, undefined, this);
@@ -24384,9 +24384,9 @@ var AppProvider = import_react4.memo(function AppProvider2({ children }) {
 var import_react5 = __toESM(require_react(), 1);
 
 // src/slices/sumOfAllAudiosEvents.js
-var sumOfAllAudiosEventsReducer = function(state, action) {
+function sumOfAllAudiosEventsReducer(state, action) {
   return globalState_default.sumOfAllAudiosEvents;
-};
+}
 var ReturnSumOfAllAudiosEventsAction = { type: "add" };
 var sumOfAllAudiosEventsActions = {
   add() {
@@ -24417,7 +24417,7 @@ var SumOfAllAudiosEventsContext = import_react5.createContext(0);
 var SumOfAllAudiosEventsProvider = import_react5.memo(function SumOfAllAudiosEventsProvider2({ children }) {
   const value = import_react5.useReducer(sumOfAllAudiosEventsReducer, 0);
   dispatch_default.sumOfAllAudiosEvents = value[1];
-  return jsx_dev_runtime4.jsxDEV(SumOfAllAudiosEventsContext.Provider, {
+  return /* @__PURE__ */ jsx_dev_runtime4.jsxDEV(SumOfAllAudiosEventsContext.Provider, {
     value: value[0],
     children
   }, undefined, false, undefined, this);
@@ -24430,22 +24430,22 @@ var import_react8 = __toESM(require_react(), 1);
 var import_react7 = __toESM(require_react(), 1);
 
 // src/addFiles.js
-var isValidAudioType = function(type) {
+function isValidAudioType(type) {
   return type.startsWith("audio/");
-};
-var canPlayType = function(HTMLAudio, mediaType) {
+}
+function canPlayType(HTMLAudio, mediaType) {
   if (!HTMLAudio.canPlayType) {
     throw new Error("HTMLAudioElement.prototype.canPlayType does not find");
   }
   return HTMLAudio.canPlayType(mediaType);
-};
-var onerror = function() {
+}
+function onerror() {
   console.warn("Warning: An error happen when the audio file was loading");
   console.warn(`Cause of that this audio file "${this.name}" will be deleted from list`);
   dispatch_default.audioList(audioListActions.loadingError(this.id));
   return;
-};
-var oncanplaythrough = function() {
+}
+function oncanplaythrough() {
   const type = this.type;
   const name = this.name;
   const id = this.id;
@@ -24484,7 +24484,7 @@ var oncanplaythrough = function() {
   globalState_default.audioList.set(id, audioState);
   dispatch_default.audioList(audioListActions.addCompleted(id));
   dispatch_default.sumOfAllAudiosEvents(sumOfAllAudiosEventsActions.add());
-};
+}
 async function audioFromFile(file, id) {
   const HTMLAudio = AudioTemplate.cloneNode();
   HTMLAudio.src = URL.createObjectURL(file);
@@ -24503,7 +24503,7 @@ async function audioFromFile(file, id) {
   HTMLAudio.addEventListener("canplaythrough", oncanplaythrough, EventOnce);
   return;
 }
-var addFiles = function(files) {
+function addFiles(files) {
   for (let i = 0;i < files.length; i += 1) {
     const file = files[i];
     if (isValidAudioType(file.type)) {
@@ -24513,194 +24513,194 @@ var addFiles = function(files) {
     }
   }
   return;
-};
+}
 var AudioTemplate = new Audio;
 var addFiles_default = addFiles;
 
 // src/components/icons.jsx
 var import_react6 = __toESM(require_react(), 1);
-var IconMusicFile = function({ className = "" }) {
-  return jsx_dev_runtime5.jsxDEV("svg", {
+function IconMusicFile({ className = "" }) {
+  return /* @__PURE__ */ jsx_dev_runtime5.jsxDEV("svg", {
     xmlns: "http://www.w3.org/2000/svg",
     fill: "currentColor",
     className,
     viewBox: "0 0 16 16",
     children: [
-      jsx_dev_runtime5.jsxDEV("path", {
+      /* @__PURE__ */ jsx_dev_runtime5.jsxDEV("path", {
         d: "M11 6.64a1 1 0 0 0-1.243-.97l-1 .25A1 1 0 0 0 8 6.89v4.306A2.572 2.572 0 0 0 7 11c-.5 0-.974.134-1.338.377-.36.24-.662.628-.662 1.123s.301.883.662 1.123c.364.243.839.377 1.338.377.5 0 .974-.134 1.338-.377.36-.24.662-.628.662-1.123V8.89l2-.5V6.64z"
       }, undefined, false, undefined, this),
-      jsx_dev_runtime5.jsxDEV("path", {
+      /* @__PURE__ */ jsx_dev_runtime5.jsxDEV("path", {
         d: "M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"
       }, undefined, false, undefined, this)
     ]
   }, undefined, true, undefined, this);
-};
-var IconPlay = function({ className = "" }) {
-  return jsx_dev_runtime5.jsxDEV("svg", {
+}
+function IconPlay({ className = "" }) {
+  return /* @__PURE__ */ jsx_dev_runtime5.jsxDEV("svg", {
     xmlns: "http://www.w3.org/2000/svg",
     fill: "currentColor",
     className,
     viewBox: "0 0 16 16",
-    children: jsx_dev_runtime5.jsxDEV("path", {
+    children: /* @__PURE__ */ jsx_dev_runtime5.jsxDEV("path", {
       d: "m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"
     }, undefined, false, undefined, this)
   }, undefined, false, undefined, this);
-};
-var IconPause = function({ className = "" }) {
-  return jsx_dev_runtime5.jsxDEV("svg", {
+}
+function IconPause({ className = "" }) {
+  return /* @__PURE__ */ jsx_dev_runtime5.jsxDEV("svg", {
     xmlns: "http://www.w3.org/2000/svg",
     fill: "currentColor",
     className,
     viewBox: "0 0 16 16",
-    children: jsx_dev_runtime5.jsxDEV("path", {
+    children: /* @__PURE__ */ jsx_dev_runtime5.jsxDEV("path", {
       d: "M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z"
     }, undefined, false, undefined, this)
   }, undefined, false, undefined, this);
-};
-var IconStart = function({ className = "" }) {
-  return jsx_dev_runtime5.jsxDEV("svg", {
+}
+function IconStart({ className = "" }) {
+  return /* @__PURE__ */ jsx_dev_runtime5.jsxDEV("svg", {
     xmlns: "http://www.w3.org/2000/svg",
     fill: "currentColor",
     className,
     viewBox: "0 0 16 16",
     children: [
-      jsx_dev_runtime5.jsxDEV("path", {
+      /* @__PURE__ */ jsx_dev_runtime5.jsxDEV("path", {
         d: "M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
       }, undefined, false, undefined, this),
-      jsx_dev_runtime5.jsxDEV("path", {
+      /* @__PURE__ */ jsx_dev_runtime5.jsxDEV("path", {
         d: "M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z"
       }, undefined, false, undefined, this)
     ]
   }, undefined, true, undefined, this);
-};
-var IconStop = function({ className = "" }) {
-  return jsx_dev_runtime5.jsxDEV("svg", {
+}
+function IconStop({ className = "" }) {
+  return /* @__PURE__ */ jsx_dev_runtime5.jsxDEV("svg", {
     xmlns: "http://www.w3.org/2000/svg",
     fill: "currentColor",
     className,
     viewBox: "0 0 16 16",
     children: [
-      jsx_dev_runtime5.jsxDEV("path", {
+      /* @__PURE__ */ jsx_dev_runtime5.jsxDEV("path", {
         d: "M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
       }, undefined, false, undefined, this),
-      jsx_dev_runtime5.jsxDEV("path", {
+      /* @__PURE__ */ jsx_dev_runtime5.jsxDEV("path", {
         d: "M5 6.5A1.5 1.5 0 0 1 6.5 5h3A1.5 1.5 0 0 1 11 6.5v3A1.5 1.5 0 0 1 9.5 11h-3A1.5 1.5 0 0 1 5 9.5v-3z"
       }, undefined, false, undefined, this)
     ]
   }, undefined, true, undefined, this);
-};
-var IconTrash = function({ className = "" }) {
-  return jsx_dev_runtime5.jsxDEV("svg", {
+}
+function IconTrash({ className = "" }) {
+  return /* @__PURE__ */ jsx_dev_runtime5.jsxDEV("svg", {
     xmlns: "http://www.w3.org/2000/svg",
     fill: "currentColor",
     className,
     viewBox: "0 0 16 16",
-    children: jsx_dev_runtime5.jsxDEV("path", {
+    children: /* @__PURE__ */ jsx_dev_runtime5.jsxDEV("path", {
       d: "M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"
     }, undefined, false, undefined, this)
   }, undefined, false, undefined, this);
-};
-var IconVolume = function({ className = "" }) {
-  return jsx_dev_runtime5.jsxDEV("svg", {
+}
+function IconVolume({ className = "" }) {
+  return /* @__PURE__ */ jsx_dev_runtime5.jsxDEV("svg", {
     xmlns: "http://www.w3.org/2000/svg",
     fill: "currentColor",
     className,
     viewBox: "0 0 16 16",
-    children: jsx_dev_runtime5.jsxDEV("path", {
+    children: /* @__PURE__ */ jsx_dev_runtime5.jsxDEV("path", {
       d: "M10.717 3.55A.5.5 0 0 1 11 4v8a.5.5 0 0 1-.812.39L7.825 10.5H5.5A.5.5 0 0 1 5 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06z"
     }, undefined, false, undefined, this)
   }, undefined, false, undefined, this);
-};
-var IconX = function({ className = "" }) {
-  return jsx_dev_runtime5.jsxDEV("svg", {
+}
+function IconX({ className = "" }) {
+  return /* @__PURE__ */ jsx_dev_runtime5.jsxDEV("svg", {
     xmlns: "http://www.w3.org/2000/svg",
     fill: "currentColor",
     className,
     viewBox: "0 0 16 16",
-    children: jsx_dev_runtime5.jsxDEV("path", {
+    children: /* @__PURE__ */ jsx_dev_runtime5.jsxDEV("path", {
       d: "M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
     }, undefined, false, undefined, this)
   }, undefined, false, undefined, this);
-};
-var IconChevronBarLeft = function({ className = "" }) {
-  return jsx_dev_runtime5.jsxDEV("svg", {
+}
+function IconChevronBarLeft({ className = "" }) {
+  return /* @__PURE__ */ jsx_dev_runtime5.jsxDEV("svg", {
     xmlns: "http://www.w3.org/2000/svg",
     fill: "currentColor",
     className,
     viewBox: "0 0 16 16",
-    children: jsx_dev_runtime5.jsxDEV("path", {
+    children: /* @__PURE__ */ jsx_dev_runtime5.jsxDEV("path", {
       fillRule: "evenodd",
       d: "M11.854 3.646a.5.5 0 0 1 0 .708L8.207 8l3.647 3.646a.5.5 0 0 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 0 1 .708 0zM4.5 1a.5.5 0 0 0-.5.5v13a.5.5 0 0 0 1 0v-13a.5.5 0 0 0-.5-.5z"
     }, undefined, false, undefined, this)
   }, undefined, false, undefined, this);
-};
-var IconChevronUp = function({ className = "" }) {
-  return jsx_dev_runtime5.jsxDEV("svg", {
+}
+function IconChevronUp({ className = "" }) {
+  return /* @__PURE__ */ jsx_dev_runtime5.jsxDEV("svg", {
     xmlns: "http://www.w3.org/2000/svg",
     fill: "currentColor",
     className,
     viewBox: "0 0 16 16",
-    children: jsx_dev_runtime5.jsxDEV("path", {
+    children: /* @__PURE__ */ jsx_dev_runtime5.jsxDEV("path", {
       fillRule: "evenodd",
       d: "M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"
     }, undefined, false, undefined, this)
   }, undefined, false, undefined, this);
-};
-var IconChevronDown = function({ className = "" }) {
-  return jsx_dev_runtime5.jsxDEV("svg", {
+}
+function IconChevronDown({ className = "" }) {
+  return /* @__PURE__ */ jsx_dev_runtime5.jsxDEV("svg", {
     xmlns: "http://www.w3.org/2000/svg",
     fill: "currentColor",
     className,
     viewBox: "0 0 16 16",
-    children: jsx_dev_runtime5.jsxDEV("path", {
+    children: /* @__PURE__ */ jsx_dev_runtime5.jsxDEV("path", {
       fillRule: "evenodd",
       d: "M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"
     }, undefined, false, undefined, this)
   }, undefined, false, undefined, this);
-};
-var IconChevronRight = function({ className = "" }) {
-  return jsx_dev_runtime5.jsxDEV("svg", {
+}
+function IconChevronRight({ className = "" }) {
+  return /* @__PURE__ */ jsx_dev_runtime5.jsxDEV("svg", {
     xmlns: "http://www.w3.org/2000/svg",
     fill: "currentColor",
     className,
     viewBox: "0 0 16 16",
-    children: jsx_dev_runtime5.jsxDEV("path", {
+    children: /* @__PURE__ */ jsx_dev_runtime5.jsxDEV("path", {
       fillRule: "evenodd",
       d: "M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"
     }, undefined, false, undefined, this)
   }, undefined, false, undefined, this);
-};
-var IconChevronLeft = function({ className = "" }) {
-  return jsx_dev_runtime5.jsxDEV("svg", {
+}
+function IconChevronLeft({ className = "" }) {
+  return /* @__PURE__ */ jsx_dev_runtime5.jsxDEV("svg", {
     xmlns: "http://www.w3.org/2000/svg",
     fill: "currentColor",
     className,
     viewBox: "0 0 16 16",
-    children: jsx_dev_runtime5.jsxDEV("path", {
+    children: /* @__PURE__ */ jsx_dev_runtime5.jsxDEV("path", {
       fillRule: "evenodd",
       d: "M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
     }, undefined, false, undefined, this)
   }, undefined, false, undefined, this);
-};
+}
 var jsx_dev_runtime5 = __toESM(require_jsx_dev_runtime(), 1);
-var IconGear = function({ className = "" }) {
-  return jsx_dev_runtime5.jsxDEV("svg", {
+function IconGear({ className = "" }) {
+  return /* @__PURE__ */ jsx_dev_runtime5.jsxDEV("svg", {
     xmlns: "http://www.w3.org/2000/svg",
     fill: "currentColor",
     className,
     viewBox: "0 0 16 16",
     children: [
-      jsx_dev_runtime5.jsxDEV("path", {
+      /* @__PURE__ */ jsx_dev_runtime5.jsxDEV("path", {
         d: "M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"
       }, undefined, false, undefined, this),
-      jsx_dev_runtime5.jsxDEV("path", {
+      /* @__PURE__ */ jsx_dev_runtime5.jsxDEV("path", {
         d: "M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z"
       }, undefined, false, undefined, this)
     ]
   }, undefined, true, undefined, this);
-};
-var IconMore = function({ className = "" }) {
-  return jsx_dev_runtime5.jsxDEV("svg", {
+}
+function IconMore({ className = "" }) {
+  return /* @__PURE__ */ jsx_dev_runtime5.jsxDEV("svg", {
     xmlns: "http://www.w3.org/2000/svg",
     viewBox: "0 0 24 24",
     fill: "none",
@@ -24710,31 +24710,31 @@ var IconMore = function({ className = "" }) {
     strokeLinejoin: "round",
     className,
     children: [
-      jsx_dev_runtime5.jsxDEV("circle", {
+      /* @__PURE__ */ jsx_dev_runtime5.jsxDEV("circle", {
         cx: "12",
         cy: "12",
         r: "1"
       }, undefined, false, undefined, this),
-      jsx_dev_runtime5.jsxDEV("circle", {
+      /* @__PURE__ */ jsx_dev_runtime5.jsxDEV("circle", {
         cx: "19",
         cy: "12",
         r: "1"
       }, undefined, false, undefined, this),
-      jsx_dev_runtime5.jsxDEV("circle", {
+      /* @__PURE__ */ jsx_dev_runtime5.jsxDEV("circle", {
         cx: "5",
         cy: "12",
         r: "1"
       }, undefined, false, undefined, this)
     ]
   }, undefined, true, undefined, this);
-};
+}
 
 // src/components/DropContainer.jsx
 var jsx_dev_runtime6 = __toESM(require_jsx_dev_runtime(), 1);
-var preventDefault = function(e) {
+function preventDefault(e) {
   e.preventDefault();
-};
-var handleFileDrop = function(e) {
+}
+function handleFileDrop(e) {
   e.preventDefault();
   if (e.dataTransfer === null) {
     console.warn("Warning: The dataTransfer of the Drop Event is null.");
@@ -24742,61 +24742,61 @@ var handleFileDrop = function(e) {
   }
   e.dataTransfer.dropEffect = "copy";
   addFiles_default(e.dataTransfer.files);
-};
-var DropArea = function() {
-  return jsx_dev_runtime6.jsxDEV(jsx_dev_runtime6.Fragment, {
+}
+function DropArea() {
+  return /* @__PURE__ */ jsx_dev_runtime6.jsxDEV(jsx_dev_runtime6.Fragment, {
     children: [
-      jsx_dev_runtime6.jsxDEV("div", {
+      /* @__PURE__ */ jsx_dev_runtime6.jsxDEV("div", {
         className: "dragfile flex-row align-c justify-c",
-        children: jsx_dev_runtime6.jsxDEV(IconMusicFile, {
+        children: /* @__PURE__ */ jsx_dev_runtime6.jsxDEV(IconMusicFile, {
           className: "icon-drop o-5"
         }, undefined, false, undefined, this)
       }, undefined, false, undefined, this),
-      jsx_dev_runtime6.jsxDEV("div", {
-        children: jsx_dev_runtime6.jsxDEV("p", {
+      /* @__PURE__ */ jsx_dev_runtime6.jsxDEV("div", {
+        children: /* @__PURE__ */ jsx_dev_runtime6.jsxDEV("p", {
           className: "fs-text p-5",
           children: "Drop files"
         }, undefined, false, undefined, this)
       }, undefined, false, undefined, this)
     ]
   }, undefined, true, undefined, this);
-};
-var DropContainer = function() {
-  return jsx_dev_runtime6.jsxDEV("div", {
+}
+function DropContainer() {
+  return /* @__PURE__ */ jsx_dev_runtime6.jsxDEV("div", {
     className: "dropFile flex-column align-c justify-c",
     onDragOver: preventDefault,
     onDrop: handleFileDrop,
-    children: jsx_dev_runtime6.jsxDEV(DropArea, {}, undefined, false, undefined, this)
+    children: /* @__PURE__ */ jsx_dev_runtime6.jsxDEV(DropArea, {}, undefined, false, undefined, this)
   }, undefined, false, undefined, this);
-};
+}
 var DropContainer_default = DropContainer;
 
 // src/components/Show.jsx
-var Show = function({ is, children }) {
+function Show({ is, children }) {
   return is ? children : null;
-};
+}
 var Show_default = Show;
 
 // src/components/DragContainer.jsx
 var jsx_dev_runtime7 = __toESM(require_jsx_dev_runtime(), 1);
-var handleDragEnter = function() {
+function handleDragEnter() {
   counter += 1;
   dispatchIsDragActive(true);
-};
-var handleDragLeave = function() {
+}
+function handleDragLeave() {
   counter -= 1;
   if (counter === 0) {
     dispatchIsDragActive(false);
   }
-};
-var handleDrop = function() {
+}
+function handleDrop() {
   counter = 0;
   dispatchIsDragActive(false);
-};
-var DragContainer = function({ className, style, children }) {
+}
+function DragContainer({ className, style, children }) {
   const [isDragActive, setIsDragActive] = import_react8.useState(false);
   dispatchIsDragActive = setIsDragActive;
-  return jsx_dev_runtime7.jsxDEV("div", {
+  return /* @__PURE__ */ jsx_dev_runtime7.jsxDEV("div", {
     className,
     style,
     onDragEnter: handleDragEnter,
@@ -24804,13 +24804,13 @@ var DragContainer = function({ className, style, children }) {
     onDrop: handleDrop,
     children: [
       children,
-      jsx_dev_runtime7.jsxDEV(Show_default, {
+      /* @__PURE__ */ jsx_dev_runtime7.jsxDEV(Show_default, {
         is: isDragActive,
-        children: jsx_dev_runtime7.jsxDEV(DropContainer_default, {}, undefined, false, undefined, this)
+        children: /* @__PURE__ */ jsx_dev_runtime7.jsxDEV(DropContainer_default, {}, undefined, false, undefined, this)
       }, undefined, false, undefined, this)
     ]
   }, undefined, true, undefined, this);
-};
+}
 var counter = 0;
 var dispatchIsDragActive;
 var DragContainer_default = DragContainer;
@@ -24819,7 +24819,7 @@ var DragContainer_default = DragContainer;
 var import_react27 = __toESM(require_react(), 1);
 
 // src/slices/panelConfig.js
-var panelConfigReducer = function(state, action) {
+function panelConfigReducer(state, action) {
   const type = action.type;
   const payload = action.payload;
   if (type === "panel/change") {
@@ -24856,7 +24856,7 @@ var panelConfigReducer = function(state, action) {
   } else {
     return state;
   }
-};
+}
 var panelConfigActions = {
   changePanelToSets: { type: "panel/change", payload: "SETS" },
   changePanelToTime: { type: "panel/change", payload: "TIME" },
@@ -24884,7 +24884,7 @@ function ToolButton({
   onClick,
   children
 }) {
-  return jsx_dev_runtime8.jsxDEV("button", {
+  return /* @__PURE__ */ jsx_dev_runtime8.jsxDEV("button", {
     title,
     className: "t-button " + className,
     type: "button",
@@ -24895,34 +24895,34 @@ function ToolButton({
 
 // src/components/Panel/PanelButtonsSection.jsx
 var jsx_dev_runtime9 = __toESM(require_jsx_dev_runtime(), 1);
-var setsOnClick = function() {
+function setsOnClick() {
   dispatch_default.panelConfig(panelConfigActions.changePanelToSets);
-};
-var timeOnClick = function() {
+}
+function timeOnClick() {
   dispatch_default.panelConfig(panelConfigActions.changePanelToTime);
-};
-var fadeTimeOnClick = function() {
+}
+function fadeTimeOnClick() {
   dispatch_default.panelConfig(panelConfigActions.changePanelToFades);
-};
-var pannerOnClick = function() {
+}
+function pannerOnClick() {
   dispatch_default.panelConfig(panelConfigActions.changePanelToPanner);
-};
-var filterOnClick = function() {
+}
+function filterOnClick() {
   dispatch_default.panelConfig(panelConfigActions.changePanelToFilter);
-};
-var delayOnClick = function() {
+}
+function delayOnClick() {
   dispatch_default.panelConfig(panelConfigActions.changePanelToDelay);
-};
-var playBackRateOnClick = function() {
+}
+function playBackRateOnClick() {
   dispatch_default.panelConfig(panelConfigActions.changePanelToRate);
-};
-var randomStartPointOnClick = function() {
+}
+function randomStartPointOnClick() {
   dispatch_default.panelConfig(panelConfigActions.changePanelToRSP);
-};
-var randomEndPointOnClick = function() {
+}
+function randomEndPointOnClick() {
   dispatch_default.panelConfig(panelConfigActions.changePanelToREP);
-};
-var exportJson = function(e) {
+}
+function exportJson(e) {
   const downloadAnchorNode = e.currentTarget.firstElementChild;
   if (downloadAnchorNode === null) {
     return;
@@ -24932,7 +24932,7 @@ var exportJson = function(e) {
   downloadAnchorNode.setAttribute("download", "inSets_configs.json");
   downloadAnchorNode.click();
   dispatch_default.panelConfig(panelConfigActions.closePanel);
-};
+}
 async function importJsonInput(e) {
   if (e.currentTarget.files?.[0] === undefined) {
     return;
@@ -24969,150 +24969,150 @@ async function importJsonInput(e) {
   }
   dispatch_default.panelConfig(panelConfigActions.closePanel);
 }
-var importJsonClick = function(e) {
+function importJsonClick(e) {
   e.currentTarget.value = "";
-};
-var importJson = function(e) {
+}
+function importJson(e) {
   const input = e.currentTarget.firstElementChild;
   if (input !== null) {
     input.click();
   }
-};
-var ImportButton = function() {
-  return jsx_dev_runtime9.jsxDEV("div", {
+}
+function ImportButton() {
+  return /* @__PURE__ */ jsx_dev_runtime9.jsxDEV("div", {
     className: "panel-button flex-row justify-c",
-    children: jsx_dev_runtime9.jsxDEV("button", {
+    children: /* @__PURE__ */ jsx_dev_runtime9.jsxDEV("button", {
       title: "import",
       className: "t-button flex-row align-c justify-c",
       type: "button",
       onClick: importJson,
       children: [
-        jsx_dev_runtime9.jsxDEV("input", {
+        /* @__PURE__ */ jsx_dev_runtime9.jsxDEV("input", {
           className: "display-none",
           type: "file",
           accept: "application/json",
           onClick: importJsonClick,
           onInput: importJsonInput
         }, undefined, false, undefined, this),
-        jsx_dev_runtime9.jsxDEV("h4", {
+        /* @__PURE__ */ jsx_dev_runtime9.jsxDEV("h4", {
           className: "fs-text",
           children: "import"
         }, undefined, false, undefined, this)
       ]
     }, undefined, true, undefined, this)
   }, undefined, false, undefined, this);
-};
-var ExportButton = function() {
-  return jsx_dev_runtime9.jsxDEV("div", {
+}
+function ExportButton() {
+  return /* @__PURE__ */ jsx_dev_runtime9.jsxDEV("div", {
     className: "panel-button flex-row justify-c",
-    children: jsx_dev_runtime9.jsxDEV("button", {
+    children: /* @__PURE__ */ jsx_dev_runtime9.jsxDEV("button", {
       title: "export",
       className: "t-button flex-row align-c justify-c",
       type: "button",
       onClick: exportJson,
       children: [
-        jsx_dev_runtime9.jsxDEV("a", {
+        /* @__PURE__ */ jsx_dev_runtime9.jsxDEV("a", {
           className: "display-none",
           href: "./",
           children: "."
         }, undefined, false, undefined, this),
-        jsx_dev_runtime9.jsxDEV("h4", {
+        /* @__PURE__ */ jsx_dev_runtime9.jsxDEV("h4", {
           className: "fs-text",
           children: "export"
         }, undefined, false, undefined, this)
       ]
     }, undefined, true, undefined, this)
   }, undefined, false, undefined, this);
-};
-var PanelButton = function({
+}
+function PanelButton({
   active = false,
   onClickHandler,
   text,
   title
 }) {
-  return jsx_dev_runtime9.jsxDEV("div", {
+  return /* @__PURE__ */ jsx_dev_runtime9.jsxDEV("div", {
     className: "panel-button flex-row justify-c",
-    children: jsx_dev_runtime9.jsxDEV(ToolButton, {
+    children: /* @__PURE__ */ jsx_dev_runtime9.jsxDEV(ToolButton, {
       title,
       className: active ? "active flex-row align-c justify-c" : "flex-row align-c justify-c",
       onClick: onClickHandler,
-      children: jsx_dev_runtime9.jsxDEV("h4", {
+      children: /* @__PURE__ */ jsx_dev_runtime9.jsxDEV("h4", {
         className: "fs-text",
         children: text
       }, undefined, false, undefined, this)
     }, undefined, false, undefined, this)
   }, undefined, false, undefined, this);
-};
-var PanelButtonsSection = function({
+}
+function PanelButtonsSection({
   isPanelButtonsVisible,
   isPanelConfigVisible,
   panelSelected
 }) {
-  return jsx_dev_runtime9.jsxDEV("div", {
+  return /* @__PURE__ */ jsx_dev_runtime9.jsxDEV("div", {
     className: !isPanelButtonsVisible ? `${PanelButtons_className} panel-hidden` : PanelButtons_className,
     children: [
-      jsx_dev_runtime9.jsxDEV(PanelButton, {
+      /* @__PURE__ */ jsx_dev_runtime9.jsxDEV(PanelButton, {
         active: isPanelConfigVisible && panelSelected === "SETS",
         onClickHandler: setsOnClick,
         text: "Sets",
         title: "Audio Sets"
       }, undefined, false, undefined, this),
-      jsx_dev_runtime9.jsxDEV(PanelButton, {
+      /* @__PURE__ */ jsx_dev_runtime9.jsxDEV(PanelButton, {
         active: isPanelConfigVisible && panelSelected === "TIME",
         onClickHandler: timeOnClick,
         text: "Time",
         title: "Time to wait"
       }, undefined, false, undefined, this),
-      jsx_dev_runtime9.jsxDEV(PanelButton, {
+      /* @__PURE__ */ jsx_dev_runtime9.jsxDEV(PanelButton, {
         active: isPanelConfigVisible && panelSelected === "FADES",
         onClickHandler: fadeTimeOnClick,
         text: "Fades",
         title: "FadeIn/FadeOut"
       }, undefined, false, undefined, this),
-      jsx_dev_runtime9.jsxDEV(PanelButton, {
+      /* @__PURE__ */ jsx_dev_runtime9.jsxDEV(PanelButton, {
         active: isPanelConfigVisible && panelSelected === "DELAY",
         onClickHandler: delayOnClick,
         text: "Delay",
         title: "Delay"
       }, undefined, false, undefined, this),
-      jsx_dev_runtime9.jsxDEV(PanelButton, {
+      /* @__PURE__ */ jsx_dev_runtime9.jsxDEV(PanelButton, {
         active: isPanelConfigVisible && panelSelected === "FILTER",
         onClickHandler: filterOnClick,
         text: "Filter",
         title: "Filter"
       }, undefined, false, undefined, this),
-      jsx_dev_runtime9.jsxDEV(PanelButton, {
+      /* @__PURE__ */ jsx_dev_runtime9.jsxDEV(PanelButton, {
         active: isPanelConfigVisible && panelSelected === "PANNER",
         onClickHandler: pannerOnClick,
         text: "Panner",
         title: "Panner"
       }, undefined, false, undefined, this),
-      jsx_dev_runtime9.jsxDEV(PanelButton, {
+      /* @__PURE__ */ jsx_dev_runtime9.jsxDEV(PanelButton, {
         active: isPanelConfigVisible && panelSelected === "RATE",
         onClickHandler: playBackRateOnClick,
         text: "Pb Rate",
         title: "Playback Rate"
       }, undefined, false, undefined, this),
-      jsx_dev_runtime9.jsxDEV(PanelButton, {
+      /* @__PURE__ */ jsx_dev_runtime9.jsxDEV(PanelButton, {
         active: isPanelConfigVisible && panelSelected === "REP",
         onClickHandler: randomEndPointOnClick,
         text: "REP",
         title: "Random End Point"
       }, undefined, false, undefined, this),
-      jsx_dev_runtime9.jsxDEV(PanelButton, {
+      /* @__PURE__ */ jsx_dev_runtime9.jsxDEV(PanelButton, {
         active: isPanelConfigVisible && panelSelected === "RSP",
         onClickHandler: randomStartPointOnClick,
         text: "RSP",
         title: "Random Start Point"
       }, undefined, false, undefined, this),
-      jsx_dev_runtime9.jsxDEV("div", {
+      /* @__PURE__ */ jsx_dev_runtime9.jsxDEV("div", {
         className: "h-line"
       }, undefined, false, undefined, this),
-      jsx_dev_runtime9.jsxDEV(ImportButton, {}, undefined, false, undefined, this),
-      jsx_dev_runtime9.jsxDEV(ExportButton, {}, undefined, false, undefined, this)
+      /* @__PURE__ */ jsx_dev_runtime9.jsxDEV(ImportButton, {}, undefined, false, undefined, this),
+      /* @__PURE__ */ jsx_dev_runtime9.jsxDEV(ExportButton, {}, undefined, false, undefined, this)
     ]
   }, undefined, true, undefined, this);
-};
+}
 var PanelButtons_className = "panel panel-buttons p-5 flex-column align-c";
 var PanelButtonsSection_default = PanelButtonsSection;
 
@@ -25123,12 +25123,12 @@ var import_react25 = __toESM(require_react(), 1);
 var import_react15 = __toESM(require_react(), 1);
 
 // src/slices/delay.js
-var delayReducer = function(state, action) {
+function delayReducer(state, action) {
   if (action !== undefined) {
     return action.payload;
   }
   return state;
-};
+}
 var ReturnDealyAction = {
   type: "reset",
   payload: undefined
@@ -25188,85 +25188,85 @@ var delayActions = {
 };
 
 // src/core/maps.js
-var rToFrequency = function(x) {
+function rToFrequency(x) {
   const { FREQ_MAX, FREQ_MIN } = filterLimits;
   if (FREQ_MIN <= x && x <= FREQ_MAX) {
     return x < 60 ? x + 40 : x < 150 ? (x - 50) * 10 : x < 240 ? (x - 140) * 100 : (x - 230) * 1000;
   }
   throw new Error("The argument is invalid");
-};
-var rToQ = function(x) {
+}
+function rToQ(x) {
   const { Q_MAX, Q_MIN } = filterLimits;
   if (Q_MIN <= x && x <= Q_MAX) {
     return x < 18 ? (x + 2) / 20 : x < 28 ? (x - 8) / 10 : x - 26;
   }
   throw new Error("The argument is invalid");
-};
-var rToPlaybackRate = function(x) {
+}
+function rToPlaybackRate(x) {
   const { MAX, MIN } = playbackRateLimits;
   if (MIN <= x && x <= MAX) {
     return x < 10 ? (x + 10) / 20 : x / 10;
   }
   throw new Error("The argument is invalid");
-};
-var rToFeedback = function(x) {
+}
+function rToFeedback(x) {
   const { FBACK_MAX, FBACK_MIN } = delayLimits;
   if (FBACK_MIN <= x && x <= FBACK_MAX) {
     return (x + 1) / 20;
   }
   throw new Error("The argument is invalid");
-};
-var rToTime = function(x) {
+}
+function rToTime(x) {
   const { TIME_MAX, TIME_MIN } = delayLimits;
   if (TIME_MIN <= x && x <= TIME_MAX) {
     return (x + 1) / 10;
   }
   throw new Error("The argument is invalid");
-};
-var rToPanner = function(x) {
+}
+function rToPanner(x) {
   const { MAX, MIN } = pannerLimits;
   if (MIN <= x && x <= MAX) {
     return x - 50;
   }
   throw new Error("The argument is invalid");
-};
-var rToFade = function(x) {
+}
+function rToFade(x) {
   const { MAX, MIN } = fadeLimits;
   if (MIN <= x && x <= MAX) {
     return x === 0 ? 0 : 20 * x + 60;
   }
   throw new Error("The argument is invalid");
-};
+}
 
 // src/components/Panel/PanelConfigContainer.jsx
 var import_react11 = __toESM(require_react(), 1);
 var jsx_dev_runtime10 = __toESM(require_jsx_dev_runtime(), 1);
-var Title = function({ title }) {
-  return jsx_dev_runtime10.jsxDEV(Show_default, {
+function Title({ title }) {
+  return /* @__PURE__ */ jsx_dev_runtime10.jsxDEV(Show_default, {
     is: title !== undefined,
-    children: jsx_dev_runtime10.jsxDEV("h3", {
+    children: /* @__PURE__ */ jsx_dev_runtime10.jsxDEV("h3", {
       className: "fs-text-l text-center",
       style: titleStyle,
       children: title
     }, undefined, false, undefined, this)
   }, undefined, false, undefined, this);
-};
-var Description = function({ description }) {
-  return jsx_dev_runtime10.jsxDEV(Show_default, {
+}
+function Description({ description }) {
+  return /* @__PURE__ */ jsx_dev_runtime10.jsxDEV(Show_default, {
     is: description !== undefined,
-    children: jsx_dev_runtime10.jsxDEV("div", {
+    children: /* @__PURE__ */ jsx_dev_runtime10.jsxDEV("div", {
       className: "flex-column align-c p-5",
-      children: jsx_dev_runtime10.jsxDEV("div", {
+      children: /* @__PURE__ */ jsx_dev_runtime10.jsxDEV("div", {
         className: "panel-config-container--description",
-        children: jsx_dev_runtime10.jsxDEV("span", {
+        children: /* @__PURE__ */ jsx_dev_runtime10.jsxDEV("span", {
           className: "fs-text",
           children: description
         }, undefined, false, undefined, this)
       }, undefined, false, undefined, this)
     }, undefined, false, undefined, this)
   }, undefined, false, undefined, this);
-};
-var ResetButton = function({
+}
+function ResetButton({
   enabled,
   title,
   reset
@@ -25274,19 +25274,19 @@ var ResetButton = function({
   if (!enabled) {
     return null;
   }
-  return jsx_dev_runtime10.jsxDEV("div", {
+  return /* @__PURE__ */ jsx_dev_runtime10.jsxDEV("div", {
     className: "flex-column align-c justify-c p-5",
-    children: jsx_dev_runtime10.jsxDEV(ToolButton, {
+    children: /* @__PURE__ */ jsx_dev_runtime10.jsxDEV(ToolButton, {
       title: `reset ${title} values`,
       onClick: reset,
-      children: jsx_dev_runtime10.jsxDEV("p", {
+      children: /* @__PURE__ */ jsx_dev_runtime10.jsxDEV("p", {
         className: "fs-text-s text-bold",
         children: "reset values"
       }, undefined, false, undefined, this)
     }, undefined, false, undefined, this)
   }, undefined, false, undefined, this);
-};
-var DisableAllButton = function({
+}
+function DisableAllButton({
   enabled,
   changeDisable,
   disableValue,
@@ -25296,20 +25296,20 @@ var DisableAllButton = function({
     return null;
   }
   const ButtonTitle = disableValue ? `enable all ${title} s` : `disable all ${title}s`;
-  return jsx_dev_runtime10.jsxDEV("div", {
+  return /* @__PURE__ */ jsx_dev_runtime10.jsxDEV("div", {
     className: "p-5",
-    children: jsx_dev_runtime10.jsxDEV("div", {
+    children: /* @__PURE__ */ jsx_dev_runtime10.jsxDEV("div", {
       className: "flex-row align-c justify-c p-10",
       children: [
-        jsx_dev_runtime10.jsxDEV("p", {
+        /* @__PURE__ */ jsx_dev_runtime10.jsxDEV("p", {
           className: "fs-text p-5",
           children: "disable all:"
         }, undefined, false, undefined, this),
-        jsx_dev_runtime10.jsxDEV(ToolButton, {
+        /* @__PURE__ */ jsx_dev_runtime10.jsxDEV(ToolButton, {
           title: ButtonTitle,
           onClick: changeDisable,
           value: disableValue,
-          children: jsx_dev_runtime10.jsxDEV("p", {
+          children: /* @__PURE__ */ jsx_dev_runtime10.jsxDEV("p", {
             className: "fs-text-s text-bold",
             children: disableValue ? "true" : "false"
           }, undefined, false, undefined, this)
@@ -25317,8 +25317,8 @@ var DisableAllButton = function({
       ]
     }, undefined, true, undefined, this)
   }, undefined, false, undefined, this);
-};
-var PanelConfigContainer = function({
+}
+function PanelConfigContainer({
   DisableAllButtonEnabled = false,
   ResetButtonEnabled = false,
   title,
@@ -25328,30 +25328,30 @@ var PanelConfigContainer = function({
   reset,
   children
 }) {
-  return jsx_dev_runtime10.jsxDEV("div", {
+  return /* @__PURE__ */ jsx_dev_runtime10.jsxDEV("div", {
     className: "panel-config-container",
     children: [
-      jsx_dev_runtime10.jsxDEV(Title, {
+      /* @__PURE__ */ jsx_dev_runtime10.jsxDEV(Title, {
         title
       }, undefined, false, undefined, this),
-      jsx_dev_runtime10.jsxDEV(Description, {
+      /* @__PURE__ */ jsx_dev_runtime10.jsxDEV(Description, {
         description
       }, undefined, false, undefined, this),
-      jsx_dev_runtime10.jsxDEV("div", {
+      /* @__PURE__ */ jsx_dev_runtime10.jsxDEV("div", {
         className: "flex-column align-c",
         children: [
-          jsx_dev_runtime10.jsxDEV(DisableAllButton, {
+          /* @__PURE__ */ jsx_dev_runtime10.jsxDEV(DisableAllButton, {
             enabled: DisableAllButtonEnabled,
             changeDisable,
             disableValue,
             title
           }, undefined, false, undefined, this),
-          jsx_dev_runtime10.jsxDEV(ResetButton, {
+          /* @__PURE__ */ jsx_dev_runtime10.jsxDEV(ResetButton, {
             enabled: ResetButtonEnabled,
             title,
             reset
           }, undefined, false, undefined, this),
-          jsx_dev_runtime10.jsxDEV("div", {
+          /* @__PURE__ */ jsx_dev_runtime10.jsxDEV("div", {
             className: "panel-config-container--children flex-column align-c justify-c",
             children
           }, undefined, false, undefined, this)
@@ -25359,7 +25359,7 @@ var PanelConfigContainer = function({
       }, undefined, true, undefined, this)
     ]
   }, undefined, true, undefined, this);
-};
+}
 var titleStyle = {
   marginBottom: "10px"
 };
@@ -25370,14 +25370,14 @@ var import_react14 = __toESM(require_react(), 1);
 
 // src/components/Panel/PanelConfigChild.jsx
 var jsx_dev_runtime11 = __toESM(require_jsx_dev_runtime(), 1);
-var PanelConfigChild = function({ title, children }) {
-  return jsx_dev_runtime11.jsxDEV("div", {
+function PanelConfigChild({ title, children }) {
+  return /* @__PURE__ */ jsx_dev_runtime11.jsxDEV("div", {
     className: "config-panel_children p-5",
     style,
     children: [
-      jsx_dev_runtime11.jsxDEV("div", {
+      /* @__PURE__ */ jsx_dev_runtime11.jsxDEV("div", {
         className: "flex-row align-c",
-        children: jsx_dev_runtime11.jsxDEV("h3", {
+        children: /* @__PURE__ */ jsx_dev_runtime11.jsxDEV("h3", {
           className: "fs-text text-bold",
           children: title
         }, undefined, false, undefined, this)
@@ -25385,7 +25385,7 @@ var PanelConfigChild = function({ title, children }) {
       children
     ]
   }, undefined, true, undefined, this);
-};
+}
 var style = { width: "100%" };
 var PanelConfigChild_default = PanelConfigChild;
 
@@ -25395,7 +25395,7 @@ var import_react13 = __toESM(require_react(), 1);
 // src/components/Range.jsx
 var import_react12 = __toESM(require_react(), 1);
 var jsx_dev_runtime12 = __toESM(require_jsx_dev_runtime(), 1);
-var Range = function({
+function Range({
   max = "100",
   min = "0",
   step = "1",
@@ -25408,12 +25408,12 @@ var Range = function({
       return onChange(e.target.value);
     }
   }
-  return jsx_dev_runtime12.jsxDEV("div", {
+  return /* @__PURE__ */ jsx_dev_runtime12.jsxDEV("div", {
     className: reverse ? "range reverse" : "range",
     role: "slider",
     "aria-valuenow": value,
     children: [
-      jsx_dev_runtime12.jsxDEV("input", {
+      /* @__PURE__ */ jsx_dev_runtime12.jsxDEV("input", {
         className: "range_seak",
         type: "range",
         min,
@@ -25422,7 +25422,7 @@ var Range = function({
         value,
         onChange: handler
       }, undefined, false, undefined, this),
-      jsx_dev_runtime12.jsxDEV("progress", {
+      /* @__PURE__ */ jsx_dev_runtime12.jsxDEV("progress", {
         className: "range_value",
         max,
         value,
@@ -25430,12 +25430,12 @@ var Range = function({
       }, undefined, false, undefined, this)
     ]
   }, undefined, true, undefined, this);
-};
+}
 var Range_default = Range;
 
 // src/components/Panel/PanelRange.jsx
 var jsx_dev_runtime13 = __toESM(require_jsx_dev_runtime(), 1);
-var PanelRange = function({
+function PanelRange({
   step,
   max,
   value,
@@ -25445,12 +25445,12 @@ var PanelRange = function({
   onChange,
   reverse = false
 }) {
-  return jsx_dev_runtime13.jsxDEV("div", {
+  return /* @__PURE__ */ jsx_dev_runtime13.jsxDEV("div", {
     className: "panel-config-range",
     children: [
-      jsx_dev_runtime13.jsxDEV("div", {
+      /* @__PURE__ */ jsx_dev_runtime13.jsxDEV("div", {
         className: "flex-row align-c p-5",
-        children: jsx_dev_runtime13.jsxDEV(Range_default, {
+        children: /* @__PURE__ */ jsx_dev_runtime13.jsxDEV(Range_default, {
           step,
           max,
           value,
@@ -25458,23 +25458,23 @@ var PanelRange = function({
           reverse
         }, undefined, false, undefined, this)
       }, undefined, false, undefined, this),
-      jsx_dev_runtime13.jsxDEV("div", {
+      /* @__PURE__ */ jsx_dev_runtime13.jsxDEV("div", {
         className: "flex-row align-c",
         children: [
-          jsx_dev_runtime13.jsxDEV(Show_default, {
+          /* @__PURE__ */ jsx_dev_runtime13.jsxDEV(Show_default, {
             is: text !== undefined,
-            children: jsx_dev_runtime13.jsxDEV("p", {
+            children: /* @__PURE__ */ jsx_dev_runtime13.jsxDEV("p", {
               className: "fs-text p-5",
               children: text
             }, undefined, false, undefined, this)
           }, undefined, false, undefined, this),
-          jsx_dev_runtime13.jsxDEV("p", {
+          /* @__PURE__ */ jsx_dev_runtime13.jsxDEV("p", {
             className: "fs-text",
             children: valueText
           }, undefined, false, undefined, this),
-          jsx_dev_runtime13.jsxDEV(Show_default, {
+          /* @__PURE__ */ jsx_dev_runtime13.jsxDEV(Show_default, {
             is: valueTextAdd !== undefined,
-            children: jsx_dev_runtime13.jsxDEV("p", {
+            children: /* @__PURE__ */ jsx_dev_runtime13.jsxDEV("p", {
               className: "fs-text p-5",
               children: " " + valueTextAdd
             }, undefined, false, undefined, this)
@@ -25483,12 +25483,12 @@ var PanelRange = function({
       }, undefined, true, undefined, this)
     ]
   }, undefined, true, undefined, this);
-};
+}
 var PanelRange_default = PanelRange;
 
 // src/components/Panel/PanelInterval.jsx
 var jsx_dev_runtime14 = __toESM(require_jsx_dev_runtime(), 1);
-var PanelInterval = function({
+function PanelInterval({
   title,
   valueText,
   rangeMax = 100,
@@ -25500,12 +25500,12 @@ var PanelInterval = function({
   onChangeMin,
   onChangeMax
 }) {
-  return jsx_dev_runtime14.jsxDEV(PanelConfigChild_default, {
+  return /* @__PURE__ */ jsx_dev_runtime14.jsxDEV(PanelConfigChild_default, {
     title,
-    children: jsx_dev_runtime14.jsxDEV("div", {
+    children: /* @__PURE__ */ jsx_dev_runtime14.jsxDEV("div", {
       className: "flex-column ",
       children: [
-        jsx_dev_runtime14.jsxDEV(PanelRange_default, {
+        /* @__PURE__ */ jsx_dev_runtime14.jsxDEV(PanelRange_default, {
           step,
           max: rangeMax,
           value: valueMin,
@@ -25514,7 +25514,7 @@ var PanelInterval = function({
           valueText: viewMin,
           valueTextAdd: valueText
         }, undefined, false, undefined, this),
-        jsx_dev_runtime14.jsxDEV(PanelRange_default, {
+        /* @__PURE__ */ jsx_dev_runtime14.jsxDEV(PanelRange_default, {
           step,
           max: rangeMax,
           value: valueMax,
@@ -25527,34 +25527,34 @@ var PanelInterval = function({
       ]
     }, undefined, true, undefined, this)
   }, undefined, false, undefined, this);
-};
+}
 var PanelInterval_default = PanelInterval;
 
 // src/components/Panel/Delay.jsx
 var jsx_dev_runtime15 = __toESM(require_jsx_dev_runtime(), 1);
-var changeDisable = function(value) {
+function changeDisable(value) {
   if (value) {
     dispatch_default.generalDisable(generalDisableAction("enable", "delay", "global"));
   } else {
     dispatch_default.generalDisable(generalDisableAction("disable", "delay", "global"));
   }
-};
-var reset = function() {
+}
+function reset() {
   _delayDispatch(delayActions.reset());
-};
-var timeMaxOnChange = function(val) {
+}
+function timeMaxOnChange(val) {
   _delayDispatch(delayActions.changeTimeMax(Number(val)));
-};
-var timeMinOnChange = function(val) {
+}
+function timeMinOnChange(val) {
   _delayDispatch(delayActions.changeTimeMin(Number(val)));
-};
-var feedbackMaxOnChange = function(val) {
+}
+function feedbackMaxOnChange(val) {
   _delayDispatch(delayActions.changeFeedbackMax(Number(val)));
-};
-var feedbackMinOnChange = function(val) {
+}
+function feedbackMinOnChange(val) {
   _delayDispatch(delayActions.changeFeedbackMin(Number(val)));
-};
-var Delay = function({ FBACK_MAX, TIME_MAX }) {
+}
+function Delay({ FBACK_MAX, TIME_MAX }) {
   const { allDelaysAreDisabled } = import_react15.useContext(GeneralDisableContext);
   const [{
     timeMin,
@@ -25563,7 +25563,7 @@ var Delay = function({ FBACK_MAX, TIME_MAX }) {
     feedbackMax
   }, delayDispatch] = import_react15.useReducer(delayReducer, createGlobalDelay());
   _delayDispatch = delayDispatch;
-  return jsx_dev_runtime15.jsxDEV(PanelConfigContainer_default, {
+  return /* @__PURE__ */ jsx_dev_runtime15.jsxDEV(PanelConfigContainer_default, {
     title: "Delay",
     description: "Change the delay configurations.",
     DisableAllButtonEnabled: true,
@@ -25572,7 +25572,7 @@ var Delay = function({ FBACK_MAX, TIME_MAX }) {
     disableValue: allDelaysAreDisabled.value,
     reset,
     children: [
-      jsx_dev_runtime15.jsxDEV(PanelInterval_default, {
+      /* @__PURE__ */ jsx_dev_runtime15.jsxDEV(PanelInterval_default, {
         title: "time interval:",
         valueText: "sec",
         rangeMax: TIME_MAX,
@@ -25583,7 +25583,7 @@ var Delay = function({ FBACK_MAX, TIME_MAX }) {
         onChangeMax: timeMaxOnChange,
         onChangeMin: timeMinOnChange
       }, undefined, false, undefined, this),
-      jsx_dev_runtime15.jsxDEV(PanelInterval_default, {
+      /* @__PURE__ */ jsx_dev_runtime15.jsxDEV(PanelInterval_default, {
         title: "feedback interval:",
         valueText: "%",
         rangeMax: FBACK_MAX,
@@ -25596,14 +25596,14 @@ var Delay = function({ FBACK_MAX, TIME_MAX }) {
       }, undefined, false, undefined, this)
     ]
   }, undefined, true, undefined, this);
-};
-var ContainDelay = function() {
+}
+function ContainDelay() {
   const { FBACK_MAX, TIME_MAX } = delayLimits;
-  return jsx_dev_runtime15.jsxDEV(Delay, {
+  return /* @__PURE__ */ jsx_dev_runtime15.jsxDEV(Delay, {
     FBACK_MAX,
     TIME_MAX
   }, undefined, false, undefined, this);
-};
+}
 var _delayDispatch = emptyDispatch;
 var Delay_default = ContainDelay;
 
@@ -25611,12 +25611,12 @@ var Delay_default = ContainDelay;
 var import_react16 = __toESM(require_react(), 1);
 
 // src/slices/fades.js
-var fadesReducer = function(state, action) {
+function fadesReducer(state, action) {
   if (action !== undefined) {
     return action.payload;
   }
   return state;
-};
+}
 var fadesActions = {
   reset() {
     globalState_default.fadeIn = globalDefault.fadeIn;
@@ -25643,28 +25643,28 @@ var fadesActions = {
 
 // src/components/Panel/Fades.jsx
 var jsx_dev_runtime16 = __toESM(require_jsx_dev_runtime(), 1);
-var reset2 = function() {
+function reset2() {
   _fadesDispatch(fadesActions.reset());
-};
-var fadeInOnChange = function(val) {
+}
+function fadeInOnChange(val) {
   _fadesDispatch(fadesActions.changeFadeIn(Number(val)));
-};
-var fadeOutOnChange = function(val) {
+}
+function fadeOutOnChange(val) {
   _fadesDispatch(fadesActions.changeFadeOut(Number(val)));
-};
-var Fades = function({ MAX }) {
+}
+function Fades({ MAX }) {
   const [{ fadeIn, fadeOut }, fadesDispatch] = import_react16.useReducer(fadesReducer, createFadesState());
   _fadesDispatch = fadesDispatch;
-  return jsx_dev_runtime16.jsxDEV(PanelConfigContainer_default, {
+  return /* @__PURE__ */ jsx_dev_runtime16.jsxDEV(PanelConfigContainer_default, {
     DisableAllButtonEnabled: false,
     ResetButtonEnabled: true,
     title: "Fades",
     description: "Change the fadeIn and fadeOut values for all audios.",
     reset: reset2,
     children: [
-      jsx_dev_runtime16.jsxDEV(PanelConfigChild_default, {
+      /* @__PURE__ */ jsx_dev_runtime16.jsxDEV(PanelConfigChild_default, {
         title: "fadeIn",
-        children: jsx_dev_runtime16.jsxDEV(PanelRange_default, {
+        children: /* @__PURE__ */ jsx_dev_runtime16.jsxDEV(PanelRange_default, {
           max: MAX,
           value: fadeIn,
           valueText: String(rToFade(fadeIn)),
@@ -25672,9 +25672,9 @@ var Fades = function({ MAX }) {
           onChange: fadeInOnChange
         }, undefined, false, undefined, this)
       }, undefined, false, undefined, this),
-      jsx_dev_runtime16.jsxDEV(PanelConfigChild_default, {
+      /* @__PURE__ */ jsx_dev_runtime16.jsxDEV(PanelConfigChild_default, {
         title: "fadeOut",
-        children: jsx_dev_runtime16.jsxDEV(PanelRange_default, {
+        children: /* @__PURE__ */ jsx_dev_runtime16.jsxDEV(PanelRange_default, {
           max: MAX,
           value: fadeOut,
           valueText: String(rToFade(fadeOut)),
@@ -25684,13 +25684,13 @@ var Fades = function({ MAX }) {
       }, undefined, false, undefined, this)
     ]
   }, undefined, true, undefined, this);
-};
-var ContainFades = function() {
+}
+function ContainFades() {
   const { MAX } = fadeLimits;
-  return jsx_dev_runtime16.jsxDEV(Fades, {
+  return /* @__PURE__ */ jsx_dev_runtime16.jsxDEV(Fades, {
     MAX
   }, undefined, false, undefined, this);
-};
+}
 var _fadesDispatch = emptyDispatch;
 var Fades_default = ContainFades;
 
@@ -25698,12 +25698,12 @@ var Fades_default = ContainFades;
 var import_react17 = __toESM(require_react(), 1);
 
 // src/slices/filter.js
-var filterReducer = function(state, action) {
+function filterReducer(state, action) {
   if (action !== undefined) {
     return action.payload;
   }
   return state;
-};
+}
 var ReturnFilterAction = {
   type: "",
   payload: undefined
@@ -25796,46 +25796,46 @@ var filterActions = {
 
 // src/components/Panel/Filter.jsx
 var jsx_dev_runtime17 = __toESM(require_jsx_dev_runtime(), 1);
-var changeDisable2 = function(value) {
+function changeDisable2(value) {
   if (value) {
     dispatch_default.generalDisable(generalDisableAction("enable", "filter", "global"));
   } else {
     dispatch_default.generalDisable(generalDisableAction("disable", "filter", "global"));
   }
-};
-var reset3 = function() {
+}
+function reset3() {
   _filterDispatch(filterActions.reset());
-};
-var frequencyMaxOnChange = function(val) {
+}
+function frequencyMaxOnChange(val) {
   _filterDispatch(filterActions.changeMaxFrequency(Number(val)));
-};
-var frequencyMinOnChange = function(val) {
+}
+function frequencyMinOnChange(val) {
   _filterDispatch(filterActions.changeMinFrequency(Number(val)));
-};
-var qMaxOnChange = function(val) {
+}
+function qMaxOnChange(val) {
   _filterDispatch(filterActions.changeMaxQ(Number(val)));
-};
-var qMinOnChange = function(val) {
+}
+function qMinOnChange(val) {
   _filterDispatch(filterActions.changeMinQ(Number(val)));
-};
-var changeType = function(val) {
+}
+function changeType(val) {
   _filterDispatch(filterActions.changeType(val));
-};
-var Type = function({ isDisable, type, canBeDisable }) {
-  return jsx_dev_runtime17.jsxDEV("div", {
+}
+function Type({ isDisable, type, canBeDisable }) {
+  return /* @__PURE__ */ jsx_dev_runtime17.jsxDEV("div", {
     className: "p-2",
-    children: jsx_dev_runtime17.jsxDEV(ToolButton, {
+    children: /* @__PURE__ */ jsx_dev_runtime17.jsxDEV(ToolButton, {
       className: canBeDisable && isDisable ? "inactive" : "",
       value: type,
       onClick: changeType,
-      children: jsx_dev_runtime17.jsxDEV("p", {
+      children: /* @__PURE__ */ jsx_dev_runtime17.jsxDEV("p", {
         className: "fs-text",
         children: type
       }, undefined, false, undefined, this)
     }, undefined, false, undefined, this)
   }, undefined, false, undefined, this);
-};
-var Filter = function() {
+}
+function Filter() {
   const { allFiltersAreDisabled } = import_react17.useContext(GeneralDisableContext);
   const [{
     frequencyMax,
@@ -25849,7 +25849,7 @@ var Filter = function() {
   }, filterDispatch] = import_react17.useReducer(filterReducer, createLocalStorageFilter());
   _filterDispatch = filterDispatch;
   const canBeDisabled = !(bandpass && highpass && lowpass && notch);
-  return jsx_dev_runtime17.jsxDEV(PanelConfigContainer_default, {
+  return /* @__PURE__ */ jsx_dev_runtime17.jsxDEV(PanelConfigContainer_default, {
     title: "Filter",
     description: "Change the general parameters of different filters.",
     DisableAllButtonEnabled: true,
@@ -25858,7 +25858,7 @@ var Filter = function() {
     disableValue: allFiltersAreDisabled.value,
     reset: reset3,
     children: [
-      jsx_dev_runtime17.jsxDEV(PanelInterval_default, {
+      /* @__PURE__ */ jsx_dev_runtime17.jsxDEV(PanelInterval_default, {
         title: "frequency interval:",
         valueText: "hz",
         rangeMax: FREQ_MAX,
@@ -25869,7 +25869,7 @@ var Filter = function() {
         onChangeMin: frequencyMinOnChange,
         onChangeMax: frequencyMaxOnChange
       }, undefined, false, undefined, this),
-      jsx_dev_runtime17.jsxDEV(PanelInterval_default, {
+      /* @__PURE__ */ jsx_dev_runtime17.jsxDEV(PanelInterval_default, {
         title: "q factor interval:",
         rangeMax: Q_MAX,
         valueMax: qMax,
@@ -25879,27 +25879,27 @@ var Filter = function() {
         onChangeMin: qMinOnChange,
         onChangeMax: qMaxOnChange
       }, undefined, false, undefined, this),
-      jsx_dev_runtime17.jsxDEV(PanelConfigChild_default, {
+      /* @__PURE__ */ jsx_dev_runtime17.jsxDEV(PanelConfigChild_default, {
         title: "filter types selected:",
-        children: jsx_dev_runtime17.jsxDEV("div", {
+        children: /* @__PURE__ */ jsx_dev_runtime17.jsxDEV("div", {
           className: "flex-row flex-wrap justify- align-c",
           children: [
-            jsx_dev_runtime17.jsxDEV(Type, {
+            /* @__PURE__ */ jsx_dev_runtime17.jsxDEV(Type, {
               isDisable: highpass,
               canBeDisable: canBeDisabled,
               type: "highpass"
             }, undefined, false, undefined, this),
-            jsx_dev_runtime17.jsxDEV(Type, {
+            /* @__PURE__ */ jsx_dev_runtime17.jsxDEV(Type, {
               isDisable: lowpass,
               canBeDisable: canBeDisabled,
               type: "lowpass"
             }, undefined, false, undefined, this),
-            jsx_dev_runtime17.jsxDEV(Type, {
+            /* @__PURE__ */ jsx_dev_runtime17.jsxDEV(Type, {
               isDisable: bandpass,
               canBeDisable: canBeDisabled,
               type: "bandpass"
             }, undefined, false, undefined, this),
-            jsx_dev_runtime17.jsxDEV(Type, {
+            /* @__PURE__ */ jsx_dev_runtime17.jsxDEV(Type, {
               isDisable: notch,
               canBeDisable: canBeDisabled,
               type: "notch"
@@ -25909,7 +25909,7 @@ var Filter = function() {
       }, undefined, false, undefined, this)
     ]
   }, undefined, true, undefined, this);
-};
+}
 var { FREQ_MAX, Q_MAX } = filterLimits;
 var _filterDispatch = emptyDispatch;
 var Filter_default = Filter;
@@ -25918,12 +25918,12 @@ var Filter_default = Filter;
 var import_react18 = __toESM(require_react(), 1);
 
 // src/slices/panner.js
-var pannerReducer = function(state, action) {
+function pannerReducer(state, action) {
   if (action !== undefined) {
     return action.payload;
   }
   return state;
-};
+}
 var ReturnPannerAction = {
   type: "",
   payload: undefined
@@ -26002,39 +26002,39 @@ var pannerActions = {
 
 // src/components/Panel/Panner.jsx
 var jsx_dev_runtime18 = __toESM(require_jsx_dev_runtime(), 1);
-var reset4 = function() {
+function reset4() {
   _pannerDispatch(pannerActions.reset());
-};
-var xMaxOnChange = function(val) {
+}
+function xMaxOnChange(val) {
   _pannerDispatch(pannerActions.changeXMax(Number(val)));
-};
-var xMinOnChange = function(val) {
+}
+function xMinOnChange(val) {
   _pannerDispatch(pannerActions.changeXMin(Number(val)));
-};
-var yMaxOnChange = function(val) {
+}
+function yMaxOnChange(val) {
   _pannerDispatch(pannerActions.changeYMax(Number(val)));
-};
-var yMinOnChange = function(val) {
+}
+function yMinOnChange(val) {
   _pannerDispatch(pannerActions.changeYMin(Number(val)));
-};
-var zMaxOnChange = function(val) {
+}
+function zMaxOnChange(val) {
   _pannerDispatch(pannerActions.changeZMax(Number(val)));
-};
-var zMinOnChange = function(val) {
+}
+function zMinOnChange(val) {
   _pannerDispatch(pannerActions.changeZMin(Number(val)));
-};
-var changeDisable3 = function(value) {
+}
+function changeDisable3(value) {
   if (value) {
     dispatch_default.generalDisable(generalDisableAction("enable", "panner", "global"));
   } else {
     dispatch_default.generalDisable(generalDisableAction("disable", "panner", "global"));
   }
-};
-var Panner = function({ Z_MAX, MAX }) {
+}
+function Panner({ Z_MAX, MAX }) {
   const { allPannersAreDisabled } = import_react18.useContext(GeneralDisableContext);
   const [{ xMax, xMin, yMax, yMin, zMax, zMin }, pannerDispatch] = import_react18.useReducer(pannerReducer, createGlobalPanner());
   _pannerDispatch = pannerDispatch;
-  return jsx_dev_runtime18.jsxDEV(PanelConfigContainer_default, {
+  return /* @__PURE__ */ jsx_dev_runtime18.jsxDEV(PanelConfigContainer_default, {
     title: "Panner",
     description: "Change the intervals that represents a position of the audio in a right-hand Cartesian coordinate system.",
     DisableAllButtonEnabled: true,
@@ -26043,7 +26043,7 @@ var Panner = function({ Z_MAX, MAX }) {
     disableValue: allPannersAreDisabled.value,
     reset: reset4,
     children: [
-      jsx_dev_runtime18.jsxDEV(PanelInterval_default, {
+      /* @__PURE__ */ jsx_dev_runtime18.jsxDEV(PanelInterval_default, {
         title: "X interval:",
         valueText: "%",
         valueMax: xMax,
@@ -26054,7 +26054,7 @@ var Panner = function({ Z_MAX, MAX }) {
         onChangeMin: xMinOnChange,
         onChangeMax: xMaxOnChange
       }, undefined, false, undefined, this),
-      jsx_dev_runtime18.jsxDEV(PanelInterval_default, {
+      /* @__PURE__ */ jsx_dev_runtime18.jsxDEV(PanelInterval_default, {
         title: "Y interval:",
         valueText: "%",
         valueMax: yMax,
@@ -26065,7 +26065,7 @@ var Panner = function({ Z_MAX, MAX }) {
         onChangeMin: yMinOnChange,
         onChangeMax: yMaxOnChange
       }, undefined, false, undefined, this),
-      jsx_dev_runtime18.jsxDEV(PanelInterval_default, {
+      /* @__PURE__ */ jsx_dev_runtime18.jsxDEV(PanelInterval_default, {
         title: "Z interval:",
         valueText: "%",
         valueMax: zMax,
@@ -26078,14 +26078,14 @@ var Panner = function({ Z_MAX, MAX }) {
       }, undefined, false, undefined, this)
     ]
   }, undefined, true, undefined, this);
-};
-var ContainPanner = function() {
+}
+function ContainPanner() {
   const { Z_MAX, MAX } = pannerLimits;
-  return jsx_dev_runtime18.jsxDEV(Panner, {
+  return /* @__PURE__ */ jsx_dev_runtime18.jsxDEV(Panner, {
     Z_MAX,
     MAX
   }, undefined, false, undefined, this);
-};
+}
 var _pannerDispatch = emptyDispatch;
 var Panner_default = ContainPanner;
 
@@ -26093,12 +26093,12 @@ var Panner_default = ContainPanner;
 var import_react19 = __toESM(require_react(), 1);
 
 // src/slices/playbackRate.js
-var playbackRateReducer = function(state, action) {
+function playbackRateReducer(state, action) {
   if (action !== undefined) {
     return action.payload;
   }
   return state;
-};
+}
 var ReturnPaybackRateAction = {
   type: "",
   payload: undefined
@@ -26137,30 +26137,30 @@ var playbackRateActions = {
 
 // src/components/Panel/PlaybackRate.jsx
 var jsx_dev_runtime19 = __toESM(require_jsx_dev_runtime(), 1);
-var changeDisable4 = function(value) {
+function changeDisable4(value) {
   if (value) {
     dispatch_default.generalDisable(generalDisableAction("enable", "playbackRate", "global"));
   } else {
     dispatch_default.generalDisable(generalDisableAction("disable", "playbackRate", "global"));
   }
-};
-var reset5 = function() {
+}
+function reset5() {
   _playbackRateDispatch(playbackRateActions.reset());
-};
-var minOnChange = function(val) {
+}
+function minOnChange(val) {
   _playbackRateDispatch(playbackRateActions.changeMin(Number(val)));
-};
-var maxOnChange = function(val) {
+}
+function maxOnChange(val) {
   _playbackRateDispatch(playbackRateActions.changeMax(Number(val)));
-};
-var PlaybackRate = function({ MAX }) {
+}
+function PlaybackRate({ MAX }) {
   const { allPlaybackRatesAreDisabled } = import_react19.useContext(GeneralDisableContext);
   const [
     { min, max },
     playbackRateDispatch
   ] = import_react19.useReducer(playbackRateReducer, createGlobalPlaybackRate());
   _playbackRateDispatch = playbackRateDispatch;
-  return jsx_dev_runtime19.jsxDEV(PanelConfigContainer_default, {
+  return /* @__PURE__ */ jsx_dev_runtime19.jsxDEV(PanelConfigContainer_default, {
     title: "Playback Rate",
     description: "The normal playback rate is multiplied by a random value inside the interval to obtain the current playback rate.",
     DisableAllButtonEnabled: true,
@@ -26168,7 +26168,7 @@ var PlaybackRate = function({ MAX }) {
     changeDisable: changeDisable4,
     disableValue: allPlaybackRatesAreDisabled.value,
     reset: reset5,
-    children: jsx_dev_runtime19.jsxDEV(PanelInterval_default, {
+    children: /* @__PURE__ */ jsx_dev_runtime19.jsxDEV(PanelInterval_default, {
       title: "interval:",
       rangeMax: MAX,
       valueMax: max,
@@ -26179,70 +26179,70 @@ var PlaybackRate = function({ MAX }) {
       onChangeMin: minOnChange
     }, undefined, false, undefined, this)
   }, undefined, false, undefined, this);
-};
-var ContainPlaybackRate = function() {
+}
+function ContainPlaybackRate() {
   const { MAX } = playbackRateLimits;
-  return jsx_dev_runtime19.jsxDEV(PlaybackRate, {
+  return /* @__PURE__ */ jsx_dev_runtime19.jsxDEV(PlaybackRate, {
     MAX
   }, undefined, false, undefined, this);
-};
+}
 var _playbackRateDispatch = emptyDispatch;
 var PlaybackRate_default = ContainPlaybackRate;
 
 // src/components/Panel/RandomEndPoint.jsx
 var import_react20 = __toESM(require_react(), 1);
 var jsx_dev_runtime20 = __toESM(require_jsx_dev_runtime(), 1);
-var changeDisable5 = function(value) {
+function changeDisable5(value) {
   if (value) {
     dispatch_default.generalDisable(generalDisableAction("enable", "randomEndPoint", "global"));
   } else {
     dispatch_default.generalDisable(generalDisableAction("disable", "randomEndPoint", "global"));
   }
-};
-var RandomEndPoint = function() {
+}
+function RandomEndPoint() {
   const { allRandomEndPointsAreDisabled } = import_react20.useContext(GeneralDisableContext);
-  return jsx_dev_runtime20.jsxDEV(PanelConfigContainer_default, {
+  return /* @__PURE__ */ jsx_dev_runtime20.jsxDEV(PanelConfigContainer_default, {
     title: "Random End Point",
     description: "Enable and disable the random cut effect for the end point.",
     DisableAllButtonEnabled: true,
     changeDisable: changeDisable5,
     disableValue: allRandomEndPointsAreDisabled.value
   }, undefined, false, undefined, this);
-};
+}
 var RandomEndPoint_default = RandomEndPoint;
 
 // src/components/Panel/RandomStartPoint.jsx
 var import_react21 = __toESM(require_react(), 1);
 var jsx_dev_runtime21 = __toESM(require_jsx_dev_runtime(), 1);
-var changeDisable6 = function(value) {
+function changeDisable6(value) {
   if (value) {
     dispatch_default.generalDisable(generalDisableAction("enable", "randomStartPoint", "global"));
   } else {
     dispatch_default.generalDisable(generalDisableAction("disable", "randomStartPoint", "global"));
   }
-};
-var RandomStartPoint = function() {
+}
+function RandomStartPoint() {
   const { allRandomStartPointsAreDisabled } = import_react21.useContext(GeneralDisableContext);
-  return jsx_dev_runtime21.jsxDEV(PanelConfigContainer_default, {
+  return /* @__PURE__ */ jsx_dev_runtime21.jsxDEV(PanelConfigContainer_default, {
     title: "Random Start Point",
     description: "Enable and disable the random cut effect for the start point.",
     DisableAllButtonEnabled: true,
     changeDisable: changeDisable6,
     disableValue: allRandomStartPointsAreDisabled.value
   }, undefined, false, undefined, this);
-};
+}
 var RandomStartPoint_default = RandomStartPoint;
 
 // src/components/Panel/Sets.jsx
 var import_react23 = __toESM(require_react(), 1);
 
 // src/slices/sets.js
-var setsReducer = function(state, action) {
+function setsReducer(state, action) {
   if (action !== undefined) {
     return action.payload;
   }
   return state;
-};
+}
 var return_action = { type: "", payload: undefined };
 var setsActions = {
   update() {
@@ -26285,64 +26285,64 @@ var setsActions = {
 // src/components/AddAndSubtract.jsx
 var import_react22 = __toESM(require_react(), 1);
 var jsx_dev_runtime22 = __toESM(require_jsx_dev_runtime(), 1);
-var ButtonLeftUp = function({
+function ButtonLeftUp({
   horizontal,
   subtractOnClick,
   addOnClick,
   value
 }) {
-  return jsx_dev_runtime22.jsxDEV(ToolButton, {
+  return /* @__PURE__ */ jsx_dev_runtime22.jsxDEV(ToolButton, {
     className: "addAndSubtract_button flex-column align-c justify-c",
     onClick: horizontal ? subtractOnClick : addOnClick,
     value,
-    children: horizontal ? jsx_dev_runtime22.jsxDEV(IconChevronLeft, {
+    children: horizontal ? /* @__PURE__ */ jsx_dev_runtime22.jsxDEV(IconChevronLeft, {
       className: "icon-text-s"
-    }, undefined, false, undefined, this) : jsx_dev_runtime22.jsxDEV(IconChevronUp, {
+    }, undefined, false, undefined, this) : /* @__PURE__ */ jsx_dev_runtime22.jsxDEV(IconChevronUp, {
       className: "icon-text-s"
     }, undefined, false, undefined, this)
   }, undefined, false, undefined, this);
-};
-var ButtonRightDown = function({
+}
+function ButtonRightDown({
   horizontal,
   addOnClick,
   subtractOnClick,
   value
 }) {
-  return jsx_dev_runtime22.jsxDEV(ToolButton, {
+  return /* @__PURE__ */ jsx_dev_runtime22.jsxDEV(ToolButton, {
     className: "addAndSubtract_button flex-column align-c justify-c",
     onClick: horizontal ? addOnClick : subtractOnClick,
     value,
-    children: horizontal ? jsx_dev_runtime22.jsxDEV(IconChevronRight, {
+    children: horizontal ? /* @__PURE__ */ jsx_dev_runtime22.jsxDEV(IconChevronRight, {
       className: "icon-text-s"
-    }, undefined, false, undefined, this) : jsx_dev_runtime22.jsxDEV(IconChevronDown, {
+    }, undefined, false, undefined, this) : /* @__PURE__ */ jsx_dev_runtime22.jsxDEV(IconChevronDown, {
       className: "icon-text-s"
     }, undefined, false, undefined, this)
   }, undefined, false, undefined, this);
-};
-var AddAndSubtract = function({
+}
+function AddAndSubtract({
   addOnClick,
   subtractOnClick,
   viewValue,
   value,
   horizontal
 }) {
-  return jsx_dev_runtime22.jsxDEV("div", {
+  return /* @__PURE__ */ jsx_dev_runtime22.jsxDEV("div", {
     className: horizontal ? "addAndSubtract flex-row align-c" : "addAndSubtract flex-column",
     children: [
-      jsx_dev_runtime22.jsxDEV(ButtonLeftUp, {
+      /* @__PURE__ */ jsx_dev_runtime22.jsxDEV(ButtonLeftUp, {
         addOnClick,
         horizontal,
         subtractOnClick,
         value
       }, undefined, false, undefined, this),
-      jsx_dev_runtime22.jsxDEV("div", {
+      /* @__PURE__ */ jsx_dev_runtime22.jsxDEV("div", {
         className: horizontal ? "addAndSubtract_text" : "addAndSubtract_text p-5",
-        children: jsx_dev_runtime22.jsxDEV("p", {
+        children: /* @__PURE__ */ jsx_dev_runtime22.jsxDEV("p", {
           className: "fs-text-l text-center",
           children: viewValue
         }, undefined, false, undefined, this)
       }, undefined, false, undefined, this),
-      jsx_dev_runtime22.jsxDEV(ButtonRightDown, {
+      /* @__PURE__ */ jsx_dev_runtime22.jsxDEV(ButtonRightDown, {
         addOnClick,
         horizontal,
         subtractOnClick,
@@ -26350,39 +26350,39 @@ var AddAndSubtract = function({
       }, undefined, false, undefined, this)
     ]
   }, undefined, true, undefined, this);
-};
+}
 var AddAndSubtract_default = AddAndSubtract;
 
 // src/components/Panel/Sets.jsx
 var jsx_dev_runtime23 = __toESM(require_jsx_dev_runtime(), 1);
-var reset6 = function() {
+function reset6() {
   _setsDispatcher(setsActions.reset());
-};
-var addEvent = function(i) {
+}
+function addEvent(i) {
   _setsDispatcher(setsActions.addEvent(i));
-};
-var removeEvent = function(i) {
+}
+function removeEvent(i) {
   _setsDispatcher(setsActions.removeEvent(i));
-};
-var SetsChildren = function({ arrOfEvents, sumOfAllEvents }) {
+}
+function SetsChildren({ arrOfEvents, sumOfAllEvents }) {
   const children = [];
   for (const i in arrOfEvents) {
     const val = arrOfEvents[i];
-    children.push(jsx_dev_runtime23.jsxDEV("div", {
+    children.push(/* @__PURE__ */ jsx_dev_runtime23.jsxDEV("div", {
       className: "set-container p-5",
       children: [
-        jsx_dev_runtime23.jsxDEV("h4", {
+        /* @__PURE__ */ jsx_dev_runtime23.jsxDEV("h4", {
           className: "fs-text",
           children: i
         }, undefined, false, undefined, this),
-        jsx_dev_runtime23.jsxDEV(AddAndSubtract_default, {
+        /* @__PURE__ */ jsx_dev_runtime23.jsxDEV(AddAndSubtract_default, {
           addOnClick: addEvent,
           subtractOnClick: removeEvent,
           value: i,
           viewValue: val,
           horizontal: true
         }, undefined, false, undefined, this),
-        jsx_dev_runtime23.jsxDEV("p", {
+        /* @__PURE__ */ jsx_dev_runtime23.jsxDEV("p", {
           className: "fs-text",
           children: (sumOfAllEvents <= 0 ? 0 : val * 100 / sumOfAllEvents).toFixed(1) + "%"
         }, undefined, false, undefined, this)
@@ -26390,53 +26390,53 @@ var SetsChildren = function({ arrOfEvents, sumOfAllEvents }) {
     }, "set-" + i, true, undefined, this));
   }
   return children;
-};
-var Sets = function() {
+}
+function Sets() {
   const { completedAudioListSize } = import_react23.useContext(AudioListContext);
   const [{ arrOfEvents, sumOfAllEvents }, setsDispatcher] = import_react23.useReducer(setsReducer, createSetsState());
   _setsDispatcher = setsDispatcher;
   if (arrOfEvents.length < 15 && completedAudioListSize + 1 !== arrOfEvents.length) {
     setsDispatcher(setsActions.update());
   }
-  return jsx_dev_runtime23.jsxDEV(PanelConfigContainer_default, {
+  return /* @__PURE__ */ jsx_dev_runtime23.jsxDEV(PanelConfigContainer_default, {
     title: "Audios Sets",
     description: "Here are the probability values of audios sets sizes for the executions. The maximum size of a set that can be executed is 15.",
     ResetButtonEnabled: true,
     reset: reset6,
-    children: arrOfEvents.length < 2 ? jsx_dev_runtime23.jsxDEV("div", {
+    children: arrOfEvents.length < 2 ? /* @__PURE__ */ jsx_dev_runtime23.jsxDEV("div", {
       className: "p-10",
-      children: jsx_dev_runtime23.jsxDEV("p", {
+      children: /* @__PURE__ */ jsx_dev_runtime23.jsxDEV("p", {
         className: "fs-text text-center",
         children: "No audio files"
       }, undefined, false, undefined, this)
-    }, undefined, false, undefined, this) : jsx_dev_runtime23.jsxDEV("div", {
+    }, undefined, false, undefined, this) : /* @__PURE__ */ jsx_dev_runtime23.jsxDEV("div", {
       className: "sets-container_grid-3 align-c",
       children: [
-        jsx_dev_runtime23.jsxDEV("div", {
+        /* @__PURE__ */ jsx_dev_runtime23.jsxDEV("div", {
           className: "set-container p-5",
           children: [
-            jsx_dev_runtime23.jsxDEV("h4", {
+            /* @__PURE__ */ jsx_dev_runtime23.jsxDEV("h4", {
               className: "fs-text",
               children: "Size"
             }, undefined, false, undefined, this),
-            jsx_dev_runtime23.jsxDEV("h4", {
+            /* @__PURE__ */ jsx_dev_runtime23.jsxDEV("h4", {
               className: "fs-text",
               children: "Value"
             }, undefined, false, undefined, this),
-            jsx_dev_runtime23.jsxDEV("h4", {
+            /* @__PURE__ */ jsx_dev_runtime23.jsxDEV("h4", {
               className: "fs-text",
               children: "Probability"
             }, undefined, false, undefined, this)
           ]
         }, undefined, true, undefined, this),
-        jsx_dev_runtime23.jsxDEV(SetsChildren, {
+        /* @__PURE__ */ jsx_dev_runtime23.jsxDEV(SetsChildren, {
           arrOfEvents,
           sumOfAllEvents
         }, undefined, false, undefined, this)
       ]
     }, undefined, true, undefined, this)
   }, undefined, false, undefined, this);
-};
+}
 var _setsDispatcher = emptyDispatch;
 var Sets_default = Sets;
 
@@ -26444,7 +26444,7 @@ var Sets_default = Sets;
 var import_react24 = __toESM(require_react(), 1);
 
 // src/slices/time.js
-var changeMax = function(n, add) {
+function changeMax(n, add) {
   const value = add ? globalState_default.timeInterval.max + n : globalState_default.timeInterval.max - n;
   if (globalState_default.timeInterval.min <= value && value <= timeIntervalLimits.MAX) {
     globalState_default.timeInterval.max = value;
@@ -26453,8 +26453,8 @@ var changeMax = function(n, add) {
     ReturnTimeAction.payload = createGlobalTimeInterval();
     return ReturnTimeAction;
   }
-};
-var changeMin = function(n, add) {
+}
+function changeMin(n, add) {
   const value = add ? globalState_default.timeInterval.min + n : globalState_default.timeInterval.min - n;
   if (timeIntervalLimits.MIN <= value && value <= globalState_default.timeInterval.max) {
     globalState_default.timeInterval.min = value;
@@ -26463,13 +26463,13 @@ var changeMin = function(n, add) {
     ReturnTimeAction.payload = createGlobalTimeInterval();
     return ReturnTimeAction;
   }
-};
-var timeReducer = function(state, action) {
+}
+function timeReducer(state, action) {
   if (action !== undefined) {
     return action.payload;
   }
   return state;
-};
+}
 var ReturnTimeAction = {
   type: "",
   payload: undefined
@@ -26499,10 +26499,10 @@ var timeActions = {
 };
 
 // src/components/utils.js
-var isMinorThanTen = function(n) {
+function isMinorThanTen(n) {
   return n < 10 ? "0" + n : String(n);
-};
-var durationToTime = function(val) {
+}
+function durationToTime(val) {
   val = Math.floor(val);
   const sec = val % 60;
   const min = Math.floor(val / 60) % 60;
@@ -26510,50 +26510,50 @@ var durationToTime = function(val) {
   let str = hr > 0 ? hr + ":" : "";
   str += isMinorThanTen(min) + ":" + isMinorThanTen(sec);
   return str;
-};
-var durationToShortTime = function(val) {
+}
+function durationToShortTime(val) {
   const miliseconds = Math.floor(val * 10) % 10;
   const sec = Math.floor(val) % 60;
   return (sec < 10 ? "0" : "") + sec + "." + miliseconds;
-};
+}
 
 // src/components/Panel/Time.jsx
 var jsx_dev_runtime24 = __toESM(require_jsx_dev_runtime(), 1);
-var TimeTitle = function() {
-  return jsx_dev_runtime24.jsxDEV("div", {
+function TimeTitle() {
+  return /* @__PURE__ */ jsx_dev_runtime24.jsxDEV("div", {
     className: "flex-column align-c p-10",
     children: [
-      jsx_dev_runtime24.jsxDEV("div", {
+      /* @__PURE__ */ jsx_dev_runtime24.jsxDEV("div", {
         className: "flex-row align-c",
         children: [
-          jsx_dev_runtime24.jsxDEV("span", {
+          /* @__PURE__ */ jsx_dev_runtime24.jsxDEV("span", {
             className: "fs-text p-5",
             children: "value schema: "
           }, undefined, false, undefined, this),
-          jsx_dev_runtime24.jsxDEV("span", {
+          /* @__PURE__ */ jsx_dev_runtime24.jsxDEV("span", {
             className: "fs-text text-bold p-5",
             children: "mm:ss.ms"
           }, undefined, false, undefined, this)
         ]
       }, undefined, true, undefined, this),
-      jsx_dev_runtime24.jsxDEV("div", {
+      /* @__PURE__ */ jsx_dev_runtime24.jsxDEV("div", {
         className: "flex-row align-c p-5",
-        children: jsx_dev_runtime24.jsxDEV("p", {
+        children: /* @__PURE__ */ jsx_dev_runtime24.jsxDEV("p", {
           className: "fs-text-s text-bold",
           children: "minutes:seconds.milliseconds"
         }, undefined, false, undefined, this)
       }, undefined, false, undefined, this),
-      jsx_dev_runtime24.jsxDEV("div", {
+      /* @__PURE__ */ jsx_dev_runtime24.jsxDEV("div", {
         className: "flex-row align-c p-5",
-        children: jsx_dev_runtime24.jsxDEV("p", {
+        children: /* @__PURE__ */ jsx_dev_runtime24.jsxDEV("p", {
           className: "fs-text-s",
           children: "the millisecond are in hundreds"
         }, undefined, false, undefined, this)
       }, undefined, false, undefined, this)
     ]
   }, undefined, true, undefined, this);
-};
-var TimeChild = function({
+}
+function TimeChild({
   name,
   addTo,
   subtractTo,
@@ -26561,38 +26561,38 @@ var TimeChild = function({
   seconds,
   miliseconds
 }) {
-  return jsx_dev_runtime24.jsxDEV(PanelConfigChild_default, {
-    children: jsx_dev_runtime24.jsxDEV("div", {
+  return /* @__PURE__ */ jsx_dev_runtime24.jsxDEV(PanelConfigChild_default, {
+    children: /* @__PURE__ */ jsx_dev_runtime24.jsxDEV("div", {
       className: "flex-row align-c justify-c py-2",
       children: [
-        jsx_dev_runtime24.jsxDEV("p", {
+        /* @__PURE__ */ jsx_dev_runtime24.jsxDEV("p", {
           className: "fs-text text-bold p-2",
           children: [
             "time ",
             name
           ]
         }, undefined, true, undefined, this),
-        jsx_dev_runtime24.jsxDEV(AddAndSubtract_default, {
+        /* @__PURE__ */ jsx_dev_runtime24.jsxDEV(AddAndSubtract_default, {
           addOnClick: addTo,
           subtractOnClick: subtractTo,
           viewValue: minutes,
           value: 600
         }, undefined, false, undefined, this),
-        jsx_dev_runtime24.jsxDEV("p", {
+        /* @__PURE__ */ jsx_dev_runtime24.jsxDEV("p", {
           className: "p-2 fs-text",
           children: ":"
         }, undefined, false, undefined, this),
-        jsx_dev_runtime24.jsxDEV(AddAndSubtract_default, {
+        /* @__PURE__ */ jsx_dev_runtime24.jsxDEV(AddAndSubtract_default, {
           addOnClick: addTo,
           subtractOnClick: subtractTo,
           viewValue: seconds,
           value: 10
         }, undefined, false, undefined, this),
-        jsx_dev_runtime24.jsxDEV("p", {
+        /* @__PURE__ */ jsx_dev_runtime24.jsxDEV("p", {
           className: "p-2 fs-text",
           children: "."
         }, undefined, false, undefined, this),
-        jsx_dev_runtime24.jsxDEV(AddAndSubtract_default, {
+        /* @__PURE__ */ jsx_dev_runtime24.jsxDEV(AddAndSubtract_default, {
           addOnClick: addTo,
           subtractOnClick: subtractTo,
           viewValue: miliseconds,
@@ -26601,17 +26601,17 @@ var TimeChild = function({
       ]
     }, undefined, true, undefined, this)
   }, undefined, false, undefined, this);
-};
-var addToMax = function(val) {
+}
+function addToMax(val) {
   _timeDispatch(timeActions.addToMax(val));
-};
-var subtractToMax = function(val) {
+}
+function subtractToMax(val) {
   _timeDispatch(timeActions.subtractToMax(val));
-};
-var MaxTime = function({ max }) {
+}
+function MaxTime({ max }) {
   const minutes = import_react24.useMemo(() => isMinorThanTen(Math.floor(max / 600) % 60), [max]);
   const seconds = import_react24.useMemo(() => isMinorThanTen(Math.floor(max / 10) % 60), [max]);
-  return jsx_dev_runtime24.jsxDEV(TimeChild, {
+  return /* @__PURE__ */ jsx_dev_runtime24.jsxDEV(TimeChild, {
     name: "max",
     addTo: addToMax,
     subtractTo: subtractToMax,
@@ -26619,17 +26619,17 @@ var MaxTime = function({ max }) {
     seconds,
     miliseconds: max % 10
   }, undefined, false, undefined, this);
-};
-var addToMin = function(val) {
+}
+function addToMin(val) {
   _timeDispatch(timeActions.addToMin(val));
-};
-var subtractToMin = function(val) {
+}
+function subtractToMin(val) {
   _timeDispatch(timeActions.subtractToMin(val));
-};
-var MinTime = function({ min }) {
+}
+function MinTime({ min }) {
   const minutes = import_react24.useMemo(() => isMinorThanTen(Math.floor(min / 600) % 60), [min]);
   const seconds = import_react24.useMemo(() => isMinorThanTen(Math.floor(min / 10) % 60), [min]);
-  return jsx_dev_runtime24.jsxDEV(TimeChild, {
+  return /* @__PURE__ */ jsx_dev_runtime24.jsxDEV(TimeChild, {
     name: "min",
     addTo: addToMin,
     subtractTo: subtractToMin,
@@ -26637,68 +26637,68 @@ var MinTime = function({ min }) {
     seconds,
     miliseconds: min % 10
   }, undefined, false, undefined, this);
-};
-var resetTime = function() {
+}
+function resetTime() {
   _timeDispatch(timeActions.reset());
-};
-var Time = function() {
+}
+function Time() {
   const [{ min, max }, timeDispatch] = import_react24.useReducer(timeReducer, createGlobalTimeInterval());
   _timeDispatch = timeDispatch;
-  return jsx_dev_runtime24.jsxDEV(PanelConfigContainer_default, {
+  return /* @__PURE__ */ jsx_dev_runtime24.jsxDEV(PanelConfigContainer_default, {
     title: "Time to wait",
     description: "This is an interval that represents the time to wait between executions of audios set.",
     ResetButtonEnabled: true,
     reset: resetTime,
     children: [
-      jsx_dev_runtime24.jsxDEV(TimeTitle, {}, undefined, false, undefined, this),
-      jsx_dev_runtime24.jsxDEV(MaxTime, {
+      /* @__PURE__ */ jsx_dev_runtime24.jsxDEV(TimeTitle, {}, undefined, false, undefined, this),
+      /* @__PURE__ */ jsx_dev_runtime24.jsxDEV(MaxTime, {
         max
       }, undefined, false, undefined, this),
-      jsx_dev_runtime24.jsxDEV(MinTime, {
+      /* @__PURE__ */ jsx_dev_runtime24.jsxDEV(MinTime, {
         min
       }, undefined, false, undefined, this)
     ]
   }, undefined, true, undefined, this);
-};
+}
 var _timeDispatch = emptyDispatch;
 var Time_default = Time;
 
 // src/components/Panel/PanelConfigSection.jsx
 var jsx_dev_runtime25 = __toESM(require_jsx_dev_runtime(), 1);
-var closeConfigPanel = function() {
+function closeConfigPanel() {
   dispatch_default.panelConfig(panelConfigActions.closePanel);
-};
-var PanelSelected = function({ selected }) {
+}
+function PanelSelected({ selected }) {
   if (selected === "DELAY") {
-    return jsx_dev_runtime25.jsxDEV(Delay_default, {}, undefined, false, undefined, this);
+    return /* @__PURE__ */ jsx_dev_runtime25.jsxDEV(Delay_default, {}, undefined, false, undefined, this);
   }
   if (selected === "FADES") {
-    return jsx_dev_runtime25.jsxDEV(Fades_default, {}, undefined, false, undefined, this);
+    return /* @__PURE__ */ jsx_dev_runtime25.jsxDEV(Fades_default, {}, undefined, false, undefined, this);
   }
   if (selected === "FILTER") {
-    return jsx_dev_runtime25.jsxDEV(Filter_default, {}, undefined, false, undefined, this);
+    return /* @__PURE__ */ jsx_dev_runtime25.jsxDEV(Filter_default, {}, undefined, false, undefined, this);
   }
   if (selected === "PANNER") {
-    return jsx_dev_runtime25.jsxDEV(Panner_default, {}, undefined, false, undefined, this);
+    return /* @__PURE__ */ jsx_dev_runtime25.jsxDEV(Panner_default, {}, undefined, false, undefined, this);
   }
   if (selected === "RATE") {
-    return jsx_dev_runtime25.jsxDEV(PlaybackRate_default, {}, undefined, false, undefined, this);
+    return /* @__PURE__ */ jsx_dev_runtime25.jsxDEV(PlaybackRate_default, {}, undefined, false, undefined, this);
   }
   if (selected === "REP") {
-    return jsx_dev_runtime25.jsxDEV(RandomEndPoint_default, {}, undefined, false, undefined, this);
+    return /* @__PURE__ */ jsx_dev_runtime25.jsxDEV(RandomEndPoint_default, {}, undefined, false, undefined, this);
   }
   if (selected === "RSP") {
-    return jsx_dev_runtime25.jsxDEV(RandomStartPoint_default, {}, undefined, false, undefined, this);
+    return /* @__PURE__ */ jsx_dev_runtime25.jsxDEV(RandomStartPoint_default, {}, undefined, false, undefined, this);
   }
   if (selected === "SETS") {
-    return jsx_dev_runtime25.jsxDEV(Sets_default, {}, undefined, false, undefined, this);
+    return /* @__PURE__ */ jsx_dev_runtime25.jsxDEV(Sets_default, {}, undefined, false, undefined, this);
   }
   if (selected === "TIME") {
-    return jsx_dev_runtime25.jsxDEV(Time_default, {}, undefined, false, undefined, this);
+    return /* @__PURE__ */ jsx_dev_runtime25.jsxDEV(Time_default, {}, undefined, false, undefined, this);
   }
   return null;
-};
-var documentOnclick = function(e) {
+}
+function documentOnclick(e) {
   if (!MIN_WIDTH_768.matches) {
     document.onclick = null;
   } else {
@@ -26707,36 +26707,36 @@ var documentOnclick = function(e) {
       document.onclick = null;
     }
   }
-};
-var PanelConfigSection = function({ isPanelConfigVisible, panelSelected }) {
+}
+function PanelConfigSection({ isPanelConfigVisible, panelSelected }) {
   const _className = isPanelConfigVisible ? PanelConfig_className : `${PanelConfig_className} panel-hidden`;
   if (isPanelConfigVisible && MIN_WIDTH_768.matches) {
     document.onclick = documentOnclick;
   } else {
     document.onclick = null;
   }
-  return jsx_dev_runtime25.jsxDEV("div", {
+  return /* @__PURE__ */ jsx_dev_runtime25.jsxDEV("div", {
     id: "configPanel",
     className: _className,
     children: [
-      jsx_dev_runtime25.jsxDEV("div", {
+      /* @__PURE__ */ jsx_dev_runtime25.jsxDEV("div", {
         className: "flex-row justify-end",
-        children: jsx_dev_runtime25.jsxDEV("button", {
+        children: /* @__PURE__ */ jsx_dev_runtime25.jsxDEV("button", {
           title: "close",
           type: "button",
           className: "panel-config-close t-button flex-column align-c",
           onClick: closeConfigPanel,
-          children: jsx_dev_runtime25.jsxDEV(IconChevronBarLeft, {
+          children: /* @__PURE__ */ jsx_dev_runtime25.jsxDEV(IconChevronBarLeft, {
             className: "icon-text-l"
           }, undefined, false, undefined, this)
         }, undefined, false, undefined, this)
       }, undefined, false, undefined, this),
-      jsx_dev_runtime25.jsxDEV(PanelSelected, {
+      /* @__PURE__ */ jsx_dev_runtime25.jsxDEV(PanelSelected, {
         selected: panelSelected
       }, undefined, false, undefined, this)
     ]
   }, undefined, true, undefined, this);
-};
+}
 var MIN_WIDTH_768 = window.matchMedia("(min-width: 768px)");
 var PanelConfig_className = "panel panel-config flex-column";
 var PanelConfigSection_default = PanelConfigSection;
@@ -26744,63 +26744,63 @@ var PanelConfigSection_default = PanelConfigSection;
 // src/components/Panel/PanelSwitcher.jsx
 var import_react26 = __toESM(require_react(), 1);
 var jsx_dev_runtime26 = __toESM(require_jsx_dev_runtime(), 1);
-var switchOnClick = function() {
+function switchOnClick() {
   dispatch_default.panelConfig(panelConfigActions.switchPanel);
-};
-var PanelSwitcher = function({ isPanelVisible }) {
-  return jsx_dev_runtime26.jsxDEV("div", {
+}
+function PanelSwitcher({ isPanelVisible }) {
+  return /* @__PURE__ */ jsx_dev_runtime26.jsxDEV("div", {
     className: "panel-switcher flex-column align-c justify-c",
-    children: jsx_dev_runtime26.jsxDEV(ToolButton, {
+    children: /* @__PURE__ */ jsx_dev_runtime26.jsxDEV(ToolButton, {
       className: isPanelVisible ? "flex-row align-c active" : "flex-row align-c",
       onClick: switchOnClick,
-      children: jsx_dev_runtime26.jsxDEV(IconGear, {
+      children: /* @__PURE__ */ jsx_dev_runtime26.jsxDEV(IconGear, {
         className: "icon-text-l"
       }, undefined, false, undefined, this)
     }, undefined, false, undefined, this)
   }, undefined, false, undefined, this);
-};
+}
 var PanelSwitcher_default = PanelSwitcher;
 
 // src/components/Panel/PanelContainer.jsx
 var jsx_dev_runtime27 = __toESM(require_jsx_dev_runtime(), 1);
-var GeneralPanel = function() {
-  const [panelConfig5, panelConfigDispatch] = import_react27.useReducer(panelConfigReducer, createPanelConfigState());
+function GeneralPanel() {
+  const [panelConfig, panelConfigDispatch] = import_react27.useReducer(panelConfigReducer, createPanelConfigState());
   const {
     isPanelButtonsVisible,
     isPanelConfigVisible,
     isPanelVisible,
     panelSelected
-  } = panelConfig5;
+  } = panelConfig;
   dispatch_default.panelConfig = panelConfigDispatch;
-  return jsx_dev_runtime27.jsxDEV(jsx_dev_runtime27.Fragment, {
+  return /* @__PURE__ */ jsx_dev_runtime27.jsxDEV(jsx_dev_runtime27.Fragment, {
     children: [
-      jsx_dev_runtime27.jsxDEV(PanelSwitcher_default, {
+      /* @__PURE__ */ jsx_dev_runtime27.jsxDEV(PanelSwitcher_default, {
         isPanelVisible
       }, undefined, false, undefined, this),
-      jsx_dev_runtime27.jsxDEV("aside", {
+      /* @__PURE__ */ jsx_dev_runtime27.jsxDEV("aside", {
         className: isPanelVisible ? "panel-container flex-column" : "panel-container flex-column panel-container-hidden",
         children: [
-          jsx_dev_runtime27.jsxDEV("div", {
+          /* @__PURE__ */ jsx_dev_runtime27.jsxDEV("div", {
             className: "panel_title",
             children: [
-              jsx_dev_runtime27.jsxDEV("h4", {
+              /* @__PURE__ */ jsx_dev_runtime27.jsxDEV("h4", {
                 className: "fs-text text-center p-10",
                 children: "General Configurations:"
               }, undefined, false, undefined, this),
-              jsx_dev_runtime27.jsxDEV("div", {
+              /* @__PURE__ */ jsx_dev_runtime27.jsxDEV("div", {
                 className: "h-line"
               }, undefined, false, undefined, this)
             ]
           }, undefined, true, undefined, this),
-          jsx_dev_runtime27.jsxDEV("div", {
+          /* @__PURE__ */ jsx_dev_runtime27.jsxDEV("div", {
             className: "panel-section flex-row",
             children: [
-              jsx_dev_runtime27.jsxDEV(PanelButtonsSection_default, {
+              /* @__PURE__ */ jsx_dev_runtime27.jsxDEV(PanelButtonsSection_default, {
                 isPanelButtonsVisible,
                 isPanelConfigVisible,
                 panelSelected
               }, undefined, false, undefined, this),
-              jsx_dev_runtime27.jsxDEV(PanelConfigSection_default, {
+              /* @__PURE__ */ jsx_dev_runtime27.jsxDEV(PanelConfigSection_default, {
                 isPanelConfigVisible,
                 panelSelected
               }, undefined, false, undefined, this)
@@ -26810,7 +26810,7 @@ var GeneralPanel = function() {
       }, undefined, true, undefined, this)
     ]
   }, undefined, true, undefined, this);
-};
+}
 var PanelContainer_default = GeneralPanel;
 
 // src/components/Audio/AudioContainer.jsx
@@ -26820,15 +26820,15 @@ var import_react30 = __toESM(require_react(), 1);
 var import_react29 = __toESM(require_react(), 1);
 
 // src/slices/audio.js
-var effectAction = function(effect, id, action) {
+function effectAction(effect, id, action) {
   const audioState = globalState_default.audioList.get(id);
   if (audioState !== undefined) {
     const isDisable = action === "disable";
     audioState[`${effect}IsDisable`] = isDisable;
     return { type: "effect", payload: { disable: isDisable, effect } };
   }
-};
-var audioReducer = function(state, action) {
+}
+function audioReducer(state, action) {
   if (action !== undefined) {
     const newState = createAudioViewStateFrom(state);
     const type = action?.type;
@@ -26869,7 +26869,7 @@ var audioReducer = function(state, action) {
     return newState;
   }
   return state;
-};
+}
 var returnAddAudioEvents = { type: "audioEvents/add" };
 var returnSubtractAudioEvents = { type: "audioEvents/subtract" };
 var audioActions = Object.freeze({
@@ -26945,15 +26945,15 @@ var audioActions = Object.freeze({
 });
 
 // src/core/utils.js
-var flipCoin = function() {
+function flipCoin() {
   return Math.random() < 0.5;
-};
-var wait = function(ms) {
+}
+function wait(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
-};
+}
 
 // src/core/audio.internals.js
-var createAudioRandomChain = function(audioState) {
+function createAudioRandomChain(audioState) {
   const audioContext = globalState_default.audioContext;
   if (audioContext === undefined) {
     throw new Error("PANIC!!! The audio context disapears. We can not run the app.");
@@ -27022,8 +27022,8 @@ var createAudioRandomChain = function(audioState) {
   outputGain.connect(audioContext.destination);
   audioState.outputGain = outputGain;
   return;
-};
-var fadeOut = function(audioState) {
+}
+function fadeOut(audioState) {
   if (globalState_default.audioContext === undefined) {
     throw new Error("PANIC!!! The audio context disapears. We can not run the app.");
   }
@@ -27034,8 +27034,8 @@ var fadeOut = function(audioState) {
     console.warn("Warning: For some reason the Audio", audioState.id, "have a undefined outputGain.", "Cause of that, the app can not do a fadeOut.");
   }
   return wait(fadeTime + 50);
-};
-var fadeIn = function(audioState) {
+}
+function fadeIn(audioState) {
   if (globalState_default.audioContext === undefined) {
     throw new Error("PANIC!!! The audio context disapears. We can not run the app.");
   }
@@ -27046,7 +27046,7 @@ var fadeIn = function(audioState) {
     console.warn("Warning: For some reason the Audio", audioState.id, "have a undefined outputGain.", "Cause of that, the app can not do a fadeIn.");
   }
   return;
-};
+}
 async function _stop(audioState, callDispatch) {
   if (audioState !== undefined && audioState.isPlaying) {
     await fadeOut(audioState);
@@ -27123,20 +27123,20 @@ async function _play(audioState) {
 var GAIN_0 = 0.0001;
 
 // src/core/audio.js
-var stop = function(id) {
+function stop(id) {
   const audioState = globalState_default.audioList.get(id);
   if (audioState === undefined) {
     return;
   }
   return _stop(audioState, true);
-};
-var play = function(id) {
+}
+function play(id) {
   const audioState = globalState_default.audioList.get(id);
   if (audioState === undefined) {
     return;
   }
   return _play(audioState);
-};
+}
 async function rePlay(id) {
   const audioState = globalState_default.audioList.get(id);
   if (audioState !== undefined) {
@@ -27153,7 +27153,7 @@ async function rePlay(id) {
     }
   }
 }
-var setAudioVolume = function(id) {
+function setAudioVolume(id) {
   if (globalState_default.audioContext === undefined) {
     throw new Error("PANIC!!! The audio context disapears. We can not run the app.");
   }
@@ -27165,7 +27165,7 @@ var setAudioVolume = function(id) {
       audioState.outputGain.gain.exponentialRampToValueAtTime(audioState.volume, globalState_default.audioContext.currentTime + 0.3);
     }
   }
-};
+}
 async function deleteAudio(id) {
   const audioState = globalState_default.audioList.get(id);
   if (audioState !== undefined) {
@@ -27177,13 +27177,13 @@ async function deleteAudio(id) {
 // src/components/Audio/AudioPlayback.jsx
 var import_react28 = __toESM(require_react(), 1);
 var jsx_dev_runtime28 = __toESM(require_jsx_dev_runtime(), 1);
-var persent = function(a, b, c) {
+function persent(a, b, c) {
   if (a <= 0) {
     return 0;
   }
   return Math.round(Math.floor(b * 10) * Math.floor(c * 10) / Math.floor(a * 10)) / 10;
-};
-var EndTimeValue = function({
+}
+function EndTimeValue({
   id,
   audioDispatch,
   duration,
@@ -27193,17 +27193,17 @@ var EndTimeValue = function({
   const onChangeEndTime = import_react28.useCallback(function onChangeEndTime(e) {
     audioDispatch(audioActions.changeEndTime(id, persent(100, 100 - e.target.value, duration)));
   }, [audioDispatch, duration, id]);
-  return jsx_dev_runtime28.jsxDEV("div", {
+  return /* @__PURE__ */ jsx_dev_runtime28.jsxDEV("div", {
     className: "playback_time playback_end-time",
     children: [
-      jsx_dev_runtime28.jsxDEV("input", {
+      /* @__PURE__ */ jsx_dev_runtime28.jsxDEV("input", {
         className: "playback_time_seak",
         type: "range",
         step: "0.1",
         value: endTimeValue,
         onChange: onChangeEndTime
       }, undefined, false, undefined, this),
-      jsx_dev_runtime28.jsxDEV("progress", {
+      /* @__PURE__ */ jsx_dev_runtime28.jsxDEV("progress", {
         className: "playback_time_value",
         role: "presentation",
         max: "100",
@@ -27211,8 +27211,8 @@ var EndTimeValue = function({
       }, undefined, false, undefined, this)
     ]
   }, undefined, true, undefined, this);
-};
-var StartTimeValue = function({
+}
+function StartTimeValue({
   id,
   audioDispatch,
   duration,
@@ -27222,10 +27222,10 @@ var StartTimeValue = function({
   const onChangeStartTime = import_react28.useCallback(function onChangeStartTime(e) {
     audioDispatch(audioActions.changeStartTime(id, persent(100, e.target.value, duration)));
   }, [audioDispatch, duration, id]);
-  return jsx_dev_runtime28.jsxDEV("div", {
+  return /* @__PURE__ */ jsx_dev_runtime28.jsxDEV("div", {
     className: "playback_time playback_start-time",
     children: [
-      jsx_dev_runtime28.jsxDEV("input", {
+      /* @__PURE__ */ jsx_dev_runtime28.jsxDEV("input", {
         className: "playback_time_seak",
         type: "range",
         max: "100",
@@ -27233,7 +27233,7 @@ var StartTimeValue = function({
         value: startTimeValue,
         onChange: onChangeStartTime
       }, undefined, false, undefined, this),
-      jsx_dev_runtime28.jsxDEV("progress", {
+      /* @__PURE__ */ jsx_dev_runtime28.jsxDEV("progress", {
         className: "playback_time_value",
         role: "presentation",
         max: "100",
@@ -27241,33 +27241,33 @@ var StartTimeValue = function({
       }, undefined, false, undefined, this)
     ]
   }, undefined, true, undefined, this);
-};
-var StartPointValue = function({ startPointValue }) {
-  return jsx_dev_runtime28.jsxDEV("progress", {
+}
+function StartPointValue({ startPointValue }) {
+  return /* @__PURE__ */ jsx_dev_runtime28.jsxDEV("progress", {
     className: "playback_point_line",
     role: "presentation",
     max: "100",
     value: startPointValue
   }, undefined, false, undefined, this);
-};
-var CurrentTimeValue = function({ duration, currentTime }) {
+}
+function CurrentTimeValue({ duration, currentTime }) {
   const currentTimeValue = persent(duration, currentTime, 100);
-  return jsx_dev_runtime28.jsxDEV("progress", {
+  return /* @__PURE__ */ jsx_dev_runtime28.jsxDEV("progress", {
     className: "playback_current_time",
     role: "presentation",
     max: "100",
     value: currentTimeValue
   }, undefined, false, undefined, this);
-};
-var EndPointValue = function({ endPointValue }) {
-  return jsx_dev_runtime28.jsxDEV("progress", {
+}
+function EndPointValue({ endPointValue }) {
+  return /* @__PURE__ */ jsx_dev_runtime28.jsxDEV("progress", {
     className: "playback_point_line playback_end_point_line",
     role: "presentation",
     max: "100",
     value: 100 - endPointValue
   }, undefined, false, undefined, this);
-};
-var Playback = function({
+}
+function Playback({
   id,
   duration,
   endPoint,
@@ -27283,43 +27283,43 @@ var Playback = function({
   const endPointValue = import_react28.useMemo(function() {
     return persent(duration, endPoint, 100);
   }, [endPoint, duration]);
-  return jsx_dev_runtime28.jsxDEV("div", {
+  return /* @__PURE__ */ jsx_dev_runtime28.jsxDEV("div", {
     className: "playback--prev",
-    children: jsx_dev_runtime28.jsxDEV("div", {
+    children: /* @__PURE__ */ jsx_dev_runtime28.jsxDEV("div", {
       className: "playback flex-column align-c justify-c",
       children: [
-        jsx_dev_runtime28.jsxDEV("div", {
+        /* @__PURE__ */ jsx_dev_runtime28.jsxDEV("div", {
           className: "playback_line",
           style: {
             "--playback-start": startPointValue + "%",
             "--playback-end": endPointValue + "%"
           },
           children: [
-            jsx_dev_runtime28.jsxDEV("div", {
+            /* @__PURE__ */ jsx_dev_runtime28.jsxDEV("div", {
               className: "playback_point playback_start_point"
             }, undefined, false, undefined, this),
-            jsx_dev_runtime28.jsxDEV(StartPointValue, {
+            /* @__PURE__ */ jsx_dev_runtime28.jsxDEV(StartPointValue, {
               startPointValue
             }, undefined, false, undefined, this),
-            jsx_dev_runtime28.jsxDEV(EndPointValue, {
+            /* @__PURE__ */ jsx_dev_runtime28.jsxDEV(EndPointValue, {
               endPointValue
             }, undefined, false, undefined, this),
-            jsx_dev_runtime28.jsxDEV(CurrentTimeValue, {
+            /* @__PURE__ */ jsx_dev_runtime28.jsxDEV(CurrentTimeValue, {
               duration,
               currentTime
             }, undefined, false, undefined, this),
-            jsx_dev_runtime28.jsxDEV("div", {
+            /* @__PURE__ */ jsx_dev_runtime28.jsxDEV("div", {
               className: "playback_point playback_end_point"
             }, undefined, false, undefined, this)
           ]
         }, undefined, true, undefined, this),
-        jsx_dev_runtime28.jsxDEV(StartTimeValue, {
+        /* @__PURE__ */ jsx_dev_runtime28.jsxDEV(StartTimeValue, {
           id,
           audioDispatch,
           duration,
           startTime
         }, undefined, false, undefined, this),
-        jsx_dev_runtime28.jsxDEV(EndTimeValue, {
+        /* @__PURE__ */ jsx_dev_runtime28.jsxDEV(EndTimeValue, {
           id,
           audioDispatch,
           duration,
@@ -27328,42 +27328,42 @@ var Playback = function({
       ]
     }, undefined, true, undefined, this)
   }, undefined, false, undefined, this);
-};
+}
 var AudioPlayback_default = Playback;
 
 // src/components/Audio/AudioElement.jsx
 var jsx_dev_runtime29 = __toESM(require_jsx_dev_runtime(), 1);
-var DeleteButton = function({ id, events }) {
+function DeleteButton({ id, events }) {
   function onClick() {
     deleteAudio(id);
     dispatch_default.sumOfAllAudiosEvents(sumOfAllAudiosEventsActions.subtract(events));
   }
-  return jsx_dev_runtime29.jsxDEV(ToolButton, {
+  return /* @__PURE__ */ jsx_dev_runtime29.jsxDEV(ToolButton, {
     className: "audio-button delete-button flex-column align-c",
     onClick,
-    children: jsx_dev_runtime29.jsxDEV(IconX, {
+    children: /* @__PURE__ */ jsx_dev_runtime29.jsxDEV(IconX, {
       className: "icon-text-l"
     }, undefined, false, undefined, this)
   }, undefined, false, undefined, this);
-};
-var ConfigButton = function({ value, change }) {
+}
+function ConfigButton({ value, change }) {
   const className = "audio-button config-button flex-column align-c";
-  return jsx_dev_runtime29.jsxDEV(ToolButton, {
+  return /* @__PURE__ */ jsx_dev_runtime29.jsxDEV(ToolButton, {
     className: value ? `${className} active` : className,
     onClick: change,
-    children: jsx_dev_runtime29.jsxDEV(IconMore, {
+    children: /* @__PURE__ */ jsx_dev_runtime29.jsxDEV(IconMore, {
       className: "icon-text-l"
     }, undefined, false, undefined, this)
   }, undefined, false, undefined, this);
-};
-var Volume = function({ changeVolume, volume }) {
-  return jsx_dev_runtime29.jsxDEV("div", {
+}
+function Volume({ changeVolume, volume }) {
+  return /* @__PURE__ */ jsx_dev_runtime29.jsxDEV("div", {
     className: "volume flex-row align-c",
     children: [
-      jsx_dev_runtime29.jsxDEV(IconVolume, {
+      /* @__PURE__ */ jsx_dev_runtime29.jsxDEV(IconVolume, {
         className: "icon-text-l"
       }, undefined, false, undefined, this),
-      jsx_dev_runtime29.jsxDEV(Range_default, {
+      /* @__PURE__ */ jsx_dev_runtime29.jsxDEV(Range_default, {
         max: "1",
         step: "0.1",
         value: volume,
@@ -27371,53 +27371,53 @@ var Volume = function({ changeVolume, volume }) {
       }, undefined, false, undefined, this)
     ]
   }, undefined, true, undefined, this);
-};
-var EffectButton = function({ text, onClick, isDisable }) {
-  return jsx_dev_runtime29.jsxDEV("div", {
+}
+function EffectButton({ text, onClick, isDisable }) {
+  return /* @__PURE__ */ jsx_dev_runtime29.jsxDEV("div", {
     className: "effect-button",
-    children: jsx_dev_runtime29.jsxDEV(ToolButton, {
+    children: /* @__PURE__ */ jsx_dev_runtime29.jsxDEV(ToolButton, {
       className: isDisable ? "inactive" : "",
       onClick,
-      children: jsx_dev_runtime29.jsxDEV("p", {
+      children: /* @__PURE__ */ jsx_dev_runtime29.jsxDEV("p", {
         className: "fs-text-s",
         children: text
       }, undefined, false, undefined, this)
     }, undefined, false, undefined, this)
   }, undefined, false, undefined, this);
-};
-var PlayButton = function({ isPlaying, title, playOnClick }) {
-  return jsx_dev_runtime29.jsxDEV(ToolButton, {
+}
+function PlayButton({ isPlaying, title, playOnClick }) {
+  return /* @__PURE__ */ jsx_dev_runtime29.jsxDEV(ToolButton, {
     className: "audio-element_title flex-row align-c ellipsis",
     onClick: playOnClick,
     children: [
-      isPlaying ? jsx_dev_runtime29.jsxDEV(IconPause, {
+      isPlaying ? /* @__PURE__ */ jsx_dev_runtime29.jsxDEV(IconPause, {
         className: "icon-text-l icon-play"
-      }, undefined, false, undefined, this) : jsx_dev_runtime29.jsxDEV(IconPlay, {
+      }, undefined, false, undefined, this) : /* @__PURE__ */ jsx_dev_runtime29.jsxDEV(IconPlay, {
         className: "icon-text-l icon-play"
       }, undefined, false, undefined, this),
-      jsx_dev_runtime29.jsxDEV("h3", {
+      /* @__PURE__ */ jsx_dev_runtime29.jsxDEV("h3", {
         className: "fs-text ellipsis",
         children: title
       }, undefined, false, undefined, this)
     ]
   }, undefined, true, undefined, this);
-};
-var PlayBackTimeText = function({
+}
+function PlayBackTimeText({
   isDurationShort,
-  time: time2
+  time
 }) {
-  return jsx_dev_runtime29.jsxDEV("div", {
+  return /* @__PURE__ */ jsx_dev_runtime29.jsxDEV("div", {
     className: "playback_time-text",
-    children: isDurationShort ? jsx_dev_runtime29.jsxDEV("p", {
+    children: isDurationShort ? /* @__PURE__ */ jsx_dev_runtime29.jsxDEV("p", {
       className: "fs-text",
-      children: durationToShortTime(time2)
-    }, undefined, false, undefined, this) : jsx_dev_runtime29.jsxDEV("p", {
+      children: durationToShortTime(time)
+    }, undefined, false, undefined, this) : /* @__PURE__ */ jsx_dev_runtime29.jsxDEV("p", {
       className: "fs-text",
-      children: durationToTime(time2)
+      children: durationToTime(time)
     }, undefined, false, undefined, this)
   }, undefined, false, undefined, this);
-};
-var Configuration = function({
+}
+function Configuration({
   id,
   configurationIsOpen,
   isDurationShort,
@@ -27448,20 +27448,20 @@ var Configuration = function({
   if (!configurationIsOpen) {
     return;
   }
-  return jsx_dev_runtime29.jsxDEV("section", {
+  return /* @__PURE__ */ jsx_dev_runtime29.jsxDEV("section", {
     className: "audio-configuration flex-column",
     children: [
-      duration > 0.5 && jsx_dev_runtime29.jsxDEV("div", {
+      duration > 0.5 && /* @__PURE__ */ jsx_dev_runtime29.jsxDEV("div", {
         className: "audio-configuration_playback--prev flex-row align-c justify-c",
-        children: jsx_dev_runtime29.jsxDEV("div", {
+        children: /* @__PURE__ */ jsx_dev_runtime29.jsxDEV("div", {
           className: "audio-configuration_playback p-5 flex-row align-c",
           style: isDurationShort ? playbackStyle : undefined,
           children: [
-            jsx_dev_runtime29.jsxDEV(PlayBackTimeText, {
+            /* @__PURE__ */ jsx_dev_runtime29.jsxDEV(PlayBackTimeText, {
               isDurationShort,
               time: startTime
             }, undefined, false, undefined, this),
-            jsx_dev_runtime29.jsxDEV(AudioPlayback_default, {
+            /* @__PURE__ */ jsx_dev_runtime29.jsxDEV(AudioPlayback_default, {
               id,
               duration,
               endPoint,
@@ -27471,30 +27471,30 @@ var Configuration = function({
               currentTime,
               audioDispatch
             }, undefined, false, undefined, this),
-            jsx_dev_runtime29.jsxDEV(PlayBackTimeText, {
+            /* @__PURE__ */ jsx_dev_runtime29.jsxDEV(PlayBackTimeText, {
               isDurationShort,
               time: endTime
             }, undefined, false, undefined, this)
           ]
         }, undefined, true, undefined, this)
       }, undefined, false, undefined, this),
-      jsx_dev_runtime29.jsxDEV("div", {
+      /* @__PURE__ */ jsx_dev_runtime29.jsxDEV("div", {
         className: "flex-row flex-wrap",
         children: [
-          jsx_dev_runtime29.jsxDEV("div", {
+          /* @__PURE__ */ jsx_dev_runtime29.jsxDEV("div", {
             className: "audio-configuration_probability flex-row align-c",
             children: [
-              jsx_dev_runtime29.jsxDEV("span", {
+              /* @__PURE__ */ jsx_dev_runtime29.jsxDEV("span", {
                 className: "fs-text",
                 children: "Probability:"
               }, undefined, false, undefined, this),
-              jsx_dev_runtime29.jsxDEV("span", {
+              /* @__PURE__ */ jsx_dev_runtime29.jsxDEV("span", {
                 className: "percent fs-text text-bold text-center",
                 children: probabilityPrecent + "%"
               }, undefined, false, undefined, this),
-              jsx_dev_runtime29.jsxDEV("div", {
+              /* @__PURE__ */ jsx_dev_runtime29.jsxDEV("div", {
                 className: "",
-                children: jsx_dev_runtime29.jsxDEV(AddAndSubtract_default, {
+                children: /* @__PURE__ */ jsx_dev_runtime29.jsxDEV(AddAndSubtract_default, {
                   viewValue: audioEvents,
                   subtractOnClick: subtractEvent,
                   addOnClick: addEvent2,
@@ -27503,44 +27503,44 @@ var Configuration = function({
               }, undefined, false, undefined, this)
             ]
           }, undefined, true, undefined, this),
-          jsx_dev_runtime29.jsxDEV("div", {
+          /* @__PURE__ */ jsx_dev_runtime29.jsxDEV("div", {
             className: "audio-configuration_effects flex-row p-5",
             children: [
-              jsx_dev_runtime29.jsxDEV("span", {
+              /* @__PURE__ */ jsx_dev_runtime29.jsxDEV("span", {
                 className: "fs-text py-5",
                 children: "Enabled effects:"
               }, undefined, false, undefined, this),
-              jsx_dev_runtime29.jsxDEV("div", {
+              /* @__PURE__ */ jsx_dev_runtime29.jsxDEV("div", {
                 className: "flex-row flex-wrap align-c",
                 children: [
-                  jsx_dev_runtime29.jsxDEV(EffectButton, {
+                  /* @__PURE__ */ jsx_dev_runtime29.jsxDEV(EffectButton, {
                     isDisable: delayIsDisable,
                     text: "delay",
                     onClick: changeDelay
                   }, undefined, false, undefined, this),
-                  jsx_dev_runtime29.jsxDEV(EffectButton, {
+                  /* @__PURE__ */ jsx_dev_runtime29.jsxDEV(EffectButton, {
                     isDisable: filterIsDisable,
                     text: "filter",
                     onClick: changeFilter
                   }, undefined, false, undefined, this),
-                  jsx_dev_runtime29.jsxDEV(EffectButton, {
+                  /* @__PURE__ */ jsx_dev_runtime29.jsxDEV(EffectButton, {
                     isDisable: pannerIsDisable,
                     text: "panner",
                     onClick: changePanner
                   }, undefined, false, undefined, this),
-                  jsx_dev_runtime29.jsxDEV(EffectButton, {
+                  /* @__PURE__ */ jsx_dev_runtime29.jsxDEV(EffectButton, {
                     isDisable: playbackRateIsDisable,
                     text: "rate",
                     onClick: changePlaybackRate
                   }, undefined, false, undefined, this),
-                  duration > 0.5 && jsx_dev_runtime29.jsxDEV(jsx_dev_runtime29.Fragment, {
+                  duration > 0.5 && /* @__PURE__ */ jsx_dev_runtime29.jsxDEV(jsx_dev_runtime29.Fragment, {
                     children: [
-                      jsx_dev_runtime29.jsxDEV(EffectButton, {
+                      /* @__PURE__ */ jsx_dev_runtime29.jsxDEV(EffectButton, {
                         isDisable: randomEndPointIsDisable,
                         text: "REP",
                         onClick: changeREP
                       }, undefined, false, undefined, this),
-                      jsx_dev_runtime29.jsxDEV(EffectButton, {
+                      /* @__PURE__ */ jsx_dev_runtime29.jsxDEV(EffectButton, {
                         isDisable: randomStartPointIsDisable,
                         text: "RSP",
                         onClick: changeRSP
@@ -27555,12 +27555,12 @@ var Configuration = function({
       }, undefined, true, undefined, this)
     ]
   }, undefined, true, undefined, this);
-};
-var AudioElement = function({ id }) {
+}
+function AudioElement({ id }) {
   const [audioState, audioDispatch] = import_react29.useReducer(audioReducer, createAudioViewState(id));
-  const audio5 = globalState_default.audioList.get(id);
-  if (audio5 !== undefined) {
-    audio5.dispatch = audioDispatch;
+  const audio = globalState_default.audioList.get(id);
+  if (audio !== undefined) {
+    audio.dispatch = audioDispatch;
   }
   const {
     color,
@@ -27751,39 +27751,39 @@ var AudioElement = function({ id }) {
       play(id);
     }
   }, [id, isPlaying]);
-  return jsx_dev_runtime29.jsxDEV("div", {
+  return /* @__PURE__ */ jsx_dev_runtime29.jsxDEV("div", {
     className: "audio-element flex-column p-5",
     style: color ? {
       "--audio-color": color,
       outlineColor: color
     } : undefined,
     children: [
-      jsx_dev_runtime29.jsxDEV("section", {
+      /* @__PURE__ */ jsx_dev_runtime29.jsxDEV("section", {
         className: "audio-element_header flex-row align-c justify-sb p-2",
         children: [
-          jsx_dev_runtime29.jsxDEV(PlayButton, {
+          /* @__PURE__ */ jsx_dev_runtime29.jsxDEV(PlayButton, {
             isPlaying,
             title,
             playOnClick
           }, undefined, false, undefined, this),
-          jsx_dev_runtime29.jsxDEV(Volume, {
+          /* @__PURE__ */ jsx_dev_runtime29.jsxDEV(Volume, {
             volume,
             changeVolume
           }, undefined, false, undefined, this),
-          jsx_dev_runtime29.jsxDEV("div", {
+          /* @__PURE__ */ jsx_dev_runtime29.jsxDEV("div", {
             className: "px-10",
-            children: jsx_dev_runtime29.jsxDEV(ConfigButton, {
+            children: /* @__PURE__ */ jsx_dev_runtime29.jsxDEV(ConfigButton, {
               value: configurationIsOpen,
               change: changeConfigurationsState
             }, undefined, false, undefined, this)
           }, undefined, false, undefined, this),
-          jsx_dev_runtime29.jsxDEV(DeleteButton, {
+          /* @__PURE__ */ jsx_dev_runtime29.jsxDEV(DeleteButton, {
             id,
             events: audioEvents
           }, undefined, false, undefined, this)
         ]
       }, undefined, true, undefined, this),
-      jsx_dev_runtime29.jsxDEV(Configuration, {
+      /* @__PURE__ */ jsx_dev_runtime29.jsxDEV(Configuration, {
         id,
         configurationIsOpen,
         isDurationShort,
@@ -27813,76 +27813,76 @@ var AudioElement = function({ id }) {
       }, undefined, false, undefined, this)
     ]
   }, undefined, true, undefined, this);
-};
+}
 var playbackStyle = { width: "80%" };
 var AudioElement_default = import_react29.memo(AudioElement);
 
 // src/components/Audio/AudioContainer.jsx
 var jsx_dev_runtime30 = __toESM(require_jsx_dev_runtime(), 1);
-var AudioLoadingElement = function() {
-  return jsx_dev_runtime30.jsxDEV("div", {
+function AudioLoadingElement() {
+  return /* @__PURE__ */ jsx_dev_runtime30.jsxDEV("div", {
     className: "audio-loading-element flex-row align-c px-10",
-    children: jsx_dev_runtime30.jsxDEV("h3", {
+    children: /* @__PURE__ */ jsx_dev_runtime30.jsxDEV("h3", {
       className: "fs-text",
       children: "Loading..."
     }, undefined, false, undefined, this)
   }, undefined, false, undefined, this);
-};
-var SelectAudioElement = function({ bool, id }) {
-  return bool ? jsx_dev_runtime30.jsxDEV(AudioElement_default, {
+}
+function SelectAudioElement({ bool, id }) {
+  return bool ? /* @__PURE__ */ jsx_dev_runtime30.jsxDEV(AudioElement_default, {
     id
-  }, undefined, false, undefined, this) : jsx_dev_runtime30.jsxDEV(AudioLoadingElement, {}, undefined, false, undefined, this);
-};
-var listMapFn = function(id) {
-  return jsx_dev_runtime30.jsxDEV("div", {
+  }, undefined, false, undefined, this) : /* @__PURE__ */ jsx_dev_runtime30.jsxDEV(AudioLoadingElement, {}, undefined, false, undefined, this);
+}
+function listMapFn(id) {
+  return /* @__PURE__ */ jsx_dev_runtime30.jsxDEV("div", {
     className: "audio-element--prev p-5 flex-column align-c",
     role: "region",
     "arial-live": "polite",
-    children: jsx_dev_runtime30.jsxDEV(SelectAudioElement, {
+    children: /* @__PURE__ */ jsx_dev_runtime30.jsxDEV(SelectAudioElement, {
       bool: this[id] === true,
       id
     }, undefined, false, undefined, this)
   }, id, false, undefined, this);
-};
-var AudioElementList = function() {
+}
+function AudioElementList() {
   const { loadedAudioList, completedAudioList } = import_react30.useContext(AudioListContext);
   return Object.keys(loadedAudioList).map(listMapFn, completedAudioList);
-};
-var NoAudioFile = function() {
+}
+function NoAudioFile() {
   const { loadedAudioListSize } = import_react30.useContext(AudioListContext);
-  return jsx_dev_runtime30.jsxDEV(Show_default, {
+  return /* @__PURE__ */ jsx_dev_runtime30.jsxDEV(Show_default, {
     is: loadedAudioListSize === 0,
-    children: jsx_dev_runtime30.jsxDEV("div", {
+    children: /* @__PURE__ */ jsx_dev_runtime30.jsxDEV("div", {
       className: "audioFiles_icon flex-column align-c justify-c flex-grow-1",
-      children: jsx_dev_runtime30.jsxDEV("p", {
+      children: /* @__PURE__ */ jsx_dev_runtime30.jsxDEV("p", {
         className: "fs-text-l p-5",
         children: "No Audio Files"
       }, undefined, false, undefined, this)
     }, undefined, false, undefined, this)
   }, undefined, false, undefined, this);
-};
-var AudioContainer = function() {
-  return jsx_dev_runtime30.jsxDEV("main", {
+}
+function AudioContainer() {
+  return /* @__PURE__ */ jsx_dev_runtime30.jsxDEV("main", {
     className: "main flex-column align-c p-5",
-    children: jsx_dev_runtime30.jsxDEV("div", {
+    children: /* @__PURE__ */ jsx_dev_runtime30.jsxDEV("div", {
       className: "audio-container flex-column",
       children: [
-        jsx_dev_runtime30.jsxDEV("div", {
+        /* @__PURE__ */ jsx_dev_runtime30.jsxDEV("div", {
           className: "audio-container_sub",
-          children: jsx_dev_runtime30.jsxDEV(AudioElementList, {}, undefined, false, undefined, this)
+          children: /* @__PURE__ */ jsx_dev_runtime30.jsxDEV(AudioElementList, {}, undefined, false, undefined, this)
         }, undefined, false, undefined, this),
-        jsx_dev_runtime30.jsxDEV(NoAudioFile, {}, undefined, false, undefined, this)
+        /* @__PURE__ */ jsx_dev_runtime30.jsxDEV(NoAudioFile, {}, undefined, false, undefined, this)
       ]
     }, undefined, true, undefined, this)
   }, undefined, false, undefined, this);
-};
+}
 var AudioContainer_default = AudioContainer;
 
 // src/components/GlobalButtons.jsx
 var import_react31 = __toESM(require_react(), 1);
 
 // src/core/generative.js
-var chooseAudios = function(arrOfKeys, arrOfSums, sum, i, w) {
+function chooseAudios(arrOfKeys, arrOfSums, sum, i, w) {
   const set = {};
   let arrOfSums_length = arrOfSums.length;
   while (i < w) {
@@ -27917,8 +27917,8 @@ var chooseAudios = function(arrOfKeys, arrOfSums, sum, i, w) {
     i += 1;
   }
   return set;
-};
-var randomSetsExecution = function() {
+}
+function randomSetsExecution() {
   if (globalState_default.eventsForEachSet.arrOfEvents.length < 2) {
     return false;
   }
@@ -27974,15 +27974,15 @@ var randomSetsExecution = function() {
     return true;
   }
   {
-    const audioList4 = globalState_default.audioList;
-    const size = audioList4.size;
+    const audioList = globalState_default.audioList;
+    const size = audioList.size;
     const arrOfKeys = Array(size);
     const arrOfSums = Array(size);
     let sum = 0;
     let i_key = 0;
     if (cardinal <= Math.floor(size / 2)) {
-      for (let [k, audio5] of audioList4) {
-        sum += audio5.audioEvents;
+      for (let [k, audio] of audioList) {
+        sum += audio.audioEvents;
         arrOfKeys[i_key] = k;
         arrOfSums[i_key] = [i_key, sum];
         i_key += 1;
@@ -27990,9 +27990,9 @@ var randomSetsExecution = function() {
       globalState_default.generativeState.playAudiosFromSet = true;
       globalState_default.generativeState.audiosSet = chooseAudios(arrOfKeys, arrOfSums, sum, 0, cardinal);
     } else {
-      const sumOfAllAudiosEvents4 = globalState_default.sumOfAllAudiosEvents;
-      for (let [k, audio5] of audioList4) {
-        sum += sumOfAllAudiosEvents4 - audio5.audioEvents;
+      const sumOfAllAudiosEvents = globalState_default.sumOfAllAudiosEvents;
+      for (let [k, audio] of audioList) {
+        sum += sumOfAllAudiosEvents - audio.audioEvents;
         arrOfKeys[i_key] = k;
         arrOfSums[i_key] = [i_key, sum];
         i_key += 1;
@@ -28002,14 +28002,14 @@ var randomSetsExecution = function() {
     }
     return true;
   }
-};
-var randomTimeExecutionCallback = function(STARTED_ID, execute) {
+}
+function randomTimeExecutionCallback(STARTED_ID, execute) {
   if (execute !== undefined) {
     dispatch_default.app(appActions.newExecution());
   }
   randomTimeExecution(STARTED_ID);
-};
-var randomTimeExecution = function(STARTED_ID) {
+}
+function randomTimeExecution(STARTED_ID) {
   if (globalState_default.isStarted && globalState_default.startedId === STARTED_ID) {
     const n = random(globalState_default.timeInterval.min, globalState_default.timeInterval.max) * 100;
     console.info("Next execution:", n + "ms");
@@ -28018,54 +28018,54 @@ var randomTimeExecution = function(STARTED_ID) {
   } else {
     console.info("END");
   }
-};
+}
 
 // src/core/app.js
 async function forEachAudio(_, id, map) {
   await stop(id);
   map.delete(id);
 }
-var deleteAll = function() {
+function deleteAll() {
   dispatch_default.audioList(audioListActions.clear());
   globalState_default.audioList.forEach(forEachAudio);
-};
-var startApp = function() {
+}
+function startApp() {
   globalState_default.startedId = createId();
   const execute = randomSetsExecution();
   if (execute !== undefined) {
     dispatch_default.app(appActions.newExecution());
   }
   randomTimeExecution(globalState_default.startedId);
-};
+}
 
 // src/components/GlobalButtons.jsx
 var jsx_dev_runtime31 = __toESM(require_jsx_dev_runtime(), 1);
-var handelAddFilesClick = function(e) {
+function handelAddFilesClick(e) {
   e.currentTarget.value = "";
-};
-var handelAddFilesInput = function(e) {
+}
+function handelAddFilesInput(e) {
   if (e.currentTarget.files !== null) {
     addFiles_default(e.currentTarget.files);
   }
-};
-var handelAddFilesButton = function(e) {
+}
+function handelAddFilesButton(e) {
   const input = e.currentTarget.firstElementChild;
   if (input !== null) {
     input.click();
   }
-};
-var handleClearOnClick = function() {
+}
+function handleClearOnClick() {
   deleteAll();
   dispatch_default.sumOfAllAudiosEvents(sumOfAllAudiosEventsActions.clear());
-};
-var AddFilesButton = function() {
-  return jsx_dev_runtime31.jsxDEV("button", {
+}
+function AddFilesButton() {
+  return /* @__PURE__ */ jsx_dev_runtime31.jsxDEV("button", {
     title: "add audio files",
     className: "t-button fileInput-contain flex-row align-c justify-c",
     type: "button",
     onClick: handelAddFilesButton,
     children: [
-      jsx_dev_runtime31.jsxDEV("input", {
+      /* @__PURE__ */ jsx_dev_runtime31.jsxDEV("input", {
         className: "display-none",
         type: "file",
         accept: "audio/*",
@@ -28073,13 +28073,13 @@ var AddFilesButton = function() {
         onInput: handelAddFilesInput,
         multiple: true
       }, undefined, false, undefined, this),
-      jsx_dev_runtime31.jsxDEV("div", {
+      /* @__PURE__ */ jsx_dev_runtime31.jsxDEV("div", {
         className: "fileInput-view flex-row align-c justify-c",
         children: [
-          jsx_dev_runtime31.jsxDEV(IconMusicFile, {
+          /* @__PURE__ */ jsx_dev_runtime31.jsxDEV(IconMusicFile, {
             className: "icon-text flex-row align-c justify-c"
           }, undefined, false, undefined, this),
-          jsx_dev_runtime31.jsxDEV("h4", {
+          /* @__PURE__ */ jsx_dev_runtime31.jsxDEV("h4", {
             className: "fs-text",
             children: "Add"
           }, undefined, false, undefined, this)
@@ -28087,91 +28087,91 @@ var AddFilesButton = function() {
       }, undefined, true, undefined, this)
     ]
   }, undefined, true, undefined, this);
-};
-var handlePlayOnClick = function(isStarted) {
+}
+function handlePlayOnClick(isStarted) {
   if (!isStarted) {
     dispatch_default.app(appActions.start());
     startApp();
   } else {
     dispatch_default.app(appActions.stop());
   }
-};
-var StartButton = function() {
+}
+function StartButton() {
   const { isStarted } = import_react31.useContext(AppContext);
-  return jsx_dev_runtime31.jsxDEV(ToolButton, {
+  return /* @__PURE__ */ jsx_dev_runtime31.jsxDEV(ToolButton, {
     title: isStarted ? "stop runing" : "start runing",
     className: "audioButtonsSection_start flex-row align-c justify-c",
     value: isStarted,
     onClick: handlePlayOnClick,
     children: [
-      isStarted ? jsx_dev_runtime31.jsxDEV(IconStop, {
+      isStarted ? /* @__PURE__ */ jsx_dev_runtime31.jsxDEV(IconStop, {
         className: "icon-text-l"
-      }, undefined, false, undefined, this) : jsx_dev_runtime31.jsxDEV(IconStart, {
+      }, undefined, false, undefined, this) : /* @__PURE__ */ jsx_dev_runtime31.jsxDEV(IconStart, {
         className: "icon-text-l"
       }, undefined, false, undefined, this),
-      jsx_dev_runtime31.jsxDEV("h4", {
+      /* @__PURE__ */ jsx_dev_runtime31.jsxDEV("h4", {
         className: "fs-text-l",
         children: isStarted ? "Stop" : "Start"
       }, undefined, false, undefined, this)
     ]
   }, undefined, true, undefined, this);
-};
-var ClearButton = function() {
-  return jsx_dev_runtime31.jsxDEV(ToolButton, {
+}
+function ClearButton() {
+  return /* @__PURE__ */ jsx_dev_runtime31.jsxDEV(ToolButton, {
     className: "flex-row align-c justify-c",
     onClick: handleClearOnClick,
     title: "clear all completed audios",
     children: [
-      jsx_dev_runtime31.jsxDEV(IconTrash, {
+      /* @__PURE__ */ jsx_dev_runtime31.jsxDEV(IconTrash, {
         className: "icon-text"
       }, undefined, false, undefined, this),
-      jsx_dev_runtime31.jsxDEV("h4", {
+      /* @__PURE__ */ jsx_dev_runtime31.jsxDEV("h4", {
         className: "fs-text",
         children: "Clear"
       }, undefined, false, undefined, this)
     ]
   }, undefined, true, undefined, this);
-};
-var GeneralAudioButtons = function() {
-  return jsx_dev_runtime31.jsxDEV("div", {
+}
+function GeneralAudioButtons() {
+  return /* @__PURE__ */ jsx_dev_runtime31.jsxDEV("div", {
     className: "audioButtonsSection flex-row align-c justify-c",
     children: [
-      jsx_dev_runtime31.jsxDEV("div", {
+      /* @__PURE__ */ jsx_dev_runtime31.jsxDEV("div", {
         className: "ABSection_button flex-row align-c justify-end",
-        children: jsx_dev_runtime31.jsxDEV(AddFilesButton, {}, undefined, false, undefined, this)
+        children: /* @__PURE__ */ jsx_dev_runtime31.jsxDEV(AddFilesButton, {}, undefined, false, undefined, this)
       }, undefined, false, undefined, this),
-      jsx_dev_runtime31.jsxDEV("div", {
+      /* @__PURE__ */ jsx_dev_runtime31.jsxDEV("div", {
         className: "flex-row align-c jutify-c",
-        children: jsx_dev_runtime31.jsxDEV(StartButton, {}, undefined, false, undefined, this)
+        children: /* @__PURE__ */ jsx_dev_runtime31.jsxDEV(StartButton, {}, undefined, false, undefined, this)
       }, undefined, false, undefined, this),
-      jsx_dev_runtime31.jsxDEV("div", {
+      /* @__PURE__ */ jsx_dev_runtime31.jsxDEV("div", {
         className: "ABSection_button flex-row align-c jutify-start",
-        children: jsx_dev_runtime31.jsxDEV(ClearButton, {}, undefined, false, undefined, this)
+        children: /* @__PURE__ */ jsx_dev_runtime31.jsxDEV(ClearButton, {}, undefined, false, undefined, this)
       }, undefined, false, undefined, this)
     ]
   }, undefined, true, undefined, this);
-};
+}
 var GlobalButtons_default = GeneralAudioButtons;
 
 // src/components/App.jsx
 var jsx_dev_runtime32 = __toESM(require_jsx_dev_runtime(), 1);
-var App4 = function() {
-  return jsx_dev_runtime32.jsxDEV(AudioListProvider, {
-    children: jsx_dev_runtime32.jsxDEV(GeneralDisableProvider, {
-      children: jsx_dev_runtime32.jsxDEV(AppProvider, {
-        children: jsx_dev_runtime32.jsxDEV(SumOfAllAudiosEventsProvider, {
-          children: jsx_dev_runtime32.jsxDEV(DragContainer_default, {
+function App() {
+  return /* @__PURE__ */ jsx_dev_runtime32.jsxDEV(AudioListProvider, {
+    children: /* @__PURE__ */ jsx_dev_runtime32.jsxDEV(GeneralDisableProvider, {
+      children: /* @__PURE__ */ jsx_dev_runtime32.jsxDEV(AppProvider, {
+        children: /* @__PURE__ */ jsx_dev_runtime32.jsxDEV(SumOfAllAudiosEventsProvider, {
+          children: /* @__PURE__ */ jsx_dev_runtime32.jsxDEV(DragContainer_default, {
             className: "content-audio",
             children: [
-              jsx_dev_runtime32.jsxDEV("section", {
+              /* @__PURE__ */ jsx_dev_runtime32.jsxDEV("section", {
                 className: "content-audio_aside flex-column",
-                children: jsx_dev_runtime32.jsxDEV(PanelContainer_default, {}, undefined, false, undefined, this)
+                children: /* @__PURE__ */ jsx_dev_runtime32.jsxDEV(PanelContainer_default, {}, undefined, false, undefined, this)
               }, undefined, false, undefined, this),
-              jsx_dev_runtime32.jsxDEV("section", {
+              /* @__PURE__ */ jsx_dev_runtime32.jsxDEV("section", {
                 className: "content-audio_main flex-column",
                 children: [
-                  jsx_dev_runtime32.jsxDEV(GlobalButtons_default, {}, undefined, false, undefined, this),
-                  jsx_dev_runtime32.jsxDEV(AudioContainer_default, {}, undefined, false, undefined, this)
+                  /* @__PURE__ */ jsx_dev_runtime32.jsxDEV(GlobalButtons_default, {}, undefined, false, undefined, this),
+                  /* @__PURE__ */ jsx_dev_runtime32.jsxDEV(AudioContainer_default, {}, undefined, false, undefined, this)
                 ]
               }, undefined, true, undefined, this)
             ]
@@ -28180,8 +28180,8 @@ var App4 = function() {
       }, undefined, false, undefined, this)
     }, undefined, false, undefined, this)
   }, undefined, false, undefined, this);
-};
-var App_default = App4;
+}
+var App_default = App;
 
 // src/main.jsx
 var jsx_dev_runtime33 = __toESM(require_jsx_dev_runtime(), 1);
@@ -28204,7 +28204,7 @@ if (window.AudioContext !== undefined || window.webkitAudioContext !== undefined
       throw new Error("HTMLElement does not exist, the app can not start");
     }
     setInitialAudioContext();
-    ReactDOM.createRoot(HTMLRoot).render(jsx_dev_runtime33.jsxDEV(App_default, {}, undefined, false, undefined, this));
+    ReactDOM.createRoot(HTMLRoot).render(/* @__PURE__ */ jsx_dev_runtime33.jsxDEV(App_default, {}, undefined, false, undefined, this));
   }, EventOnce);
   DOMInitLoading.replaceChildren();
   DOMInitLoading.appendChild(DOMStartButton);

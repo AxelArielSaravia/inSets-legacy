@@ -1,5 +1,5 @@
 // src/theme.js
-var switchTheme = function() {
+function switchTheme() {
   const currTheme = document.body.className;
   if (currTheme !== "dark") {
     theme = "dark";
@@ -14,7 +14,7 @@ var switchTheme = function() {
   }
   document.body.className = theme;
   localStorage.setItem("theme", theme);
-};
+}
 var btn = document.getElementById("change-theme_button");
 var theme = localStorage.getItem("theme") !== null ? localStorage.getItem("theme") : window.matchMedia !== undefined && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 document.body.className = theme;

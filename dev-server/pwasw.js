@@ -3,9 +3,9 @@ async function waitCache() {
   const cache = await caches.open(CACHE_NAME);
   return cache.addAll(urlsToCache);
 }
-var installListener = function(e) {
+function installListener(e) {
   e.waitUntil(waitCache());
-};
+}
 async function fetchCache(req) {
   const netRes = await fetch(req);
   const cache = await caches.open(CACHE_NAME);
@@ -17,9 +17,9 @@ async function waitFetch(e) {
   const fetchPr = fetchCache(e.request);
   return res !== undefined ? res : fetchPr;
 }
-var fetchListener = function(e) {
+function fetchListener(e) {
   e.waitUntil(waitFetch(e));
-};
+}
 var CACHE_NAME = "0.4.0";
 var urlsToCache = [
   "/",

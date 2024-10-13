@@ -1,5 +1,5 @@
 # [inSets](https://insets-music.web.app/) v0.4.0
-[¿Cómo se utiliza la aplicación?](https://github.com/AxelArielSaravia/inSets/blob/main/README.md#c%C3%B3mo-se-utiliza-la-aplicaci%C3%B3n)
+[¿Cómo se utiliza la aplicación?](https://github.com/AxelArielSaravia/inSets-legacy/blob/main/README.md#c%C3%B3mo-se-utiliza-la-aplicaci%C3%B3n)
 
 Basada en [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API)
 y [HTML Audio tag](https://html.spec.whatwg.org/multipage/media.html#the-audio-element)
